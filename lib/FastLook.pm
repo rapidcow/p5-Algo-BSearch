@@ -495,15 +495,15 @@ EOM
 		}
 		if ($ori) {
 			# Left search
-			($lo, $hi) = @_;
+			($lo, $hi) = @$args;
 			defined $lo or $lo = $[;
 			defined $hi or $hi = 1 + $#$arg;
 		}
 		else {
 			# Right search
-			($hi, $lo) = @_;
-			defined $lo or $lo = $#$arg;
-			defined $hi or $hi = $[ - 1;
+			($hi, $lo) = @$args;
+			defined $hi or $hi = $#$arg;
+			defined $lo or $lo = $[ - 1;
 		}
 		(1, $fun, sub { \$arg->[$_] }, $lo, $hi)
 	}
