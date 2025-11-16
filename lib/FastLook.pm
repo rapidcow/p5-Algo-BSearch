@@ -50,15 +50,15 @@ sub brsrchx (&$;$$);
    );
 
    # Input forms (left bisection)
-   bisectl { ok($idx = $_) } [\&sub,]$hi; # $lo //= 0
-   bisectl { ok($idx = $_) } [\&sub,]$lo, $hi;
+   bisectl { ok($idx = $_) } [\&fun,]$hi; # $lo //= 0
+   bisectl { ok($idx = $_) } [\&fun,]$lo, $hi;
    bisectl { ok($elt = $_) } \@list;      # $lo //= $[
-   bisectl { ok($elt = $_) } \@list, $lo; # $hi //= $[ + @$list
+   bisectl { ok($elt = $_) } \@list, $lo; # $hi //= 1 + $#$list
    bisectl { ok($elt = $_) } \@list, $lo, $hi;
 
    # Input forms (right bisection)
-   bisectr { ok($idx = $_) } [\&sub,]$hi; # $lo //= -1
-   bisectr { ok($idx = $_) } [\&sub,]$hi, $lo;
+   bisectr { ok($idx = $_) } [\&fun,]$hi; # $lo //= -1
+   bisectr { ok($idx = $_) } [\&fun,]$hi, $lo;
    bisectr { ok($elt = $_) } \@list;      # $hi //= $#$list
    bisectr { ok($elt = $_) } \@list, $hi; # $lo //= $[ - 1
    bisectr { ok($elt = $_) } \@list, $hi, $lo;
@@ -205,6 +205,16 @@ and returns C<-1> as a last resort.  You may also omit C<-1>
 here as it is the default C<$lo> for right-search functions.
 
 =back
+
+We will refer to the range of real, concrete index as the
+I<search range>, which is C<[$lo, hi)> for left search and
+C<($lo, $hi]> for right search.  While the possible return
+values always lies on the closed interval C<[$lo, $hi]>,
+the search range is a half-open interval, whose exclusive
+endpoint depends on the search algorithm.  As a basic sanity
+check you may check if the index lies in the search range to
+see if the search actually found anything, but see
+L</"Output forms"> for more robust forms of error checking.
 
 For each function above a variant is also provided by
 replacing the s with an x:
@@ -353,7 +363,7 @@ The ordering to use can be summarized as follows:
                      SORT ORDERING?
     ORIEN-  | f(i) <= f(i+1)  f(i) >= f(i+1)
     TATION? |  (increasing)    (decreasing)
-   ---------+-------------------------------
+   ---------+--------------------------------
      left   |  $want <=> $_    $_ <=> $want
      right  |  $_ <=> $want    $want <=> $_
 
@@ -363,12 +373,20 @@ The first argument is always a callback, which can be passed
 using any syntax permitted by the C<&> prototype.  Notably, the
 callback may be given as a block, similar to
 L<sort BLOCK|perlfunc/sort> and L<grep BLOCK|perlfunc/grep>.
+
 The callback receives its argument from L<$_|perlvar/$_>,
-the default variable; its exact argument is dependent on the
-input forms explained below.  Regarding the return value, the
-callback should behave like a I<predicate> that meets the assumption
-described in L</"Bisection algorithm"> for C<bisect*> and C<bixect*>,
-or an I<ordering> that meets the assumption described in
+the default variable.  Its exact argument is dependent on the
+input forms explained below: for index form, it is simply the
+index itself.  For ARRAY and CODE form, it is the array element,
+or function image, at the given index.  In either case, the
+function shall receive the index as the sole argument of
+L<@_|perlvar/@_>.  (This may be useful for identifying elements
+in an array of otherwise indistinguishable elements.)
+
+Regarding the return value, the callback should behave like
+a I<predicate> that meets the assumption described in
+L</"Bisection algorithm"> for C<bisect*> and C<bixect*>, or
+an I<ordering> that meets the assumption described in
 L</"Search algorithm"> for C<blsrch*> and C<brsrch*>.
 
 Input from here can be divided into three forms:
@@ -521,6 +539,51 @@ EOM
 
 =head2 Output forms
 
+In scalar context all functions (excluding C<blsrch2> and
+C<brsrch2>) return the index they found, possibly a last-resort
+index lying beyond the search range.  This is, admittedly, not
+the most helpful for searching when the match ought to be exact,
+not just satisfying a monotonic predicate.  In list context,
+therefore, these functions return parameters that may be
+of more help.  One may use the mnemonic ICE for the order of
+these parameters: index, comparison indicator, and element.
+
+The comparison indicator is the return value of the predicate
+or ordering function at this index, depending on whether this
+is a bisection or a binary search algorithm.  If this index is
+a last-resort index lying beyond the search range, this value
+is C<undef>.  The element is the value passed to the previously
+described predicate or ordering function at the same index,
+or C<undef> too if the index is a last-resort index.
+
+To find the first element I<equal> to a target value, not just
+equal to or greater than it, you can therefore do this:
+
+    sub search {
+        my ($array, $want) = @_;
+	my ($idx, $cmp, $elt) = blsrch0 { $_ <=> $want } $array;
+        if (!defined $cmp) { print "$want not found anywhere\n"; }
+        elsif ($cmp == 0)  { print "$want not found; the best "
+                                 . "I got was $elt at [$idx]\n"; }
+        else               { print "$want found at $idx :)"; }
+    }
+
+    my $list = [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9];
+    search $list => 5;
+    search $list => 7;
+    search $list => 10;
+
+This should print:
+
+    5 found at [6] :)
+    7 not found; the best I got was 8 at [10]
+    10 not found anywhere
+
+If you are fine with finding any element equal to it, you can
+substitute C<blsrch0> with C<blsrchx> or C<brsrchx>.  Note
+that the same checks are still necessary to ensure that the
+result is meaningful.
+
 =cut
 
 # Assumption: If $ok->($x) true, $x <= $y => $ok->($y) true.
@@ -534,7 +597,7 @@ sub __bisectl
 	my $want3 = wantarray and want(3);
 	while ($lo < $hi) {
 		$mid = $lo + (($hi - $lo) >> 1);
-		if (do { local *_ = \$mid; $res = $ok->() }) {
+		if (do { local *_ = \$mid; $res = $ok->($mid) }) {
 			$hi = $mid;      # include
 			$cmp = $res  if $want2;
 			$elt = $mid  if $want3;
@@ -555,7 +618,7 @@ sub __bisectr
 	my $want3 = wantarray and want(3);
 	while ($lo < $hi) {
 		$mid = $lo + (($hi - $lo + 1) >> 1);
-		if (do { local *_ = \$mid; $res = $ok->() }) {
+		if (do { local *_ = \$mid; $res = $ok->($mid) }) {
 			$lo = $mid;      # include
 			$cmp = $res  if $want2;
 			$elt = $mid  if $want3;
@@ -577,7 +640,7 @@ sub __bisectl_map
 	while ($lo < $hi) {
 		$mid = $lo + (($hi - $lo) >> 1);
 		$img = $map->($mid);
-		if (do { local *_ = $img; $res = $ok->() }) {
+		if (do { local *_ = $img; $res = $ok->($mid) }) {
 			$hi = $mid;      # include
 			$cmp = $res  if $want2;
 			$elt = $$img if $want3;
@@ -596,7 +659,7 @@ sub __bisectr_map
 	while ($lo < $hi) {
 		$mid = $lo + (($hi - $lo + 1) >> 1);
 		$img = $map->($mid);
-		if (do { local *_ = $img; $res = $ok->() }) {
+		if (do { local *_ = $img; $res = $ok->($mid) }) {
 			$lo = $mid;      # include
 			$cmp = $res  if $want2;
 			$elt = $$img if $want3;
@@ -605,6 +668,103 @@ sub __bisectr_map
 		}
 	} $want2 ? ($lo, $cmp, $elt) = $lo
 }
+
+=head2 Subroutines
+
+The following is a summary of all the subroutines provided
+by this package.  All subroutines are exported on demand
+only.
+
+=over 4
+
+=item B<bisectl>
+
+=item B<bixectl>
+
+Perform left bisection with respect to a predicate on the half-open
+interval C<[$lo, $hi)>, where C<$lo> precedes C<$hi> in the argument
+array.  The prototype is C<&$;$$>.
+
+The predicate should be increasing over every pair of adjacent indices
+it is defined on.  That is, true values always follow false values:
+
+   F F F ... F T T T   ok(x)
+   1 2 3     6 7 8 9      x
+
+Set C<< $ok->($hi) = 1 >>.  The return value of C<bisectl> is the
+unique index C<$x> on the closed interval C<[$lo, $hi]> such that:
+
+=over 4
+
+=item *
+
+C<< $ok->($x) >> is true.
+
+=item *
+
+For all valid index C<< $y < $x >>, it follows that C<< $ok->($y) >> is false.
+
+=back
+
+The return value of C<bixectl> is any index satisfying the first constraint.
+It is guaranteed to be consistent across invocations due to the nature of
+binary search.
+
+If the interval C<[$lo, $hi]> is empty, return C<$hi>.
+
+=cut
+
+sub bisectl (&$;$$)
+{
+	local $@;
+	my ($vari, @args) = parse_args(1, \@_) or croak("bisectl: $@");
+	$vari ? __bisectl_map(@args) : __bisectl(@args)
+}
+
+=item B<bisectr>
+
+=item B<bixectr>
+
+Perform right bisection with respect to a predicate on the half-open
+interval C<($lo, $hi]>, where C<$hi> precedes C<$lo> in the argument
+array.  The prototype is C<&$;$$>.
+
+The predicate should be decreasing over every pair of adjacent indices
+it is defined on.  That is, true values always precede false values:
+
+   T T T ... T F F F   ok(x)
+   1 2 3     6 7 8 9      x
+
+Set C<< $ok->($lo) = 1 >>.  The return value of C<bisectr> is the
+unique index C<$x> on the closed interval C<[$lo, $hi]> such that:
+
+=over 4
+
+=item *
+
+C<< $ok->($x) >> is true.
+
+=item *
+
+For all valid index C<< $y > $x >>, it follows that C<< $ok->($y) >> is false.
+
+=back
+
+The return value of C<bixectr> is any index satisfying the first constraint.
+It is guaranteed to be consistent across invocations due to the nature of
+binary search.
+
+If the interval C<[$lo, $hi]> is empty, return C<$lo>.
+
+=back
+
+In general, a return value of C<$hi> (for left search) and
+C<$lo> (for right search) is not meaningful as it is the only
+index taken to be true for granted.  Caller should handle it
+separately, or check if the comparison indicator and/or element
+are defined by calling in list context.
+
+=cut
 
 # Binary left search for a trisection point on a
 # total ordering.  This time, the predicate $ok
@@ -620,7 +780,7 @@ sub __blsrch_map
 	while ($lo < $hi) {
 		$mid = $lo + (($hi - $lo) >> 1);
 		$img = $map->($mid);
-		if (do { local *_ = $img; $ok->($res = $ord->()) }) {
+		if (do { local *_ = $img; $ok->($res = $ord->($mid)) }) {
 			$hi = $mid;       # include
 			$cmp = $res   if $want2;
 			$elt = $$img  if $want3;
@@ -640,7 +800,7 @@ sub __brsrch_map
 	while ($lo < $hi) {
 		$mid = $lo + (($hi - $lo + 1) >> 1);
 		$img = $map->($mid);
-		if (do { local *_ = $img; $ok->($res = $ord->()) }) {
+		if (do { local *_ = $img; $ok->($res = $ord->($mid)) }) {
 			$lo = $mid;       # include
 			$cmp = $res   if $want2;
 			$elt = $$img  if $want3;
@@ -660,27 +820,6 @@ sub __brsrch
 {
 	my ($ok, $ord, $hi, $lo) = @_;
 	__brsrch_map($ok, $ord, sub { $_ }, $hi, $lo);
-}
-
-=head1 DESCRIPTION
-
-Given a monotonic predicate.
-
-=over 4
-
-=item B<bisectl>
-
-Return.
-
-=back
-
-=cut
-
-sub bisectl (&$;$$)
-{
-	local $@;
-	my ($vari, @args) = parse_args(1, \@_) or croak("bisectl: $@");
-	$vari ? __bisectl_map(@args) : __bisectl(@args)
 }
 
 1;
