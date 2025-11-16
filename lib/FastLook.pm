@@ -8,7 +8,7 @@ BEGIN {
 	# We can avoid copying array elements if this is the case?
 	# It's okay if we don't find Want, 'wantarray and want(...)'
 	# will reduce to just wantarray in that case...
-	eval { require Want; Want->import('want') }
+	eval { require Want; Want->import('want') };
 	if ($@) { *want = sub { 1 } }
 }
 
@@ -464,12 +464,12 @@ sub parse_args
 	my $args = shift;
 	if (@$args < 2) {
 		my $nargs = @$args;
-		$@ = <<EOM
+		$@ = <<EOM;
 not enough arguments (expected at least 2, got $nargs)
 EOM
 		return;
 	}
-	my ($fun, $arg) = splice(@$args, 0, 2)
+	my ($fun, $arg) = splice(@$args, 0, 2);
 	my ($lo, $hi);
 	# If it is a normal ARRAY ref or a blessed
 	# ARRAY ref, map its index to its elements.
@@ -477,7 +477,7 @@ EOM
 	if (UNIVERSAL::isa($arg, 'ARRAY')) {
 		if (@$args > 2) {
 			my $nargs = @$args + 2;
-			$@ = <<EOM
+			$@ = <<EOM;
 too many arguments for ARRAY form (expected at most 4, got $nargs)
 EOM
 			return;
@@ -486,7 +486,7 @@ EOM
 		if ($ori) {
 			# Left search
 			defined $lo or $lo = $[;
-			defined $hi or $hi = $#arg + 1;
+			defined $hi or $hi = 1 + $#$arg;
 		}
 		else {
 			# Right search
@@ -498,14 +498,14 @@ EOM
 	elsif (UNIVERSAL::isa($arg, 'CODE')) {
 		if (@$args < 1) {
 			my $nargs = @$args + 2;
-			$@ = <<EOM
+			$@ = <<EOM;
 not enough arguments for CODE form (expected at least 3, got $nargs)
 EOM
 			return;
 		}
 		if (@$args > 2) {
 			my $nargs = @$args + 2;
-			$@ = <<EOM
+			$@ = <<EOM;
 too many arguments for CODE form (expected at most 4, got $nargs)
 EOM
 			return;
@@ -522,7 +522,7 @@ EOM
 	else {
 		if (@$args > 1) {
 			my $nargs = @$args + 2;
-			$@ = <<EOM
+			$@ = <<EOM;
 too many arguments for index form (expected at most 3, got $nargs)
 EOM
 			return;
@@ -666,7 +666,7 @@ sub __bisectr_map
 		} else {
 			$hi = $mid - 1;  # exclude
 		}
-	} $want2 ? ($lo, $cmp, $elt) = $lo
+	} $want2 ? ($lo, $cmp, $elt) : $lo
 }
 
 =head2 Subroutines
