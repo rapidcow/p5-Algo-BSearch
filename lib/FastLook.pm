@@ -83,7 +83,7 @@ C<$_ * $_ < $x> holds:
        my ($x) = @_;
        bisectr { $_ * $_ <= $x } $x;
    }
-   
+
    print isqrt(2025), "\n";  # 20+25 :O
 
 =head1 DESCRIPTION
@@ -202,7 +202,7 @@ arguments, including
 #    (1, $fun, $map, $lo, $hi)   for ARRAY/CODE form;
 # and
 #    (0, $fun,       $lo, $hi)   for index form.
-# where $fun is a predicate or an ordering, $map 
+# where $fun is a predicate or an ordering, $map
 # On parse failure, return nothing and set $@.
 sub parse_args
 {
