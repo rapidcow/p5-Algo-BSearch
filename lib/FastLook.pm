@@ -326,11 +326,11 @@ if the array was decreasing instead.
 
 The ordering to use can be summarized as follows:
 
-          | f(i) <= f(i+1)  f(i) >= f(i+1)
-          |  (increasing)    (decreasing)
-   -------+-------------------------------
-   left   |  $want <=> $_    $_ <=> $want
-   right  |  $_ <=> $want    $want <=> $_
+     order | f(i) <= f(i+1)  f(i) >= f(i+1)
+    method |  (increasing)    (decreasing)
+    -------+-------------------------------
+    left   |  $want <=> $_    $_ <=> $want
+    right  |  $_ <=> $want    $want <=> $_
 
 =head2 Input forms
 
