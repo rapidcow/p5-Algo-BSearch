@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use FastLook qw(bisectl);
-use Test::More tests => 8;
+use Test::More tests => 7;
 
 is ((bisectl { -$_ < 1 } 0, 8), 0, "case of all T");
 is ((bisectl {  $_ > 2 } 0, 8), 3, "case of some F, some T");

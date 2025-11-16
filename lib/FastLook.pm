@@ -493,14 +493,15 @@ too many arguments for ARRAY form (expected at most 4, got $nargs)
 EOM
 			return;
 		}
-		($lo, $hi) = @_;
 		if ($ori) {
 			# Left search
+			($lo, $hi) = @_;
 			defined $lo or $lo = $[;
 			defined $hi or $hi = 1 + $#$arg;
 		}
 		else {
 			# Right search
+			($hi, $lo) = @_;
 			defined $lo or $lo = $#$arg;
 			defined $hi or $hi = $[ - 1;
 		}
@@ -522,7 +523,12 @@ EOM
 			return;
 		}
 		if (@_ > 2) {
-			($lo, $hi) = (@$args);
+			if ($ori) {
+				($lo, $hi) = (@$args);
+			}
+			else {
+				($hi, $lo) = (@$args);
+			}
 		}
 		else {
 			my $arg = shift @$args;
@@ -538,8 +544,14 @@ too many arguments for index form (expected at most 3, got $nargs)
 EOM
 			return;
 		}
-		if (@_) {
-			($lo, $hi) = ($arg, @$args);
+		if (@$args) {
+			unshift @$args, $arg;
+			if ($ori) {
+				($lo, $hi) = (@$args);
+			}
+			else {
+				($hi, $lo) = (@$args);
+			}
 		}
 		else {
 			($lo, $hi) = $ori ? (0, $arg) : ($arg, -1);
