@@ -41,6 +41,17 @@ sub brsrch1 (&$;$$);
 sub brsrch2 (&$;$$);
 sub brsrchx (&$;$$);
 
+use Exporter ();
+use vars qw(@ISA @EXPORT_OK);
+BEGIN {
+	@ISA = qw(Exporter);
+	@EXPORT_OK = qw(
+		bisectl bisectr bixectl bixectr
+		blsrch0 brsrch0 blsrch1 brsrch1
+		blsrch2 brsrch2 blsrchx brsrchx
+	);
+}
+
 =head1 SYNOPSIS
 
    use FastLook qw(
@@ -765,6 +776,13 @@ separately, or check if the comparison indicator and/or element
 are defined by calling in list context.
 
 =cut
+
+sub bisectr (&$;$$)
+{
+	local $@;
+	my ($vari, @args) = parse_args(1, \@_) or croak("bisectr: $@");
+	$vari ? __bisectr_map(@args) : __bisectr(@args)
+}
 
 # Binary left search for a trisection point on a
 # total ordering.  This time, the predicate $ok
