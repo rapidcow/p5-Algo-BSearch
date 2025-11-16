@@ -86,6 +86,30 @@ C<$_ * $_ < $x> holds:
 
    print isqrt(2025), "\n";  # 20+25 :O
 
+The Guessing Game given in L<sort/search.go|https://go.dev/src/sort/search.go>
+can be defined as follows:
+
+   print STDERR "Pick an integer from 0 to 100.\n";
+   my $answer = bisectl {
+       print STDERR "Is your number <= $_? ";
+       my $s = <STDIN>
+       $s or return;
+       chomp $s;
+       $s eq 'y'
+   } 0, 100;
+   print STDERR "Your number is $answer.\n";
+
+   __END__
+   Pick an integer from 0 to 100.
+   Is your number <= 50? y
+   Is your number <= 25? n
+   Is your number <= 38? n
+   Is your number <= 44? n
+   Is your number <= 47? y
+   Is your number <= 46? y
+   Is your number <= 45? y
+   Your number is 45.
+
 =head1 DESCRIPTION
 
 =head2 Bisection algorithm
@@ -171,8 +195,8 @@ passed to the function is reversed:
 
    bisectr { ok } $hi, $lo
 
-This time, you might set C<$lo> to C<-1>, which is one less
-than the initial index:
+This time, you might set C<$lo> to C<-1>, which is one below
+the initial index:
 
    bisectr { ok($list[$_]) } $#list, -1
 
@@ -342,29 +366,68 @@ L<sort BLOCK|perlfunc/sort> and L<grep BLOCK|perlfunc/grep>.
 The callback receives its argument from L<$_|perlvar/$_>,
 the default variable; its exact argument is dependent on the
 input forms explained below.  Regarding the return value, the
-callback should behave like a predicate meeting the assumption
+callback should behave like a I<predicate> that meets the assumption
 described in L</"Bisection algorithm"> for C<bisect*> and C<bixect*>,
-or an ordering meeting the assumption described in L</"Search algorithm">
-for C<blsrch*> and C<brsrch*>.
+or an I<ordering> that meets the assumption described in
+L</"Search algorithm"> for C<blsrch*> and C<brsrch*>.
 
-Input can be divided into three forms: index, ARRAY, and CODE.
+Input from here can be divided into three forms:
+index, ARRAY, and CODE.  The C<$> prototype is used; that is,
+you can write C<0, @list> instead of C<0, scalar(@list)>
+in the case of searching on an array.
+Common across all forms,
+a pair of bounds C<($lo, $hi)> will be determined for
+the low-level bisection algorithms.
+The exact order is dependent on the search algorithm
+being employed: for left search, C<$lo> precedes C<$hi>.
+For right search, C<$hi> precedes C<$lo>.
+
+In the index form, the function takes 2 to 3 arguments
+(including the callback).  When passed 2 arguments, C<$hi>
+is set to the second argument, and C<$lo> is inferred
+depending on the search algorithm being employed.  If it is
+a left search, C<$lo = 0>, or else C<$lo = -1>.
+This form is tried last if the second argument is neither
+an ARRAY ref nor a CODE ref, but in principle you should
+be only passing a scalar (number) for both the second and
+the third argument.
+
+In the ARRAY form, the function takes 2 to 4 arguments
+(including the callback).  When passed 2 to 3 arguments,
+both or one of C<$lo> and C<$hi> are inferred, depending
+on the search algorithm being employed.
 
 =over 4
 
 =item *
 
-In the index form (demonstrated above), the function takes
-2 to 3 arguments (including the callback).  When passed 2
-arguments, C<$hi> is set to the second argument, and C<$lo>
-is inferred depending on which algorithm is being employed.
-If it is a left algorithm, C<$lo = 0>, or else C<$lo = -1>.
-When passed 3 arguments, then the last two arguments are
-set to C<($lo, $hi)> if it is a left algorithm, or else
-they are set to C<($hi, $lo)>.
+If passed 2 arguments, then both bounds are implicit.
+For left search, C<$lo> is set to the initial index of
+an array (C<$[>), and C<$hi> to one past the final index
+(C<$#list + 1>).  For right search, C<$hi> is set to the
+final index (C<$#list>), and C<$lo> is set to one below
+the initial index (C<-1>).
+
+=item *
+
+If passed 3 arguments, then the "end" bound is implicit.
+For left search, C<$lo> is set to the second argument,
+and C<$hi> is set according to the rules above.  For right
+search, C<$hi> is set to the second argument, and C<$lo>
+is set according to the rules above.
 
 =back
 
-=head2 Output forms
+Note that under Perl's default 0-based array indexing,
+C<$[ == 0>, C<$#list + 1 == @$list>, and C<$[ - 1 = -1>.
+
+In the CODE form, the function takes 3 to 4 arguments
+(including the callback), and arguments 3--4 are processed
+in the same way arguments 2--3 are processed in the
+index form.  Note that the CODE should return a reference
+to the image element for glob aliasing to work.  If the
+element itself is an ARRAY/HASH ref, it should be a ref
+to that ARRAY/HASH ref.
 
 =cut
 
@@ -405,7 +468,7 @@ EOM
 		if ($ori) {
 			# Left search
 			defined $lo or $lo = $[;
-			defined $hi or $hi = $[ + @$arg;
+			defined $hi or $hi = $#arg + 1;
 		}
 		else {
 			# Right search
@@ -455,6 +518,10 @@ EOM
 		(0, $fun, $lo, $hi)
 	}
 }
+
+=head2 Output forms
+
+=cut
 
 # Assumption: If $ok->($x) true, $x <= $y => $ok->($y) true.
 # Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
