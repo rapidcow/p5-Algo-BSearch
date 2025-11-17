@@ -623,8 +623,9 @@ it is defined on.  That is, true values always follow false values:
    F F F ... F T T T   ok(x)
    1 2 3     6 7 8 9      x
 
-Set C<< $ok->($hi) = 1 >>.  The return value of C<bisectl> is the
-unique index C<$x> on the closed interval C<[$lo, $hi]> such that:
+Let C<$ok> denote the predicate, and set C<< $ok->($hi) = 1 >>.
+The return value of C<bisectl> is the unique index C<$x> on the
+closed interval C<[$lo, $hi]> such that:
 
 =over 4
 
@@ -639,8 +640,6 @@ For all valid index C<< $y < $x >>, it follows that C<< $ok->($y) >> is false.
 =back
 
 The return value of C<bixectl> is any index satisfying the first constraint.
-It is guaranteed to be consistent across invocations due to the nature of
-binary search.
 
 If the interval C<[$lo, $hi]> is empty, return C<$hi>.
 
@@ -697,8 +696,9 @@ it is defined on.  That is, true values always precede false values:
    T T T ... T F F F   ok(x)
    1 2 3     6 7 8 9      x
 
-Set C<< $ok->($lo) = 1 >>.  The return value of C<bisectr> is the
-unique index C<$x> on the closed interval C<[$lo, $hi]> such that:
+Let C<$ok> denote the predicate, and set C<< $ok->($lo) = 1 >>.
+The return value of C<bisectr> is the unique index C<$x> on the
+closed interval C<[$lo, $hi]> such that:
 
 =over 4
 
@@ -713,8 +713,6 @@ For all valid index C<< $y > $x >>, it follows that C<< $ok->($y) >> is false.
 =back
 
 The return value of C<bixectr> is any index satisfying the first constraint.
-It is guaranteed to be consistent across invocations due to the nature of
-binary search.
 
 If the interval C<[$lo, $hi]> is empty, return C<$lo>.
 
@@ -764,6 +762,83 @@ sub bixectr (&$;$$)
 	my @args = parse_args(0, \@_) or croak("bixectr: $@");
 	bisectr_map(1, @args)
 }
+
+=over 4
+
+=item B<blsrch0>
+
+=item B<blsrchx>
+
+=item B<blsrch1>
+
+=item B<blsrch2>
+
+Perform binary left search with respect to an ordering on the
+half-open interval C<[$lo, $hi)>, where C<$lo> precedes C<$hi>
+in the argument array.  The prototype is C<&$;$$>.
+
+The sign of the ordering should be increasing over every pair of
+adjacent indices it is defined on.  That is, C<< <0 >> (negative)
+precedes C<< =0 >> (zero), which precedes C<< >0 >> (positive).
+
+More concretely, the ordering defines the comparison of every value in
+an ordered list, C<$_>, to a target value, C<$target>: C<< $cmp < 0 >>
+represents C<< $_ < $target >>, C<$cmp = 0> represents C<$_ == $target>,
+and C<< $_ > $target >> when C<< $cmp > 0 >>.  When the list is sorted
+in increasing order, C<< $_ <=> $target >> is a valid ordering:
+
+   [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9]       x
+   -1 -1 -1  ...  -1  0  0  0  1  1  ...     ord(x) := (x <=> 5)
+
+When the list is sorted in decreasing order, C<< $target <=> $_ >>
+is a valid ordering:
+
+   [9, 9, 8, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1]       x
+    ...  -1 -1  0  0  0  1  ...   1  1  1    ord(x) := (5 <=> x)
+
+The same applies to sorted lists of strings by replacing
+C<< <=> >> with C<cmp>.
+
+Let C<$ord> denote the ordering and set C<< $ord->($hi) = +Infinity >>.
+The return value of C<blsect0> is the unique index C<$lower> on
+the closed interval C<[$lo, $hi]> such that:
+
+=over 4
+
+=item *
+
+C<< $ord->($lower) >= 0 >>.
+
+=item *
+
+For all valid index C<< $x < $lower >>, it follows that C<< $ord->($x) < 0 >>.
+
+=back
+
+The return value of C<blsectx> is any index satisfying
+C<< $ord->($lower) == 0 >>, but if one could not be found,
+it returns the same result as C<blsect0>.
+
+The return value of C<blsect1> is the unique index C<$upper> on
+the closed interval C<[$lo, $hi]> such that:
+
+=over 4
+
+=item *
+
+C<< $ord->($lower) > 0 >>.
+
+=item *
+
+For all valid index C<< $x < $upper >>, it follows that C<< $ord->($x) <= 0 >>.
+
+=back
+
+C<blsect2> returns both C<$lower> and C<$upper>.
+
+=back
+
+=cut
 
 # Binary left search for a trisection point on a
 # total ordering.  This time, the predicate $ok
