@@ -464,9 +464,9 @@ to that ARRAY/HASH ref.
 #    $ori:  search orientation (1 for left, 0 for right)
 #    $args: arguments from caller
 # Return:
-#    ($beg, $end, $fun)         for ARRAY/CODE form;
+#    ($fun, undef, $beg, $end)   for ARRAY/CODE form;
 # and
-#    ($beg, $end, $fun, $map)   for index form.
+#    ($fun, $map,  $beg, $end)   for index form.
 # where $fun is a predicate or an ordering, $map
 # On parse failure, return nothing and set $@.
 sub parse_args
@@ -507,7 +507,7 @@ EOM
 			defined $lo or $lo = $[ - 1;
 			($beg, $end) = ($hi, $lo);
 		}
-		($beg, $end, $fun, sub { \$arg->[$_] })
+		($fun, sub { \$arg->[$_] }, $beg, $end)
 	}
 	elsif (UNIVERSAL::isa($arg, 'CODE')) {
 		if (@$args < 1) {
@@ -531,7 +531,7 @@ EOM
 			my $arg = shift @$args;
 			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
-		($beg, $end, $fun, $arg)
+		($fun, $arg, $beg, $end)
 	}
 	else {
 		if (@$args > 1) {
@@ -548,7 +548,7 @@ EOM
 		else {
 			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
-		($beg, $end, $fun)
+		($fun, undef, $beg, $end)
 	}
 }
 
@@ -651,7 +651,7 @@ If the interval C<[$lo, $hi]> is empty, return C<$hi>.
 #             - If $x < $lo,  $ok->($x) is false if defined.
 sub bisectl_map
 {
-	my ($any, $lo, $hi, $ok, $map) = @_;
+	my ($any, $ok, $map, $lo, $hi) = @_;
 	my ($cmp, $res, $elt, $img, $mid);
 	my $want2 = wantarray and want(2);
 	my $want3 = wantarray and want(3);
@@ -733,7 +733,7 @@ are defined by calling in list context.
 #             - If $x > $hi,  $ok->($x) is false if defined.
 sub bisectr_map
 {
-	my ($any, $hi, $lo, $ok, $map) = @_;
+	my ($any, $ok, $map, $hi, $lo) = @_;
 	my ($cmp, $res, $elt, $img, $mid);
 	my $want2 = wantarray and want(2);
 	my $want3 = wantarray and want(3);
@@ -770,9 +770,9 @@ sub bixectr (&$;$$)
 # is pre-determined (>=0 or >0), but the ordering
 # and mapping may vary.  We return the images of
 # these two maps as they may be expensive to compute.
-sub __blsrch_map
+sub blsrch_map
 {
-	my ($any, $ok, $map, $ord, $lo, $hi) = @_;
+	my ($any, $ok, $lo, $hi, $map, $ord) = @_;
 	my ($cmp, $res, $elt, $img, $mid);
 	my $want2 = wantarray and want(2);
 	my $want3 = wantarray and want(3);
@@ -791,7 +791,7 @@ sub __blsrch_map
 }
 
 # Binary right search, similarly...
-sub __brsrch_map
+sub brsrch_map
 {
 	my ($any, $ok, $map, $ord, $hi, $lo) = @_;
 	my ($cmp, $res, $elt, $img, $mid);
