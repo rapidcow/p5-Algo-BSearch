@@ -496,8 +496,8 @@ EOM
 		if ($ori) {
 			# Left search
 			my ($lo, $hi) = @$args;
-			defined $lo or $hi = $[;
-			defined $lo or $hi = 1 + $#$arg;
+			defined $lo or $lo = $[;
+			defined $hi or $hi = 1 + $#$arg;
 			($beg, $end) = ($lo, $hi);
 		}
 		else {
@@ -507,7 +507,7 @@ EOM
 			defined $lo or $lo = $[ - 1;
 			($beg, $end) = ($hi, $lo);
 		}
-		($fun, sub { \$arg->[$_] }, $beg, $end)
+		($fun, sub { \$arg->[$_[0]] }, $beg, $end)
 	}
 	elsif (UNIVERSAL::isa($arg, 'CODE')) {
 		if (@$args < 1) {
@@ -574,25 +574,25 @@ or C<undef> too if the index is a last-resort index.
 To find the first element I<equal> to a target value, not just
 equal to or greater than it, you can therefore do this:
 
-    sub search {
-        my ($array, $want) = @_;
-	my ($idx, $cmp, $elt) = blsrch0 { $_ <=> $want } $array;
-        if (!defined $cmp) { print "$want not found anywhere\n"; }
-        elsif ($cmp == 0)  { print "$want not found; the best "
-                                 . "I got was $elt at [$idx]\n"; }
-        else               { print "$want found at $idx :)"; }
-    }
+   sub search {
+       my ($array, $want) = @_;
+       my ($idx, $cmp, $elt) = blsrch0 { $_ <=> $want } $array;
+       if (!defined $cmp) { print "$want not found anywhere\n"; }
+       elsif ($cmp == 0)  { print "$want not found; the best "
+                                . "I got was $elt at [$idx]\n"; }
+       else               { print "$want found at $idx :)"; }
+   }
 
-    my $list = [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9];
-    search $list => 5;
-    search $list => 7;
-    search $list => 10;
+   my $list = [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9];
+   search $list => 5;
+   search $list => 7;
+   search $list => 10;
 
 This should print:
 
-    5 found at [6] :)
-    7 not found; the best I got was 8 at [10]
-    10 not found anywhere
+   5 found at [6] :)
+   7 not found; the best I got was 8 at [10]
+   10 not found anywhere
 
 If you are fine with finding any element equal to it, you can
 substitute C<blsrch0> with C<blsrchx> or C<brsrchx>.  Note
@@ -804,10 +804,10 @@ sub blsrch1 (&$;$$)
 	blsrch_map(0, sub { $_[0] > 0 }, @args);
 }
 
-sub blsectx (&$;$$)
+sub blsrchx (&$;$$)
 {
 	local $@;
-	my @args = parse_args(1, \@_) or croak("blsrctr: $@");
+	my @args = parse_args(1, \@_) or croak("blsrchr: $@");
 	blsrch_map(1, sub { $_[0] >= 0 }, @args);
 }
 
