@@ -289,12 +289,12 @@ then apply the predicates C<< $_ >= 0 >> and C<< $_ > 0 >>:
 
    [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9]   @list
                      |
-		     | $_ <=> 5            ordering
+                     | $_ <=> 5            ordering
                      v
    -1 -1 -1  ...  -1  0  0  0  1  1  ...
                      |
-		     | $_ >= 0             predicate 0
-		     | $_ >  0             predicate 1
+                     | $_ >= 0             predicate 0
+                     | $_ >  0             predicate 1
                      v
     F  F  F  ...   F (T) T  T  T  T  ...
     F  F  F  ...   F  F  F  F (T) T  ...
@@ -325,12 +325,12 @@ apply the same predicates, but run right bisection instead:
 
    [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9]   @list
                      |
-		     | 5 <=> $_            ordering
+                     | 5 <=> $_            ordering
                      v
     1  1  1  ...   1  0  0  0 -1 -1  ...
                      |
-		     | $_ >= 0             predicate 0
-		     | $_ >  0             predicate 1
+                     | $_ >= 0             predicate 0
+                     | $_ >  0             predicate 1
                      v
     T  T  T  ...  (T) F  F  F  F  F  ...
     T  T  T  ...   T  T  T (T) F  F  ...
