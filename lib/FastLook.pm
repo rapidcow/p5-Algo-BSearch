@@ -783,7 +783,7 @@ precedes C<< =0 >> (zero), which precedes C<< >0 >> (positive).
 
 More concretely, the ordering defines the comparison of every value in
 an ordered list, C<$_>, to a target value, C<$target>: C<< $cmp < 0 >>
-represents C<< $_ < $target >>, C<$cmp = 0> represents C<$_ == $target>,
+represents C<< $_ < $target >>; C<$cmp == 0> represents C<$_ == $target>;
 and C<< $_ > $target >> when C<< $cmp > 0 >>.  When the list is sorted
 in increasing order, C<< $_ <=> $target >> is a valid ordering:
 
@@ -911,7 +911,7 @@ precedes C<< =0 >> (zero), which precedes C<< <0 >> (negative).
 
 More concretely, the ordering defines the comparison of every value in
 an ordered list, C<$_>, to a target value, C<$target>: C<< $cmp < 0 >>
-represents C<< $_ < $target >>, C<$cmp = 0> represents C<$_ == $target>,
+represents C<< $_ < $target >>; C<$cmp == 0> represents C<$_ == $target>;
 and C<< $_ > $target >> when C<< $cmp > 0 >>.  When the list is sorted
 in increasing order, C<< $target <=> $_ >> is a valid ordering:
 
