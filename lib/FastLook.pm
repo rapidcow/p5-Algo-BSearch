@@ -863,13 +863,19 @@ sub blsrch2_map
 	# Find a sufficiently close candidate for upper bound,
 	# assuming there aren't too many equal values around?
 	my ($prev, $next) = ($lower, $lower);
-	for (my $step = 1; $next + $step < $hi; $step += $step) {
-		($prev, $next) = ($next, $next + $step);
+	for (my $step = 1; $next < $hi; $step <<= 1) {
+		# Do not step on $hi, $ord could be undefined there
+		if ($hi - $next <= $step) {
+			$next = $hi;
+			last;
+		}
+		$next += $step;
 		my $img = $map ? $map->($next) : \$next;
 		# Strictly speaking, we only have to check for != 0,
 		# since if the ordering is well-behaved, it should be
 		# nonnegative from this point and on... just saying :P
 		last if do { local *_ = $img; $ord->($next) } > 0;
+		$prev = $next;
 	}
 	my $upper = bisectl_map(0, sub { &$ord > 0 }, $map, $prev, $next);
 	wantarray ? ($lower, $upper) : $upper - $lower
@@ -881,10 +887,16 @@ sub brsrch2_map
 	my ($ord, $map, $hi, $lo) = @_;
 	my $lower = bisectr_map(0, sub { &$ord >= 0 }, $map, $hi, $lo);
 	my ($prev, $next) = ($lower, $lower);
-	for (my $step = 1; $next - $step > $lo; $step += $step) {
-		($prev, $next) = ($next, $next - $step);
+	for (my $step = 1; $next - $step > $lo; $step <<= 1) {
+		# Do not step on $lo for the same reason
+		if ($next - $lo <= $step) {
+			$next = $lo;
+			last;
+		}
+		$next -= $step;
 		my $img = $map ? $map->($next) : \$next;
 		last if do { local *_ = $img; $ord->($next) } > 0;
+		$prev = $next;
 	}
 	my $upper = bisectr_map(0, sub { &$ord > 0 }, $map, $prev, $next);
 	wantarray ? ($lower, $upper) : $lower - $upper
@@ -893,14 +905,14 @@ sub brsrch2_map
 sub blsrch2 (&$;$$)
 {
 	local $@;
-	my @args = parse_args(0, \@_) or croak("blsrch2: $@");
+	my @args = parse_args(1, \@_) or croak("blsrch2: $@");
 	blsrch2_map(@args);
 }
 
 sub brsrch2 (&$;$$)
 {
 	local $@;
-	my @args = parse_args(1, \@_) or croak("brsrch2: $@");
+	my @args = parse_args(0, \@_) or croak("brsrch2: $@");
 	brsrch2_map(@args);
 }
 
