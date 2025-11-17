@@ -772,13 +772,13 @@ sub bixectr (&$;$$)
 # these two maps as they may be expensive to compute.
 sub blsrch_map
 {
-	my ($any, $ok, $lo, $hi, $map, $ord) = @_;
+	my ($any, $ok, $ord, $map, $lo, $hi) = @_;
 	my ($cmp, $res, $elt, $img, $mid);
 	my $want2 = wantarray and want(2);
 	my $want3 = wantarray and want(3);
 	while ($lo < $hi) {
 		$mid = $lo + (($hi - $lo) >> 1);
-		$img = $map->($mid);
+		$img = $map ? $map->($mid) : \$mid;
 		if (do { local *_ = $img; $ok->($res = $ord->($mid)) }) {
 			$hi = $mid;       # include
 			$cmp = $res   if $want2;
@@ -790,16 +790,37 @@ sub blsrch_map
 	} $want2 ? ($hi, $cmp, $elt) : $hi
 }
 
+sub blsrch0 (&$;$$)
+{
+	local $@;
+	my @args = parse_args(1, \@_) or croak("blsrch0: $@");
+	blsrch_map(0, sub { $_[0] >= 0 }, @args);
+}
+
+sub blsrch1 (&$;$$)
+{
+	local $@;
+	my @args = parse_args(1, \@_) or croak("blsrch0: $@");
+	blsrch_map(0, sub { $_[0] > 0 }, @args);
+}
+
+sub blsectx (&$;$$)
+{
+	local $@;
+	my @args = parse_args(1, \@_) or croak("blsrctr: $@");
+	blsrch_map(1, sub { $_[0] >= 0 }, @args);
+}
+
 # Binary right search, similarly...
 sub brsrch_map
 {
-	my ($any, $ok, $map, $ord, $hi, $lo) = @_;
+	my ($any, $ok, $ord, $map, $hi, $lo) = @_;
 	my ($cmp, $res, $elt, $img, $mid);
 	my $want2 = wantarray and want(2);
 	my $want3 = wantarray and want(3);
 	while ($lo < $hi) {
 		$mid = $lo + (($hi - $lo + 1) >> 1);
-		$img = $map->($mid);
+		$img = $map ? $map->($mid) : \$mid;
 		if (do { local *_ = $img; $ok->($res = $ord->($mid)) }) {
 			$lo = $mid;       # include
 			$cmp = $res   if $want2;
@@ -811,31 +832,31 @@ sub brsrch_map
 	} $want2 ? ($hi, $cmp, $elt) : $hi
 }
 
-sub __lower { $_[0] >= 0 }
-sub __upper { $_[0] >  0 }
-sub __ident { $_[0] }
-
-sub blsrch0 (&$;$$)
+sub brsrch0 (&$;$$)
 {
 	local $@;
-	my ($vari, @args) = parse_args(1, \@_) or croak("blsrch0: $@");
-	unshift @args, \&lower;
-	$vari ? __blsrch_map(0, @args) : __blsrch(0, @args)
+	my @args = parse_args(1, \@_) or croak("blsrch0: $@");
+	blsrch_map(0, sub { $_[0] >= 0 }, @args);
 }
 
-sub blsectx (&$;$$)
+sub brsrch1 (&$;$$)
 {
 	local $@;
-	my ($vari, @args) = parse_args(1, \@_) or croak("blsrctr: $@");
-	unshift @args, \&lower;
-	$vari ? __bisectr_map(1, @args) : __bisectr(1, @args)
+	my @args = parse_args(1, \@_) or croak("blsrch0: $@");
+	blsrch_map(0, sub { $_[0] > 0 }, @args);
 }
 
+sub brsectx (&$;$$)
+{
+	local $@;
+	my @args = parse_args(1, \@_) or croak("blsrctr: $@");
+	blsrch_map(1, sub { $_[0] >= 0 }, @args);
+}
 
-sub __blsrch2_map
+sub blsrch2_map
 {
 	my ($ord, $map, $ok, $lo, $hi) = @_;
-	my $lower = __blsrch_map(0, \&__lower, $ord, $map, $lo, $hi);
+	my $lower = blsrch_map(0, \&__lower, $ord, $map, $lo, $hi);
 	# Find a sufficiently close candidate for upper bound,
 	# assuming there aren't too many equal values around?
 	my ($prev, $next) = ($lower, $lower);
@@ -843,22 +864,23 @@ sub __blsrch2_map
 		last if $ok->($ord->($peek));    # overshot!!
 		($prev, $next) = ($next, $peek); # ... or not
 	}
-	my $upper = __blsrch_map(0, $ok, $ord, $map, $prev, $next);
+	my $upper = blsrch_map(0, $ok, $ord, $map, $prev, $next);
 	wantarray ? ($lower, $upper) : $upper - $lower
 }
 
 # And the mirror image...
 
-sub __brsrch2_map
+sub brsrch2_map
 {
+	my ($any, $ok, $ord, $map, $hi, $lo) = @_;
 	my ($ok, $ord, $map, $hi, $lo) = @_;
-	my $lower = __brsrch_map(0, $ok, $ord, $map, $hi, $lo);
+	my $lower = brsrch_map(0, $ok, $ord, $map, $hi, $lo);
 	my ($prev, $next) = ($lower, $lower);
 	for (my $step = 1; (my $peek = $next - $step) > $lo; $step += $step) {
 		last if $ok->($ord->($peek));
 		($prev, $next) = ($next, $peek);
 	}
-	my $upper = __blsrch_map(0, $ok, $ord, $map, $prev, $next);
+	my $upper = blsrch_map(0, $ok, $ord, $map, $prev, $next);
 	wantarray ? ($lower, $upper) : $upper - $lower
 }
 
