@@ -846,42 +846,62 @@ sub brsrch1 (&$;$$)
 	blsrch_map(0, sub { $_[0] > 0 }, @args);
 }
 
-sub brsectx (&$;$$)
+sub brsrchx (&$;$$)
 {
 	local $@;
-	my @args = parse_args(1, \@_) or croak("blsrctr: $@");
+	my @args = parse_args(1, \@_) or croak("brsrchx: $@");
 	blsrch_map(1, sub { $_[0] >= 0 }, @args);
 }
 
+# Because we don't really care about the intermediate values
+# themselves, (or be able to return them, for that matter),
+# we can get away with using bisect instead of b*srch... :)
 sub blsrch2_map
 {
-	my ($ord, $map, $ok, $lo, $hi) = @_;
-	my $lower = blsrch_map(0, \&__lower, $ord, $map, $lo, $hi);
+	my ($ord, $map, $lo, $hi) = @_;
+	my $lower = bisectl_map(0, sub { &$ord >= 0 }, $map, $lo, $hi);
 	# Find a sufficiently close candidate for upper bound,
 	# assuming there aren't too many equal values around?
 	my ($prev, $next) = ($lower, $lower);
-	for (my $step = 1; (my $peek = $next + $step) < $hi; $step += $step) {
-		last if $ok->($ord->($peek));    # overshot!!
-		($prev, $next) = ($next, $peek); # ... or not
+	for (my $step = 1; $next + $step < $hi; $step += $step) {
+		($prev, $next) = ($next, $next + $step);
+		my $img = $map ? $map->($next) : \$next;
+		# Strictly speaking, we only have to check for != 0,
+		# since if the ordering is well-behaved, it should be
+		# nonnegative from this point and on... just saying :P
+		last if do { local *_ = $img; $ord->($next) } > 0;
 	}
-	my $upper = blsrch_map(0, $ok, $ord, $map, $prev, $next);
+	my $upper = bisectl_map(0, sub { &$ord > 0 }, $map, $prev, $next);
 	wantarray ? ($lower, $upper) : $upper - $lower
 }
 
 # And the mirror image...
-
-sub brsrch2_map
+sub blsrch2_map
 {
-	my ($any, $ok, $ord, $map, $hi, $lo) = @_;
-	my ($ok, $ord, $map, $hi, $lo) = @_;
-	my $lower = brsrch_map(0, $ok, $ord, $map, $hi, $lo);
+	my ($ord, $map, $hi, $lo) = @_;
+	my $lower = bisectr_map(0, sub { &$ord >= 0 }, $map, $hi, $lo);
 	my ($prev, $next) = ($lower, $lower);
-	for (my $step = 1; (my $peek = $next - $step) > $lo; $step += $step) {
-		last if $ok->($ord->($peek));
-		($prev, $next) = ($next, $peek);
+	for (my $step = 1; $next - $step > $lo; $step += $step) {
+		($prev, $next) = ($next, $next - $step);
+		my $img = $map ? $map->($next) : \$next;
+		last if do { local *_ = $img; $ord->($next) } > 0;
 	}
-	my $upper = blsrch_map(0, $ok, $ord, $map, $prev, $next);
-	wantarray ? ($lower, $upper) : $upper - $lower
+	my $upper = bisectr_map(0, sub { &$ord > 0 }, $map, $prev, $next);
+	wantarray ? ($lower, $upper) : $lower - $upper
+}
+
+sub blsrch2 (&$;$$)
+{
+	local $@;
+	my @args = parse_args(0, \@_) or croak("blsrch2: $@");
+	blsrch2_map(@args);
+}
+
+sub brsrch2 (&$;$$)
+{
+	local $@;
+	my @args = parse_args(1, \@_) or croak("brsrch2: $@");
+	brsrch2_map(@args);
 }
 
 1;
