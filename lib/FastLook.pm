@@ -358,7 +358,7 @@ Notably, to acquire bounds that are inclusive on both
 ends, you'd have to utilize search in both directions:
 
     my $lo = blsrch0 { $_ <=> 5 } \@list;  # 6
-    my $hi = brsrch1 { 5 <=> $_ } \@list;  # 8
+    my $hi = brsrch0 { 5 <=> $_ } \@list;  # 8
 
 or offset the exclusive bound by 1 (only if you must avoid right search...)
 
@@ -812,11 +812,14 @@ C<< $ord->($lower) >= 0 >>.
 =item *
 
 For all valid index C<< $x < $lower >>, it follows that C<< $ord->($x) < 0 >>.
+As a result, C<< $lower >> is the first instance where C<< $ord >= 0 >>,
+while C<< $lower - 1 >> is the last instance where C<< $ord < 0 >>.
+(Compare this to C<brsect1>.)
 
 =back
 
 The return value of C<blsectx> is any index satisfying
-C<< $ord->($lower) == 0 >>, but if one could not be found,
+C<< $ord == 0 >>, but if one could not be found,
 it returns the same result as C<blsect0>.
 
 The return value of C<blsect1> is the unique index C<$upper> on
@@ -831,12 +834,16 @@ C<< $ord->($lower) > 0 >>.
 =item *
 
 For all valid index C<< $x < $upper >>, it follows that C<< $ord->($x) <= 0 >>.
+As a result, C<< $upper >> is the first instance where C<< $ord > 0 >>,
+while C<< $upper - 1 >> is the last instance where C<< $ord <= 0 >>.
+(Compare this to C<brsect0>.)
 
 =back
 
-C<blsect2> returns both C<$lower> and C<$upper>.
-
-=back
+In list context, C<blsect2> returns both C<$lower> and C<$upper>,
+in that order.  In scalar context, it returns the nonnegative
+difference C<$upper - $lower>, which equals the number of elements
+for which C<$ord == 0>.
 
 =cut
 
@@ -885,6 +892,90 @@ sub blsrchx (&$;$$)
 	my @args = parse_args(1, \@_) or croak("blsrchr: $@");
 	blsrch_map(1, sub { $_[0] >= 0 }, @args);
 }
+
+=item B<brsrch0>
+
+=item B<brsrchx>
+
+=item B<brsrch1>
+
+=item B<brsrch2>
+
+Perform binary right search with respect to an ordering on the
+half-open interval C<($lo, $hi]>, where C<$hi> precedes C<$lo>
+in the argument array.  The prototype is C<&$;$$>.
+
+The sign of the ordering should be decreasing over every pair of
+adjacent indices it is defined on.  That is, C<< >0 >> (positive)
+precedes C<< =0 >> (zero), which precedes C<< <0 >> (negative).
+
+More concretely, the ordering defines the comparison of every value in
+an ordered list, C<$_>, to a target value, C<$target>: C<< $cmp < 0 >>
+represents C<< $_ < $target >>, C<$cmp = 0> represents C<$_ == $target>,
+and C<< $_ > $target >> when C<< $cmp > 0 >>.  When the list is sorted
+in increasing order, C<< $target <=> $_ >> is a valid ordering:
+
+   [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9]       x
+    1  1  1  ...   1  0  0  0 -1 -1  ...     ord(x) := (5 <=> x)
+
+When the list is sorted in decreasing order, C<< $_ <=> $target >>
+is a valid ordering:
+
+   [9, 9, 8, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1]       x
+    ...   1  1  0  0  0 -1  ...  -1 -1 -1    ord(x) := (x <=> 5)
+
+The same applies to sorted lists of strings by replacing
+C<< <=> >> with C<cmp>.
+
+Let C<$ord> denote the ordering and set C<< $ord->($lo) = +Infinity >>.
+The return value of C<brsect0> is the unique index C<$upper> on
+the closed interval C<[$lo, $hi]> such that:
+
+=over 4
+
+=item *
+
+C<< $ord->($upper) >= 0 >>.
+
+=item *
+
+For all valid index C<< $x > $upper >>, it follows that C<< $ord->($x) < 0 >>.
+As a result, C<< $upper >> is the last instance where C<< -$ord <= 0 >> and
+C<< $upper + 1 >> is the first instance where C<< -$ord > 0 >>.
+(Compare this to C<blsect1>.)
+
+=back
+
+The return value of C<brsectx> is any index satisfying
+C<< $ord == 0 >>, but if one could not be found,
+it returns the same result as C<brsect0>.
+
+The return value of C<brsect1> is the unique index C<$lower> on
+the closed interval C<[$lo, $hi]> such that:
+
+=over 4
+
+=item *
+
+C<< $ord->($lower) > 0 >>.
+
+=item *
+
+For all valid index C<< $x > $lower >>, it follows that C<< $ord->($x) <= 0 >>.
+As a result, C<< $lower >> is the last instance where C<< -$ord < 0 >> and
+C<< $lower + 1 >> is the first instance where C<< -$ord >= 0 >>.
+(Compare this to C<blsect0>.)
+
+=back
+
+In list context, C<brsect2> returns both C<$upper> and C<$lower>,
+in that order.  In scalar context, it returns the nonnegative
+difference C<$upper - $lower>, which equals the number of elements
+for which C<$ord == 0>.
+
+=back
+
+=cut
 
 # Binary right search, similarly...
 sub brsrch_map
