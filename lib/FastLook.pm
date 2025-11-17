@@ -578,9 +578,9 @@ equal to or greater than it, you can therefore do this:
        my ($array, $want) = @_;
        my ($idx, $cmp, $elt) = blsrch0 { $_ <=> $want } $array;
        if (!defined $cmp) { print "$want not found anywhere\n"; }
-       elsif ($cmp == 0)  { print "$want not found; the best "
+       elsif ($cmp != 0)  { print "$want not found; the best "
                                 . "I got was $elt at [$idx]\n"; }
-       else               { print "$want found at $idx :)"; }
+       else               { print "$want found at $idx :)\n"; }
    }
 
    my $list = [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9];
