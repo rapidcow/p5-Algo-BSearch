@@ -876,7 +876,7 @@ sub blsrch2_map
 }
 
 # And the mirror image...
-sub blsrch2_map
+sub brsrch2_map
 {
 	my ($ord, $map, $hi, $lo) = @_;
 	my $lower = bisectr_map(0, sub { &$ord >= 0 }, $map, $hi, $lo);
