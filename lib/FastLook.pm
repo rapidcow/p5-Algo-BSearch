@@ -870,11 +870,11 @@ sub blsrch2_map
 			last;
 		}
 		$next += $step;
-		my $img = $map ? $map->($next) : \$next;
 		# Strictly speaking, we only have to check for != 0,
 		# since if the ordering is well-behaved, it should be
 		# nonnegative from this point and on... just saying :P
-		last if do { local *_ = $img; $ord->($next) } > 0;
+		local *_ = $map ? $map->($next) : \$next;
+		last if $ord->($next) > 0;
 		$prev = $next;
 	}
 	my $upper = bisectl_map(0, sub { &$ord > 0 }, $map, $prev, $next);
@@ -894,8 +894,8 @@ sub brsrch2_map
 			last;
 		}
 		$next -= $step;
-		my $img = $map ? $map->($next) : \$next;
-		last if do { local *_ = $img; $ord->($next) } > 0;
+		local *_ = $map ? $map->($next) : \$next;
+		last if $ord->($next) > 0;
 		$prev = $next;
 	}
 	my $upper = bisectr_map(0, sub { &$ord > 0 }, $map, $prev, $next);
