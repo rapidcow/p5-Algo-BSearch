@@ -464,9 +464,9 @@ to that ARRAY/HASH ref.
 #    $ori:  search orientation (1 for left, 0 for right)
 #    $args: arguments from caller
 # Return:
-#    (1, $fun, $map, $lo, $hi)   for ARRAY/CODE form;
+#    ($beg, $end, $fun)         for ARRAY/CODE form;
 # and
-#    (0, $fun,       $lo, $hi)   for index form.
+#    ($beg, $end, $fun, $map)   for index form.
 # where $fun is a predicate or an ordering, $map
 # On parse failure, return nothing and set $@.
 sub parse_args
@@ -481,7 +481,7 @@ EOM
 		return;
 	}
 	my ($fun, $arg) = splice(@$args, 0, 2);
-	my ($lo, $hi);
+	my ($beg, $end);
 	# If it is a normal ARRAY ref or a blessed
 	# ARRAY ref, map its index to its elements.
 	# <https://stackoverflow.com/a/64160/19411800>
@@ -495,17 +495,19 @@ EOM
 		}
 		if ($ori) {
 			# Left search
-			($lo, $hi) = @$args;
-			defined $lo or $lo = $[;
-			defined $hi or $hi = 1 + $#$arg;
+			my ($lo, $hi) = @$args;
+			defined $lo or $hi = $[;
+			defined $lo or $hi = 1 + $#$arg;
+			($beg, $end) = ($lo, $hi);
 		}
 		else {
-			# Right search
-			($hi, $lo) = @$args;
+			# Right search ($beg, $end) = ($hi, $lo)
+			my ($hi, $lo) = @$args;
 			defined $hi or $hi = $#$arg;
 			defined $lo or $lo = $[ - 1;
+			($beg, $end) = ($hi, $lo);
 		}
-		(1, $fun, sub { \$arg->[$_] }, $lo, $hi)
+		($beg, $end, $fun, sub { \$arg->[$_] })
 	}
 	elsif (UNIVERSAL::isa($arg, 'CODE')) {
 		if (@$args < 1) {
@@ -523,18 +525,13 @@ EOM
 			return;
 		}
 		if (@_ > 2) {
-			if ($ori) {
-				($lo, $hi) = (@$args);
-			}
-			else {
-				($hi, $lo) = (@$args);
-			}
+			($beg, $end) = (@$args);
 		}
 		else {
 			my $arg = shift @$args;
-			($lo, $hi) = $ori ? (0, $arg) : ($arg, -1);
+			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
-		(1, $fun, $arg, $lo, $hi)
+		($beg, $end, $fun, $arg)
 	}
 	else {
 		if (@$args > 1) {
@@ -546,17 +543,12 @@ EOM
 		}
 		if (@$args) {
 			unshift @$args, $arg;
-			if ($ori) {
-				($lo, $hi) = (@$args);
-			}
-			else {
-				($hi, $lo) = (@$args);
-			}
+			($beg, $end) = (@$args);
 		}
 		else {
-			($lo, $hi) = $ori ? (0, $arg) : ($arg, -1);
+			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
-		(0, $fun, $lo, $hi)
+		($beg, $end, $fun)
 	}
 }
 
@@ -609,89 +601,6 @@ result is meaningful.
 
 =cut
 
-# Assumption: If $ok->($x) true, $x <= $y => $ok->($y) true.
-# Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
-#             - If $x < $lo,  $ok->($x) is false if defined.
-sub __bisectl
-{
-	my ($ok, $lo, $hi) = @_;
-	my ($cmp, $res, $elt, $mid);
-	my $want2 = wantarray and want(2);
-	my $want3 = wantarray and want(3);
-	while ($lo < $hi) {
-		$mid = $lo + (($hi - $lo) >> 1);
-		if (do { local *_ = \$mid; $res = $ok->($mid) }) {
-			$hi = $mid;      # include
-			$cmp = $res  if $want2;
-			$elt = $mid  if $want3;
-		} else {
-			$lo = $mid + 1;  # exclude
-		}
-	} $want2 ? ($hi, $cmp, $elt) : $hi
-}
-
-# Assumption: If $ok->($y) true, $x <= $y => $ok->($x) true.
-# Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
-#             - If $x > $hi,  $ok->($x) is false if defined.
-sub __bisectr
-{
-	my ($ok, $hi, $lo) = @_;
-	my ($cmp, $res, $elt, $mid);
-	my $want2 = wantarray and want(2);
-	my $want3 = wantarray and want(3);
-	while ($lo < $hi) {
-		$mid = $lo + (($hi - $lo + 1) >> 1);
-		if (do { local *_ = \$mid; $res = $ok->($mid) }) {
-			$lo = $mid;      # include
-			$cmp = $res  if $want2;
-			$elt = $mid  if $want3;
-		} else {
-			$hi = $mid - 1;  # exclude
-		}
-	} $want2 ? ($lo, $cmp, $elt) : $lo
-}
-
-# Similar guys, except there is an MAP in the middle...
-# Predicate is still the basis of comparison, but element
-# is mapped from the index instead of just the index.
-sub __bisectl_map
-{
-	my ($ok, $map, $lo, $hi) = @_;
-	my ($cmp, $res, $elt, $img, $mid);
-	my $want2 = wantarray and want(2);
-	my $want3 = wantarray and want(3);
-	while ($lo < $hi) {
-		$mid = $lo + (($hi - $lo) >> 1);
-		$img = $map->($mid);
-		if (do { local *_ = $img; $res = $ok->($mid) }) {
-			$hi = $mid;      # include
-			$cmp = $res  if $want2;
-			$elt = $$img if $want3;
-		} else {
-			$lo = $mid + 1;  # exclude
-		}
-	} $want2 ? ($hi, $cmp, $elt) : $hi
-}
-
-sub __bisectr_map
-{
-	my ($ok, $map, $hi, $lo) = @_;
-	my ($cmp, $res, $elt, $img, $mid);
-	my $want2 = wantarray and want(2);
-	my $want3 = wantarray and want(3);
-	while ($lo < $hi) {
-		$mid = $lo + (($hi - $lo + 1) >> 1);
-		$img = $map->($mid);
-		if (do { local *_ = $img; $res = $ok->($mid) }) {
-			$lo = $mid;      # include
-			$cmp = $res  if $want2;
-			$elt = $$img if $want3;
-		} else {
-			$hi = $mid - 1;  # exclude
-		}
-	} $want2 ? ($lo, $cmp, $elt) : $lo
-}
-
 =head2 Subroutines
 
 The following is a summary of all the subroutines provided
@@ -737,11 +646,41 @@ If the interval C<[$lo, $hi]> is empty, return C<$hi>.
 
 =cut
 
+# Assumption: If $ok->($x) true, $x <= $y => $ok->($y) true.
+# Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
+#             - If $x < $lo,  $ok->($x) is false if defined.
+sub bisectl_map
+{
+	my ($any, $lo, $hi, $ok, $map) = @_;
+	my ($cmp, $res, $elt, $img, $mid);
+	my $want2 = wantarray and want(2);
+	my $want3 = wantarray and want(3);
+	while ($lo < $hi) {
+		$mid = $lo + (($hi - $lo) >> 1);
+		$img = $map ? $map->($mid) : \$mid;
+		if (do { local *_ = $img; $res = $ok->($mid) }) {
+			$hi = $mid;      # include
+			$cmp = $res  if $want2;
+			$elt = $$img if $want3;
+			last if $any;
+		} else {
+			$lo = $mid + 1;  # exclude
+		}
+	} $want2 ? ($hi, $cmp, $elt) : $hi
+}
+
 sub bisectl (&$;$$)
 {
 	local $@;
-	my ($vari, @args) = parse_args(1, \@_) or croak("bisectl: $@");
-	$vari ? __bisectl_map(@args) : __bisectl(@args)
+	my @args = parse_args(1, \@_) or croak("bisectl: $@");
+	bisectl_map(0, @args)
+}
+
+sub bixectl (&$;$$)
+{
+	local $@;
+	my @args = parse_args(1, \@_) or croak("bixectl: $@");
+	bisectl_map(1, @args)
 }
 
 =item B<bisectr>
@@ -789,11 +728,41 @@ are defined by calling in list context.
 
 =cut
 
+# Assumption: If $ok->($y) true, $x <= $y => $ok->($x) true.
+# Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
+#             - If $x > $hi,  $ok->($x) is false if defined.
+sub bisectr_map
+{
+	my ($any, $hi, $lo, $ok, $map) = @_;
+	my ($cmp, $res, $elt, $img, $mid);
+	my $want2 = wantarray and want(2);
+	my $want3 = wantarray and want(3);
+	while ($lo < $hi) {
+		$mid = $lo + (($hi - $lo + 1) >> 1);
+		$img = $map ? $map->($mid) : \$mid;
+		if (do { local *_ = $img; $res = $ok->($mid) }) {
+			$lo = $mid;      # include
+			$cmp = $res  if $want2;
+			$elt = $$img if $want3;
+			last if $any;
+		} else {
+			$hi = $mid - 1;  # exclude
+		}
+	} $want2 ? ($lo, $cmp, $elt) : $lo
+}
+
 sub bisectr (&$;$$)
 {
 	local $@;
-	my ($vari, @args) = parse_args(1, \@_) or croak("bisectr: $@");
-	$vari ? __bisectr_map(@args) : __bisectr(@args)
+	my @args = parse_args(0, \@_) or croak("bisectr: $@");
+	bisectr_map(0, @args)
+}
+
+sub bixectr (&$;$$)
+{
+	local $@;
+	my @args = parse_args(0, \@_) or croak("bixectr: $@");
+	bisectr_map(1, @args)
 }
 
 # Binary left search for a trisection point on a
@@ -803,7 +772,7 @@ sub bisectr (&$;$$)
 # these two maps as they may be expensive to compute.
 sub __blsrch_map
 {
-	my ($ok, $ord, $map, $lo, $hi) = @_;
+	my ($any, $ok, $map, $ord, $lo, $hi) = @_;
 	my ($cmp, $res, $elt, $img, $mid);
 	my $want2 = wantarray and want(2);
 	my $want3 = wantarray and want(3);
@@ -814,6 +783,7 @@ sub __blsrch_map
 			$hi = $mid;       # include
 			$cmp = $res   if $want2;
 			$elt = $$img  if $want3;
+			last if $any and $res == 0;
 		} else {
 			$lo = $mid + 1;   # exclude
 		}
@@ -823,7 +793,7 @@ sub __blsrch_map
 # Binary right search, similarly...
 sub __brsrch_map
 {
-	my ($ok, $ord, $map, $hi, $lo) = @_;
+	my ($any, $ok, $map, $ord, $hi, $lo) = @_;
 	my ($cmp, $res, $elt, $img, $mid);
 	my $want2 = wantarray and want(2);
 	my $want3 = wantarray and want(3);
@@ -834,22 +804,62 @@ sub __brsrch_map
 			$lo = $mid;       # include
 			$cmp = $res   if $want2;
 			$elt = $$img  if $want3;
+			last if $any and $res == 0;
 		} else {
 			$hi = $mid - 1;   # exclude
 		}
 	} $want2 ? ($hi, $cmp, $elt) : $hi
 }
 
-sub __blsrch
+sub __lower { $_[0] >= 0 }
+sub __upper { $_[0] >  0 }
+sub __ident { $_[0] }
+
+sub blsrch0 (&$;$$)
 {
-	my ($ok, $ord, $lo, $hi) = @_;
-	__blsrch_map($ok, $ord, sub { $_ }, $lo, $hi);
+	local $@;
+	my ($vari, @args) = parse_args(1, \@_) or croak("blsrch0: $@");
+	unshift @args, \&lower;
+	$vari ? __blsrch_map(0, @args) : __blsrch(0, @args)
 }
 
-sub __brsrch
+sub blsectx (&$;$$)
 {
-	my ($ok, $ord, $hi, $lo) = @_;
-	__brsrch_map($ok, $ord, sub { $_ }, $hi, $lo);
+	local $@;
+	my ($vari, @args) = parse_args(1, \@_) or croak("blsrctr: $@");
+	unshift @args, \&lower;
+	$vari ? __bisectr_map(1, @args) : __bisectr(1, @args)
+}
+
+
+sub __blsrch2_map
+{
+	my ($ord, $map, $ok, $lo, $hi) = @_;
+	my $lower = __blsrch_map(0, \&__lower, $ord, $map, $lo, $hi);
+	# Find a sufficiently close candidate for upper bound,
+	# assuming there aren't too many equal values around?
+	my ($prev, $next) = ($lower, $lower);
+	for (my $step = 1; (my $peek = $next + $step) < $hi; $step += $step) {
+		last if $ok->($ord->($peek));    # overshot!!
+		($prev, $next) = ($next, $peek); # ... or not
+	}
+	my $upper = __blsrch_map(0, $ok, $ord, $map, $prev, $next);
+	wantarray ? ($lower, $upper) : $upper - $lower
+}
+
+# And the mirror image...
+
+sub __brsrch2_map
+{
+	my ($ok, $ord, $map, $hi, $lo) = @_;
+	my $lower = __brsrch_map(0, $ok, $ord, $map, $hi, $lo);
+	my ($prev, $next) = ($lower, $lower);
+	for (my $step = 1; (my $peek = $next - $step) > $lo; $step += $step) {
+		last if $ok->($ord->($peek));
+		($prev, $next) = ($next, $peek);
+	}
+	my $upper = __blsrch_map(0, $ok, $ord, $map, $prev, $next);
+	wantarray ? ($lower, $upper) : $upper - $lower
 }
 
 1;
