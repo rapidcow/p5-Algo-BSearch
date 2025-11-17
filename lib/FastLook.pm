@@ -822,27 +822,27 @@ The return value of C<blsectx> is any index satisfying
 C<< $ord == 0 >>, but if one could not be found,
 it returns the same result as C<blsect0>.
 
-The return value of C<blsect1> is the unique index C<$upper> on
-the closed interval C<[$lo, $hi]> such that:
+The return value of C<blsect1> is the unique index C<$upper_x>
+on the closed interval C<[$lo, $hi]> such that:
 
 =over 4
 
 =item *
 
-C<< $ord->($lower) > 0 >>.
+C<< $ord->($upper_x) > 0 >>.
 
 =item *
 
-For all valid index C<< $x < $upper >>, it follows that C<< $ord->($x) <= 0 >>.
-As a result, C<< $upper >> is the first instance where C<< $ord > 0 >>,
-while C<< $upper - 1 >> is the last instance where C<< $ord <= 0 >>.
+For all valid index C<< $x < $upper_x >>, it follows that C<< $ord->($x) <= 0 >>.
+As a result, C<< $upper_x >> is the first instance where C<< $ord > 0 >>,
+while C<< $upper_x - 1 >> is the last instance where C<< $ord <= 0 >>.
 (Compare this to C<brsect0>.)
 
 =back
 
 In list context, C<blsect2> returns both C<$lower> and C<$upper>,
 in that order.  In scalar context, it returns the nonnegative
-difference C<$upper - $lower>, which equals the number of elements
+difference C<$upper_x - $lower>, which equals the number of elements
 for which C<$ord == 0>.
 
 =cut
@@ -957,23 +957,21 @@ the closed interval C<[$lo, $hi]> such that:
 
 =item *
 
-C<< $ord->($lower) > 0 >>.
+C<< $ord->($lower_x) > 0 >>.
 
 =item *
 
-For all valid index C<< $x > $lower >>, it follows that C<< $ord->($x) <= 0 >>.
-As a result, C<< $lower >> is the last instance where C<< -$ord < 0 >> and
-C<< $lower + 1 >> is the first instance where C<< -$ord >= 0 >>.
+For all valid index C<< $x > $lower_x >>, it follows that C<< $ord->($x) <= 0 >>.
+As a result, C<< $lower_x >> is the last instance where C<< -$ord < 0 >> and
+C<< $lower_x + 1 >> is the first instance where C<< -$ord >= 0 >>.
 (Compare this to C<blsect0>.)
 
 =back
 
-In list context, C<brsect2> returns both C<$upper> and C<$lower>,
+In list context, C<brsect2> returns both C<$upper> and C<$lower_x>,
 in that order.  In scalar context, it returns the nonnegative
-difference C<$upper - $lower>, which equals the number of elements
+difference C<$upper - $lower_x>, which equals the number of elements
 for which C<$ord == 0>.
-
-=back
 
 =cut
 
@@ -1081,5 +1079,19 @@ sub brsrch2 (&$;$$)
 	my @args = parse_args(0, \@_) or croak("brsrch2: $@");
 	brsrch2_map(@args);
 }
+
+=back
+
+One may speculate that the bounds satisfy the mathematical
+relationship:
+
+    $upper == $upper_x - 1
+    $lower_x + 1 == $lower
+
+provided that the search ranges in both cases cover the same
+indices.  But this is mostly an empirical observation; at
+the moment I am unable to prove that it is the case.... ;)
+
+=cut
 
 1;
