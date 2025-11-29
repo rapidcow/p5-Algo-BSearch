@@ -565,7 +565,7 @@ the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Sort-Sear
 
 Copyright (c) 2025 by Ethan Meng (RAPIDCOW).
 
-This program is free software; you can redistribute it
+This module is free software; you can redistribute it
 and/or modify it under the same terms as Perl itself.
 
 =cut
