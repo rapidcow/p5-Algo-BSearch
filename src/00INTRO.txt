@@ -1,0 +1,142 @@
+                  Introduction to Sort::Search
+                    (and the math behind it)
+
+          ( Adopted from sort/search.go Lib/bisect.py )
+ <https://github.com/golang/go/blob/master/src/sort/search.go>
+   <https://github.com/python/cpython/blob/main/Lib/bisect.py>
+
+                              * * *
+
+The goal with this package is to introduce a flexible vocabulary
+for declaratively perform binary searches on arrays and integer
+ranges.  Almost all binary search problems can be reduced to the
+following, most basic form:
+
+    Given a predicate that starts out false over a range of input,
+    but turns true at some point, what is the smallest input for
+    which the predicate turns true?
+
+Call such a predicate $ok.  We may use the following method to
+find this point in logarithmic time:
+
+  * Start with an interval [$lo, $hi] where we assume the predicate
+    holds true for at least one point (namely, assume $ok->($hi)).
+
+  * Bisect this interval at $mid = 1/2 * ($lo + $hi), and evaluate
+    the predicate there.
+
+       - If $ok->($mid) is true, then the answer is at most $mid.
+         So discard everything to the right (but KEEP $mid as our
+         safety net in case we can't find anything smaller.)
+
+       - If $ok->($mid) is false, then the answer is certainly not
+         $mid.  So discard everything to the left INCLUDING $mid.
+
+At this point, we get a new interval half the size, yet still
+includes the answer somewhere.  Eventually $lo == $hi and the
+interval contains only one index which is precisely our answer
+by construction.  The follow code implements the gist of it:
+
+   # Assumption: If $ok->($x) true, $x <= $y => $ok->($y) true.
+   # Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
+   #             - If $x < $lo,  $ok->($x) is false if defined.
+   sub bisectl (&$$) {
+       my ($ok, $lo, $hi) = @_;
+       while ($lo < $hi) {
+           my $mid = $lo + (($hi - $lo) >> 1);
+           if ($ok->($mid)) {
+               $hi = $mid;       # include
+           } else {
+               $lo = $mid + 1;   # exclude
+           }
+       } $hi
+   }
+
+Interestingly, this implementation never checks $ok->($hi), due to
+the way the above division is rounded towards -Infinity.
+
+One common interpretation is that the actual search range is the
+half-open interval [$lo, $hi), with $hi as the fallback if the
+predicate attains truth nowhere.  The interpretation *I* prefer,
+however, is that we simply KNOW $ok->($hi) is true, whether
+because we really did check it in a previous iteration, or we
+place the trust in the caller, knowing that they have checked or
+will know how to interpret it.
+
+What matters more than the apparent asymmetry is the invariant,
+as we shrink [$lo, $hi], that (a) the predicate does not attain
+truth at any index below $lo, and that (b) it attains truth at $hi.
+Even if the latter rule breaks down when we point $hi to a non-
+existent index that is one past the final array element, and the
+algorithm terminates with $lo == $hi, a meaningless index on its
+own; it is still undeniably the natural extension to the notion of
+being the "first", in that the former rule, which states that the
+predicate never attains truth before $hi, holds true; and since
+$hi is higher than every "real" index, this essentially captures
+the essence that the predicate never attains truth.  It does that
+job better than other default values such as -1 could, which is
+why I like this version of binary search the best (and why I
+implemented the same for this package. :)
+
+                              * * *
+
+Just like how there is a well-defined point of "first true" on a
+false-then-true range, there is also a point of "last false" on
+the same range, which is exactly one place below the "first true".
+"Every end of a time is another begun...."  Well, the computation
+to find this point could be quite literally 1 minus the index of
+"first true".  Or, you could get a little creative and invert the
+world so that a beginning is an end, and an end is a beginning:
+
+    # Apply the map (x) => (1 - x) to the bounds and apply its
+    # inverse map to the predicate's input and the final result.
+    # (Observe that the map is its own inverse.)
+    # A more appropriate name might be "last_false", but well...
+    sub bisect_in_reverse
+    {
+        my ($ok, $lo, $hi) = @_;
+        1 - bisectl { !$ok->(1 - $_[0]) } 1 - $lo, 1 - $hi;
+    }
+
+    # possible, nimble implementation of integer square root by
+    # finding the last integer $x whose square does NOT exceed $S.
+    # Under the predicate $x * $x > $S, this integer would be the
+    # last integer at which the predicate attains false.
+    sub isqrt
+    {
+        my $S = shift;
+        bisect_in_reverse( sub { $_[0] * $_[0] > $S }, $S, -1 );
+    }
+
+    print isqrt(2024), "\n";  # 20+24
+    print isqrt(2025), "\n";  # 20+25
+    print isqrt(2026), "\n";  # still 45
+    print isqrt(-729), "\n";  # -1 (every integer square exceeds x)
+
+A dual binary search is provided for this exact purpose.
+You'd still have to invert the predicate if it's the same
+false-then-true range, but you only do half the work!
+
+    # Assumption: If $ok->($y) true, $x <= $y => $ok->($x) true.
+    # Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
+    #             - If $x > $hi,  $ok->($x) is false if defined.
+    sub bisectr (&$$) {
+        my ($ok, $hi, $lo) = @_;
+        while ($lo < $hi) {
+            my $mid = $lo + (($hi - $lo + 1) >> 1);
+            if ($ok->($mid)) {
+                $lo = $mid;      # include
+            } else {
+                $hi = $mid - 1;  # exclude
+            }
+        } $lo
+    }
+
+    # Now the predicate has to be reversed, since right bisection
+    # looks for the last true on a true-then-false range.
+    sub isqrt
+    {
+        my $x = shift;
+        bisectr { $_[0] * $_[0] <= $x } $x, -1;
+    }
+    # This isqrt will work the same way as before. (check!)

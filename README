@@ -1,0 +1,62 @@
+===================================================================
+
+      Sort::Search - general-purpose binary search functions
+
+                                       ^__^
+             ( by  rapidcow! )         (oo)\______   %
+                                       (__)\      )\/
+                                        ._/|-----\|
+                                           |     ||
+===================================================================
+
+= DESCRIPTION =
+
+This is a pure-Perl module for searching for on sorted arrays.
+It deals with:
+
+     * Bisection point with respect to a predicate:
+         bisectl   bixectl   |   bixectr   bisectr
+
+     * Trisection point with respect to an ordering:
+         blsrch0   blsrch1   |   brsrch1   blsrch0
+         blsrchx   blsrch2   |   brsrch2   brsrchx
+
+
+= INSTALL =
+
+To install this module, run the following commands:
+
+    perl Makefile.PL
+    make
+    make test
+    make install
+
+Or, using cpanminus:
+
+    cpanm .
+
+After installing, you can find documentation for this module with the
+perldoc command.  By some chance, you may also be able to use man(1):
+
+    perldoc Sort::Search
+    man 3 Sort::Search
+
+You can also look for information at:
+
+    RT, CPAN's request tracker (report bugs here)
+        https://rt.cpan.org/NoAuth/Bugs.html?Dist=Sort-Search
+
+    CPAN Ratings
+        https://cpanratings.perl.org/d/Sort-Search
+
+    Search CPAN
+        https://metacpan.org/release/Sort-Search
+
+
+= LICENSE =
+
+Copyright (c) 2025 by Ethan Meng (RAPIDCOW).
+
+This program is free software; you can redistribute it
+and/or modify it under the same terms as Perl itself.
+See LICENSE for a copy of Perl's licenses.
