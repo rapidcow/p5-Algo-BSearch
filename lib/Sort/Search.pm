@@ -21,10 +21,10 @@ use warnings;
 
 use Carp qw(croak);
 use Scalar::Util qw(blessed);
-use Exporter ();
-use vars qw(@ISA @EXPORT_OK);
 
+our (@ISA, @EXPORT_OK);
 BEGIN {
+	require Exporter;
 	@ISA = qw(Exporter);
 	@EXPORT_OK = qw(
 		bisectl bisectr bixectl bixectr

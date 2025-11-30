@@ -9,4 +9,3 @@ requires 'Scalar::Util';
 requires 'constant';
 requires 'strict';
 requires 'warnings';
-requires 'vars';
