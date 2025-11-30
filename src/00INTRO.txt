@@ -1,7 +1,7 @@
                   Introduction to Sort::Search
                     (and the math behind it)
 
-          ( Adopted from sort/search.go Lib/bisect.py )
+        ( Adopted from sort/search.go and Lib/bisect.py )
  <https://github.com/golang/go/blob/master/src/sort/search.go>
    <https://github.com/python/cpython/blob/main/Lib/bisect.py>
 
