@@ -530,7 +530,7 @@ sub brsrch2 (&$;$$)
 
 1;
 
-#__END__
+__END__
 
 =pod
 
@@ -546,24 +546,18 @@ sub brsrch2 (&$;$$)
 
   # TODO !
 
+Please report any bugs or feature requests to C<bug-sort-search at rt.cpan.org>, or through
+the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Sort-Search>.
+
 =head1 SEE ALSO
 
   # TODO !
 
 =head1 AUTHORS
 
-Ethan Meng, C<< <ethan at rapidcow.org> >>
-
-=head1 BUGS
-
-May be plenty!
-
-Please report any bugs or feature requests to C<bug-sort-search at rt.cpan.org>, or through
-the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Sort-Search>.
+Ethan Meng C<< <ethan at rapidcow.org> >>.
 
 =head1 LICENSE
-
-Copyright (c) 2025 by Ethan Meng (RAPIDCOW).
 
 This module is free software; you can redistribute it
 and/or modify it under the same terms as Perl itself.

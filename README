@@ -1,13 +1,16 @@
 ===================================================================
 
       Sort::Search - general-purpose binary search functions
+                     on contiguous sorted (monotonic) ranges
 
                                        ^__^
-             ( by  rapidcow! )         (oo)\______   %
+          ( by  rapidcow! *** )        (oo)\______   %
                                        (__)\      )\/
                                         ._/|-----\|
                                            |     ||
 ===================================================================
+            *** Copyright (c) 2025 Ethan Meng <ethan@rapidcow.org>.
+
 
 = DESCRIPTION =
 
@@ -20,6 +23,9 @@ It deals with:
      * Trisection point with respect to an ordering:
          blsrch0   blsrch1   |   brsrch1   blsrch0
          blsrchx   blsrch2   |   brsrch2   brsrchx
+
+NOTE: This module has not been fully developed or released yet!
+Most links below do not work yet.
 
 
 = INSTALL =
@@ -52,10 +58,14 @@ You can also look for information at:
     Search CPAN
         https://metacpan.org/release/Sort-Search
 
+    My project homepage
+        https://www.rapidcow.org/lib/perl5/Sort-Search/
+
+    Git repository (web view)
+        https://github.com/rapidcow/p5-Sort-Search
+
 
 = LICENSE =
-
-Copyright (c) 2025 by Ethan Meng (RAPIDCOW).
 
 This program is free software; you can redistribute it
 and/or modify it under the same terms as Perl itself.
