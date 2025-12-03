@@ -22,7 +22,6 @@ my %WriteMakefileArgs = (
 	PREREQ_PM => {
 		'Carp'     => '0',
 		'Exporter' => '0',
-		'Scalar::Util' => '0',
 		#'Want'    => '0',  # Optional, to save copying
 		# Pragmatic modules
 		'constant' => '0',

@@ -19,8 +19,7 @@ use 5.006;
 use strict;
 use warnings;
 
-use Carp qw(croak);
-use Scalar::Util qw(blessed);
+use Carp ();
 
 our (@ISA, @EXPORT_OK);
 BEGIN {
@@ -211,14 +210,14 @@ sub bisectl_map
 sub bisectl (&$;$$)
 {
 	local $@;
-	my @args = parse_args(ORI_L, \@_) or croak("bisectl: $@");
+	my @args = parse_args(ORI_L, \@_) or Carp::croak("bisectl: $@");
 	bisectl_map(0, @args);
 }
 
 sub bixectl (&$;$$)
 {
 	local $@;
-	my @args = parse_args(ORI_L, \@_) or croak("bixectl: $@");
+	my @args = parse_args(ORI_L, \@_) or Carp::croak("bixectl: $@");
 	bisectl_map(1, @args);
 }
 
@@ -279,14 +278,14 @@ sub bisectr_map
 sub bisectr (&$;$$)
 {
 	local $@;
-	my @args = parse_args(ORI_R, \@_) or croak("bisectr: $@");
+	my @args = parse_args(ORI_R, \@_) or Carp::croak("bisectr: $@");
 	bisectr_map(0, @args);
 }
 
 sub bixectr (&$;$$)
 {
 	local $@;
-	my @args = parse_args(ORI_R, \@_) or croak("bixectr: $@");
+	my @args = parse_args(ORI_R, \@_) or Carp::croak("bixectr: $@");
 	bisectr_map(1, @args);
 }
 
@@ -362,21 +361,21 @@ sub blsrch_map
 sub blsrch0 (&$;$$)
 {
 	local $@;
-	my @args = parse_args(ORI_L, \@_) or croak("blsrch0: $@");
+	my @args = parse_args(ORI_L, \@_) or Carp::croak("blsrch0: $@");
 	blsrch_map(0, sub { $_[0] >= 0 }, @args);
 }
 
 sub blsrch1 (&$;$$)
 {
 	local $@;
-	my @args = parse_args(ORI_L, \@_) or croak("blsrch0: $@");
+	my @args = parse_args(ORI_L, \@_) or Carp::croak("blsrch0: $@");
 	blsrch_map(0, sub { $_[0] > 0 }, @args);
 }
 
 sub blsrchx (&$;$$)
 {
 	local $@;
-	my @args = parse_args(ORI_L, \@_) or croak("blsrchr: $@");
+	my @args = parse_args(ORI_L, \@_) or Carp::croak("blsrchr: $@");
 	blsrch_map(1, sub { $_[0] >= 0 }, @args);
 }
 
@@ -435,21 +434,21 @@ sub brsrch_map
 sub brsrch0 (&$;$$)
 {
 	local $@;
-	my @args = parse_args(ORI_R, \@_) or croak("blsrch0: $@");
+	my @args = parse_args(ORI_R, \@_) or Carp::croak("blsrch0: $@");
 	blsrch_map(0, sub { $_[0] >= 0 }, @args);
 }
 
 sub brsrch1 (&$;$$)
 {
 	local $@;
-	my @args = parse_args(ORI_R, \@_) or croak("blsrch0: $@");
+	my @args = parse_args(ORI_R, \@_) or Carp::croak("blsrch0: $@");
 	blsrch_map(0, sub { $_[0] > 0 }, @args);
 }
 
 sub brsrchx (&$;$$)
 {
 	local $@;
-	my @args = parse_args(ORI_R, \@_) or croak("brsrchx: $@");
+	my @args = parse_args(ORI_R, \@_) or Carp::croak("brsrchx: $@");
 	blsrch_map(1, sub { $_[0] >= 0 }, @args);
 }
 
@@ -517,14 +516,14 @@ sub brsrch2_map
 sub blsrch2 (&$;$$)
 {
 	local $@;
-	my @args = parse_args(ORI_L, \@_) or croak("blsrch2: $@");
+	my @args = parse_args(ORI_L, \@_) or Carp::croak("blsrch2: $@");
 	blsrch2_map(@args);
 }
 
 sub brsrch2 (&$;$$)
 {
 	local $@;
-	my @args = parse_args(ORI_R, \@_) or croak("brsrch2: $@");
+	my @args = parse_args(ORI_R, \@_) or Carp::croak("brsrch2: $@");
 	brsrch2_map(@args);
 }
 

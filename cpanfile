@@ -4,7 +4,6 @@
 #
 requires 'Carp';
 requires 'Exporter';
-requires 'Scalar::Util';
 
 requires 'constant';
 requires 'strict';
