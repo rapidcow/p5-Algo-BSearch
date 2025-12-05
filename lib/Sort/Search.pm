@@ -435,21 +435,21 @@ sub brsrch0 (&$;$$)
 {
 	local $@;
 	my @args = parse_args(ORI_R, \@_) or Carp::croak("blsrch0: $@");
-	blsrch_map(0, sub { $_[0] >= 0 }, @args);
+	brsrch_map(0, sub { $_[0] >= 0 }, @args);
 }
 
 sub brsrch1 (&$;$$)
 {
 	local $@;
 	my @args = parse_args(ORI_R, \@_) or Carp::croak("blsrch0: $@");
-	blsrch_map(0, sub { $_[0] > 0 }, @args);
+	brsrch_map(0, sub { $_[0] > 0 }, @args);
 }
 
 sub brsrchx (&$;$$)
 {
 	local $@;
 	my @args = parse_args(ORI_R, \@_) or Carp::croak("brsrchx: $@");
-	blsrch_map(1, sub { $_[0] >= 0 }, @args);
+	brsrch_map(1, sub { $_[0] >= 0 }, @args);
 }
 
 # b?srch2 is a shorthand that returns b?srch0 and b?srch1.
