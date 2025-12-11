@@ -1,9 +1,15 @@
-                  Introduction to Sort::Search
-                    (and the math behind it)
+
+                   Introduction to Sort::Search
+                     (and the math behind it)
 
         ( Adopted from sort/search.go and Lib/bisect.py )
  <https://github.com/golang/go/blob/master/src/sort/search.go>
    <https://github.com/python/cpython/blob/main/Lib/bisect.py>
+
+
+/* This file describes the bisect* functions, which implement the *\
+ * bisection algorithms.  A minimal implementation is included so *
+\* it is possible to work through this without Sort/Search.pm. :) */
 
                               * * *
 
@@ -88,23 +94,23 @@ to find this point could be quite literally 1 minus the index of
 "first true".  Or, you could get a little creative and invert the
 world so that a beginning is an end, and an end is a beginning:
 
-    # Apply the map (x) => (1 - x) to the bounds and apply its
+    # Apply the map (x) => (-1 * x) to the bounds and apply its
     # inverse map to the predicate's input and the final result.
-    # (Observe that the map is its own inverse.)
+    # (Observe that the map is its own inverse, as -1 * -1 == 1.)
     # A more appropriate name might be "last_false", but well...
     sub bisect_in_reverse
     {
         my ($ok, $lo, $hi) = @_;
-        1 - bisectl { !$ok->(1 - $_[0]) } 1 - $lo, 1 - $hi;
+        -bisectl { !$ok->( -$_[0] ) } -$lo, -$hi;
     }
 
-    # possible, nimble implementation of integer square root by
-    # finding the last integer $x whose square does NOT exceed $S.
-    # Under the predicate $x * $x > $S, this integer would be the
-    # last integer at which the predicate attains false.
+One application of this reversed view is to implement the integer
+square root function, "isqrt(S)", which returns the last integer
+whose square does not exceed "S":
+
     sub isqrt
     {
-        my $S = shift;
+        my ($S) = @_;
         bisect_in_reverse( sub { $_[0] * $_[0] > $S }, $S, -1 );
     }
 
@@ -132,11 +138,50 @@ false-then-true range, but you only do half the work!
         } $lo
     }
 
-    # Now the predicate has to be reversed, since right bisection
-    # looks for the last true on a true-then-false range.
+And now the predicate has to be reversed, since right bisection
+looks for the last true instead of the last false -- that is, we
+negate exceeding "S" into less than or equal to "S":
+
     sub isqrt
     {
-        my $x = shift;
-        bisectr { $_[0] * $_[0] <= $x } $x, -1;
+        my ($S) = @_;
+        bisectr { $_[0] * $_[0] <= $S } $S, -1;
     }
-    # This isqrt will work the same way as before. (check!)
+
+This isqrt will work the same way as before. (check!)
+
+                              * * *
+
+The real "bisectl" and "bisectr" functions work almost the same
+as above, except $_[0] is also aliased to $_.  So instead of the
+implementations provided above, you can import and define:
+
+    use Sort::Search qw(bisectl);
+    sub isqrt {
+        # The fact that (-x)^2 = x^2 for integer x means I don't
+        # have to negate $_, even though technically I should. ;)
+        my ($S) = @_;  -bisectl {
+            $_ * $_ <= $S
+        } -$S, 1;
+    }
+
+or:
+
+    use Sort::Search qw(bisectr);
+    sub isqrt {
+        my ($S) = @_;   bisectr {
+            $_ * $_ <= $S
+        } $S, -1;
+    }
+
+All isqrt's defined up to this point should work identically
+(other than the fact that the isqrt implemented with bisectl
+is in fact searching on the negatives).
+
+===================================================================
+
+In the next file I will talk about searching on arrays with sorted
+elements and how the other half of the library deals with it, as
+well as one way to use it to build a binary search tree imitation
+that lets you query a range of elements that fall within the given
+lower and upper bounds.
