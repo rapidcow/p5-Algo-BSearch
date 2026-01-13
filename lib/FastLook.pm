@@ -324,7 +324,7 @@ Or, using the search algorithm:
 which is equivalent to:
 
     my $lo = bisectl { ($_ <=> 5) >= 0 } \@list;
-    my $hi = bisectl { ($_ <=> 5) >= 0 } \@list;
+    my $hi = bisectl { ($_ <=> 5) >  0 } \@list;
 
 Another approach is to use the C<< 5 <=> $_ >> ordering,
 apply the same predicates, but run right bisection instead:
@@ -357,8 +357,8 @@ Or, using the search algorithm:
 
 which is equivalent to:
 
-    my $lo = bisectr { ($_ <=> 5) >= 0 } \@list;
-    my $hi = bisectr { ($_ <=> 5) >  0 } \@list;
+    my $lo = bisectr { (5 <=> $_) >= 0 } \@list;
+    my $hi = bisectr { (5 <=> $_) >  0 } \@list;
 
 Notably, to acquire bounds that are inclusive on both
 ends, you'd have to utilize search in both directions:
