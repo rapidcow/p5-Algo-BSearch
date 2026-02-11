@@ -541,15 +541,15 @@ __END__
     blsrch2 brsrch2 blsrchx brsrchx
   );
 
-  bisectl { OK } ARRAY;   # first True (F to T)
-  bisectr { OK } ARRAY;   # last True (T to F)
+  bisectl { OK } ARRAY;   # leftmost True (F to T)
+  bisectr { OK } ARRAY;   # rightmost True (T to F)
   bixectl { OK } ARRAY;   # any True  (F to T)
   bixectr { OK } ARRAY;   # any True  (T to F)
 
-  blsrch0 { ORD } ARRAY;  # first >= 0 (- to +)
-  brsrch0 { ORD } ARRAY;  # last >= 0  (+ to -)
-  blsrch1 { ORD } ARRAY;  # first > 0  (- to +)
-  brsrch1 { ORD } ARRAY;  # last > 0   (+ to -)
+  blsrch0 { ORD } ARRAY;  # leftmost >= 0 (- to +)
+  blsrch1 { ORD } ARRAY;  # leftmost > 0  (- to +)
+  brsrch0 { ORD } ARRAY;  # rightmost >= 0 (+ to -)
+  brsrch1 { ORD } ARRAY;  # rightmost > 0  (+ to -)
 
   blsrch2 { ORD } ARRAY;  # (blsrch0, blsrch1)
   brsrch2 { ORD } ARRAY;  # (brsrch0, brsrch1)
