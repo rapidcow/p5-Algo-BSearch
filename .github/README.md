@@ -10,7 +10,7 @@
 
 # Sort::Search - binary search on sorted ranges
 
-Copyright (c) 2025 Ethan Meng &lt;ethan at rapidcow.org&gt;.
+Copyright (c) 2025–2026 Ethan Meng &lt;ethan at rapidcow.org&gt;.
 
 
 ## Description
