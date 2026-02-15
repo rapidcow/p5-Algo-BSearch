@@ -1,7 +1,7 @@
 #
 # Copyright (c) 2025, Ethan Meng <ethan@rapidcow.org>
 #
-# This program is free software; you can redistribute it
+# This module is free software; you can redistribute it
 # and/or modify it under the same terms as Perl itself.
 # See LICENSE at the root directory of your distribution
 # for a copy of Perl's licenses.
