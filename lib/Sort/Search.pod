@@ -397,12 +397,25 @@ for which C<$ord == 0>.
 
   # TODO !
 
-Please report any bugs or feature requests to C<bug-sort-search at rt.cpan.org>, or through
-the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Sort-Search>.
-
 =head1 SEE ALSO
 
 L<List::MoreUtils>, L<List::Search>, L<List::BinarySearch>,
 L<List::BinarySearch::XS>.
+
+=head1 LINKS
+
+More about this distribution can be found at:
+
+=over
+
+=item *
+
+Home page: L<https://www.rapidcow.org/lib/perl5/Sort-Search/>
+
+=item *
+
+Git repository: L<https://github.com/rapidcow/p5-Sort-Search>
+
+=back
 
 =cut
