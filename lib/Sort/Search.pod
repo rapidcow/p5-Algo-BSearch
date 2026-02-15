@@ -405,13 +405,4 @@ the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Sort-Sear
 L<List::MoreUtils>, L<List::Search>, L<List::BinarySearch>,
 L<List::BinarySearch::XS>.
 
-=head1 AUTHORS
-
-Ethan Meng C<< <ethan at rapidcow.org> >>.
-
-=head1 LICENSE
-
-This module is free software; you can redistribute it
-and/or modify it under the same terms as Perl itself.
-
 =cut
