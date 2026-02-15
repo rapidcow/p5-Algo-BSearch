@@ -3,18 +3,6 @@ package Sort::Search;
 our $VERSION = '0.01_00';
 $VERSION = eval $VERSION;
 
-=pod
-
-=head1 NAME
-
-Sort::Search - binary search on contiguous sorted ranges
-
-=head1 VERSION
-
-Version 0.01
-
-=cut
-
 use 5.006;
 use strict;
 use warnings;
@@ -532,6 +520,10 @@ sub brsrch2 (&$;$$)
 __END__
 
 =pod
+
+=head1 NAME
+
+Sort::Search - binary search on contiguous sorted ranges
 
 =head1 SYNOPSIS
 
