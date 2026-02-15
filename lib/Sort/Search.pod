@@ -29,7 +29,7 @@ Sort::Search - binary search on contiguous sorted ranges
 
 =head1 DESCRIPTION
 
-NOTE:
+B<NOTE>:
 This document is intentionally terse as a technical document.
 Concrete use cases are treated in L<Sort::Search::Cookbook>.
 
