@@ -91,7 +91,7 @@ the leftmost index of the matching range C<[2, 3, 4]>.
   my @B = ( 5, 4, 3, 2, 1 );
   print $B[ bisectr { $_ >= 3 } \@B ];
 
-prints C<-3> because the right-variants prefer to return
+prints C<3> because the right-variants prefer to return
 the rightmost index of the matching range C<[5, 4, 3]>.
 
 For every algorithm that searches for the precise bisection
