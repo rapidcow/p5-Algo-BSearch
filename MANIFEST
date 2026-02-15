@@ -3,4 +3,5 @@ LICENSE                 License
 MANIFEST                This list of files
 README                  Installation guide
 lib/Sort/Search.pm      Module code
+lib/Sort/Search/Cookbook.pod   Practical examples
 t/00-load.t             Test - basic load

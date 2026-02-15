@@ -550,6 +550,10 @@ Sort::Search - binary search on contiguous sorted ranges
 
 =head1 DESCRIPTION
 
+NOTE:
+This document is intentionally terse as a technical document.
+Concrete use cases are treated in L<Sort::Search::Cookbook>.
+
 This module implements two classes of search algorithms,
 which will named separately in this document as the
 I<bisection method> and the (ordinary) I<binary search>

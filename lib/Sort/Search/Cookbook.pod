@@ -1,0 +1,7 @@
+=pod
+
+=head1 NAME
+
+Sort::Search::Cookbook - practical examples for Sort::Search
+
+=cut
