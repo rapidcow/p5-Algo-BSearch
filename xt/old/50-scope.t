@@ -4,11 +4,9 @@ use strict;
 use warnings;
 use Test::More;
 
-BEGIN {
-    require Sort::Search;
-    *bisect = sub (&$$) {
-        scalar &Sort::Search::bisectl
-    }
+use Sort::Search;
+sub bisect (&$$) {
+    scalar &Sort::Search::bisectl;
 }
 
 plan tests => 1;

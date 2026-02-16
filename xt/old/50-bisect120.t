@@ -6,39 +6,37 @@ use warnings;
 use Test::More;
 
 #List::Search qw(bisect1 bisect2 bisect0);
-BEGIN {
-	require Sort::Search;
-	*bisect0 = sub (&$$) {
-		my ($compar, $target, $array) = @_;
-		my $caller = caller;
-		scalar Sort::Search::blsrch0(sub {
-			no strict 'refs';
-			local ${"${caller}::a"} = $_;
-			local ${"${caller}::b"} = $target;
-			$compar->()
-		}, $array)
-	};
-	*bisect1 = sub (&$$) {
-		my ($compar, $target, $array) = @_;
-		my $caller = caller;
-		scalar Sort::Search::blsrch1(sub {
-			no strict 'refs';
-			local ${"${caller}::a"} = $_;
-			local ${"${caller}::b"} = $target;
-			$compar->()
-		}, $array)
-	};
-	*bisect2 = sub (&$$) {
-		my ($compar, $target, $array) = @_;
-		my $caller = caller;
-		Sort::Search::blsrch2(sub {
-			no strict 'refs';
-			local ${"${caller}::a"} = $_;
-			local ${"${caller}::b"} = $target;
-			$compar->()
-		}, $array)
-	};
-}
+use Sort::Search;
+sub bisect0 (&$$) {
+	my ($compar, $target, $array) = @_;
+	my $caller = caller;
+	scalar Sort::Search::blsrch0(sub {
+		no strict 'refs';
+		local ${"${caller}::a"} = $_;
+		local ${"${caller}::b"} = $target;
+		$compar->();
+	}, $array);
+};
+sub bisect1 (&$$) {
+	my ($compar, $target, $array) = @_;
+	my $caller = caller;
+	scalar Sort::Search::blsrch1(sub {
+		no strict 'refs';
+		local ${"${caller}::a"} = $_;
+		local ${"${caller}::b"} = $target;
+		$compar->();
+	}, $array);
+};
+sub bisect2 (&$$) {
+	my ($compar, $target, $array) = @_;
+	my $caller = caller;
+	Sort::Search::blsrch2(sub {
+		no strict 'refs';
+		local ${"${caller}::a"} = $_;
+		local ${"${caller}::b"} = $target;
+		$compar->();
+	}, $array);
+};
 
 plan tests => 56;
 
