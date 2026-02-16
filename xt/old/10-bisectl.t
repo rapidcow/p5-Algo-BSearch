@@ -33,11 +33,11 @@ is ((bisectl { 0 } 0, 0), 0, "degenerate case of all F");
 #   && -x-1>sqrt(i) <=> x*x<=i && (x+1)(x+1)>i  / <=> x<0.
 #
 {
-    # named subroutines have package scope :(
-    # https://www.perlmonks.org/?node_id=741744
-    my $isqrt = sub {
-        my ($i) = @_;
-        return -bisectl { $_ * $_ <= $i } -$i, 0;
-    };
-    is ($isqrt->(2025), 45, "isqrt with bisectl");
+	# named subroutines have package scope :(
+	# https://www.perlmonks.org/?node_id=741744
+	my $isqrt = sub {
+		my ($i) = @_;
+		return -bisectl { $_ * $_ <= $i } -$i, 0;
+	};
+	is ($isqrt->(2025), 45, "isqrt with bisectl");
 }
