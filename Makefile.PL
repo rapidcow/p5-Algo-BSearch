@@ -8,7 +8,7 @@ my %WriteMakefileArgs = (
 	NAME             => 'Sort::Search',
 	AUTHOR           => q{Ethan Meng <ethan@rapidcow.org>},
 	VERSION_FROM     => 'lib/Sort/Search.pm',
-	ABSTRACT_FROM    => 'lib/Sort/Search.pm',
+	ABSTRACT_FROM    => 'lib/Sort/Search.pod',
 	# perl_5 is the same license as (Artistic 1 & GPL 1 or later)
 	# https://metacpan.org/pod/CPAN::Meta::Spec#license
 	LICENSE          => 'perl_5',
