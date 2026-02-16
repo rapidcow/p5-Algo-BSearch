@@ -470,7 +470,7 @@ sub blsrch2_map
 	# Find a sufficiently close candidate for upper bound,
 	# assuming there aren't too many equal values around?
 	my ($prev, $next) = ($lower, $lower);
-	for (my $step = 1; $next < $hi; $step <<= 1) {
+	for (my $step = 1; $hi > $next; $step <<= 1) {
 		# Do not step on $hi, $ord could be undefined there
 		if ($hi - $next <= $step) {
 			$next = $hi;
@@ -494,7 +494,7 @@ sub brsrch2_map
 	my ($ord, $map, $hi, $lo) = @_;
 	my $lower = bisectr_map(0, sub { &$ord >= 0 }, $map, $hi, $lo);
 	my ($prev, $next) = ($lower, $lower);
-	for (my $step = 1; $next - $step > $lo; $step <<= 1) {
+	for (my $step = 1; $next > $lo; $step <<= 1) {
 		# Do not step on $lo for the same reason
 		if ($next - $lo <= $step) {
 			$next = $lo;
