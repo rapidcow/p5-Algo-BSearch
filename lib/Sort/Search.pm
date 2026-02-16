@@ -187,7 +187,22 @@ sub bisectl_map
 	while ($lo < $hi) {
 		# Prefer floor of (L+H)/2, so that $mid < $hi,
 		# and so either branch is guaranteed to converge.
-		$mid = $lo + (($hi - $lo) >> 1);
+		if (!defined $mid && $lo < 0 && $hi > 0) {
+			# We are in the first iteration of a (possibly?)
+			# large range.  Compute the midpoint in a way
+			# that doesn't overflow into a float (NV).
+			my $sum = $lo + $hi;
+			if ($sum < 0) {
+				# >> is NOT an arithmetic shift!
+				# We must preserve the sign bit.
+				$mid = - ((1 - $sum) >> 1);
+			} else {
+				$mid = $sum >> 1;
+			}
+		} else {
+			$mid = $lo + (($hi - $lo) >> 1);
+		}
+
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($res = $ok->($mid)) {
@@ -255,7 +270,17 @@ sub bisectr_map
 	while ($lo < $hi) {
 		# Prefer ceiling of (L+H)/2, so that $lo > $mid,
 		# and so either branch is guaranteed to converge.
-		$mid = $lo + (($hi - $lo + 1) >> 1);
+		if (!defined $mid && $lo < 0 && $hi > 0) {
+			# Same overflow guard for here.
+			my $sum = $lo + $hi;
+			if ($sum < 0) {
+				$mid = - ((-$sum) >> 1);
+			} else {
+				$mid = ($sum + 1) >> 1;
+			}
+		} else {
+			$mid = $lo + (($hi - $lo + 1) >> 1);
+		}
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($res = $ok->($mid)) {
@@ -338,7 +363,16 @@ sub blsrch_map
 	my $want3 = wantarray and want(3);
 	while ($lo < $hi) {
 		# Pick floor( (L+H)/2 )
-		$mid = $lo + (($hi - $lo) >> 1);
+		if (!defined $mid && $lo < 0 && $hi > 0) {
+			my $sum = $lo + $hi;
+			if ($sum < 0) {
+				$mid = - ((1 - $sum) >> 1);
+			} else {
+				$mid = $sum >> 1;
+			}
+		} else {
+			$mid = $lo + (($hi - $lo) >> 1);
+		}
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($ok->($res = $ord->($mid))) {
@@ -411,7 +445,16 @@ sub brsrch_map
 	my $want3 = wantarray and want(3);
 	while ($lo < $hi) {
 		# Pick ceil( (L+H)/2 )
-		$mid = $lo + (($hi - $lo + 1) >> 1);
+		if (!defined $mid && $lo < 0 && $hi > 0) {
+			my $sum = $lo + $hi;
+			if ($sum < 0) {
+				$mid = - ((-$sum) >> 1);
+			} else {
+				$mid = ($sum + 1) >> 1;
+			}
+		} else {
+			$mid = $lo + (($hi - $lo + 1) >> 1);
+		}
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($ok->($res = $ord->($mid))) {
