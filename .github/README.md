@@ -71,7 +71,7 @@ You can also look for information at:
 *   [RT, CPAN's request tracker](https://rt.cpan.org/NoAuth/Bugs.html?Dist=Sort-Search) (report bugs here)
 *   [CPAN Ratings](https://cpanratings.perl.org/d/Sort-Search)
 *   [Search CPAN](https://metacpan.org/release/Sort-Search)
-*   [My project homepage](https://www.rapidcow.org/lib/perl5/Sort-Search/)
+*   [My project homepage](https://pub.rapidcow.org/CPAN/Sort-Search/)
 *   [Git repository](https://github.com/rapidcow/p5-Sort-Search) (web view)
 
 Only the last two links work at the moment.
