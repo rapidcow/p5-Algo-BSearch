@@ -442,7 +442,7 @@ More about this distribution can be found at:
 
 =item *
 
-Home page: L<https://www.rapidcow.org/lib/perl5/Sort-Search/>
+Home page: L<https://pub.rapidcow.org/CPAN/Sort-Search/>
 
 =item *
 
