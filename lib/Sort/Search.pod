@@ -124,6 +124,8 @@ For C<brsrchx>, it's the same against C<brsrch0>.
 
 =begin VOID
 
+XXX: Define search range???
+
 The observant reader will quickly notice that the L-R
 variants make each other redundant.
 

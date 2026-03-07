@@ -4,4 +4,87 @@
 
 Sort::Search::Cookbook - practical examples for Sort::Search
 
+=head1 DEFINITION
+
+The functions "predicate", "ordering", "search range" are
+the same as they are defined in L<Sort::Search/DESCRIPTION>.
+In addition, assume these variables mean the following:
+
+=over
+
+=item C<$_>
+
+The current element during a search.
+
+=item C<$idx>
+
+The array index result found by a search.
+The index may not correspond to a real
+element in the array, in which case the
+following two variables would be C<undef>.
+
+=item C<$cmp>
+
+The comparison result returned by the
+predicate/ordering on the found element.
+If there is no such element, this is C<undef>.
+
+=item C<$elt>
+
+The found element, or C<undef> if none was found.
+
+=back
+
+=head1 SEARCH FOR AN EXACT MATCH
+
+Given the numerically sorted array:
+
+    my @array = qw( 12 17a 17b 17c 21 );
+
+and the numeric ordering:
+
+                          (-) $_  precedes $want
+    sub { $_ <=> $want }  (0) $_  equals   $want
+                          (+) $_  follows  $want
+
+you can find the first match like this:
+
+    sub left_search {
+        my ($array, $want) = @_;
+        my ($idx, $cmp, $elt) = blsrch0 { $_ <=> $want } $array;
+        if (!defined $cmp) { print "$want not found anywhere\n"; }
+        elsif ($cmp != 0)  { print "$want not found; the best "
+                                 . "I got was $elt at [$idx]\n"; }
+        else               { print "$want found at $elt [$idx] :)\n"; }
+    }
+
+    left_search \@array => 11;   # 11 not found; the best I got was 12 at [0]
+    left_search \@array => 12;   # 12 found at 12 [0] :)
+    left_search \@array => 17;   # 17 found at 17a [1] :)
+    left_search \@array => 21;   # 21 found at 21 [4] :)
+    left_search \@array => 99;   # 99 not found anywhere
+
+or the last match (17c) by index like this:
+
+    sub right_search {
+        my ($array, $want) = @_;
+        my ($idx, $cmp, $elt) = brsrch0 { $want <=> $_ } $array;
+        if (!defined $cmp) { print "$want not found anywhere\n"; }
+        elsif ($cmp != 0)  { print "$want not found; the best "
+                                 . "I got was $elt at [$idx]\n"; }
+        else               { print "$want found at $elt [$idx] :)\n"; }
+    }
+
+    right_search \@array => 11;  # 11 not found; the best I got was 12 at [0]
+    right_search \@array => 12;  # 12 found at 12 [0] :)
+    right_search \@array => 17;  # 17 found at 17c [3] :)
+    right_search \@array => 21;  # 21 found at 21 [4] :)
+    right_search \@array => 99;  # 99 not found anywhere
+
+=head1 COMPARISON WITH OTHERS
+
+=head1 SEE ALSO
+
+L<Sort::Search>, the main documentation.
+
 =cut
