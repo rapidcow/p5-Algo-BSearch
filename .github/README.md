@@ -18,9 +18,13 @@ It deals with:
     * Bisection point with respect to a predicate:
         bisectl   bixectl   |   bixectr   bisectr
 
-    * Trisection point with respect to an ordering:
+    * Upper/lower bisection point with respect to an ordering:
         blsrch0   blsrch1   |   brsrch1   blsrch0
         blsrchx   blsrch2   |   brsrch2   brsrchx
+
+See Sort/Search/Cookbook.pod for examples, and Sort/Search.pod
+for the nitty gritty details.  (Read src/*.txt for a paper-ish
+slow-paced introduction to it all. ;)
 
 
 ## Install
@@ -86,3 +90,21 @@ See [LICENSE][] for a copy of Perl's licenses.
 -->
 
 [LICENSE]: https://github.com/rapidcow/p5-Sort-Search/blob/master/LICENSE
+
+
+## Acknowledgement
+
+Many thanks to the following libraries/resources:
+
+*   Go "[sort](https://go.dev/src/sort/search.go)" package
+*   Python "[bisect](https://github.com/python/cpython/blob/main/Lib/bisect.py)" module
+*   "[Algorithms/Sorting/Binary Search][]" module from GNU libstdc++
+    (`lower_bound`, `upper_bound`, `equal_range` namely)
+*   [List::MoreUtils::PP][] for a large portion of the syntax! :^)
+*   Ruby "[bsearch][]" method (the "x" variants inspired by Find-any mode)
+*   RTL binary search (bisectr et al.) from [USACO Guide][] "last_true"
+
+[Algorithms/Sorting/Binary Search]: https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a01630.html
+[List::MoreUtils::PP]: https://metacpan.org/dist/List-MoreUtils/source/lib/List/MoreUtils/PP.pm
+[bsearch]: https://docs.ruby-lang.org/en/master/language/bsearch_rdoc.html
+[USACO Guide]: https://usaco.guide/silver/binary-search#finding-the-maximum-x-such-that-fx--true

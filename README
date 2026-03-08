@@ -20,9 +20,13 @@ It deals with:
      * Bisection point with respect to a predicate:
          bisectl   bixectl   |   bixectr   bisectr
 
-     * Trisection point with respect to an ordering:
+     * Upper/Lower bisection points with respect to an ordering:
          blsrch0   blsrch1   |   brsrch1   blsrch0
          blsrchx   blsrch2   |   brsrch2   brsrchx
+
+See Sort/Search/Cookbook.pod for examples, and Sort/Search.pod
+for the nitty gritty details.  (Read src/*.txt for a paper-ish
+slow-paced introduction to it all. ;)
 
 NOTE: This module has not been fully developed or released yet!
 Most links below do not work yet.
@@ -70,3 +74,20 @@ You can also look for information at:
 This module is free software; you can redistribute it
 and/or modify it under the same terms as Perl itself.
 See LICENSE for a copy of Perl's licenses.
+
+
+= ACKNOWLEDGEMENT =
+
+Many thanks to the following libraries/resources:
+
+  * Go "sort" package <https://go.dev/src/sort/search.go>
+  * Python "bisect" module <https://docs.python.org/3/library/bisect.html>
+  * "Algorithms/Sorting/Binary Search" module from GNU libstdc++
+     (lower_bound, upper_bound, equal_range namely)
+    <https://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/a01630.html>
+  * List::MoreUtils::PP for a large portion of the syntax! :^)
+    <https://metacpan.org/dist/List-MoreUtils/source/lib/List/MoreUtils/PP.pm>
+  * Ruby "bsearch" method (the "x" variants inspired by Find-any mode)
+    <https://docs.ruby-lang.org/en/master/language/bsearch_rdoc.html>
+  * RTL binary search (bisectr et al.) from USACO Guide "last_true"
+    <https://usaco.guide/silver/binary-search#finding-the-maximum-x-such-that-fx--true>
