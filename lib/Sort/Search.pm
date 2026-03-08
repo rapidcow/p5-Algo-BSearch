@@ -36,8 +36,8 @@ BEGIN {
 }
 
 # Orientation flags passed to parse_args
-use constant ORI_L => 1;
-use constant ORI_R => 0;
+use constant LTR => 1;
+use constant RTL => 0;
 
 # Parse input arguments.
 #    $ori:  search orientation (1 for left, 0 for right)
@@ -48,44 +48,43 @@ use constant ORI_R => 0;
 #    ($fun, $map,  $beg, $end)   for ARRAY/CODE form;
 # where $fun is a predicate or an ordering, and
 # $map returns a ref to the image at the index.
-# On parse failure, return nothing and set $@.
-sub parse_args
+# On parse failure, croak.
+sub _parse
 {
-	my ($ori, $args) = @_;
+	my ($ori, @args) = @_;
+	my $caller = (caller)[3];  # subroutine name
 	# This should never happen if args are checked
 	# with prototype.  It's still a good idea to
 	# check though, as prototypes can be bypassed.
-	if (@$args < 2) {
-		my $nargs = @$args;
-		$@ = <<EOM;
+	if (@args < 2) {
+		my $nargs = @args;
+		Carp::croak($caller, ": ", <<EOM);
 not enough arguments (expected at least 2, got $nargs)
 EOM
-		return;
 	}
-	my ($fun, $arg) = splice(@$args, 0, 2);
+	my ($fun, $arg) = splice @args, 0, 2;
 	my ($beg, $end);
 	# If $arg is a normal ARRAY ref or a blessed
 	# ARRAY ref, map its index to its elements.
 	# <https://stackoverflow.com/a/64160/19411800>
 	# (Tied ARRAY refs should be OK too.)
 	if (UNIVERSAL::isa($arg, 'ARRAY')) {
-		if (@$args > 2) {
-			my $nargs = @$args + 2;
-			$@ = <<EOM;
+		if (@args > 2) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
 too many arguments for ARRAY form (expected at most 4, got $nargs)
 EOM
-			return;
 		}
 		if ($ori) {
 			# Left search
-			my ($lo, $hi) = @$args;
+			my ($lo, $hi) = @args;
 			defined $lo or $lo = $[;
 			defined $hi or $hi = 1 + $#$arg;
 			($beg, $end) = ($lo, $hi);
 		}
 		else {
 			# Right search
-			my ($hi, $lo) = @$args;
+			my ($hi, $lo) = @args;
 			defined $hi or $hi = $#$arg;
 			defined $lo or $lo = $[ - 1;
 			($beg, $end) = ($hi, $lo);
@@ -93,26 +92,24 @@ EOM
 		($fun, sub { \$arg->[$_[0]] }, $beg, $end);
 	}
 	elsif (UNIVERSAL::isa($arg, 'CODE')) {
-		if (@$args < 1) {
-			my $nargs = @$args + 2;
-			$@ = <<EOM;
+		if (@args < 1) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
 not enough arguments for CODE form (expected at least 3, got $nargs)
 EOM
-			return;
 		}
-		if (@$args > 2) {
-			my $nargs = @$args + 2;
-			$@ = <<EOM;
+		if (@args > 2) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
 too many arguments for CODE form (expected at most 4, got $nargs)
 EOM
-			return;
 		}
-		if (@$args == 2) {
-			($beg, $end) = (@$args);
+		if (@args == 2) {
+			($beg, $end) = (@args);
 		}
 		else {
 			# $hi = $arg, $lo inferred
-			my $arg = shift @$args;
+			my $arg = shift @args;
 			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
 		($fun, $arg, $beg, $end);
@@ -121,22 +118,63 @@ EOM
 		# Same way as how we handle the CODE form above,
 		# except $arg is itself an index, so the argument
 		# counts are all shifted down by 1...
-		if (@$args > 1) {
-			my $nargs = @$args + 2;
-			$@ = <<EOM;
+		if (@args > 1) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
 too many arguments for index form (expected at most 3, got $nargs)
 EOM
-			return;
 		}
-		if (@$args == 1) {
-			unshift @$args, $arg;
-			($beg, $end) = (@$args);
+		if (@args == 1) {
+			unshift @args, $arg;
+			($beg, $end) = (@args);
 		}
 		else {
 			# $hi = $arg, $lo inferred
 			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
 		($fun, undef, $beg, $end);
+	}
+}
+
+# Very silly workaround for finding the arithmetic
+# mean with mixed IV/UV... this should not break it
+# for bigint since we only do right shifts and only
+# on positive integers.
+#
+# _lmean finds the floor of ($lo+$hi)/2 while _rmean
+# finds the ceiling.  Caller ensures that $lo < $hi.
+sub _lmean
+{
+	my ($lo, $hi) = @_;
+	if ($lo < 0 && $hi > 0) {
+		# $lo and $hi may be very far apart.
+		# Compute the midpoint in a way that
+		# doesn't overflow into a float (NV).
+		my $sum = $lo + $hi;
+		if ($sum < 0) {
+			# >> on a positive integer...
+			return - ((1 - $sum) >> 1);
+		} else {
+			return $sum >> 1;
+		}
+	} else {
+		return $lo + (($hi - $lo) >> 1);
+	}
+}
+
+sub _rmean
+{
+	my ($lo, $hi) = @_;
+	if ($lo < 0 && $hi > 0) {
+		# Same overflow guard for here.
+		my $sum = $lo + $hi;
+		if ($sum < 0) {
+			return - ((-$sum) >> 1);
+		} else {
+			return ($sum + 1) >> 1;
+		}
+	} else {
+		return $lo + (($hi - $lo + 1) >> 1);
 	}
 }
 
@@ -170,7 +208,7 @@ EOM
 # two should therefore be equivalent to $ok->($index)
 # and ${$map->($index)} iff $index is a "real" index
 # on said range [ $lo, $hi ).
-sub bisectl_map
+sub _bisectl
 {
 	my ($any, $ok, $map, $lo, $hi) = @_;
 	# Fun fact!  The following are written in the order
@@ -187,22 +225,7 @@ sub bisectl_map
 	while ($lo < $hi) {
 		# Prefer floor of (L+H)/2, so that $mid < $hi,
 		# and so either branch is guaranteed to converge.
-		if (!defined $mid && $lo < 0 && $hi > 0) {
-			# We are in the first iteration of a (possibly?)
-			# large range.  Compute the midpoint in a way
-			# that doesn't overflow into a float (NV).
-			my $sum = $lo + $hi;
-			if ($sum < 0) {
-				# >> is NOT an arithmetic shift!
-				# We must preserve the sign bit.
-				$mid = - ((1 - $sum) >> 1);
-			} else {
-				$mid = $sum >> 1;
-			}
-		} else {
-			$mid = $lo + (($hi - $lo) >> 1);
-		}
-
+		$mid = _lmean($lo, $hi);
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($res = $ok->($mid)) {
@@ -218,19 +241,8 @@ sub bisectl_map
 	$want2 ? ($hi, $cmp, $elt) : $hi;
 }
 
-sub bisectl (&$;$$)
-{
-	local $@;
-	my @args = parse_args(ORI_L, \@_) or Carp::croak("bisectl: $@");
-	bisectl_map(0, @args);
-}
-
-sub bixectl (&$;$$)
-{
-	local $@;
-	my @args = parse_args(ORI_L, \@_) or Carp::croak("bixectl: $@");
-	bisectl_map(1, @args);
-}
+sub bisectl (&$;$$) { _bisectl(0, _parse(LTR, @_)); }
+sub bixectl (&$;$$) { _bisectl(1, _parse(LTR, @_)); }
 
 # This is the right bisection algorithm.  It finds the
 # index of the rightmost TRUE on the range ( $lo, $hi ],
@@ -257,7 +269,7 @@ sub bixectl (&$;$$)
 # the left bisection method.)
 #
 # The exact return value is documented above bisectl_map.
-sub bisectr_map
+sub _bisectr
 {
 	my ($any, $ok, $map, $hi, $lo) = @_;
 	my ($cmp, $res, $elt, $img, $mid);
@@ -270,17 +282,7 @@ sub bisectr_map
 	while ($lo < $hi) {
 		# Prefer ceiling of (L+H)/2, so that $lo > $mid,
 		# and so either branch is guaranteed to converge.
-		if (!defined $mid && $lo < 0 && $hi > 0) {
-			# Same overflow guard for here.
-			my $sum = $lo + $hi;
-			if ($sum < 0) {
-				$mid = - ((-$sum) >> 1);
-			} else {
-				$mid = ($sum + 1) >> 1;
-			}
-		} else {
-			$mid = $lo + (($hi - $lo + 1) >> 1);
-		}
+		$mid = _rmean($lo, $hi);
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($res = $ok->($mid)) {
@@ -296,19 +298,8 @@ sub bisectr_map
 	$want2 ? ($lo, $cmp, $elt) : $lo;
 }
 
-sub bisectr (&$;$$)
-{
-	local $@;
-	my @args = parse_args(ORI_R, \@_) or Carp::croak("bisectr: $@");
-	bisectr_map(0, @args);
-}
-
-sub bixectr (&$;$$)
-{
-	local $@;
-	my @args = parse_args(ORI_R, \@_) or Carp::croak("bixectr: $@");
-	bisectr_map(1, @args);
-}
+sub bisectr (&$;$$) { _bisectr(0, _parse(RTL, @_)); }
+sub bixectr (&$;$$) { _bisectr(1, _parse(RTL, @_)); }
 
 # This is binary left search (blsrch[01]).  Different
 # from before, we are passed an ordering that returns
@@ -355,7 +346,7 @@ sub bixectr (&$;$$)
 # find a zero.  If you care about an _exact_ match, you
 # should call in list context and check if $cmp is 0 or
 # undef (or compare it again yourself!  TMTOWTDI... :)
-sub blsrch_map
+sub _blsrch
 {
 	my ($any, $ok, $ord, $map, $lo, $hi) = @_;
 	my ($cmp, $res, $elt, $img, $mid);
@@ -363,16 +354,7 @@ sub blsrch_map
 	my $want3 = wantarray and want(3);
 	while ($lo < $hi) {
 		# Pick floor( (L+H)/2 )
-		if (!defined $mid && $lo < 0 && $hi > 0) {
-			my $sum = $lo + $hi;
-			if ($sum < 0) {
-				$mid = - ((1 - $sum) >> 1);
-			} else {
-				$mid = $sum >> 1;
-			}
-		} else {
-			$mid = $lo + (($hi - $lo) >> 1);
-		}
+		$mid = _lmean($lo, $hi);
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($ok->($res = $ord->($mid))) {
@@ -388,26 +370,9 @@ sub blsrch_map
 	$want2 ? ($hi, $cmp, $elt) : $hi;
 }
 
-sub blsrch0 (&$;$$)
-{
-	local $@;
-	my @args = parse_args(ORI_L, \@_) or Carp::croak("blsrch0: $@");
-	blsrch_map(0, sub { $_[0] >= 0 }, @args);
-}
-
-sub blsrch1 (&$;$$)
-{
-	local $@;
-	my @args = parse_args(ORI_L, \@_) or Carp::croak("blsrch1: $@");
-	blsrch_map(0, sub { $_[0] > 0 }, @args);
-}
-
-sub blsrchx (&$;$$)
-{
-	local $@;
-	my @args = parse_args(ORI_L, \@_) or Carp::croak("blsrchx: $@");
-	blsrch_map(1, sub { $_[0] >= 0 }, @args);
-}
+sub blsrch0 (&$;$$) { _blsrch(0, sub { $_[0] >= 0 }, _parse(LTR, @_)); }
+sub blsrch1 (&$;$$) { _blsrch(0, sub { $_[0] >  0 }, _parse(LTR, @_)); }
+sub blsrchx (&$;$$) { _blsrch(1, sub { $_[0] >= 0 }, _parse(LTR, @_)); }
 
 # This is binary right search (brsrch[01]), similarly.
 # This ordering is assumed to be monotonic DECREASING:
@@ -436,8 +401,8 @@ sub blsrchx (&$;$$)
 #
 # The x (brsrchx) variant works the same as 0 (brsrch0),
 # except it returns on any zero.  Same caveats apply
-# (look above for blsrch_map...)
-sub brsrch_map
+# (look above for _blsrch...)
+sub _brsrch
 {
 	my ($any, $ok, $ord, $map, $hi, $lo) = @_;
 	my ($cmp, $res, $elt, $img, $mid);
@@ -445,16 +410,7 @@ sub brsrch_map
 	my $want3 = wantarray and want(3);
 	while ($lo < $hi) {
 		# Pick ceil( (L+H)/2 )
-		if (!defined $mid && $lo < 0 && $hi > 0) {
-			my $sum = $lo + $hi;
-			if ($sum < 0) {
-				$mid = - ((-$sum) >> 1);
-			} else {
-				$mid = ($sum + 1) >> 1;
-			}
-		} else {
-			$mid = $lo + (($hi - $lo + 1) >> 1);
-		}
+		$mid = _rmean($lo, $hi);
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($ok->($res = $ord->($mid))) {
@@ -470,26 +426,9 @@ sub brsrch_map
 	$want2 ? ($hi, $cmp, $elt) : $hi;
 }
 
-sub brsrch0 (&$;$$)
-{
-	local $@;
-	my @args = parse_args(ORI_R, \@_) or Carp::croak("brsrch0: $@");
-	brsrch_map(0, sub { $_[0] >= 0 }, @args);
-}
-
-sub brsrch1 (&$;$$)
-{
-	local $@;
-	my @args = parse_args(ORI_R, \@_) or Carp::croak("brsrch1: $@");
-	brsrch_map(0, sub { $_[0] > 0 }, @args);
-}
-
-sub brsrchx (&$;$$)
-{
-	local $@;
-	my @args = parse_args(ORI_R, \@_) or Carp::croak("brsrchx: $@");
-	brsrch_map(1, sub { $_[0] >= 0 }, @args);
-}
+sub brsrch0 (&$;$$) { _brsrch(0, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
+sub brsrch1 (&$;$$) { _brsrch(0, sub { $_[0] >  0 }, _parse(RTL, @_)); }
+sub brsrchx (&$;$$) { _brsrch(1, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
 
 # b?srch2 is a shorthand that returns b?srch0 and b?srch1.
 # Effectively, this gives you a half-open interval for all
@@ -506,10 +445,10 @@ sub brsrchx (&$;$$)
 # Because we don't really care about the intermediate values
 # themselves (or be able to return them, for that matter),
 # we can get away with using bisect instead of b?srch... :)
-sub blsrch2_map
+sub _blsrch2
 {
 	my ($ord, $map, $lo, $hi) = @_;
-	my $lower = bisectl_map(0, sub { &$ord >= 0 }, $map, $lo, $hi);
+	my $lower = _bisectl(0, sub { &$ord >= 0 }, $map, $lo, $hi);
 	# Find a sufficiently close candidate for upper bound,
 	# assuming there aren't too many equal values around?
 	my ($prev, $next) = ($lower, $lower);
@@ -527,15 +466,15 @@ sub blsrch2_map
 		last if $ord->($next) > 0;
 		$prev = $next;
 	}
-	my $upper = bisectl_map(0, sub { &$ord > 0 }, $map, $prev, $next);
+	my $upper = _bisectl(0, sub { &$ord > 0 }, $map, $prev, $next);
 	wantarray ? ($lower, $upper) : $upper - $lower;
 }
 
 # And the mirror image...
-sub brsrch2_map
+sub _brsrch2
 {
 	my ($ord, $map, $hi, $lo) = @_;
-	my $lower = bisectr_map(0, sub { &$ord >= 0 }, $map, $hi, $lo);
+	my $lower = _bisectr(0, sub { &$ord >= 0 }, $map, $hi, $lo);
 	my ($prev, $next) = ($lower, $lower);
 	for (my $step = 1; $next > $lo; $step <<= 1) {
 		# Do not step on $lo for the same reason
@@ -548,22 +487,11 @@ sub brsrch2_map
 		last if $ord->($next) > 0;
 		$prev = $next;
 	}
-	my $upper = bisectr_map(0, sub { &$ord > 0 }, $map, $prev, $next);
+	my $upper = _bisectr(0, sub { &$ord > 0 }, $map, $prev, $next);
 	wantarray ? ($lower, $upper) : $lower - $upper;
 }
 
-sub blsrch2 (&$;$$)
-{
-	local $@;
-	my @args = parse_args(ORI_L, \@_) or Carp::croak("blsrch2: $@");
-	blsrch2_map(@args);
-}
-
-sub brsrch2 (&$;$$)
-{
-	local $@;
-	my @args = parse_args(ORI_R, \@_) or Carp::croak("brsrch2: $@");
-	brsrch2_map(@args);
-}
+sub blsrch2 (&$;$$) { _blsrch2(_parse(LTR, @_)); }
+sub brsrch2 (&$;$$) { _brsrch2(_parse(RTL, @_)); }
 
 1;
