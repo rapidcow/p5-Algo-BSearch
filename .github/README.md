@@ -10,9 +10,6 @@
 
 # Sort::Search - binary search on sorted ranges
 
-Copyright (c) 2025–2026 Ethan Meng &lt;ethan at rapidcow.org&gt;.
-
-
 ## Description
 
 This is a pure-Perl module for searching for on sorted arrays.
