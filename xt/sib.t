@@ -68,4 +68,35 @@ for my $i (0..11) {
 	is ($lo, $rngRH[$i]->[0], "RH upper bound for i=$i");
 }
 
+{
+	my @verylow = (-1, -1, -1, -1, 0);
+	my (@trace, $lo, $hi);
+
+	@trace = ();
+	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> 99 } }, \@verylow;
+	diag "i=99 @trace => [$lo,$hi]";
+
+	@trace = ();
+	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> -2 } }, \@verylow;
+	diag "i=-2 @trace => [$lo,$hi]";
+
+	@trace = ();
+	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> -1 } }, \@verylow;
+	diag "i=-1 @trace => [$lo,$hi]";
+
+	@trace = ();
+	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> 0 } }, \@verylow;
+	diag "i=0 @trace => [$lo,$hi]";
+}
+
+{
+	my @trace;
+	@trace = ();
+	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ < 97 ? -1 : 98 <= $_ ? 1 : 0 } }, 0, 100;
+	diag "i=0 @trace => [$lo,$hi]";
+
+	@trace = ();
+	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ < 97 ? -1 : 98 <= $_ ? 1 : 0 } }, -2147483648, 2147483647;
+	diag "i=0 @trace => [$lo,$hi]";
+}
 done_testing();
