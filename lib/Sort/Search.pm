@@ -479,25 +479,27 @@ sub _blsrch2
 	wantarray ? ($lo, $hi) : ($hi - $lo);
 }
 
-# And the mirror image...
 sub _brsrch2
 {
 	my ($ord, $map, $hi, $lo) = @_;
-	my $lower = _bisectr(0, sub { &$ord >= 0 }, $map, $hi, $lo);
-	my ($prev, $next) = ($lower, $lower);
-	for (my $step = 1; $next > $lo; $step <<= 1) {
-		# Do not step on $lo for the same reason
-		if ($next - $lo <= $step) {
-			$next = $lo;
+	my ($cmp, $res, $img, $mid);
+	while ($lo < $hi) {
+		# Pick ceil( (L+H)/2 )
+		$mid = _rmean($lo, $hi);
+		$img = $map ? $map->($mid) : \$mid;
+		local *_ = $img;
+		$res = $ord->($mid);
+		if ($res == 0) {
+			$hi = _bisectr(0, sub { &$ord >= 0 }, $map, $hi, $mid);
+			$lo = _bisectr(0, sub { &$ord > 0 }, $map, $mid - 1, $lo);
 			last;
+		} elsif ($res > 0) {
+			$lo = $mid;       # include
+		} else {
+			$hi = $mid - 1;   # exclude
 		}
-		$next -= $step;
-		local *_ = $map ? $map->($next) : \$next;
-		last if $ord->($next) > 0;
-		$prev = $next;
 	}
-	my $upper = _bisectr(0, sub { &$ord > 0 }, $map, $prev, $next);
-	wantarray ? ($lower, $upper) : $lower - $upper;
+	wantarray ? ($hi, $lo) : ($hi - $lo);
 }
 
 sub blsrch2 (&$;$$) { _blsrch2(_parse(LTR, @_)); }
