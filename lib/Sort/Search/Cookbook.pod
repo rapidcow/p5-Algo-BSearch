@@ -49,7 +49,7 @@ and the numeric ordering:
 
 you can find the first match like this:
 
-    sub left_search {
+    sub lsearch {
         my ($array, $want) = @_;
         my ($idx, $cmp, $elt) = blsrch0 { $_ <=> $want } $array;
         if (!defined $cmp) { print "$want not found anywhere\n"; }
@@ -58,15 +58,15 @@ you can find the first match like this:
         else               { print "$want found at $elt [$idx] :)\n"; }
     }
 
-    left_search \@array => 11;   # 11 not found; the best I got was 12 at [0]
-    left_search \@array => 12;   # 12 found at 12 [0] :)
-    left_search \@array => 17;   # 17 found at 17a [1] :)
-    left_search \@array => 21;   # 21 found at 21 [4] :)
-    left_search \@array => 99;   # 99 not found anywhere
+    lsearch \@array => 11;   # 11 not found; the best I got was 12 at [0]
+    lsearch \@array => 12;   # 12 found at 12 [0] :)
+    lsearch \@array => 17;   # 17 found at 17a [1] :)
+    lsearch \@array => 21;   # 21 found at 21 [4] :)
+    lsearch \@array => 99;   # 99 not found anywhere
 
 or the last match (17c) by index like this:
 
-    sub right_search {
+    sub rsearch {
         my ($array, $want) = @_;
         my ($idx, $cmp, $elt) = brsrch0 { $want <=> $_ } $array;
         if (!defined $cmp) { print "$want not found anywhere\n"; }
@@ -75,11 +75,11 @@ or the last match (17c) by index like this:
         else               { print "$want found at $elt [$idx] :)\n"; }
     }
 
-    right_search \@array => 11;  # 11 not found; the best I got was 12 at [0]
-    right_search \@array => 12;  # 12 found at 12 [0] :)
-    right_search \@array => 17;  # 17 found at 17c [3] :)
-    right_search \@array => 21;  # 21 found at 21 [4] :)
-    right_search \@array => 99;  # 99 not found anywhere
+    rsearch \@array => 11;   # 11 not found; the best I got was 12 at [0]
+    rsearch \@array => 12;   # 12 found at 12 [0] :)
+    rsearch \@array => 17;   # 17 found at 17c [3] :)
+    rsearch \@array => 21;   # 21 found at 21 [4] :)
+    rsearch \@array => 99;   # 99 not found anywhere
 
 =head1 COMPARISON WITH OTHERS
 
