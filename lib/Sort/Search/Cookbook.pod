@@ -75,11 +75,11 @@ or the last match (17c) by index like this:
         else               { print "$want found at $elt [$idx] :)\n"; }
     }
 
-    rsearch \@array => 11;   # 11 not found; the best I got was 12 at [0]
+    rsearch \@array => 11;   # 11 not found anywhere
     rsearch \@array => 12;   # 12 found at 12 [0] :)
     rsearch \@array => 17;   # 17 found at 17c [3] :)
     rsearch \@array => 21;   # 21 found at 21 [4] :)
-    rsearch \@array => 99;   # 99 not found anywhere
+    rsearch \@array => 99;   # 99 not found; the best I got was 21 at [4]
 
 =head1 COMPARISON WITH OTHERS
 
