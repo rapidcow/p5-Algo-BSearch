@@ -18,7 +18,8 @@ The common way the problem is framed is with finding a
 needle in a haystack, which helps with the imagery, so
 I'll go with that.
 
-(Concretely though, it's just elements in an array. ;P)
+(Concretely though, haystack are just elements in an array,
+and the needle is whatever target we're looking for. ;P)
 
 So how does binary search help with searching for a needle
 in a haystack?  The key insight is that we can convert the
