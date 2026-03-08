@@ -336,7 +336,7 @@ while C<< $upper_x - 1 >> is the last instance where C<< $ord <= 0 >>.
 
 =back
 
-In list context, C<blsect2> returns both C<$lower> and C<$upper>,
+In list context, C<blsect2> returns both C<$lower> and C<$upper_x>,
 in that order.  In scalar context, it returns the nonnegative
 difference C<$upper_x - $lower>, which equals the number of elements
 for which C<$ord == 0>.
