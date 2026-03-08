@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2025, Ethan Meng <ethan@rapidcow.org>
+# Copyright (c) 2025, 2026, Ethan Meng <ethan@rapidcow.org>
 #
 # This module is free software; you can redistribute it
 # and/or modify it under the same terms as Perl itself.
