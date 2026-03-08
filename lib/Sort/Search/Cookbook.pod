@@ -43,7 +43,18 @@ The found element, or C<undef> if none was found.
 
 =back
 
-=head1 SEARCH FOR AN EXACT MATCH
+You import the appropriate functions into your
+current namespace like this:
+
+    use Sort::Search qw( blsrch0 blsrch1 );
+           # imports `blsrch0', `blsrch1'
+
+... you get the point.  If you need more just add
+more to the list. :)
+
+=head1 EXAMPLES
+
+=head2 Exact match
 
 Given the numerically sorted array:
 
@@ -61,16 +72,16 @@ you can find the first match like this:
         my ($array, $want) = @_;
         my ($idx, $cmp, $elt) = blsrch0 { $_ <=> $want } $array;
         if (!defined $cmp) { print "$want not found anywhere\n"; }
-        elsif ($cmp != 0)  { print "$want not found; the best "
-                                 . "I got was $elt at [$idx]\n"; }
+        elsif ($cmp != 0)  { print "$want not found; best "
+                                 . "I got was $elt [$idx]\n"; }
         else               { print "$want found at $elt [$idx] :)\n"; }
     }
 
-    lsearch \@array => 11;   # 11 not found; the best I got was 12 at [0]
-    lsearch \@array => 12;   # 12 found at 12 [0] :)
-    lsearch \@array => 17;   # 17 found at 17a [1] :)
-    lsearch \@array => 21;   # 21 found at 21 [4] :)
-    lsearch \@array => 99;   # 99 not found anywhere
+    lsearch \@array => 11;  # 11 not found; best I got was 12 [0]
+    lsearch \@array => 12;  # 12 found at 12 [0] :)
+    lsearch \@array => 17;  # 17 found at 17a [1] :)
+    lsearch \@array => 21;  # 21 found at 21 [4] :)
+    lsearch \@array => 99;  # 99 not found anywhere
 
 or the last match (17c) by index like this:
 
@@ -78,16 +89,62 @@ or the last match (17c) by index like this:
         my ($array, $want) = @_;
         my ($idx, $cmp, $elt) = brsrch0 { $want <=> $_ } $array;
         if (!defined $cmp) { print "$want not found anywhere\n"; }
-        elsif ($cmp != 0)  { print "$want not found; the best "
-                                 . "I got was $elt at [$idx]\n"; }
+        elsif ($cmp != 0)  { print "$want not found; best "
+                                 . "I got was $elt [$idx]\n"; }
         else               { print "$want found at $elt [$idx] :)\n"; }
     }
 
-    rsearch \@array => 11;   # 11 not found anywhere
-    rsearch \@array => 12;   # 12 found at 12 [0] :)
-    rsearch \@array => 17;   # 17 found at 17c [3] :)
-    rsearch \@array => 21;   # 21 found at 21 [4] :)
-    rsearch \@array => 99;   # 99 not found; the best I got was 21 at [4]
+    rsearch \@array => 11;  # 11 not found anywhere
+    rsearch \@array => 12;  # 12 found at 12 [0] :)
+    rsearch \@array => 17;  # 17 found at 17c [3] :)
+    rsearch \@array => 21;  # 21 found at 21 [4] :)
+    rsearch \@array => 99;  # 99 not found; best I got was 21 [4]
+
+Notice that the ordering is reversed: C<< $want <=> $_ >>
+instead of C<< $_ <=> $want >>, due to using a right search
+instead of a left search.  The conventional left search may be
+used, though you must check and retrieve the element yourself:
+
+    sub rsearch {
+        my ($array, $want) = @_;
+        my $idx = blsrch1 { $_ <=> $want } $array;
+        --$idx;
+        if ($idx < 0) {
+            print "$want not found anywhere\n";
+        } else {
+            my $elt = $array->[$idx];
+            my $cmp = $elt <=> $want;
+            print $cmp == 0
+            ? "$want found at $elt [$idx] :)\n"
+            : "$want not found; best I got was $elt [$idx]\n"
+        }
+    }
+
+    # The output is identical to above.
+
+To get all matches at once, use C<blsrch2> or C<brsrch2>:
+
+    sub srchall {
+        my ($lo, $hi);
+        my ($array, $want) = @_;
+
+        # EITHER:
+        ($lo, $hi) = blsrch2 { $_ <=> $want } $array;
+        print "[$_]=$array->[$_] " for ($lo .. $hi-1);
+
+        # OR:
+        ($hi, $lo) = brsrch2 { $want <=> $_ } $array;
+        print "[$_]=$array->[$_] " for ($lo+1 .. $hi);
+    }
+
+    srchall \@array => 11;  # <empty>
+    srchall \@array => 12;  # [0]=12
+    srchall \@array => 17;  # [1]=17a [2]=17b [3]=17c
+    srchall \@array => 21;  # [4]=21
+    srchall \@array => 99;  # <empty>
+
+Note that the left search range is right-exclusive and
+the right search is left-exclusive.
 
 =head1 COMPARISON WITH OTHERS
 
