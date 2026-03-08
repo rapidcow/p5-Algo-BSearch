@@ -186,8 +186,9 @@ is equivalent to this:
   ($lb, $ub) = blsrch2 { $_ <=> 2 } \@ids; # (2,4)
   ($lb, $ub) = blsrch2 { $_ <=> 4 } \@ids; # (10,14)
 
-Note that caller context matters for C<blsrch0> and C<blsrch1>;
-a 3-element tuple would be returned if called in list context.
+Note that caller context matters for C<blsrch0> and C<blsrch1>.
+Namely they should be called in scalar context; calling in list
+context would cause a 3-element tuple to be returned.
 
 =item *
 
@@ -230,7 +231,7 @@ ordinary scalar context:
 
 C<binsearch_range> is equivalent to calling C<binsearch_pos>
 against the two needles, which means calling C<blsrch0> twice.
-This is I<different> from C<blsrch2>, though this is only
+This is I<different> from C<blsrch2>, though it would only
 significant if the second needle occurs more than once.
 
   # use List::BinarySearch qw(binsearch_range);
@@ -254,7 +255,7 @@ significant if the second needle occurs more than once.
   ($low_ix, $high_ix)
       = map { my $want = $_;
            scalar blsrch0 { $_ cmp $want }
-                  \@num_array } (200, 400);
+                 \@num_array } (200, 400);
       # Returns (1, 3)
 
 =back
