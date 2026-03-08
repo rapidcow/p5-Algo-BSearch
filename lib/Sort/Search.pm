@@ -388,7 +388,7 @@ sub blsrchx (&$;$$) { _blsrch(1, sub { $_[0] >= 0 }, _parse(LTR, @_)); }
 # -- the results of both search variants are well-defined.
 #
 # Intuitively, brsrch0 and brsrch1 effectively trisect
-# the indices bounded by [ $lo, $hi ) into three zones:
+# the indices bounded by ( $lo, $hi ] into three zones:
 #
 #                         "zeros"
 #          "positives"  &$ord == 0  "negatives"
@@ -399,9 +399,9 @@ sub blsrchx (&$;$$) { _blsrch(1, sub { $_[0] >= 0 }, _parse(LTR, @_)); }
 #                brsrch1           brsrch0
 #             (exclusive)         (inclusive)
 #
-# The x (brsrchx) variant works the same as 0 (brsrch0),
-# except it returns on any zero.  Same caveats apply
-# (look above for _blsrch...)
+# The x (brsrchx) variant works in exactly the same
+# way as 0 (brsrch0), except it returns on any zero.
+# Same caveats apply (look above for `_blsrch'...)
 sub _brsrch
 {
 	my ($any, $ok, $ord, $map, $hi, $lo) = @_;
@@ -440,8 +440,11 @@ sub brsrchx (&$;$$) { _brsrch(1, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
 # Observe that we're effectively finding a range for
 # the zeros.  If this range is empty, the boundaries of
 # this range collapse and both searches converge to the
-# same point; so either search will do the trick. If the
-# range is NOT empty, then at some point we'd enter it:
+# same point; so either search will do the trick, so we
+# will use the search for an inclusive bound (since the
+# inequality &ord >= 0 has the equality we want).  Now
+# here's the ingenious part: if the range is NOT empty,
+# at some point we'd enter this range:
 #
 #    (&ord < 0)    (&ord == 0)            (&ord > 0)
 #    --------[o--->|<===o===>|<--------------]o-------->
@@ -452,10 +455,15 @@ sub brsrchx (&$;$$) { _brsrch(1, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
 # Up to this point we're doing the same thing as b?srchx,
 # $mid being what it would return.  BUT we continue to
 # search for lower and upper equal matches, which (as
-# you can tell from my meticulously constructed diagram)
+# you can tell from my meticulously constructed diagram*)
 # falls between [$lo, $mid] and ($mid, $hi].  (Note that
 # the "upper" match is actually one position above it, so
 # the range would exclude $mid, an actual equal match.)
+#
+# * Note that the lower bound exists to the left of any zero
+#   (including it) and the upper bound exists to the left of
+#   any zero (excluding it). In other words, my meticulously
+#   constructed diagram is accurate and you can trust it. :)
 sub _blsrch2
 {
 	my ($ord, $map, $lo, $hi) = @_;
@@ -479,6 +487,11 @@ sub _blsrch2
 	wantarray ? ($lo, $hi) : ($hi - $lo);
 }
 
+# It is worth noting that the lower bound is exclusive now
+# (equivalent to brsrch1) and the upper bound is inclusive
+# (equivalent to brsrch0).  For the first part we search as
+# we do in brsrchx, and when a zero is found, [$hi, $mid)
+# has the lower bound and [$mid, $hi] has the upper bound.
 sub _brsrch2
 {
 	my ($ord, $map, $hi, $lo) = @_;
