@@ -146,7 +146,118 @@ To get all matches at once, use C<blsrch2> or C<brsrch2>:
 Note that the left search range is right-exclusive and
 the right search is left-exclusive.
 
-=head1 COMPARISON WITH OTHERS
+=head1 CONVERSION GUIDE
+
+If you are familiar with binary search functions
+in (other) CPAN modules:
+
+=over
+
+=item *
+
+For L<List::MoreUtils> (which this module in fact
+inspired by!) it's basically a verbatim translation.
+
+  my (@ids, $lb, $ub);
+  @ids = (1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4,
+          4, 4, 5, 5, 6, 7, 7, 7, 8, 8, 9, 9,
+          9, 9, 9, 11, 13, 13, 13, 17);
+
+  # use List::MoreUtils qw(lower_bound);
+  $lb = lower_bound { $_ <=> 2 } @ids; # returns 2
+  $lb = lower_bound { $_ <=> 4 } @ids; # returns 10
+
+  # use List::MoreUtils qw(upper_bound);
+  $ub = upper_bound { $_ <=> 2 } @ids; # returns 4
+  $ub = upper_bound { $_ <=> 4 } @ids; # returns 14
+
+  # use List::MoreUtils qw(equal_range);
+  ($lb, $ub) = equal_range { $_ <=> 2 } @ids; # (2,4)
+  ($lb, $ub) = equal_range { $_ <=> 4 } @ids; # (10,14)
+
+is equivalent to this:
+
+  $lb = blsrch0 { $_ <=> 2 } \@ids; # returns 2
+  $lb = blsrch0 { $_ <=> 4 } \@ids; # returns 10
+
+  $ub = blsrch1 { $_ <=> 2 } \@ids; # returns 4
+  $ub = blsrch1 { $_ <=> 4 } \@ids; # returns 14
+
+  ($lb, $ub) = blsrch2 { $_ <=> 2 } \@ids; # (2,4)
+  ($lb, $ub) = blsrch2 { $_ <=> 4 } \@ids; # (10,14)
+
+Note that caller context matters for C<blsrch0> and C<blsrch1>;
+a 3-element tuple would be returned if called in list context.
+
+=item *
+
+For L<List::BinarySearch>, borrowing the definitions there:
+
+  my ($index, $low_idx, $high_idx);
+  my @num_array = (100, 200, 300, 400, 500);
+  my @str_array = qw(Bach Beethoven Brahms Mozart Schubert);
+
+C<binsearch> is equivalent to C<blsrch0>, minus the special case
+where no match is found which must be invalidated explicitly:
+
+  # use List::BinarySearch qw(binsearch);
+  $index = binsearch {$a <=> $b} 300, @num_array;      # 2
+  $index = binsearch {$a cmp $b} 'Mozart', @str_array; # 3
+  $index = binsearch {$a <=> $b} 42, @num_array;       # undef
+
+  # equivalent to...
+  my ($idx, $cmp);
+  ($idx, $cmp) = blsrch0 { $_ <=> 300 } \@num_array;      # 2
+  ($idx, $cmp) = blsrch0 { $_ cmp 'Mozart' } \@str_array; # 3
+  ($idx, $cmp) = blsrch0 { $_ <=> 42 } \@num_array;       # 0
+
+  # ... EACH followed by:
+  $index = defined $cmp && $cmp == 0 ? $idx : undef;
+  # This invalidates the last 0, since $cmp is 1 (100 > 42)
+
+C<binsearch_pos> is just equivalent to C<blsrch0>, called in
+ordinary scalar context:
+
+  # use List::BinarySearch qw(binsearch_pos);
+  $index = binsearch_pos {$a cmp $b} 'Chopin', @str_array; # 3
+  $index = binsearch_pos {$a <=> $b} 600, @num_array;      # 5
+  $index = binsearch_pos {$a <=> $b} 200, @num_array;      # 1
+
+  # equivalent to:
+  $index = blsrch0 { $_ cmp 'Chopin' } \@str_array; # 3
+  $index = blsrch0 { $_ <=> 600 } \@num_array;      # 5
+  $index = blsrch0 { $_ <=> 200 } \@num_array;      # 1
+
+C<binsearch_range> is equivalent to calling C<binsearch_pos>
+against the two needles, which means calling C<blsrch0> twice.
+This is I<different> from C<blsrch2>, though this is only
+significant if the second needle occurs more than once.
+
+  # use List::BinarySearch qw(binsearch_range);
+  ( $low_ix, $high_ix )
+      = binsearch_range { $a cmp $b } 'Beethoven', 'Mozart', @str_array;
+      # Returns ( 1, 3 )
+
+  ( $low_ix, $high_ix )
+      = binsearch_range { $a <=> $b } 200, 400, @num_array;
+      # Returns ( 1, 3 )
+
+  # equivalent to:
+  ($low_ix, $high_ix)
+      = ( # ... in either scalar context:
+          scalar ( blsrch0 { $_ cmp 'Beethoven' } \@str_array ),
+          # ... or get just the index in list context:
+          ( blsrch0 { $_ cmp 'Mozart' } \@str_array )[0],
+        );
+      # Returns (1, 3)
+
+  ($low_ix, $high_ix)
+      = map { my $want = $_;
+           scalar blsrch0 { $_ cmp $want }
+                  \@num_array } (200, 400);
+      # Returns (1, 3)
+
+=back
 
 =head1 SEE ALSO
 
