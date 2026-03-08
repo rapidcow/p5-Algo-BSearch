@@ -98,5 +98,9 @@ for my $i (0..11) {
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ < 97 ? -1 : 98 <= $_ ? 1 : 0 } }, -2147483648, 2147483647;
 	diag "i=0 @trace => [$lo,$hi]";
+
+	@trace = ();
+	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ < -12345678 ? -1 : 76543210 <= $_ ? 1 : 0 } }, -2147483648, 2147483647;
+	diag "i=0 @trace => [$lo,$hi]";
 }
 done_testing();
