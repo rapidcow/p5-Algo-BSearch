@@ -435,39 +435,48 @@ sub brsrchx (&$;$$) { _brsrch(1, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
 # the indices where the ordering returns zero.
 # (it's like equal_range from C++ STL, if you know that!)
 #
-# In scalar context, the difference is returned.  You can
-# use it as the # of exact matches in the sorted array,
-# or as a boolean indicating that a match exists.
+# Actually, this is just going to be based on C++ STL,
+# namely GNU GCC's implementation of it in libstdc++-v3.
+# Observe that we're effectively finding a range for
+# the zeros.  If this range is empty, the boundaries of
+# this range collapse and both searches converge to the
+# same point; so either search will do the trick. If the
+# range is NOT empty, then at some point we'd enter it:
 #
-# We assume that the zeros won't be stretch for too long,
-# and the exclusive bound falls inclusive bound.
+#    (&ord < 0)    (&ord == 0)            (&ord > 0)
+#    --------[o--->|<===o===>|<--------------]o-------->
+#          $lo -------->^ found at $mid      $hi
+#             ^<----------------------------- ^<---- ...
+#                             [This is left-search, btw]
 #
-# Because we don't really care about the intermediate values
-# themselves (or be able to return them, for that matter),
-# we can get away with using bisect instead of b?srch... :)
+# Up to this point we're doing the same thing as b?srchx,
+# $mid being what it would return.  BUT we continue to
+# search for lower and upper equal matches, which (as
+# you can tell from my meticulously constructed diagram)
+# falls between [$lo, $mid] and ($mid, $hi].  (Note that
+# the "upper" match is actually one position above it, so
+# the range would exclude $mid, an actual equal match.)
 sub _blsrch2
 {
 	my ($ord, $map, $lo, $hi) = @_;
-	my $lower = _bisectl(0, sub { &$ord >= 0 }, $map, $lo, $hi);
-	# Find a sufficiently close candidate for upper bound,
-	# assuming there aren't too many equal values around?
-	my ($prev, $next) = ($lower, $lower);
-	for (my $step = 1; $hi > $next; $step <<= 1) {
-		# Do not step on $hi, $ord could be undefined there
-		if ($hi - $next <= $step) {
-			$next = $hi;
+	my ($cmp, $res, $img, $mid);
+	while ($lo < $hi) {
+		# Pick floor( (L+H)/2 )
+		$mid = _lmean($lo, $hi);
+		$img = $map ? $map->($mid) : \$mid;
+		local *_ = $img;
+		$res = $ord->($mid);
+		if ($res == 0) {
+			$lo = _bisectl(0, sub { &$ord >= 0 }, $map, $lo, $mid);
+			$hi = _bisectl(0, sub { &$ord > 0 }, $map, $mid + 1, $hi);
 			last;
+		} elsif ($res > 0) {
+			$hi = $mid;       # include
+		} else {
+			$lo = $mid + 1;   # exclude
 		}
-		$next += $step;
-		# Strictly speaking, we only have to check for != 0,
-		# since if the ordering is well-behaved, it should be
-		# nonnegative from this point and on... just saying :P
-		local *_ = $map ? $map->($next) : \$next;
-		last if $ord->($next) > 0;
-		$prev = $next;
 	}
-	my $upper = _bisectl(0, sub { &$ord > 0 }, $map, $prev, $next);
-	wantarray ? ($lower, $upper) : $upper - $lower;
+	wantarray ? ($lo, $hi) : ($hi - $lo);
 }
 
 # And the mirror image...
