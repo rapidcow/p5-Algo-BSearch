@@ -7,7 +7,7 @@
 use 5.006;
 use strict;
 use warnings;
-use Test::More tests => 1;
+use Test::More tests => 2;
 use Sort::Search qw(
   blsrch0 blsrch1 blsrch2
   brsrch0         brsrch2
@@ -103,3 +103,39 @@ foreach my $impl ($[..$#srchall) {
 	is_deeply [$srchall->( \@array => 99 )], []  => "srchall impl-$n 5";
 }
 });  # 'Cookbook :: Exact match' subtest
+
+subtest ('Conversion :: List::BinarySearch' => sub {
+	my ($low_ix, $high_ix);
+	my @num_array = (100, 200, 300, 400, 500);
+	my @str_array = qw(Bach Beethoven Brahms Mozart Schubert);
+	my $exactly;
+
+	$exactly = sub {
+	    my ($idx, $cmp) = @_;
+	    defined $cmp && $cmp == 0 ? $idx : undef;
+	};
+
+	is $exactly->( blsrch0 { $_ <=> 300 } \@num_array ),      2 ,=> "binsearch 1";
+	is $exactly->( blsrch0 { $_ cmp 'Mozart' } \@str_array ), 3 ,=> "binsearch 2";
+	is $exactly->( blsrch0 { $_ <=> 42 } \@num_array ),   undef ,=> "binsearch 3";
+
+	is +( blsrch0 { $_ cmp 'Chopin' } \@str_array ), 3 ,=> "binsearch_pos 1";
+	is +( blsrch0 { $_ <=> 600 } \@num_array ),      5 ,=> "binsearch_pos 2";
+	is +( blsrch0 { $_ <=> 200 } \@num_array ),      1 ,=> "binsearch_pos 3";
+
+	($low_ix, $high_ix)
+	    = ( # ... in either scalar context:
+	        scalar ( blsrch0 { $_ cmp 'Beethoven' } \@str_array ),
+	        # ... or get just the index in list context:
+	        ( blsrch0 { $_ cmp 'Mozart' } \@str_array )[0],
+	      );
+
+	is_deeply [$low_ix, $high_ix], [1, 3] => "binsearch_range 1";
+
+	($low_ix, $high_ix)
+	    = map { my $want = $_;
+	         scalar blsrch0 { $_ cmp $want }
+	               \@num_array } (200, 400);
+
+	is_deeply [$low_ix, $high_ix], [1, 3] => "binsearch_range 2";
+});  # 'Conversion :: List::BinarySearch' subtest

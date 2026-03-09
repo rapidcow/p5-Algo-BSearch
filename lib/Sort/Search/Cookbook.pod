@@ -193,7 +193,7 @@ Namely they should be called in scalar context.
 
 For L<List::BinarySearch>, borrowing the definitions there:
 
-  my ($index, $low_idx, $high_idx);
+  my ($index, $low_ix, $high_ix);
   my @num_array = (100, 200, 300, 400, 500);
   my @str_array = qw(Bach Beethoven Brahms Mozart Schubert);
 
@@ -206,16 +206,18 @@ where no match is found which must be invalidated explicitly:
   $index = binsearch {$a <=> $b} 42, @num_array;       # undef
 
   # equivalent to...
-  my ($idx, $cmp);
-  ($idx, $cmp) = blsrch0 { $_ <=> 300 } \@num_array;      # 2
-  ($idx, $cmp) = blsrch0 { $_ cmp 'Mozart' } \@str_array; # 3
-  ($idx, $cmp) = blsrch0 { $_ <=> 42 } \@num_array;       # 0
+  sub exactly {
+      my ($idx, $cmp) = @_;
+      defined $cmp && $cmp == 0 ? $idx : undef;
+  }
 
-  # ... EACH followed by:
-  $index = defined $cmp && $cmp == 0 ? $idx : undef;
-  # This invalidates the last 0, since $cmp is 1 (100 > 42)
+  $index = exactly blsrch0 { $_ <=> 300 } \@num_array;      # 2
+  $index = exactly blsrch0 { $_ cmp 'Mozart' } \@str_array; # 3
+  $index = exactly blsrch0 { $_ <=> 42 } \@num_array;       # undef
 
-C<binsearch_pos> is just equivalent to C<blsrch0>, called in
+C<exactly> invalidates the last 0, where C<$cmp> is 1 (100 > 42).
+
+C<binsearch_pos> is just equivalent to B<blsrch0>, called in
 ordinary scalar context:
 
   # use List::BinarySearch qw(binsearch_pos);
