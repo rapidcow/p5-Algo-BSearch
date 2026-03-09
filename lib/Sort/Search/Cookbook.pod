@@ -14,8 +14,8 @@ Sort::Search::Cookbook - practical examples for Sort::Search
 
 =head1 DEFINITION
 
-The functions "predicate", "ordering", "search range" are
-the same as they are defined in L<Sort::Search/DESCRIPTION>.
+The terms "predicate", "ordering", "search range" are used in
+the same sense as they are defined in L<Sort::Search/DESCRIPTION>.
 In addition, assume these variables mean the following:
 
 =over
