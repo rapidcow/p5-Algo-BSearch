@@ -9,8 +9,8 @@ use strict;
 use warnings;
 use Test::More tests => 4;
 use Sort::Search qw(
-  blsrch0 blsrch1 blsrch2 blsrchx
-  brsrch0         brsrch2
+	blsrch0 blsrch1 blsrch2 blsrchx
+	brsrch0         brsrch2
 );
 
 subtest ('Cookbook :: Exact match' => sub {
@@ -118,9 +118,9 @@ subtest ('Conversion :: List::MoreUtils' => sub {
 	is +( blsrch1 { $_ <=> 2 } \@ids ), 4  ,=> "upper_bound 1";
 	is +( blsrch1 { $_ <=> 4 } \@ids ), 14 ,=> "upper_bound 2";
 
-	is_deeply [ blsrch2 { $_ <=> 2 } \@ids ], [2,4]   => "equal_range 1";
-	is_deeply [ blsrch2 { $_ <=> 4 } \@ids ], [10,14] => "equal_range 2";
-});
+	is_deeply [blsrch2 { $_ <=> 2 } \@ids], [2,4]   => "equal_range 1";
+	is_deeply [blsrch2 { $_ <=> 4 } \@ids], [10,14] => "equal_range 2";
+});  # 'Cookbook :: List::MoreUtils' subtest
 
 subtest ('Conversion :: List::BinarySearch' => sub {
 	plan tests => 8;
