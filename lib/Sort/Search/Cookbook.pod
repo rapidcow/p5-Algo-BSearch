@@ -20,24 +20,24 @@ In addition, assume these variables mean the following:
 
 =over
 
-=item C<$_>
+=item B<$_>
 
 The current element during a search.
 
-=item C<$idx>
+=item B<$idx>
 
 The array index result found by a search.
 The index may not correspond to a real
 element in the array, in which case the
 following two variables would be C<undef>.
 
-=item C<$cmp>
+=item B<$cmp>
 
 The comparison result returned by the
 predicate/ordering on the found element.
 If there is no such element, this is C<undef>.
 
-=item C<$elt>
+=item B<$elt>
 
 The found element, or C<undef> if none was found.
 
@@ -66,7 +66,7 @@ and the numeric ordering:
     sub { $_ <=> $want }  (0) $_  equals   $want
                           (+) $_  follows  $want
 
-you can find the first match like this:
+you can find the first match with B<blsrch0>:
 
     sub lsearch {
         my ($array, $want) = @_;
@@ -83,7 +83,7 @@ you can find the first match like this:
     lsearch \@array => 21;  # 21 found at 21 [4] :)
     lsearch \@array => 99;  # 99 not found anywhere
 
-or the last match (17c) by index like this:
+and the last match with B<blsrch1>:
 
     sub rsearch {
         my ($array, $want) = @_;
@@ -122,7 +122,7 @@ used, though you must check and retrieve the element yourself:
 
     # The output is identical to above.
 
-To get all matches at once, use C<blsrch2> or C<brsrch2>:
+To get all matches at once, use B<blsrch2> or B<brsrch2>:
 
     sub srchall {
         my ($lo, $hi);
@@ -186,9 +186,8 @@ is equivalent to this:
   ($lb, $ub) = blsrch2 { $_ <=> 2 } \@ids; # (2,4)
   ($lb, $ub) = blsrch2 { $_ <=> 4 } \@ids; # (10,14)
 
-Note that caller context matters for C<blsrch0> and C<blsrch1>.
-Namely they should be called in scalar context; calling in list
-context would cause a 3-element tuple to be returned.
+Note that caller context matters for B<blsrch0> and B<blsrch1>.
+Namely they should be called in scalar context.
 
 =item *
 
@@ -198,7 +197,7 @@ For L<List::BinarySearch>, borrowing the definitions there:
   my @num_array = (100, 200, 300, 400, 500);
   my @str_array = qw(Bach Beethoven Brahms Mozart Schubert);
 
-C<binsearch> is equivalent to C<blsrch0>, minus the special case
+C<binsearch> is equivalent to B<blsrch0>, minus the special case
 where no match is found which must be invalidated explicitly:
 
   # use List::BinarySearch qw(binsearch);
@@ -230,8 +229,8 @@ ordinary scalar context:
   $index = blsrch0 { $_ <=> 200 } \@num_array;      # 1
 
 C<binsearch_range> is equivalent to calling C<binsearch_pos>
-against the two needles, which means calling C<blsrch0> twice.
-This is I<different> from C<blsrch2>, though it would only
+against the two needles, which means calling B<blsrch0> twice.
+This is I<different> from B<blsrch2>, though it would only
 significant if the second needle occurs more than once.
 
   # use List::BinarySearch qw(binsearch_range);

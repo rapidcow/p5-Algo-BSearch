@@ -111,28 +111,29 @@ for eXists.)
 
 =item *
 
-C<bixectl> is a modified version of C<bisectl> that
+B<bixectl> is a modified version of B<bisectl> that
 returns any index for which the predicate returns True.
 In the case that the predicate attains True at exactly
 one point or never attains True, they behave identically.
 
-For C<bixectr>, it's the same against C<bisectr> except
+For B<bixectr>, it's the same against B<bisectr> except
 it finds any index for which the predicate returns False.
 
 =item *
 
-C<blsrchx> is a modified version of C<blsrch0> that
+B<blsrchx> is a modified version of B<blsrch0> that
 returns any index for which the predicate returns 0.
 In the case that the ordering attains 0 at exactly
 one point or skips it entirely, they behave identically.
 
-For C<brsrchx>, it's the same against C<brsrch0>.
+For B<brsrchx>, it's the same against B<brsrch0>.
 
 =back
 
 =begin VOID
 
-XXX: Define search range???
+XXX: Define search range???  (oh wait it's in the
+top part of Subroutines.... (is it good though???))
 
 The observant reader will quickly notice that the L-R
 variants make each other redundant.
@@ -166,17 +167,17 @@ it is sufficient to know the following:
 =item *
 
 For left searches (subroutines containing the letter "l"),
-C<$lo> is the index of the leftmost/first array element and
-C<$hi> is one more than the rightmost/final array element.
-Notably, C<$hi> is the fallback index when search finds a
+B<$lo> is the index of the leftmost/first array element and
+B<$hi> is one more than the rightmost/final array element.
+Notably, B<$hi> is the fallback index when search finds a
 bisection point to the right of the whole array.
 
 =item *
 
 For right searches (subroutines containing the letter "r"),
-C<$lo> is one less than the index of the leftmost/first array
-element and C<$hi> is the rightmost/final array element.
-Notably, C<$lo> is the fallback index when search finds a
+B<$lo> is one less than the index of the leftmost/first array
+element and B<$hi> is the rightmost/final array element.
+Notably, B<$lo> is the fallback index when search finds a
 bisection point to the left of the whole array.
 
 =back
@@ -191,13 +192,13 @@ search and C<$lo = -1> for the right search.
 
 =over
 
-=item B<bisectl>
+=item B<bisectl { OK } ARRAY>
 
-=item B<bixectl>
+=item B<bixectl { OK } ARRAY>
 
-Perform left bisection with respect to a predicate on the half-open
-interval C<[$lo, $hi)>, where C<$lo> precedes C<$hi> in the argument
-list.  The prototype is C<&$;$$>.
+Perform left bisection with respect to a predicate B<OK> on the
+half-open interval C<[$lo, $hi)>, where C<$lo> precedes C<$hi>
+in the argument list.  The prototype is C<&$;$$>.
 
 The predicate should be increasing over every pair of adjacent indices
 it is defined on.  That is, true values always follow false values:
@@ -206,7 +207,7 @@ it is defined on.  That is, true values always follow false values:
    0 1 2     6 7 8 9      x
 
 Let C<$ok> denote the predicate, and set C<< $ok->($hi) = 1 >>.
-The return value of C<bisectl> is the unique index C<$x> on the
+The return value of B<bisectl> is the unique index C<$x> on the
 closed interval C<[$lo, $hi]> such that:
 
 =over
@@ -221,17 +222,17 @@ For all valid index C<< $y < $x >>, it follows that C<< $ok->($y) >> is false.
 
 =back
 
-The return value of C<bixectl> is any index satisfying the first constraint.
+The return value of B<bixectl> is any index satisfying the first constraint.
 
 If the interval C<[$lo, $hi]> is empty, return C<$hi>.
 
-=item B<bisectr>
+=item B<bisectr { OK } ARRAY>
 
-=item B<bixectr>
+=item B<bixectr { OK } ARRAY>
 
-Perform right bisection with respect to a predicate on the half-open
-interval C<($lo, $hi]>, where C<$hi> precedes C<$lo> in the argument
-list.  The prototype is C<&$;$$>.
+Perform right bisection with respect to a predicate B<OK> on the
+half-open interval C<($lo, $hi]>, where C<$hi> precedes C<$lo>
+in the argument list.  The prototype is C<&$;$$>.
 
 The predicate should be decreasing over every pair of adjacent indices
 it is defined on.  That is, true values always precede false values:
@@ -240,7 +241,7 @@ it is defined on.  That is, true values always precede false values:
    0 1 2     6 7 8 9      x
 
 Let C<$ok> denote the predicate, and set C<< $ok->($lo) = 1 >>.
-The return value of C<bisectr> is the unique index C<$x> on the
+The return value of B<bisectr> is the unique index C<$x> on the
 closed interval C<[$lo, $hi]> such that:
 
 =over
@@ -255,7 +256,7 @@ For all valid index C<< $y > $x >>, it follows that C<< $ok->($y) >> is false.
 
 =back
 
-The return value of C<bixectr> is any index satisfying the first constraint.
+The return value of B<bixectr> is any index satisfying the first constraint.
 
 If the interval C<[$lo, $hi]> is empty, return C<$lo>.
 
@@ -269,16 +270,16 @@ are defined by calling in list context.
 
 =over
 
-=item B<blsrch0>
+=item B<blsrch0 { ORD } ARRAY>
 
-=item B<blsrchx>
+=item B<blsrchx { ORD } ARRAY>
 
-=item B<blsrch1>
+=item B<blsrch1 { ORD } ARRAY>
 
-=item B<blsrch2>
+=item B<blsrch2 { ORD } ARRAY>
 
-Perform binary left search with respect to an ordering on the
-half-open interval C<[$lo, $hi)>, where C<$lo> precedes C<$hi>
+Perform binary left search with respect to an ordering B<ORD> on
+the half-open interval C<[$lo, $hi)>, where C<$lo> precedes C<$hi>
 in the argument list.  The prototype is C<&$;$$>.
 
 The sign of the ordering should be increasing over every pair of
@@ -304,7 +305,7 @@ The same applies to sorted lists of strings by replacing
 C<< <=> >> with C<cmp>.
 
 Let C<$ord> denote the ordering and set C<< $ord->($hi) = +Infinity >>.
-The return value of C<blsect0> is the unique index C<$lower> on
+The return value of B<blsect0> is the unique index C<$lower> on
 the closed interval C<[$lo, $hi]> such that:
 
 =over
@@ -318,15 +319,15 @@ C<< $ord->($lower) >= 0 >>.
 For all valid index C<< $x < $lower >>, it follows that C<< $ord->($x) < 0 >>.
 As a result, C<< $lower >> is the first instance where C<< $ord >= 0 >>,
 while C<< $lower - 1 >> is the last instance where C<< $ord < 0 >>.
-(Compare this to C<brsect1>.)
+(Compare this to B<brsect1>.)
 
 =back
 
-The return value of C<blsectx> is any index C<$x> satisfying
+The return value of B<blsectx> is any index C<$x> satisfying
 C<< $ord->($x) == 0 >>, but if one could not be found,
 it returns the same result as C<blsect0>.
 
-The return value of C<blsect1> is the unique index C<$upper_x>
+The return value of B<blsect1> is the unique index C<$upper_x>
 on the closed interval C<[$lo, $hi]> such that:
 
 =over
@@ -340,25 +341,25 @@ C<< $ord->($upper_x) > 0 >>.
 For all valid index C<< $x < $upper_x >>, it follows that C<< $ord->($x) <= 0 >>.
 As a result, C<< $upper_x >> is the first instance where C<< $ord > 0 >>,
 while C<< $upper_x - 1 >> is the last instance where C<< $ord <= 0 >>.
-(Compare this to C<brsect0>.)
+(Compare this to B<brsect0>.)
 
 =back
 
-In list context, C<blsect2> returns both C<$lower> and C<$upper_x>,
+In list context, B<blsect2> returns both C<$lower> and C<$upper_x>,
 in that order.  In scalar context, it returns the nonnegative
 difference C<$upper_x - $lower>, which equals the number of elements
 for which C<$ord == 0>.
 
-=item B<brsrch0>
+=item B<brsrch0 { ORD } ARRAY>
 
-=item B<brsrchx>
+=item B<brsrchx { ORD } ARRAY>
 
-=item B<brsrch1>
+=item B<brsrch1 { ORD } ARRAY>
 
-=item B<brsrch2>
+=item B<brsrch2 { ORD } ARRAY>
 
-Perform binary right search with respect to an ordering on the
-half-open interval C<($lo, $hi]>, where C<$hi> precedes C<$lo>
+Perform binary right search with respect to an ordering B<ORD> on
+the half-open interval C<($lo, $hi]>, where C<$hi> precedes C<$lo>
 in the argument list.  The prototype is C<&$;$$>.
 
 The sign of the ordering should be decreasing over every pair of
@@ -384,7 +385,7 @@ The same applies to sorted lists of strings by replacing
 C<< <=> >> with C<cmp>.
 
 Let C<$ord> denote the ordering and set C<< $ord->($lo) = +Infinity >>.
-The return value of C<brsect0> is the unique index C<$upper> on
+The return value of B<brsect0> is the unique index C<$upper> on
 the closed interval C<[$lo, $hi]> such that:
 
 =over
@@ -398,15 +399,15 @@ C<< $ord->($upper) >= 0 >>.
 For all valid index C<< $x > $upper >>, it follows that C<< $ord->($x) < 0 >>.
 As a result, C<< $upper >> is the last instance where C<< -$ord <= 0 >> and
 C<< $upper + 1 >> is the first instance where C<< -$ord > 0 >>.
-(Compare this to C<blsect1>.)
+(Compare this to B<blsect1>.)
 
 =back
 
-The return value of C<brsectx> is any index C<$x> satisfying
+The return value of B<brsectx> is any index C<$x> satisfying
 C<< $ord->($x) == 0 >>, but if one could not be found,
 it returns the same result as C<brsect0>.
 
-The return value of C<brsect1> is the unique index C<$lower> on
+The return value of B<brsect1> is the unique index C<$lower_x> on
 the closed interval C<[$lo, $hi]> such that:
 
 =over
@@ -420,11 +421,11 @@ C<< $ord->($lower_x) > 0 >>.
 For all valid index C<< $x > $lower_x >>, it follows that C<< $ord->($x) <= 0 >>.
 As a result, C<< $lower_x >> is the last instance where C<< -$ord < 0 >> and
 C<< $lower_x + 1 >> is the first instance where C<< -$ord >= 0 >>.
-(Compare this to C<blsect0>.)
+(Compare this to B<blsect0>.)
 
 =back
 
-In list context, C<brsect2> returns both C<$upper> and C<$lower_x>,
+In list context, B<brsect2> returns both C<$upper> and C<$lower_x>,
 in that order.  In scalar context, it returns the nonnegative
 difference C<$upper - $lower_x>, which equals the number of elements
 for which C<$ord == 0>.
