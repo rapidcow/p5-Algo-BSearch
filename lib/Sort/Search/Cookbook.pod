@@ -73,11 +73,11 @@ you can find the first match with B<blsrch0>:
         my ($idx, $cmp, $elt) = blsrch0 { $_ <=> $want } $array;
         if (!defined $cmp) { print "$want not found anywhere\n"; }
         elsif ($cmp != 0)  { print "$want not found; best "
-                                 . "I got was $elt [$idx]\n"; }
+                                 . "is $elt at [$idx]\n"; }
         else               { print "$want found at $elt [$idx] :)\n"; }
     }
 
-    lsearch \@array => 11;  # 11 not found; best I got was 12 [0]
+    lsearch \@array => 11;  # 11 not found; best is 12 at [0]
     lsearch \@array => 12;  # 12 found at 12 [0] :)
     lsearch \@array => 17;  # 17 found at 17a [1] :)
     lsearch \@array => 21;  # 21 found at 21 [4] :)
@@ -90,7 +90,7 @@ and the last match with B<blsrch1>:
         my ($idx, $cmp, $elt) = brsrch0 { $want <=> $_ } $array;
         if (!defined $cmp) { print "$want not found anywhere\n"; }
         elsif ($cmp != 0)  { print "$want not found; best "
-                                 . "I got was $elt [$idx]\n"; }
+                                 . "is $elt at [$idx]\n"; }
         else               { print "$want found at $elt [$idx] :)\n"; }
     }
 
@@ -98,7 +98,7 @@ and the last match with B<blsrch1>:
     rsearch \@array => 12;  # 12 found at 12 [0] :)
     rsearch \@array => 17;  # 17 found at 17c [3] :)
     rsearch \@array => 21;  # 21 found at 21 [4] :)
-    rsearch \@array => 99;  # 99 not found; best I got was 21 [4]
+    rsearch \@array => 99;  # 99 not found; best is 21 at [4]
 
 Notice that the ordering is reversed: C<< $want <=> $_ >>
 instead of C<< $_ <=> $want >>, due to using a right search
@@ -116,11 +116,11 @@ used, though you must check and retrieve the element yourself:
             my $cmp = $elt <=> $want;
             print $cmp == 0
             ? "$want found at $elt [$idx] :)\n"
-            : "$want not found; best I got was $elt [$idx]\n"
+            : "$want not found; best is $elt at [$idx]\n";
         }
     }
 
-    # The output is identical to above.
+The output of this C<rsearch> is identical to above.
 
 To get all matches at once, use B<blsrch2> or B<brsrch2>:
 
