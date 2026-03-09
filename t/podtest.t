@@ -7,7 +7,7 @@
 use 5.006;
 use strict;
 use warnings;
-use Test::More tests => 3;
+use Test::More tests => 4;
 use Sort::Search qw(
   blsrch0 blsrch1 blsrch2 blsrchx
   brsrch0         brsrch2
@@ -103,6 +103,24 @@ foreach my $impl ($[..$#srchall) {
 	is_deeply [$srchall->( \@array => 99 )], []  => "srchall impl-$n 5";
 }
 });  # 'Cookbook :: Exact match' subtest
+
+subtest ('Conversion :: List::MoreUtils' => sub {
+	plan tests => 6;
+
+	my (@ids, $lb, $ub);
+	@ids = (1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4,
+	        4, 4, 5, 5, 6, 7, 7, 7, 8, 8, 9, 9,
+	        9, 9, 9, 11, 13, 13, 13, 17);
+
+	is +( blsrch0 { $_ <=> 2 } \@ids ), 2  ,=> "lower_bound 1";
+	is +( blsrch0 { $_ <=> 4 } \@ids ), 10 ,=> "lower_bound 2";
+
+	is +( blsrch1 { $_ <=> 2 } \@ids ), 4  ,=> "upper_bound 1";
+	is +( blsrch1 { $_ <=> 4 } \@ids ), 14 ,=> "upper_bound 2";
+
+	is_deeply [ blsrch2 { $_ <=> 2 } \@ids ], [2,4]   => "equal_range 1";
+	is_deeply [ blsrch2 { $_ <=> 4 } \@ids ], [10,14] => "equal_range 2";
+});
 
 subtest ('Conversion :: List::BinarySearch' => sub {
 	plan tests => 8;
