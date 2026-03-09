@@ -35,13 +35,12 @@ BEGIN {
 	if ($@) { *want = sub { 1 } }
 }
 
-# Orientation flags passed to parse_args
-use constant LTR => 1;
-use constant RTL => 0;
+use constant LTR => 1;  # left-to-right
+use constant RTL => 0;  # right-to-left
 
 # Parse input arguments.
-#    $ori:  search orientation (1 for left, 0 for right)
-#    $args: arguments from caller
+#    $ori:  search orientation (1 for left/LTR, 0 for right/RTL)
+#    @args: arguments from caller
 # Return:
 #    ($fun, undef, $beg, $end)   for index form.
 # and
