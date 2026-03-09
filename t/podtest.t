@@ -14,6 +14,7 @@ use Sort::Search qw(
 );
 
 subtest ('Cookbook :: Exact match' => sub {
+	plan(tests => 25);
 
 	my @array = qw( 12 17a 17b 17c 21 );
 	my $lsearch = sub {
@@ -73,5 +74,32 @@ foreach my $impl ($[..$#rsearch) {
 	is $rsearch->( \@array => 99 ), "99 not found; best is 21 at [4]" => "rsearch impl-$n 5";
 }
 
-	done_testing(); # TODO
+	my @srchall = (
+	# Implementation 1
+	sub {
+	    my ($lo, $hi);
+	    my ($array, $want) = @_;
+
+	    ($lo, $hi) = blsrch2 { $_ <=> $want } $array;
+	    map { "[$_]=$array->[$_]" } ($lo .. $hi-1);
+	},
+	# Implementation 2
+	sub {
+	    my ($lo, $hi);
+	    my ($array, $want) = @_;
+
+	    ($hi, $lo) = brsrch2 { $want <=> $_ } $array;
+	    map { "[$_]=$array->[$_]" } ($lo+1 .. $hi);
+	});
+
+foreach my $impl ($[..$#srchall) {
+	my $srchall = $srchall[$impl];
+	my $n = $impl + 1 - $[;
+
+	is_deeply [$srchall->( \@array => 11 )], []  => "srchall impl-$n 1";
+	is_deeply [$srchall->( \@array => 12 )], [qw([0]=12)] => "srchall impl-$n 2";
+	is_deeply [$srchall->( \@array => 17 )], [qw([1]=17a [2]=17b [3]=17c)] => "srchall impl-$n 3";
+	is_deeply [$srchall->( \@array => 21 )], [qw([4]=21)] => "srchall impl-$n 4";
+	is_deeply [$srchall->( \@array => 99 )], []  => "srchall impl-$n 5";
+}
 });  # 'Cookbook :: Exact match' subtest
