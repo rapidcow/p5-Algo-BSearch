@@ -14,7 +14,7 @@ use Sort::Search qw(
 );
 
 subtest ('Cookbook :: Exact match' => sub {
-	plan(tests => 25);
+	plan tests => 25;
 
 	my @array = qw( 12 17a 17b 17c 21 );
 	my $lsearch = sub {
@@ -105,7 +105,7 @@ foreach my $impl ($[..$#srchall) {
 });  # 'Cookbook :: Exact match' subtest
 
 subtest ('Conversion :: List::BinarySearch' => sub {
-	plan(tests => 8);
+	plan tests => 8;
 
 	my ($low_ix, $high_ix);
 	my @num_array = (100, 200, 300, 400, 500);
@@ -143,7 +143,7 @@ subtest ('Conversion :: List::BinarySearch' => sub {
 });  # 'Conversion :: List::BinarySearch' subtest
 
 subtest ('Conversion :: List::Search' => sub {
-	plan(tests => 10);
+	plan tests => 10;
 
 	my @list = sort qw( bravo charlie delta );
 	my @numbers = sort { $a <=> $b } ( 10, 20, 100, 200, );
