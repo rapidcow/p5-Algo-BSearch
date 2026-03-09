@@ -105,6 +105,8 @@ foreach my $impl ($[..$#srchall) {
 });  # 'Cookbook :: Exact match' subtest
 
 subtest ('Conversion :: List::BinarySearch' => sub {
+	plan(tests => 8);
+
 	my ($low_ix, $high_ix);
 	my @num_array = (100, 200, 300, 400, 500);
 	my @str_array = qw(Bach Beethoven Brahms Mozart Schubert);
