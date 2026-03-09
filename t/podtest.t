@@ -7,9 +7,9 @@
 use 5.006;
 use strict;
 use warnings;
-use Test::More tests => 2;
+use Test::More tests => 3;
 use Sort::Search qw(
-  blsrch0 blsrch1 blsrch2
+  blsrch0 blsrch1 blsrch2 blsrchx
   brsrch0         brsrch2
 );
 
@@ -141,3 +141,37 @@ subtest ('Conversion :: List::BinarySearch' => sub {
 
 	is_deeply [$low_ix, $high_ix], [1, 3] => "binsearch_range 2";
 });  # 'Conversion :: List::BinarySearch' subtest
+
+subtest ('Conversion :: List::Search' => sub {
+	plan(tests => 10);
+
+	my @list = sort qw( bravo charlie delta );
+	my @numbers = sort { $a <=> $b } ( 10, 20, 100, 200, );
+	my $cmp_code = sub { lc( $_[0] ) cmp lc( $_[1] ) };
+	my @custom_list = sort { $cmp_code->( $a, $b ) } qw( FOO bar BAZ bundy );
+	my ($index, $found);
+
+	my $actually = sub {
+	    my ($idx, $cmp) = @_;
+	    defined $cmp ? $idx : -1;
+	};
+
+	is $actually->( blsrch0 { $_ cmp 'alpha'   } \@list ), 0  ,=> "list_search 1";
+	is $actually->( blsrch0 { $_ cmp 'charlie' } \@list ), 1  ,=> "list_search 2";
+	is $actually->( blsrch0 { $_ cmp 'zebra'   } \@list ), -1 ,=> "list_search 3";
+	is $actually->( blsrch0 { $_ <=> 20 } \@numbers ), 1      ,=> "nlist_search 1";
+	is $actually->( blsrch0
+		{ $cmp_code->($_, 'foo') } \@custom_list ), 3    ,=> "custom_list_search 1";
+
+	my $validate = sub {
+	    my ($idx, $cmp) = @_;
+	    defined $cmp && $cmp == 0;
+	};
+
+	ok! $validate->( blsrchx { $_ cmp 'alpha'   } \@list )  => "list_contains 1";
+	ok $validate->( blsrchx { $_ cmp 'charlie' } \@list )  => "list_contains 2";
+	ok! $validate->( blsrchx { $_ cmp 'zebra'   } \@list )  => "list_contains 3";
+	ok $validate->( blsrchx { $_ <=> 20 } \@numbers )      => "nlist_contains 1";
+	ok $validate->( blsrchx
+		{ $cmp_code->($_, 'foo') } \@custom_list )    => "custom_list_contains 1";
+});  # 'Conversion :: List::Search' subtest
