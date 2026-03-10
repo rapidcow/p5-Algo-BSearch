@@ -12,7 +12,7 @@
                               * * *
 
 The goal with this package is to introduce a flexible vocabulary
-for declaratively perform binary searches on arrays and integer
+for declaratively performing binary searches on arrays and integer
 ranges.  Almost all binary search problems can be reduced to the
 following, most basic form:
 
@@ -26,8 +26,8 @@ find this point in logarithmic time:
   * Start with an interval [$lo, $hi] where we assume the predicate
     holds true for at least one point (namely, assume $ok->($hi)).
 
-  * Bisect this interval at $mid = 1/2 * ($lo + $hi), and evaluate
-    the predicate there.
+  * Bisect this interval at $mid = floor( ($lo + $hi) / 2 ), and
+    evaluate the predicate there.
 
        - If $ok->($mid) is true, then the answer is at most $mid.
          So discard everything to the right (but KEEP $mid as our
@@ -47,6 +47,8 @@ by construction.  The follow code implements the gist of it:
    sub bisectl (&$$) {
        my ($ok, $lo, $hi) = @_;
        while ($lo < $hi) {
+           # This computes the floor of ($lo+$hi) / 2
+           # -- without floating point arithmetic! :^)
            my $mid = $lo + (($hi - $lo) >> 1);
            if ($ok->($mid)) {
                $hi = $mid;       # include
@@ -127,6 +129,8 @@ false-then-true range, but you only do half the work!
     sub bisectr (&$$) {
         my ($ok, $hi, $lo) = @_;
         while ($lo < $hi) {
+           # This computes the ceiling of ($lo+$hi) / 2!
+           # Contrast with floor in left bisection...
             my $mid = $lo + (($hi - $lo + 1) >> 1);
             if ($ok->($mid)) {
                 $lo = $mid;      # include

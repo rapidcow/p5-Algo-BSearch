@@ -41,7 +41,7 @@ axioms of a (strict) total order:
                    `$b < $a' are simultaneously true.
                                   [True for DISTINCT $a,$b.]
 
-   (Connectivity)  Either `$a < $b' or `$b > $a' holds.
+   (Connectivity)  Either `$a < $b' or `$b < $a' holds.
       [totality]                  [True for DISTINCT $a,$b.]
 
    (Transitivity)  Chaining inequalities makes sense.
@@ -79,8 +79,8 @@ Is this a coincidence?  Let's see: let `k' be the needle....
 
  * Do negatives ALWAYS precede zeros?  If `i' were a negative
    and `j' were a zero, then `j == k' and `i < k'.  By law of
-   substitution, then, `i < j'.  So we know any zero `i' must
-   follow all negatives `j'.
+   substitution, then, `i < j'.  So we know any negative `i'
+   must precede all zeros `j'.
 
  * Do zeros ALWAYS precede positives?  If `i' were a zero and
    and `j' were a positive, then `j > k' and `i == k'.  By law
@@ -122,11 +122,26 @@ Either way, what DOES an ordering give us?
 #                         | $_ >= 0             predicate 0
 #                         | $_ >  0             predicate 1
 #                         v
-#        T  T  T  ...  (T) F  F  F  F  F  ...
+#        F  F  F  ...   F (T) T  T  T  T  ...
+#        F  F  F  ...   F  F  F  F (T) T  ...
+#        --------------------------------------
+#        0  1  2        5 [6  7  8 ]9  10 ...     index
+#
+#########################################################################
+#
+#       [1  1  2  3  3  4  5  5  5  6  8  9  9]       x
+#        +  +  +  +  +  +  0  0  0  -  -  -  -    cmp(5, x) := (5 <=> x)
+#                         |
+#                         | $_ >= 0             predicate 0
+#                         | $_ >  0             predicate 1
+#                         v
 #        T  T  T  ...   T  T  T (T) F  F  ...
+#        T  T  T  ...  (T) F  F  F  F  F  ...
 #        --------------------------------------
 #        0  1  2        5[ 6  7  8] 9  10 ...     index
-#    
+#
+#########################################################################
+#
 #                               (bisect0 returns this)
 #                          ,------ first $a[$i] >= $x
 #                         /
