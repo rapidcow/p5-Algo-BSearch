@@ -116,8 +116,7 @@ returns any index for which the predicate returns True.
 In the case that the predicate attains True at exactly
 one point or never attains True, they behave identically.
 
-For B<bixectr>, it's the same against B<bisectr> except
-it finds any index for which the predicate returns False.
+For B<bixectr>, it's the same against B<bisectr>.
 
 =item *
 
@@ -289,8 +288,8 @@ precedes C<< =0 >> (zero), which precedes C<< >0 >> (positive).
 More concretely, the ordering defines the comparison of every value in
 an ordered list, C<$_>, to a target value, C<$target>: C<< $cmp < 0 >>
 represents C<< $_ < $target >>; C<$cmp == 0> represents C<$_ == $target>;
-and C<< $_ > $target >> when C<< $cmp > 0 >>.  When the list is sorted
-in increasing order, C<< $_ <=> $target >> is a valid ordering:
+and C<< $cmp > 0 >> represents C<< $_ > $target >>.  When the list is
+sorted in increasing order, C<< $_ <=> $target >> is a valid ordering:
 
    [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9]       x
    -1 -1 -1  ...  -1  0  0  0  1  1  ...     ord(x) := (x <=> 5)
@@ -305,7 +304,7 @@ The same applies to sorted lists of strings by replacing
 C<< <=> >> with C<cmp>.
 
 Let C<$ord> denote the ordering and set C<< $ord->($hi) = +Infinity >>.
-The return value of B<blsect0> is the unique index C<$lower> on
+The return value of B<blsrch0> is the unique index C<$lower> on
 the closed interval C<[$lo, $hi]> such that:
 
 =over
@@ -319,15 +318,15 @@ C<< $ord->($lower) >= 0 >>.
 For all valid index C<< $x < $lower >>, it follows that C<< $ord->($x) < 0 >>.
 As a result, C<< $lower >> is the first instance where C<< $ord >= 0 >>,
 while C<< $lower - 1 >> is the last instance where C<< $ord < 0 >>.
-(Compare this to B<brsect1>.)
+(Compare this to B<brsrch1>.)
 
 =back
 
-The return value of B<blsectx> is any index C<$x> satisfying
+The return value of B<blsrchx> is any index C<$x> satisfying
 C<< $ord->($x) == 0 >>, but if one could not be found,
-it returns the same result as C<blsect0>.
+it returns the same result as C<blsrch0>.
 
-The return value of B<blsect1> is the unique index C<$upper_x>
+The return value of B<blsrch1> is the unique index C<$upper_x>
 on the closed interval C<[$lo, $hi]> such that:
 
 =over
@@ -341,11 +340,11 @@ C<< $ord->($upper_x) > 0 >>.
 For all valid index C<< $x < $upper_x >>, it follows that C<< $ord->($x) <= 0 >>.
 As a result, C<< $upper_x >> is the first instance where C<< $ord > 0 >>,
 while C<< $upper_x - 1 >> is the last instance where C<< $ord <= 0 >>.
-(Compare this to B<brsect0>.)
+(Compare this to B<brsrch0>.)
 
 =back
 
-In list context, B<blsect2> returns both C<$lower> and C<$upper_x>,
+In list context, B<blsrch2> returns both C<$lower> and C<$upper_x>,
 in that order.  In scalar context, it returns the nonnegative
 difference C<$upper_x - $lower>, which equals the number of elements
 for which C<$ord == 0>.
@@ -369,8 +368,8 @@ precedes C<< =0 >> (zero), which precedes C<< <0 >> (negative).
 More concretely, the ordering defines the comparison of every value in
 an ordered list, C<$_>, to a target value, C<$target>: C<< $cmp < 0 >>
 represents C<< $_ < $target >>; C<$cmp == 0> represents C<$_ == $target>;
-and C<< $_ > $target >> when C<< $cmp > 0 >>.  When the list is sorted
-in increasing order, C<< $target <=> $_ >> is a valid ordering:
+and C<< $cmp > 0 >> represents C<< $_ > $target >>.  When the list is
+sorted in increasing order, C<< $target <=> $_ >> is a valid ordering:
 
    [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9]       x
     1  1  1  ...   1  0  0  0 -1 -1  ...     ord(x) := (5 <=> x)
@@ -385,7 +384,7 @@ The same applies to sorted lists of strings by replacing
 C<< <=> >> with C<cmp>.
 
 Let C<$ord> denote the ordering and set C<< $ord->($lo) = +Infinity >>.
-The return value of B<brsect0> is the unique index C<$upper> on
+The return value of B<brsrch0> is the unique index C<$upper> on
 the closed interval C<[$lo, $hi]> such that:
 
 =over
@@ -399,15 +398,15 @@ C<< $ord->($upper) >= 0 >>.
 For all valid index C<< $x > $upper >>, it follows that C<< $ord->($x) < 0 >>.
 As a result, C<< $upper >> is the last instance where C<< -$ord <= 0 >> and
 C<< $upper + 1 >> is the first instance where C<< -$ord > 0 >>.
-(Compare this to B<blsect1>.)
+(Compare this to B<blsrch1>.)
 
 =back
 
-The return value of B<brsectx> is any index C<$x> satisfying
+The return value of B<brsrchx> is any index C<$x> satisfying
 C<< $ord->($x) == 0 >>, but if one could not be found,
-it returns the same result as C<brsect0>.
+it returns the same result as C<brsrch0>.
 
-The return value of B<brsect1> is the unique index C<$lower_x> on
+The return value of B<brsrch1> is the unique index C<$lower_x> on
 the closed interval C<[$lo, $hi]> such that:
 
 =over
@@ -421,11 +420,11 @@ C<< $ord->($lower_x) > 0 >>.
 For all valid index C<< $x > $lower_x >>, it follows that C<< $ord->($x) <= 0 >>.
 As a result, C<< $lower_x >> is the last instance where C<< -$ord < 0 >> and
 C<< $lower_x + 1 >> is the first instance where C<< -$ord >= 0 >>.
-(Compare this to B<blsect0>.)
+(Compare this to B<blsrch0>.)
 
 =back
 
-In list context, B<brsect2> returns both C<$upper> and C<$lower_x>,
+In list context, B<brsrch2> returns both C<$upper> and C<$lower_x>,
 in that order.  In scalar context, it returns the nonnegative
 difference C<$upper - $lower_x>, which equals the number of elements
 for which C<$ord == 0>.

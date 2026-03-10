@@ -83,7 +83,7 @@ you can find the first match with B<blsrch0>:
     lsearch \@array => 21;  # 21 found at 21 [4] :)
     lsearch \@array => 99;  # 99 not found anywhere
 
-and the last match with B<blsrch1>:
+and the last match with B<brsrch0>:
 
     sub rsearch {
         my ($array, $want) = @_;
