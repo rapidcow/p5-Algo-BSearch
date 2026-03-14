@@ -422,7 +422,7 @@ sub _brsrch
 		}
 	}
 	$elt = $$elt if $want3 && defined $elt;
-	$want2 ? ($hi, $cmp, $elt) : $hi;
+	$want2 ? ($lo, $cmp, $elt) : $lo;
 }
 
 sub brsrch0 (&$;$$) { _brsrch(0, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
