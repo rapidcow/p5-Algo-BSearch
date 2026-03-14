@@ -152,12 +152,12 @@ sub _lmean
 		my $sum = $lo + $hi;
 		if ($sum < 0) {
 			# >> on a positive integer...
-			return - ((1 - $sum) >> 1);
+			- ((1 - $sum) >> 1);
 		} else {
-			return $sum >> 1;
+			$sum >> 1;
 		}
 	} else {
-		return $lo + (($hi - $lo) >> 1);
+		$lo + (($hi - $lo) >> 1);
 	}
 }
 
@@ -168,12 +168,12 @@ sub _rmean
 		# Same overflow guard for here.
 		my $sum = $lo + $hi;
 		if ($sum < 0) {
-			return - ((-$sum) >> 1);
+			- ((-$sum) >> 1);
 		} else {
-			return ($sum + 1) >> 1;
+			($sum + 1) >> 1;
 		}
 	} else {
-		return $lo + (($hi - $lo + 1) >> 1);
+		$lo + (($hi - $lo + 1) >> 1);
 	}
 }
 
