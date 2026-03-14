@@ -14,7 +14,7 @@ use Sort::Search qw(
 );
 
 subtest ('Cookbook :: Exact match' => sub {
-	plan tests => 25;
+	plan tests => 28;
 
 	my @array = qw( 12 17a 17b 17c 21 );
 	my $lsearch = sub {
@@ -30,7 +30,8 @@ subtest ('Cookbook :: Exact match' => sub {
 	is $lsearch->( \@array, 11 ), "11 not found; best is 12 at [0]" => "lsearch impl 1";
 	is $lsearch->( \@array, 12 ), "12 found at 12 [0] :)"   => "lsearch impl 2";
 	is $lsearch->( \@array, 17 ), "17 found at 17a [1] :)"  => "lsearch impl 3";
-	is $lsearch->( \@array, 21 ), "21 found at 21 [4] :)"   => "lsearch impl 4";
+	is $lsearch->( \@array, 18 ), "18 not found; best is 21 at [4]" => "lsearch impl 4 (new)";
+	is $lsearch->( \@array, 21 ), "21 found at 21 [4] :)"   => "lsearch impl 4 (old)";
 	is $lsearch->( \@array, 99 ), "99 not found anywhere"   => "lsearch impl 5";
 
 	my @rsearch = (
@@ -70,7 +71,8 @@ foreach my $impl ($[..$#rsearch) {
 	is $rsearch->( \@array => 11 ), "11 not found anywhere"   => "rsearch impl-$n 1";
 	is $rsearch->( \@array => 12 ), "12 found at 12 [0] :)"   => "rsearch impl-$n 2";
 	is $rsearch->( \@array => 17 ), "17 found at 17c [3] :)"  => "rsearch impl-$n 3";
-	is $rsearch->( \@array => 21 ), "21 found at 21 [4] :)"   => "rsearch impl-$n 4";
+	is $rsearch->( \@array => 18 ), "18 not found; best is 17c at [3]" => "rsearch impl-$n 4 (new)";
+	is $rsearch->( \@array => 21 ), "21 found at 21 [4] :)"   => "rsearch impl-$n 4 (old)";
 	is $rsearch->( \@array => 99 ), "99 not found; best is 21 at [4]" => "rsearch impl-$n 5";
 }
 
