@@ -285,24 +285,6 @@ The sign of the ordering should be increasing over every pair of
 adjacent indices it is defined on.  That is, C<< <0 >> (negative)
 precedes C<< =0 >> (zero), which precedes C<< >0 >> (positive).
 
-More concretely, the ordering defines the comparison of every value in
-an ordered list, C<$_>, to a target value, C<$target>: C<< $cmp < 0 >>
-represents C<< $_ < $target >>; C<$cmp == 0> represents C<$_ == $target>;
-and C<< $cmp > 0 >> represents C<< $_ > $target >>.  When the list is
-sorted in increasing order, C<< $_ <=> $target >> is a valid ordering:
-
-   [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9]       x
-   -1 -1 -1  ...  -1  0  0  0  1  1  ...     ord(x) := (x <=> 5)
-
-When the list is sorted in decreasing order, C<< $target <=> $_ >>
-is a valid ordering:
-
-   [9, 9, 8, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1]       x
-    ...  -1 -1  0  0  0  1  ...   1  1  1    ord(x) := (5 <=> x)
-
-The same applies to sorted lists of strings by replacing
-C<< <=> >> with C<cmp>.
-
 Let C<$ord> denote the ordering and set C<< $ord->($hi) = +Infinity >>.
 The return value of B<blsrch0> is the unique index C<$lower> on
 the closed interval C<[$lo, $hi]> such that:
@@ -364,24 +346,6 @@ in the argument list.  The prototype is C<&$;$$>.
 The sign of the ordering should be decreasing over every pair of
 adjacent indices it is defined on.  That is, C<< >0 >> (positive)
 precedes C<< =0 >> (zero), which precedes C<< <0 >> (negative).
-
-More concretely, the ordering defines the comparison of every value in
-an ordered list, C<$_>, to a target value, C<$target>: C<< $cmp < 0 >>
-represents C<< $_ < $target >>; C<$cmp == 0> represents C<$_ == $target>;
-and C<< $cmp > 0 >> represents C<< $_ > $target >>.  When the list is
-sorted in increasing order, C<< $target <=> $_ >> is a valid ordering:
-
-   [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9]       x
-    1  1  1  ...   1  0  0  0 -1 -1  ...     ord(x) := (5 <=> x)
-
-When the list is sorted in decreasing order, C<< $_ <=> $target >>
-is a valid ordering:
-
-   [9, 9, 8, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1]       x
-    ...   1  1  0  0  0 -1  ...  -1 -1 -1    ord(x) := (x <=> 5)
-
-The same applies to sorted lists of strings by replacing
-C<< <=> >> with C<cmp>.
 
 Let C<$ord> denote the ordering and set C<< $ord->($lo) = +Infinity >>.
 The return value of B<brsrch0> is the unique index C<$upper> on
