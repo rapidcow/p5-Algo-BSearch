@@ -366,7 +366,7 @@ sub _blsrch
 			# _blsrch above.
 			$cmp = $res;
 			$elp = $img;
-			last if $any and $res == 0;
+			last if $any && $res == 0;
 			$hi = $mid;       # include
 		} else {
 			$lo = ++$mid;     # exclude
@@ -419,7 +419,7 @@ sub _brsrch
 		if ($ok->($res = $ord->($mid))) {
 			$cmp = $res;
 			$elp = $img;
-			last if $any and $res == 0;
+			last if $any && $res == 0;
 			$lo = $mid;       # include
 		} else {
 			$hi = --$mid;     # exclude
