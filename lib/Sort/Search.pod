@@ -37,9 +37,9 @@ Sort::Search - binary search on contiguous sorted ranges
 
 =head1 DESCRIPTION
 
-B<NOTE>:
-This is an intentionally terse technical document.
-Concrete use cases are treated in L<Sort::Search::Cookbook>.
+B<NOTE>:  If you are new to this module, I recommend
+starting with L<Sort::Search::Cookbook>, which has
+quick references and examples for common use cases.
 
 This module implements two classes of search algorithms,
 which will named separately in this document as the
@@ -409,8 +409,6 @@ L<List::MoreUtils>, L<List::Search>, L<List::BinarySearch>,
 L<List::BinarySearch::XS>.
 
 =head1 LINKS
-
-More about this distribution can be found at:
 
 =over
 

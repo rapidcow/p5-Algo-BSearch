@@ -12,6 +12,20 @@
 
 Sort::Search::Cookbook - practical examples for Sort::Search
 
+=head1 SYNOPSIS
+
+This is a collection of quick references and examples on
+how to use L<Sort::Search>.  It is not expected that you
+read this document linearly, although the first two sections
+here are introductory in nature, and are thus understood
+to have been read.
+
+As a general rule of thumb, any existing binary search
+function most definitely translates to a "left search"
+here.  Despite examples are provided for both, keep in
+mind that "right search" is unconventional (at least
+to my knowledge) and can be counterintuitive.
+
 =head1 DEFINITION
 
 The terms "predicate", "ordering", "search range" are used in
@@ -56,7 +70,18 @@ more to the list. :)
 
 =head2 Exact match
 
-Given the numerically sorted array:
+The second field C<$cmp> can be used to determine (1)
+if the return index corresponds to a real array element
+and (2) if the return index corresponds to an exact match.
+
+For (1), check C<$cmp> is defined.
+For (2), check if C<$cmp> equals zero, which
+is equivalent to checking C<< $array->[$idx] <=> $want >>,
+but it save you an extra comparison.  If you also need
+the array element, use the third field C<$elt>, which is
+equivalent to C<< $array->[$idx] >>.
+
+Concretely, given the numerically sorted array:
 
     my @array = qw( 12 17a 17b 17c 21 );
 
@@ -102,8 +127,9 @@ and the last match with B<brsrch0>:
 
 Notice that the ordering is reversed: C<< $want <=> $_ >>
 instead of C<< $_ <=> $want >>, due to using a right search
-instead of a left search.  The conventional left search may be
-used, though you must check and retrieve the element yourself:
+instead of a left search.  The conventional left search may
+be used, though C<$cmp> and C<$elt> would be meaningless,
+thus you must check and retrieve the element separately:
 
     sub rsearch {
         my ($array, $want) = @_;
@@ -148,8 +174,7 @@ the right search is left-exclusive.
 
 =head1 CONVERSION GUIDE
 
-If you are familiar with binary search functions
-in (other) CPAN modules:
+From (other) CPAN modules:
 
 =over
 
@@ -157,6 +182,7 @@ in (other) CPAN modules:
 
 For L<List::MoreUtils> (which this module in fact
 inspired by!) it's basically a verbatim translation.
+Namely this:
 
   my (@ids, $lb, $ub);
   @ids = (1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4,
@@ -175,7 +201,7 @@ inspired by!) it's basically a verbatim translation.
   ($lb, $ub) = equal_range { $_ <=> 2 } @ids; # (2,4)
   ($lb, $ub) = equal_range { $_ <=> 4 } @ids; # (10,14)
 
-is equivalent to this:
+is equivalent to:
 
   $lb = blsrch0 { $_ <=> 2 } \@ids; # returns 2
   $lb = blsrch0 { $_ <=> 4 } \@ids; # returns 10
