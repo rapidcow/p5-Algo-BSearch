@@ -207,7 +207,7 @@ sub _bisectl
 	# of right-to-left notation of function composition.
 	# ($cmp = $res is the image of ${$elp = $img} via $ok,
 	# which in turn is the image of $mid, the index...)
-	my ($cmp, $res, $elp, $img, $mid);
+	my ($cmp, $res, $elp, $img, $mid);  $mid = $hi;
 
 	# Assumption: If $ok->($x) true, $x <= $y => $ok->($y) true.
 	# Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
@@ -219,15 +219,15 @@ sub _bisectl
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($res = $ok->($mid)) {
-			$hi = $mid;      # include
 			$cmp = $res;
 			$elp = $img;
 			last if $any;
+			$hi = $mid;      # include
 		} else {
-			$lo = $mid + 1;  # exclude
+			$lo = ++$mid;    # exclude
 		}
 	}
-	wantarray ? ($hi, $cmp, $elp) : $hi;
+	wantarray ? ($mid, $cmp, $elp, $lo, $hi) : $mid;
 }
 
 sub bisectl (&$;$$) { _bisectl(0, _parse(LTR, @_)); }
@@ -261,7 +261,7 @@ sub bixectl (&$;$$) { _bisectl(1, _parse(LTR, @_)); }
 sub _bisectr
 {
 	my ($any, $ok, $map, $hi, $lo) = @_;
-	my ($cmp, $res, $elp, $img, $mid);
+	my ($cmp, $res, $elp, $img, $mid);  $mid = $lo;
 
 	# Assumption: If $ok->($y) true, $x <= $y => $ok->($x) true.
 	# Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
@@ -273,15 +273,15 @@ sub _bisectr
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($res = $ok->($mid)) {
-			$lo = $mid;      # include
 			$cmp = $res;
 			$elp = $img;
 			last if $any;
+			$lo = $mid;      # include
 		} else {
-			$hi = $mid - 1;  # exclude
+			$hi = --$mid;    # exclude
 		}
 	}
-	wantarray ? ($lo, $cmp, $elp) : $lo;
+	wantarray ? ($mid, $cmp, $elp, $hi, $lo) : $mid;
 }
 
 sub bisectr (&$;$$) { _bisectr(0, _parse(RTL, @_)); }
@@ -335,22 +335,22 @@ sub bixectr (&$;$$) { _bisectr(1, _parse(RTL, @_)); }
 sub _blsrch
 {
 	my ($any, $ok, $ord, $map, $lo, $hi) = @_;
-	my ($cmp, $res, $elp, $img, $mid);
+	my ($cmp, $res, $elp, $img, $mid);  $mid = $hi;
 	while ($lo < $hi) {
 		# Pick floor( (L+H)/2 )
 		$mid = _lmean($lo, $hi);
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($ok->($res = $ord->($mid))) {
-			$hi = $mid;       # include
 			$cmp = $res;
 			$elp = $img;
 			last if $any and $res == 0;
+			$hi = $mid;       # include
 		} else {
-			$lo = $mid + 1;   # exclude
+			$lo = ++$mid;     # exclude
 		}
 	}
-	wantarray ? ($hi, $cmp, $elp) : $hi;
+	wantarray ? ($mid, $cmp, $elp, $lo, $hi) : $mid;
 }
 
 sub blsrch0 (&$;$$) { _blsrch(0, sub { $_[0] >= 0 }, _parse(LTR, @_)); }
@@ -395,15 +395,15 @@ sub _brsrch
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($ok->($res = $ord->($mid))) {
-			$lo = $mid;       # include
 			$cmp = $res;
 			$elp = $img;
 			last if $any and $res == 0;
+			$lo = $mid;       # include
 		} else {
-			$hi = $mid - 1;   # exclude
+			$hi = --$mid;     # exclude
 		}
 	}
-	wantarray ? ($lo, $cmp, $elp) : $lo;
+	wantarray ? ($mid, $cmp, $elp, $hi, $lo) : $mid;
 }
 
 sub brsrch0 (&$;$$) { _brsrch(0, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
@@ -448,23 +448,11 @@ sub brsrchx (&$;$$) { _brsrch(1, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
 #   equal range would actually fall fully inside our bounds.)
 sub _blsrch2
 {
-	my ($ord, $map, $lo, $hi) = @_;
-	my ($res, $img, $mid);
-	while ($lo < $hi) {
-		# Pick floor( (L+H)/2 )
-		$mid = _lmean($lo, $hi);
-		$img = $map ? $map->($mid) : \$mid;
-		local *_ = $img;
-		$res = $ord->($mid);
-		if ($res == 0) {
-			$lo = _bisectl(0, sub { &$ord >= 0 }, $map, $lo, $mid);
-			$hi = _bisectl(0, sub { &$ord > 0 }, $map, $mid + 1, $hi);
-			last;
-		} elsif ($res > 0) {
-			$hi = $mid;       # include
-		} else {
-			$lo = $mid + 1;   # exclude
-		}
+	my ($ord, $map) = @_;
+	my ($mid, $res, undef, $lo, $hi) = _blsrch(1, sub { $_[0] >= 0 }, @_);
+	if (defined $res && $res == 0) {
+		$lo = _bisectl(0, sub { &$ord >= 0 }, $map, $lo, $mid);
+		$hi = _bisectl(0, sub { &$ord > 0 }, $map, $mid + 1, $hi);
 	}
 	wantarray ? ($lo, $hi) : ($hi - $lo);
 }
@@ -476,23 +464,11 @@ sub _blsrch2
 # has the lower bound and [$mid, $hi] has the upper bound.
 sub _brsrch2
 {
-	my ($ord, $map, $hi, $lo) = @_;
-	my ($res, $img, $mid);
-	while ($lo < $hi) {
-		# Pick ceil( (L+H)/2 )
-		$mid = _rmean($lo, $hi);
-		$img = $map ? $map->($mid) : \$mid;
-		local *_ = $img;
-		$res = $ord->($mid);
-		if ($res == 0) {
-			$hi = _bisectr(0, sub { &$ord >= 0 }, $map, $hi, $mid);
-			$lo = _bisectr(0, sub { &$ord > 0 }, $map, $mid - 1, $lo);
-			last;
-		} elsif ($res > 0) {
-			$lo = $mid;       # include
-		} else {
-			$hi = $mid - 1;   # exclude
-		}
+	my ($ord, $map) = @_;
+	my ($mid, $res, undef, $hi, $lo) = _brsrch(1, sub { $_[0] >= 0 }, @_);
+	if (defined $res && $res == 0) {
+		$hi = _bisectr(0, sub { &$ord >= 0 }, $map, $hi, $mid);
+		$lo = _bisectr(0, sub { &$ord > 0 }, $map, $mid - 1, $lo);
 	}
 	wantarray ? ($hi, $lo) : ($hi - $lo);
 }
