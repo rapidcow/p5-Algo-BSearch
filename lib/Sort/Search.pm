@@ -267,7 +267,7 @@ sub bixectl (&$;$$) { _bisectl(1, _parse(LTR, @_)); }
 # add 1 to this index, or negate the predicate and use
 # the left bisection method.)
 #
-# The exact return value is documented above bisectl_map.
+# The exact return value is documented above _bisectl.
 sub _bisectr
 {
 	my ($any, $ok, $map, $hi, $lo) = @_;
