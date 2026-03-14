@@ -219,12 +219,30 @@ sub _bisectl
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($res = $ok->($mid)) {
+			# This is a successful match, so the
+			# intermediates into our return values.
+			# But *don't* clobber $hi in case this
+			# is an early return.  (This is mostly
+			# significant for the b*srchx later,
+			# but for consistency do it here too.)
 			$cmp = $res;
 			$elp = $img;
 			last if $any;
 			$hi = $mid;      # include
 		} else {
+			# This ++ may appear insignificant, but
+			# it's what keeps $mid inside [$lo, $hi].
 			$lo = ++$mid;    # exclude
+			# Why?  Because to accommodate the case
+			# of an early return, we don't actually
+			# return $hi like we're supposed to;
+			# The above deals with the case where
+			# the last match is successful, in which
+			# case $mid needs no modification.  Here,
+			# $mid is unsuccessful and is thus unfit
+			# for return.  Fittingly it is excluded
+			# but since we might be the last branch
+			# we have to increment $mid with $lo too.
 		}
 	}
 	wantarray ? ($mid, $cmp, $elp, $lo, $hi) : $mid;
@@ -342,6 +360,10 @@ sub _blsrch
 		$img = $map ? $map->($mid) : \$mid;
 		local *_ = $img;
 		if ($ok->($res = $ord->($mid))) {
+			# Be careful not to clobber $hi yet,
+			# as blsrch2 uses us for narrowing
+			# the search range!  See comment for
+			# _blsrch above.
 			$cmp = $res;
 			$elp = $img;
 			last if $any and $res == 0;
