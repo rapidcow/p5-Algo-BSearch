@@ -26,13 +26,6 @@ BEGIN {
 		blsrch0 brsrch0 blsrch1 brsrch1
 		blsrch2 brsrch2 blsrchx brsrchx
 	);
-
-	# We could avoid copying array elements if caller just
-	# wants to inspect $cmp to see if the index was legit?
-	# It's okay if this fails, 'wantarray and want(...)'
-	# will reduce to just wantarray in that case...
-	eval { require Want; Want->import('want') };
-	if ($@) { *want = sub { 1 } }
 }
 
 use constant LTR => 1;  # left-to-right
@@ -212,11 +205,9 @@ sub _bisectl
 	my ($any, $ok, $map, $lo, $hi) = @_;
 	# Fun fact!  The following are written in the order
 	# of right-to-left notation of function composition.
-	# ($cmp = $res is the image of $elt = $$img via $ok,
+	# ($cmp = $res is the image of ${$elp = $img} via $ok,
 	# which in turn is the image of $mid, the index...)
-	my ($cmp, $res, $elt, $img, $mid);
-	my $want2 = wantarray and want(2);
-	my $want3 = wantarray and want(3);
+	my ($cmp, $res, $elp, $img, $mid);
 
 	# Assumption: If $ok->($x) true, $x <= $y => $ok->($y) true.
 	# Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
@@ -230,14 +221,13 @@ sub _bisectl
 		if ($res = $ok->($mid)) {
 			$hi = $mid;      # include
 			$cmp = $res;
-			$elt = $img;     # (delay deref?)
+			$elp = $img;
 			last if $any;
 		} else {
 			$lo = $mid + 1;  # exclude
 		}
 	}
-	$elt = $$elt if $want3 && defined $elt;
-	$want2 ? ($hi, $cmp, $elt) : $hi;
+	wantarray ? ($hi, $cmp, $elp) : $hi;
 }
 
 sub bisectl (&$;$$) { _bisectl(0, _parse(LTR, @_)); }
@@ -271,9 +261,7 @@ sub bixectl (&$;$$) { _bisectl(1, _parse(LTR, @_)); }
 sub _bisectr
 {
 	my ($any, $ok, $map, $hi, $lo) = @_;
-	my ($cmp, $res, $elt, $img, $mid);
-	my $want2 = wantarray and want(2);
-	my $want3 = wantarray and want(3);
+	my ($cmp, $res, $elp, $img, $mid);
 
 	# Assumption: If $ok->($y) true, $x <= $y => $ok->($x) true.
 	# Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
@@ -287,14 +275,13 @@ sub _bisectr
 		if ($res = $ok->($mid)) {
 			$lo = $mid;      # include
 			$cmp = $res;
-			$elt = $img;
+			$elp = $img;
 			last if $any;
 		} else {
 			$hi = $mid - 1;  # exclude
 		}
 	}
-	$elt = $$elt if $want3 && defined $elt;
-	$want2 ? ($lo, $cmp, $elt) : $lo;
+	wantarray ? ($lo, $cmp, $elp) : $lo;
 }
 
 sub bisectr (&$;$$) { _bisectr(0, _parse(RTL, @_)); }
@@ -348,9 +335,7 @@ sub bixectr (&$;$$) { _bisectr(1, _parse(RTL, @_)); }
 sub _blsrch
 {
 	my ($any, $ok, $ord, $map, $lo, $hi) = @_;
-	my ($cmp, $res, $elt, $img, $mid);
-	my $want2 = wantarray and want(2);
-	my $want3 = wantarray and want(3);
+	my ($cmp, $res, $elp, $img, $mid);
 	while ($lo < $hi) {
 		# Pick floor( (L+H)/2 )
 		$mid = _lmean($lo, $hi);
@@ -359,14 +344,13 @@ sub _blsrch
 		if ($ok->($res = $ord->($mid))) {
 			$hi = $mid;       # include
 			$cmp = $res;
-			$elt = $img;
+			$elp = $img;
 			last if $any and $res == 0;
 		} else {
 			$lo = $mid + 1;   # exclude
 		}
 	}
-	$elt = $$elt if $want3 && defined $elt;
-	$want2 ? ($hi, $cmp, $elt) : $hi;
+	wantarray ? ($hi, $cmp, $elp) : $hi;
 }
 
 sub blsrch0 (&$;$$) { _blsrch(0, sub { $_[0] >= 0 }, _parse(LTR, @_)); }
@@ -404,9 +388,7 @@ sub blsrchx (&$;$$) { _blsrch(1, sub { $_[0] >= 0 }, _parse(LTR, @_)); }
 sub _brsrch
 {
 	my ($any, $ok, $ord, $map, $hi, $lo) = @_;
-	my ($cmp, $res, $elt, $img, $mid);
-	my $want2 = wantarray and want(2);
-	my $want3 = wantarray and want(3);
+	my ($cmp, $res, $elp, $img, $mid);
 	while ($lo < $hi) {
 		# Pick ceil( (L+H)/2 )
 		$mid = _rmean($lo, $hi);
@@ -415,14 +397,13 @@ sub _brsrch
 		if ($ok->($res = $ord->($mid))) {
 			$lo = $mid;       # include
 			$cmp = $res;
-			$elt = $img;
+			$elp = $img;
 			last if $any and $res == 0;
 		} else {
 			$hi = $mid - 1;   # exclude
 		}
 	}
-	$elt = $$elt if $want3 && defined $elt;
-	$want2 ? ($lo, $cmp, $elt) : $lo;
+	wantarray ? ($lo, $cmp, $elp) : $lo;
 }
 
 sub brsrch0 (&$;$$) { _brsrch(0, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
@@ -463,10 +444,12 @@ sub brsrchx (&$;$$) { _brsrch(1, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
 #   (including it) and the upper bound exists to the right of
 #   any zero (excluding it). In other words, my meticulously
 #   constructed diagram is accurate and you can trust it. :)
+#   (Also note that, since $mid is the FIRST equality, the
+#   equal range would actually fall fully inside our bounds.)
 sub _blsrch2
 {
 	my ($ord, $map, $lo, $hi) = @_;
-	my ($cmp, $res, $img, $mid);
+	my ($res, $img, $mid);
 	while ($lo < $hi) {
 		# Pick floor( (L+H)/2 )
 		$mid = _lmean($lo, $hi);
@@ -494,7 +477,7 @@ sub _blsrch2
 sub _brsrch2
 {
 	my ($ord, $map, $hi, $lo) = @_;
-	my ($cmp, $res, $img, $mid);
+	my ($res, $img, $mid);
 	while ($lo < $hi) {
 		# Pick ceil( (L+H)/2 )
 		$mid = _rmean($lo, $hi);

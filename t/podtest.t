@@ -19,13 +19,13 @@ subtest ('Cookbook :: Exact match' => sub {
 	my @array = qw( 12 17a 17b 17c 21 );
 	my $lsearch = sub {
 	    my ($array, $want) = @_;
-	    my ($idx, $cmp, $elt) = blsrch0
+	    my ($idx, $cmp, $elp) = blsrch0
 	            { no warnings 'numeric'; $_ <=> $want }
 	            $array;
 	    if (!defined $cmp) { "$want not found anywhere"; }
 	    elsif ($cmp != 0)  { "$want not found; best "
-	                             . "is $elt at [$idx]"; }
-	    else               { "$want found at $elt [$idx] :)"; }
+	                             . "is $$elp at [$idx]"; }
+	    else               { "$want found at $$elp [$idx] :)"; }
 	};
 	is $lsearch->( \@array, 11 ), "11 not found; best is 12 at [0]" => "lsearch impl 1";
 	is $lsearch->( \@array, 12 ), "12 found at 12 [0] :)"   => "lsearch impl 2";
@@ -38,13 +38,13 @@ subtest ('Cookbook :: Exact match' => sub {
 	# Implementation 1
 	sub {
 	    my ($array, $want) = @_;
-	    my ($idx, $cmp, $elt) = brsrch0
+	    my ($idx, $cmp, $elp) = brsrch0
 	            { no warnings 'numeric'; $want <=> $_ }
 	            $array;
 	    if (!defined $cmp) { "$want not found anywhere"; }
 	    elsif ($cmp != 0)  { "$want not found; best "
-	                             . "is $elt at [$idx]"; }
-	    else               { "$want found at $elt [$idx] :)"; }
+	                             . "is $$elp at [$idx]"; }
+	    else               { "$want found at $$elp [$idx] :)"; }
 	},
 	# Implementation 2
 	sub {

@@ -9,7 +9,8 @@ use Test::More tests => 3;
 
 sub search {
 	my ($array, $want) = @_;
-	my ($idx, $cmp, $elt) = blsrch0 { $_ <=> $want } $array;
+	my ($idx, $cmp, $elp) = blsrch0 { $_ <=> $want } $array;
+	my $elt = defined $elp ? $$elp : undef;
 	if (!defined $cmp) { "$want not found anywhere" }
 	elsif ($cmp != 0)  { "$want not found; the best "
 	                     . "I got was $elt at [$idx]" }
