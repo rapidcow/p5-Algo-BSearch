@@ -446,8 +446,8 @@ sub brsrchx (&$;$$) { _brsrch(1, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
 # at some point we'd enter this range:
 #
 #    (&ord < 0)    (&ord == 0)            (&ord > 0)
-#    --------[o--->|<===o===>|<--------------]o-------->
-#          $lo -------->^ found at $mid      $hi
+#    ---------o[-->|<===o===>|<--------------]o-------->
+#           $lo ------->^ found at $mid      $hi
 #             ^<----------------------------- ^<---- ...
 #                             [This is left-search, btw]
 #
@@ -460,7 +460,7 @@ sub brsrchx (&$;$$) { _brsrch(1, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
 # the range would exclude $mid, an actual equal match.)
 #
 # * Note that the lower bound exists to the left of any zero
-#   (including it) and the upper bound exists to the left of
+#   (including it) and the upper bound exists to the right of
 #   any zero (excluding it). In other words, my meticulously
 #   constructed diagram is accurate and you can trust it. :)
 sub _blsrch2
