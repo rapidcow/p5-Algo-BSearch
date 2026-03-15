@@ -115,7 +115,6 @@ B<bixectl> is a modified version of B<bisectl> that
 returns any index for which the predicate returns True.
 In the case that the predicate attains True at exactly
 one point or never attains True, they behave identically.
-
 For B<bixectr>, it's the same against B<bisectr>.
 
 =item *
@@ -124,7 +123,6 @@ B<blsrchx> is a modified version of B<blsrch0> that
 returns any index for which the predicate returns 0.
 In the case that the ordering attains 0 at exactly
 one point or skips it entirely, they behave identically.
-
 For B<brsrchx>, it's the same against B<brsrch0>.
 
 =back
