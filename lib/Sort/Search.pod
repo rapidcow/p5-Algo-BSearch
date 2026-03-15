@@ -284,21 +284,21 @@ adjacent indices it is defined on.  That is, C<< <0 >> (negative)
 precedes C<< =0 >> (zero), which precedes C<< >0 >> (positive).
 
 Let C<$ord> denote the ordering and set C<< $ord->($hi) = +Infinity >>.
-The return value of B<blsrch0> is the unique index C<$lower> on
+The return value of B<blsrch0> is the unique index C<$lb> on
 the closed interval C<[$lo, $hi]> such that:
 
 =over
 
 =item *
 
-C<< $ord->($lower) >= 0 >>.
+C<< $ord->($lb) >= 0 >>.
 
 =item *
 
-For all valid index C<< $x < $lower >>, it follows that C<< $ord->($x) < 0 >>.
-As a result, C<< $lower >> is the first instance where C<< $ord >= 0 >>,
-while C<< $lower - 1 >> is the last instance where C<< $ord < 0 >>.
-(Compare this to B<brsrch1>.)
+For all valid index C<< $x < $lb >>, it follows that C<< $ord->($x) < 0 >>.
+As a result, C<$lb> is the first instance where C<< $ord >= 0 >>,
+while C<$lb - 1> is the last instance where C<< $ord < 0 >>.
+(Compare this to C<$lx> returned by B<brsrch1>.)
 
 =back
 
@@ -306,27 +306,27 @@ The return value of B<blsrchx> is any index C<$x> satisfying
 C<< $ord->($x) == 0 >>, but if one could not be found,
 it returns the same result as C<blsrch0>.
 
-The return value of B<blsrch1> is the unique index C<$upper_x>
+The return value of B<blsrch1> is the unique index C<$ux>
 on the closed interval C<[$lo, $hi]> such that:
 
 =over
 
 =item *
 
-C<< $ord->($upper_x) > 0 >>.
+C<< $ord->($ux) > 0 >>.
 
 =item *
 
-For all valid index C<< $x < $upper_x >>, it follows that C<< $ord->($x) <= 0 >>.
-As a result, C<< $upper_x >> is the first instance where C<< $ord > 0 >>,
-while C<< $upper_x - 1 >> is the last instance where C<< $ord <= 0 >>.
-(Compare this to B<brsrch0>.)
+For all valid index C<< $x < $ux >>, it follows that C<< $ord->($x) <= 0 >>.
+As a result, C<$ux> is the first instance where C<< $ord > 0 >>,
+while C<$ux - 1> is the last instance where C<< $ord <= 0 >>.
+(Compare this to C<$ub> returned by B<brsrch0>.)
 
 =back
 
-In list context, B<blsrch2> returns both C<$lower> and C<$upper_x>,
+In list context, B<blsrch2> returns both C<$lb> and C<$ux>,
 in that order.  In scalar context, it returns the nonnegative
-difference C<$upper_x - $lower>, which equals the number of elements
+difference C<$ux - $lb>, which equals the number of elements
 for which C<$ord == 0>.
 
 =item B<brsrch0 { ORD } ARRAY>
@@ -346,21 +346,21 @@ adjacent indices it is defined on.  That is, C<< >0 >> (positive)
 precedes C<< =0 >> (zero), which precedes C<< <0 >> (negative).
 
 Let C<$ord> denote the ordering and set C<< $ord->($lo) = +Infinity >>.
-The return value of B<brsrch0> is the unique index C<$upper> on
+The return value of B<brsrch0> is the unique index C<$ub> on
 the closed interval C<[$lo, $hi]> such that:
 
 =over
 
 =item *
 
-C<< $ord->($upper) >= 0 >>.
+C<< $ord->($ub) >= 0 >>.
 
 =item *
 
-For all valid index C<< $x > $upper >>, it follows that C<< $ord->($x) < 0 >>.
-As a result, C<< $upper >> is the last instance where C<< -$ord <= 0 >> and
-C<< $upper + 1 >> is the first instance where C<< -$ord > 0 >>.
-(Compare this to B<blsrch1>.)
+For all valid index C<< $x > $ub >>, it follows that C<< $ord->($x) < 0 >>.
+As a result, C<$ub> is the last instance where C<< -$ord <= 0 >> and
+C<$ub + 1> is the first instance where C<< -$ord > 0 >>.
+(Compare this to C<$ux> returned by B<blsrch1>.)
 
 =back
 
@@ -368,27 +368,27 @@ The return value of B<brsrchx> is any index C<$x> satisfying
 C<< $ord->($x) == 0 >>, but if one could not be found,
 it returns the same result as C<brsrch0>.
 
-The return value of B<brsrch1> is the unique index C<$lower_x> on
+The return value of B<brsrch1> is the unique index C<$lx> on
 the closed interval C<[$lo, $hi]> such that:
 
 =over
 
 =item *
 
-C<< $ord->($lower_x) > 0 >>.
+C<< $ord->($lx) > 0 >>.
 
 =item *
 
-For all valid index C<< $x > $lower_x >>, it follows that C<< $ord->($x) <= 0 >>.
-As a result, C<< $lower_x >> is the last instance where C<< -$ord < 0 >> and
-C<< $lower_x + 1 >> is the first instance where C<< -$ord >= 0 >>.
-(Compare this to B<blsrch0>.)
+For all valid index C<< $x > $lx >>, it follows that C<< $ord->($x) <= 0 >>.
+As a result, C<$lx> is the last instance where C<< -$ord < 0 >> and
+C<$lx + 1> is the first instance where C<< -$ord >= 0 >>.
+(Compare this to C<$lb> returned by B<blsrch0>.)
 
 =back
 
-In list context, B<brsrch2> returns both C<$upper> and C<$lower_x>,
+In list context, B<brsrch2> returns both C<$ub> and C<$lx>,
 in that order.  In scalar context, it returns the nonnegative
-difference C<$upper - $lower_x>, which equals the number of elements
+difference C<$ub - $lx>, which equals the number of elements
 for which C<$ord == 0>.
 
 =back
