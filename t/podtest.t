@@ -7,11 +7,40 @@
 use 5.006;
 use strict;
 use warnings;
-use Test::More tests => 4;
+use Test::More tests => 5;
 use Sort::Search qw(
 	blsrch0 blsrch1 blsrch2 blsrchx
-	brsrch0         brsrch2
+	brsrch0 brsrch1 brsrch2
 );
+
+subtest ('Description :: Lower/upper variants' => sub {
+	plan tests => 2;
+
+	my (@a, $lb, $lx, $ub, $ux) = #sort { $a <=> $b }
+	#( sprintf("%.13f", 4*atan2(1,1)) =~ /[0-9]/g )[0..12];
+	# Floating-point math can be finicky, so
+	# I'm just going to define them explicitly
+	# here for the test....
+		qw( 1 1 2 3 3 4 5 5 5 6 8 9 9 );
+
+	my $x = 5;
+
+	$lb = blsrch0 {$_<=>$x} \@a;  $ux = blsrch1 {$_<=>$x} \@a;  is "[$lb,$ux)", "[6,9)";
+	#  (left lower bound)           (left upper bound)          =>  [6,  9  )
+	#    first $_ >= $x  -.          ,-  first $_ > $x
+	#                      \        /
+	#    0  1  2  3  4  5 [6  7  8 [9  a  b  c   index of $_
+	#    -  -  -  -  -  -  0  0  0  +  +  +  +   ord ($_ <=> $x)
+	#    <<<<<<<<<<<<<<<<<<========------------
+	#    1  1  2  3  3  4  5  5  5  6  8  9  9   value of $_
+	#    -----------------========>>>>>>>>>>>>>
+	#    +  +  +  +  +  +  0  0  0  -  -  -  -   ord ($x <=> $_)
+	#    0  1  2  3  4  5] 6  7  8] 9  a  b  c   index of $_
+	#                   /        \
+	#   last $x > $_  -'          `-  last $x >= $_
+	# (right lower bound)            (right upper bound)        =>  (  5,  8]
+	$lx = brsrch1 {$x<=>$_} \@a;  $ub = brsrch0 {$x<=>$_} \@a;  is "($lx,$ub]", "(5,8]";
+});  # 'Description :: Lower/upper variants' subtest
 
 subtest ('Examples :: Exact match' => sub {
 	plan tests => 28;

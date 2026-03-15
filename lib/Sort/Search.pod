@@ -41,6 +41,8 @@ B<NOTE>:  If you are new to this module, I recommend
 starting with L<Sort::Search::Cookbook>, which has
 quick references and examples for common use cases.
 
+=head2 Algorithms
+
 This module implements two classes of search algorithms,
 which will named separately in this document as the
 I<bisection method> and the (ordinary) I<binary search>
@@ -69,9 +71,9 @@ points from negative to 0, then 0 to positive.  Such a
 function is typically constructed with respect to a target
 value to be located within the array (hence the name "search").
 
-For example, suppose we want to locate C<$T = 3> in the array
+For example, suppose we want to locate C<$x = 3> in the array
 C<[1, 2, 3, 3, 4]>.  We can consider the ordering C<< $_ <=>
-$T >>, which returns negatives for C<[1, 2]>, zeros for C<[3, 3]>,
+$x >>, which returns negatives for C<[1, 2]>, zeros for C<[3, 3]>,
 and positives for C<[4]>.  We name the boundary between the
 negatives and the zeros the I<lower bisection point>, and that
 between the zeros and the positives the I<upper bisection point>.
@@ -81,6 +83,8 @@ between the zeros and the positives the I<upper bisection point>.
 In both cases, we call the return value of the
 predicate/ordering the I<comparison result>, or
 C<$cmp> for short.
+
+=head2 Orientation variants
 
 For every function in the conventional direction (i.e.,
 left-to-right, true-to-false, increasing), a dual variant
@@ -93,19 +97,96 @@ my examples, this:
   print $A[ bisectl { $_ >= 2 } \@A ];
 
 prints C<2> because the left-variants prefer to return
-the leftmost index of the matching range C<[2, 3, 4]>.
+the leftmost index of the matching range C<[2, 3, 4]>,
+or one past the final index (C<5>) if no such range exists.
 
   use Sort::Search qw(bisectr);
   my @B = ( 5, 4, 3, 2, 1 );
   print $B[ bisectr { $_ >= 3 } \@B ];
 
 prints C<3> because the right-variants prefer to return
-the rightmost index of the matching range C<[5, 4, 3]>.
+the rightmost index of the matching range C<[5, 4, 3]>,
+or one below the initial index (C<-1>) if no such range
+exists.  (Care should be taken in this specific case
+as indexing by C<-1> wraps back to the last element.)
 
-For every algorithm that searches for the precise bisection
-point, a variant that returns an arbitrary match is provided.
-They are identified by the letter X.  (Mnemonic: X stands
-for eXists.)
+=head2 Lower/upper variants
+
+For I<binary search> functions in particular, there are
+the 0,1 variants corresponding to the aforementioned
+I<lower bisection point> and I<upper bisection point>.
+These points are best visualized by plotting the image
+of the ordering and taking note of the span of elements
+mapped to zero.  For instance, consider the first 13
+decimal digits of pi (including the integer part)
+arranged in increasing order as the haystack, and the
+number C<$x = 5> as the needle.  Then the zeros (as
+marked by "=" below) are bound by the boundary where
+it meets the negatives ("<") and positives (">"):
+
+  use Sort::Search qw(blsrch0 blsrch1 brsrch0 brsrch1);
+  my (@a, $lb, $lx, $ub, $ux) = sort { $a <=> $b }
+     ( sprintf("%.13f", 4*atan2(1,1)) =~ /[0-9]/g )[0..12];
+  my $x = 5;
+
+  $lb = blsrch0 {$_<=>$x} \@a;  $ux = blsrch1 {$_<=>$x} \@a;  print "[$lb,$ux)";
+  #  (left lower bound)           (left upper bound)             =>  [6,  9  )
+  #    first $_ >= $x  -.          ,-  first $_ > $x
+  #                      \        /
+  #    0  1  2  3  4  5 [6  7  8 [9  a  b  c   index of $_
+  #    -  -  -  -  -  -  0  0  0  +  +  +  +   ord ($_ <=> $x)
+  #    <<<<<<<<<<<<<<<<<<========------------
+  #    1  1  2  3  3  4  5  5  5  6  8  9  9   value of $_
+  #    -----------------========>>>>>>>>>>>>>
+  #    +  +  +  +  +  +  0  0  0  -  -  -  -   ord ($x <=> $_)
+  #    0  1  2  3  4  5] 6  7  8] 9  a  b  c   index of $_
+  #                   /        \
+  #   last $x > $_  -'          `-  last $x >= $_
+  # (right lower bound)            (right upper bound)           =>  (  5,  8]
+  $lx = brsrch1 {$x<=>$_} \@a;  $ub = brsrch0 {$x<=>$_} \@a;  print "($lx,$ub]";
+
+The 0 variants (B<blsrch0>, B<brsrch0>) return the
+inclusive bounds for when ordering transitions from
+"-" to "0", while the 1 variants (B<blsrch1>, B<brsrch1>)
+return the exclusive bounds for when the ordering
+transitions from "0" to "+".  For left search in
+particular, B<blsrch0> is the inclusive lower bound,
+and B<blsrch1> is the exclusive upper bound.  The 2
+variants (B<blsrch2>, B<brsrch2>) return both inclusive
+and exclusive bounds at once, in that order; in scalar
+context, they return the absolute difference which
+corresponds to the span of range of equal values
+(i.e. the "0"s).
+
+A more compact (albeit possibly obscure) characterization
+of the 0,1 variants is that they are the composition of
+the predicates C<< &$ord >= 0 >> and C<< &$ord > 0 >>
+on top of the bisection functions of the corresponding
+orientations.  Note that this formal characterization
+intentionally makes no mention of consistency with the
+total order from which it is derived; in particular it is
+possible to extend the notion of equality by mapping any
+contiguous region one wishes to find to "0", provided
+that it is properly bounded by "+" and "-".
+
+Another thing to note is that, given the same underlying
+array, the ordering should be reversed when orientation
+is flipped.  Usually when you could flip the operands to
+achieve this, as I have shown above with C<< $_ <=> $x >>
+for left search and C<< $x <=> $_ >> for right search.
+But in restrained cases where either (1) you don't have
+access to both operands and have to work with the ordering
+as a blackboxed unary function of C<$_>, or (2) the
+needle is not interchangeable with C<$_> (say, when the
+needle is a field of a larger structure), you can negate
+the ordering instead.
+
+
+=head2 Existence variants
+
+The bisection and the 0 variants have x variants which
+return as soon as it finds a match.
+(Mnemonic: "x" stands for "eXists".)
 
 =over
 
