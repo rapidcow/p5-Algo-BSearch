@@ -148,7 +148,7 @@ for brevity.
 
       In fact, try it out...
 
-    use Sort::Search qw(bisectl);
+  # use Sort::Search qw(bisectl);
     my ($lb, $ux);  # I use "x" to remind myself of "eXclusive".
 
     $lb = bisectl {  ( ($array[$_] <=> 5) ) >= 0  } 0, @array;
@@ -196,18 +196,19 @@ so that the search is performed on a sub-array instead.
 For instance, using the fact that "$lb <= $ux", we may
 search $ux on a sub-array after $lb narrows it down:
 
-     $lb = bisectl { ($_ <=> 5) >= 0 } \@array;
-     $ux = bisectl { ($_ <=> 5) >= 0 } \@array, $lb;
-                                                ^^^
-                               [The omitted upper bound
-                                 still means "'til the
-                                  end of this array"]
+    $lb = bisectl { ($_ <=> 5) >= 0 } \@array;
+    $ux = bisectl { ($_ <=> 5) >= 0 } \@array, $lb;
+                                               ^^^
+                              [The omitted upper bound
+                                still means "'til the
+                                 end of this array"]
 
 These are the LEFT BINARY SEARCH algorithms.  They are
 named by the bisection variant (l) and their predicate
 (0/1, "$_ >= 0" or "$_ > 0").  Namely, the above can be
 re-written as:
 
+  # use Sort::Search qw(blsrch0 blsrch1);
     $lb = blsrch0 {  $array[$_] <=> 5  } 0, @array;
     $ux = blsrch1 {  $array[$_] <=> 5  } 0, @array;
 
@@ -217,23 +218,22 @@ or, using our newfound array form:
     $ux = blsrch1 {  $_ <=> 5  } \@array;
 
 To get a feel for the bounds they return, here are a few
-more examples.  Observe that when the bounds collapse,
-they do not cross over each other, but simply become
-equal to each other.
+more examples.  Observe that the search fails precisely
+when the boundaries collapse to the same point.
 
-   [1  1  2  3  3  4  5  5  5  6  8  9  9]    lsearch x?  [lb,ux)  SIZE
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]     x?  [lb,ux)  SPAN
     --------------------------------------
-  []0  1  2                                   lsearch 0   [ 0, 0)  <EMPTY>
-   [0  1 ]2  3                                lsearch 1   [ 0, 2)
-    0  1 [2 ]3  4                             lsearch 2   [ 2, 3)
-       1  2 [3  4 ]5  6                       lsearch 3   [ 3, 5)
-             3  4 [5 ]6  7                    lsearch 4   [ 5, 6)
-                4  5 [6  7  8 ]9  10          lsearch 5   [ 6, 9)
-                            8 [9 ]10 11       lsearch 6   [ 9,10)
-                            8  9[]10 11       lsearch 7   [10,10)  <EMPTY>
-                            8  9 [10]11 12    lsearch 8   [10,11)
-                               9  10[11 12]   lsearch 9   [11,13)
-                                  10 11 12[]  lsearch 10  [13,13)  <EMPTY>
+  []0  1  2                                    0   [ 0, 0)  <EMPTY>
+   [0  1 ]2  3                                 1   [ 0, 2)
+    0  1 [2 ]3  4                              2   [ 2, 3)
+       1  2 [3  4 ]5  6                        3   [ 3, 5)
+             3  4 [5 ]6  7                     4   [ 5, 6)
+                4  5 [6  7  8 ]9  10           5   [ 6, 9)
+                            8 [9 ]10 11        6   [ 9,10)
+                            8  9[]10 11        7   [10,10)  <EMPTY>
+                            8  9 [10]11 12     8   [10,11)
+                               9  10[11 12]    9   [11,13)
+                                  10 11 12[]   10  [13,13)  <EMPTY>
 
 
 
