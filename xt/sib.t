@@ -71,22 +71,27 @@ for my $i (0..11) {
 {
 	my @verylow = (-1, -1, -1, -1, 0);
 	my (@trace, $lo, $hi);
+	diag "<<< Random tests >>>";
 
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> 99 } }, \@verylow;
 	diag "i=99 @trace => [$lo,$hi]";
+	is_deeply [$lo, $hi], [5, 5];
 
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> -2 } }, \@verylow;
 	diag "i=-2 @trace => [$lo,$hi]";
+	is_deeply [$lo, $hi], [0, 0];
 
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> -1 } }, \@verylow;
 	diag "i=-1 @trace => [$lo,$hi]";
+	is_deeply [$lo, $hi], [0, 4];
 
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> 0 } }, \@verylow;
 	diag "i=0 @trace => [$lo,$hi]";
+	is_deeply [$lo, $hi], [4, 5];
 }
 
 {
@@ -94,13 +99,16 @@ for my $i (0..11) {
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ < 97 ? -1 : 98 <= $_ ? 1 : 0 } }, 0, 100;
 	diag "i=0 @trace => [$lo,$hi]";
+	is_deeply [$lo, $hi], [97, 98];
 
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ < 97 ? -1 : 98 <= $_ ? 1 : 0 } }, -2147483648, 2147483647;
 	diag "i=0 @trace => [$lo,$hi]";
+	is_deeply [$lo, $hi], [97, 98];
 
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ < -12345678 ? -1 : 76543210 <= $_ ? 1 : 0 } }, -2147483648, 2147483647;
 	diag "i=0 @trace => [$lo,$hi]";
+	is_deeply [$lo, $hi], [-12345678, 76543210];
 }
 done_testing();
