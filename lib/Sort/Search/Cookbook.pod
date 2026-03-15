@@ -29,7 +29,7 @@ to my knowledge) and can be counterintuitive.
 =head1 DEFINITION
 
 The terms "predicate", "ordering", "search range" are used in
-the same sense as they are defined in L<Sort::Search/DESCRIPTION>.
+the same sense as they are defined in L<Sort::Search/Terminology>.
 In addition, assume these variables mean the following:
 
 =over

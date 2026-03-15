@@ -41,7 +41,7 @@ B<NOTE>:  If you are new to this module, I recommend
 starting with L<Sort::Search::Cookbook>, which has
 quick references and examples for common use cases.
 
-=head2 Algorithms
+=head2 Terminology
 
 This module implements two classes of search algorithms,
 which will named separately in this document as the
