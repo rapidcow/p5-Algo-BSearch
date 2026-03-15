@@ -305,7 +305,7 @@ sub _bisectr
 sub bisectr (&$;$$) { _bisectr(0, _parse(RTL, @_)); }
 sub bixectr (&$;$$) { _bisectr(1, _parse(RTL, @_)); }
 
-# This is binary left search (blsrch[01]).  Different
+# This is left binary search (blsrch[01]).  Different
 # from before, we are passed an ordering that returns
 # a trichotomous number: negative, zero, or positive.
 # This ordering is assumed to be monotonic INCREASING:
@@ -379,7 +379,7 @@ sub blsrch0 (&$;$$) { _blsrch(0, sub { $_[0] >= 0 }, _parse(LTR, @_)); }
 sub blsrch1 (&$;$$) { _blsrch(0, sub { $_[0] >  0 }, _parse(LTR, @_)); }
 sub blsrchx (&$;$$) { _blsrch(1, sub { $_[0] >= 0 }, _parse(LTR, @_)); }
 
-# This is binary right search (brsrch[01]), similarly.
+# This is right binary search (brsrch[01]), similarly.
 # This ordering is assumed to be monotonic DECREASING:
 # positives before zeros, and zeros before negatives.
 #
