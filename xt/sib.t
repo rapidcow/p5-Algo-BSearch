@@ -48,22 +48,22 @@ sub trace {
 }
 
 ok 1;
-diag "Range test!";  # flush for prove...
+note "Range test!";  # flush for prove...
 
-diag "Left range:";
+note "Left range:";
 for my $i (0..11) {
 	my @trace = ();
 	my ($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> $i } }, \@pi;
-	diag "i=$i @trace => [$lo,$hi] expect [@{[ join(',', @{$rngRH[$i]})] }]";
+	note "i=$i @trace => [$lo,$hi] expect [@{[ join(',', @{$rngRH[$i]})] }]";
 	is ($lo, $rngLH[$i]->[0], "LH lower bound for i=$i");
 	is ($hi, $rngLH[$i]->[1], "LH upper bound for i=$i");
 }
 
-diag "Right range:";
+note "Right range:";
 for my $i (0..11) {
 	my @trace = ();
 	my ($hi, $lo) = brsrch2 \&{ trace \@trace, sub { $i <=> $_ } }, \@pi;
-	diag "i=$i @trace => [$lo,$hi] expect [@{[ join(',', @{$rngRH[$i]})] }]";
+	note "i=$i @trace => [$lo,$hi] expect [@{[ join(',', @{$rngRH[$i]})] }]";
 	is ($hi, $rngRH[$i]->[1], "RH lower bound for i=$i");
 	is ($lo, $rngRH[$i]->[0], "RH upper bound for i=$i");
 }
@@ -71,26 +71,26 @@ for my $i (0..11) {
 {
 	my @verylow = (-1, -1, -1, -1, 0);
 	my (@trace, $lo, $hi);
-	diag "<<< Random tests >>>";
+	note "<<< Random tests >>>";
 
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> 99 } }, \@verylow;
-	diag "i=99 @trace => [$lo,$hi]";
+	note "i=99 @trace => [$lo,$hi]";
 	is_deeply [$lo, $hi], [5, 5];
 
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> -2 } }, \@verylow;
-	diag "i=-2 @trace => [$lo,$hi]";
+	note "i=-2 @trace => [$lo,$hi]";
 	is_deeply [$lo, $hi], [0, 0];
 
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> -1 } }, \@verylow;
-	diag "i=-1 @trace => [$lo,$hi]";
+	note "i=-1 @trace => [$lo,$hi]";
 	is_deeply [$lo, $hi], [0, 4];
 
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ <=> 0 } }, \@verylow;
-	diag "i=0 @trace => [$lo,$hi]";
+	note "i=0 @trace => [$lo,$hi]";
 	is_deeply [$lo, $hi], [4, 5];
 }
 
@@ -98,17 +98,17 @@ for my $i (0..11) {
 	my @trace;
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ < 97 ? -1 : 98 <= $_ ? 1 : 0 } }, 0, 100;
-	diag "i=0 @trace => [$lo,$hi]";
+	note "i=0 @trace => [$lo,$hi]";
 	is_deeply [$lo, $hi], [97, 98];
 
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ < 97 ? -1 : 98 <= $_ ? 1 : 0 } }, -2147483648, 2147483647;
-	diag "i=0 @trace => [$lo,$hi]";
+	note "i=0 @trace => [$lo,$hi]";
 	is_deeply [$lo, $hi], [97, 98];
 
 	@trace = ();
 	($lo, $hi) = blsrch2 \&{ trace \@trace, sub { $_ < -12345678 ? -1 : 76543210 <= $_ ? 1 : 0 } }, -2147483648, 2147483647;
-	diag "i=0 @trace => [$lo,$hi]";
+	note "i=0 @trace => [$lo,$hi]";
 	is_deeply [$lo, $hi], [-12345678, 76543210];
 }
 done_testing();

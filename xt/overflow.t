@@ -14,38 +14,37 @@ use constant ivmax => uvmax >> 1;
 use constant ivmin => -ivmax - 1;
 
 BEGIN {
-	if ($ENV{PERL_SS_TRACE}) {
-		note "uvmin ", explain uvmin;
-		note "uvmax ", explain uvmax;
-		note "ivmin ", explain ivmin;
-		note "ivmax ", explain ivmax;
-		no strict 'refs';
-		# The foreach loop seems to create a closure...
-		# Not sure if it has always been this way, but
-		# this is for debugging anyways, so eh. I'm
-		# just gonna take that for granted :]
-		# https://stackoverflow.com/a/6587579/19411800
-		foreach my $name (qw(not_ok all_ok)) {
-			*$name = sub {
-				my $index = do {
-					my $class = ref $_[0];
-					unless ($class) {
-						$_[0] < 0
-						? sprintf '- %x', -$_[0]
-						: sprintf '+ %x', +$_[0];
-					} else {
-						'@ ' .
-						$class eq 'Math::BigInt' ?
-						$_[0]->to_hex() : "$_[0]";
-					}
-				};
-				note "  CALL $name $index";
-				$name eq "all_ok";
+	note "uvmin ", explain uvmin;
+	note "uvmax ", explain uvmax;
+	note "ivmin ", explain ivmin;
+	note "ivmax ", explain ivmax;
+	no strict 'refs';
+	# The foreach loop seems to create a closure...
+	# Not sure if it has always been this way, but
+	# this is for debugging anyways, so eh. I'm
+	# just gonna take that for granted :]
+	# https://stackoverflow.com/a/6587579/19411800
+	foreach my $name (qw(not_ok all_ok)) {
+		#
+		# *not_ok = sub { 0 };
+		# *all_ok = sub { 1 };
+		#
+		*$name = sub {
+			my $index = do {
+				my $class = ref $_[0];
+				unless ($class) {
+					$_[0] < 0
+					? sprintf '- %x', -$_[0]
+					: sprintf '+ %x', +$_[0];
+				} else {
+					'@ ' .
+					$class eq 'Math::BigInt' ?
+					$_[0]->to_hex() : "$_[0]";
+				}
 			};
-		}
-	} else {
-		*not_ok = sub { 0 };
-		*all_ok = sub { 1 };
+			note "  CALL $name $index";
+			$name eq "all_ok";
+		};
 	}
 }
 
