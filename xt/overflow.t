@@ -4,14 +4,13 @@ use strict;
 use warnings;
 
 use Sort::Search;
-use Test::More;
-plan('no_plan');  # XXX: under development
+use Test::More tests => 16;
 
 # https://stackoverflow.com/a/15133735/19411800
 use constant uvmin => +0;  # (is actually an IV...)
 use constant uvmax => ~0;
-use constant ivmax => uvmax >> 1;
-use constant ivmin => -ivmax - 1;
+use constant ivmax => uvmax() >> 1;
+use constant ivmin => -ivmax() - 1;
 
 BEGIN {
 	note "uvmin ", explain uvmin;
@@ -124,5 +123,3 @@ my ($i, $j);
 	eval { Sort::Search::bisectr(sub { die "$_\n" }, uvmax, ivmin) };
 	cmp_ok $@, '==', 1 + ivmax >> 1, "bisectr on (ivmin, uvmax] starts at 1 + ivmax >> 1";
 }
-
-done_testing;
