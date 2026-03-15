@@ -116,7 +116,7 @@ For I<binary search> functions in particular, there are
 the 0,1 variants corresponding to the aforementioned
 I<lower bisection point> and I<upper bisection point>.
 These points are best visualized by plotting the image
-of the ordering and taking note of the span of elements
+of the ordering and taking note of the range of elements
 mapped to zero.  For instance, consider the first 13
 decimal digits of pi (including the integer part)
 arranged in increasing order as the haystack, and the
@@ -155,8 +155,7 @@ and B<blsrch1> is the exclusive upper bound.  The 2
 variants (B<blsrch2>, B<brsrch2>) return both inclusive
 and exclusive bounds at once, in that order; in scalar
 context, they return the absolute difference which
-corresponds to the span of range of equal values
-(i.e. the "0"s).
+corresponds to the range of equal values (i.e. the "0"s).
 
 A more compact (albeit possibly obscure) characterization
 of the 0,1 variants is that they are the composition of
