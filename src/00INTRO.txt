@@ -129,8 +129,8 @@ false-then-true range, but you only do half the work!
     sub bisectr (&$$) {
         my ($ok, $hi, $lo) = @_;
         while ($lo < $hi) {
-           # This computes the ceiling of ($lo+$hi) / 2!
-           # Contrast with floor in left bisection...
+            # This computes the ceiling of ($lo+$hi) / 2!
+            # Contrast with floor in left bisection...
             my $mid = $lo + (($hi - $lo + 1) >> 1);
             if ($ok->($mid)) {
                 $lo = $mid;      # include
