@@ -18,7 +18,7 @@ BEGIN {
 
 # https://blog.cloudflare.com/black-lies/
 subtest "ietf.org" => sub {
-	plan tests => 15;
+	plan tests => 25;
 
 	my $ORIGIN = "ietf.org.";
 	chomp (my @mock_zone = map { s/ +/ /g; $_ } split /^/, <<RR);
@@ -76,4 +76,33 @@ RR
 	cmp_ok ($lo, '==', 0);
 	is ($prv, "$ORIGIN 6 IN AAAA");
 	is ($nxt, "$ORIGIN 1 IN SOA");
+
+	# This is impossible in practice; nothing can
+	# precede the apex in a zone file manages.
+	#
+	# Doesn't stop me from testing that, though! :p
+	($hi, $prv, $lo, $nxt) = bsrchpx
+		{ $cmp_rr->($_, "example.com.") }
+		\@mock_zone;
+	cmp_ok ($hi, '<', $lo);
+	cmp_ok ($hi, '==', -1);
+	cmp_ok ($lo, '==', 0);
+	is ($prv, undef);
+	is ($nxt, "$ORIGIN 1 IN SOA");
+
+	# The case of wrap-around -- in NSEC, the successor
+	# would make its way back to the root zone, making
+	# it the weird (and only) case where the successor
+	# is smaller than the predecessor. Also, I'm pretty
+	# sure www.ietf.org. exists; don't take this the
+	# wrong way... it's just a test since I can't think
+	# of a commonplace non-infra-specific subdomain :P
+	($hi, $prv, $lo, $nxt) = bsrchpx
+		{ $cmp_rr->($_, "www.$ORIGIN") }
+		\@mock_zone;
+	cmp_ok ($hi, '<', $lo);
+	cmp_ok ($hi, '==', 14);
+	cmp_ok ($lo, '==', 15);
+	is ($prv, "cloudflare-verify.$ORIGIN 1 IN TXT");
+	is ($nxt, undef);
 };
