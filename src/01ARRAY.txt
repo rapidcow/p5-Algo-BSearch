@@ -114,18 +114,129 @@ larger set of values "equal", such as a *range* of needles.
 (This is what most languages like to conflate when binary
 search is WAY cooler than that!)
 
-Either way, what DOES an ordering give us?
+This well-definedness leads to the natural notion of
+*transition points*, which is what left/right bisection
+introduced in the previous file was all about.  (First
+true, last true...)  Though bisection works with monotonic
+predicates, it is easily to derive them from the ordering
+by observing that transition happens in two parts:
 
-#       [1  1  2  3  3  4  5  5  5  6  8  9  9]       x
-#        -  -  -  -  -  -  0  0  0  +  +  +  +    cmp(x, 5) := (x <=> 5)
-#                         |
-#                         | $_ >= 0             predicate 0
-#                         | $_ >  0             predicate 1
-#                         v
-#        F  F  F  ...   F (T) T  T  T  T  ...
-#        F  F  F  ...   F  F  F  F (T) T  ...
-#        --------------------------------------
-#        0  1  2        5 [6  7  8 ]9  10 ...     index
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]       x
+    -  -  -  -  -  -  0  0  0  +  +  +  +    cmp(x, 5) := (x <=> 5)
+                    ^^       ^^
+      negative to zero       zero to positive
+
+To apply left bisection to find the first zero, it is
+natural to use the nonnegative predicate and positive
+predicate, hereinafter "predicate 0" and "predicate 1"
+for brevity.
+
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]       x
+    -  -  -  -  -  -  0  0  0  +  +  +  +    cmp(x, 5) := (x <=> 5)
+                     |
+                     | $_ >= 0             predicate 0
+                     | $_ >  0             predicate 1
+                     v
+    F  F  F  ...   F (T) T  T  T  T  ...
+    F  F  F  ...   F  F  F  F (T) T  ...
+    --------------------------------------
+    0  1  2        5 [6  7  8 ]9  10 ...     index
+                     ^^^     ^^^
+      We now have indices pointing to the start
+      and end of all the 5s: one inclusive lower
+      bound (6) and one exclusive upper bound (9).
+
+      In fact, try it out...
+
+    use Sort::Search qw(bisectl);
+    my ($lb, $ux);  # I use "x" to remind myself of "eXclusive".
+
+    $lb = bisectl {  ( ($array[$_] <=> 5) ) >= 0  } 0, @array;
+          #          ~~~~~~~~~~~~~~~~~~~~~~~*~~~
+          #             ^+^^^^^^^^^^^^^^    `- predicate
+          #               `-ordering
+
+    $ux = bisectl {  ( ($array[$_] <=> 5) ) >  0  } 0, @array;
+          #          ~~~~~~~~~~~~~~~~~~~~~~~*~~~
+          #             ^+^^^^^^^^^^^^^^    `- predicate
+          #               `-ordering
+
+    print "[$lb, $ux) has my fives!\n";   # ==> [6,9)
+
+
+It can get tedious to work with arrays like this, typing
+$array inside once for the array element retrieval and
+outside once for the bounds -- which is also silly
+considering that arrays are very common things to search
+on!  So appropriately, Sort::Search offers a "shortcut":
+((Well, it's way more than just a shortcut.  But you
+wouldn't be able to tell unless you call in list context.))
+
+    $lb = bisectl {  ( ($_ <=> 5) ) >= 0  } \@array   ;
+                        ^^                      ~~~~*~~
+                                                   ^^^
+                              [Notice the lack of explicit bounds
+                               taken to mean "I don't care how you
+                               do it, just search whole array"]
+
+    $ux = bisectl {  ( ($_ <=> 5) ) >  0  } \@array;
+                        ^^
+             Here, $_ *is* the array element,
+            just like the way you'd expect it
+            in map, grep, and sort with $a/$b...
+
+      (If you still need the array INDEX to
+       distinguish otherwise identical duplicate
+       elements, you can still get it from $_[0].
+       In fact, $_[0] is ALWAYS a numerical index
+       regardless of the input form.)
+
+Note that it is still possible to use a stricter range
+so that the search is performed on a sub-array instead.
+For instance, using the fact that "$lb <= $ux", we may
+search $ux on a sub-array after $lb narrows it down:
+
+     $lb = bisectl { ($_ <=> 5) >= 0 } \@array;
+     $ux = bisectl { ($_ <=> 5) >= 0 } \@array, $lb;
+                                                ^^^
+                               [The omitted upper bound
+                                 still means "'til the
+                                  end of this array"]
+
+These are the LEFT BINARY SEARCH algorithms.  They are
+named by the bisection variant (l) and their predicate
+(0/1, "$_ >= 0" or "$_ > 0").  Namely, the above can be
+re-written as:
+
+    $lb = blsrch0 {  $array[$_] <=> 5  } 0, @array;
+    $ux = blsrch1 {  $array[$_] <=> 5  } 0, @array;
+
+or, using our newfound array form:
+
+    $lb = blsrch0 {  $_ <=> 5  } \@array;
+    $ux = blsrch1 {  $_ <=> 5  } \@array;
+
+To get a feel for the bounds they return, here are a few
+more examples.  Observe that when the bounds collapse,
+they do not cross over each other, but simply become
+equal to each other.
+
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]    lsearch x?  [lb,ux)  SIZE
+    --------------------------------------
+  []0  1  2                                   lsearch 0   [ 0, 0)  <EMPTY>
+   [0  1 ]2  3                                lsearch 1   [ 0, 2)
+    0  1 [2 ]3  4                             lsearch 2   [ 2, 3)
+       1  2 [3  4 ]5  6                       lsearch 3   [ 3, 5)
+             3  4 [5 ]6  7                    lsearch 4   [ 5, 6)
+                4  5 [6  7  8 ]9  10          lsearch 5   [ 6, 9)
+                            8 [9 ]10 11       lsearch 6   [ 9,10)
+                            8  9[]10 11       lsearch 7   [10,10)  <EMPTY>
+                            8  9 [10]11 12    lsearch 8   [10,11)
+                               9  10[11 12]   lsearch 9   [11,13)
+                                  10 11 12[]  lsearch 10  [13,13)  <EMPTY>
+
+
+
 #
 #########################################################################
 #
