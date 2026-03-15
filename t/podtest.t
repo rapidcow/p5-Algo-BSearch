@@ -13,7 +13,7 @@ use Sort::Search qw(
 	brsrch0         brsrch2
 );
 
-subtest ('Cookbook :: Exact match' => sub {
+subtest ('Examples :: Exact match' => sub {
 	plan tests => 28;
 
 	my @array = qw( 12 17a 17b 17c 21 );
@@ -104,7 +104,7 @@ foreach my $impl ($[..$#srchall) {
 	is_deeply [$srchall->( \@array => 21 )], [qw([4]=21)] => "srchall impl-$n 4";
 	is_deeply [$srchall->( \@array => 99 )], []  => "srchall impl-$n 5";
 }
-});  # 'Cookbook :: Exact match' subtest
+});  # 'Examples :: Exact match' subtest
 
 subtest ('Conversion :: List::MoreUtils' => sub {
 	plan tests => 6;
@@ -122,7 +122,7 @@ subtest ('Conversion :: List::MoreUtils' => sub {
 
 	is_deeply [blsrch2 { $_ <=> 2 } \@ids], [2,4]   => "equal_range 1";
 	is_deeply [blsrch2 { $_ <=> 4 } \@ids], [10,14] => "equal_range 2";
-});  # 'Cookbook :: List::MoreUtils' subtest
+});  # 'Conversion :: List::MoreUtils' subtest
 
 subtest ('Conversion :: List::BinarySearch' => sub {
 	plan tests => 8;
