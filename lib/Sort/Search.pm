@@ -70,7 +70,7 @@ EOM
 		if ($ori) {
 			# Left search
 			my ($lo, $hi) = @args;
-			defined $lo or $lo = $[;
+			defined $lo or $lo = 0;
 			defined $hi or $hi = 1 + $#$arg;
 			($beg, $end) = ($lo, $hi);
 		}
@@ -78,7 +78,7 @@ EOM
 			# Right search
 			my ($hi, $lo) = @args;
 			defined $hi or $hi = $#$arg;
-			defined $lo or $lo = $[ - 1;
+			defined $lo or $lo = -1;
 			($beg, $end) = ($hi, $lo);
 		}
 		($fun, sub { \$arg->[$_[0]] }, $beg, $end);
