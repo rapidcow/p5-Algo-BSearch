@@ -1,4 +1,5 @@
 .git/                   Git repository
+.gitattributes          Git archive exclude rules
 .gitignore              Git exclude rules
 .github/                GitHub docs
 Makefile                Makefile.PL artifact
