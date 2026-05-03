@@ -33,7 +33,7 @@ my %WriteMakefileArgs = (
 		# Hyperlinks in the MetaCPAN side bar (Spec 2.x)
 		# https://metacpan.org/pod/CPAN::Meta::Spec#resources
 		resources => {
-			homepage => 'https://pub.rapidcow.org/CPAN/Sort-Search/',
+			homepage => 'https://foss.rapidcow.org/CPAN/Sort-Search/',
 			bugtracker => {
 				web    => 'https://rt.cpan.org/Public/Dist/Display.html?Name=Sort-Search',
 				mailto => 'bug-sort-search@rt.cpan.org',

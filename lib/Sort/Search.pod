@@ -492,7 +492,7 @@ L<List::BinarySearch::XS>.
 
 =item *
 
-Home page: L<https://pub.rapidcow.org/CPAN/Sort-Search/>
+Home page: L<https://foss.rapidcow.org/CPAN/Sort-Search/>
 
 =item *
 
