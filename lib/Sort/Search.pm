@@ -170,7 +170,7 @@ sub _rmean
 	}
 }
 
-# This is the left bisection algorithm.  It finds the
+# This is the left bisection method.  It finds the
 # index of the leftmost TRUE on the range [ $lo, $hi ),
 # though if the predicate is never TRUE, $hi is used.
 #
@@ -251,7 +251,7 @@ sub _bisectl
 sub bisectl (&$;$$) { _bisectl(0, _parse(LTR, @_)); }
 sub bixectl (&$;$$) { _bisectl(1, _parse(LTR, @_)); }
 
-# This is the right bisection algorithm.  It finds the
+# This is the right bisection method.  It finds the
 # index of the rightmost TRUE on the range ( $lo, $hi ],
 # though if the predicate is never TRUE, $hi is used.
 #
