@@ -92,10 +92,9 @@ Any IDN is assumed to have been encoded.
 
 In addition, if B<A> is a subdomain of B<B>
 or vice versa, return 1/-1.  This is similar
-to the C<acomp> function in Plan9, but except
-reverse because domain names are written in
-reverse.
-
+to the C<acomp> function in Plan9, except
+reversed because domain names are written
+right-to-left.
 =cut
 
 sub cmp_zone
