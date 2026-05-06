@@ -3,6 +3,7 @@ LICENSE                 License
 MANIFEST                This list of files
 Makefile.PL             ExtUtils::MakeMaker script
 README                  Installation guide
+SECURITY                Security policy
 lib/Sort/Search.pm      Module code
 lib/Sort/Search.pod     Documentation
 lib/Sort/Search/Cookbook.pod   Practical examples
