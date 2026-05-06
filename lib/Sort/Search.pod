@@ -496,7 +496,7 @@ Home page: L<https://foss.rapidcow.org/CPAN/Sort-Search/>
 
 =item *
 
-Git repository: L<https://github.com/rapidcow/p5-Sort-Search>
+Git repository: L<https://codeberg.org/rapidcow/p5-Sort-Search>
 
 =back
 
