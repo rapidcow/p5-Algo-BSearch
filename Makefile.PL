@@ -40,8 +40,8 @@ my %WriteMakefileArgs = (
 			},
 			repository => {
 				type => 'git',
-				url  => 'https://github.com/rapidcow/p5-Sort-Search.git',
-				web  => 'https://github.com/rapidcow/p5-Sort-Search',
+				url  => 'https://codeberg.org/rapidcow/p5-Sort-Search.git',
+				web  => 'https://codeberg.org/rapidcow/p5-Sort-Search',
 			},
 		}
 	},
