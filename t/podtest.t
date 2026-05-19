@@ -1,9 +1,6 @@
 #!perl
-#
 # t/podtest.t - documentation examples
 # (Inspired by Python "doctest" module)
-#
-
 use 5.006;
 use strict;
 use warnings;

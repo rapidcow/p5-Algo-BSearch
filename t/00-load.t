@@ -11,9 +11,9 @@ BEGIN {
 		bisectl bisectr bixectl bixectr
 		blsrch0 brsrch0 blsrch1 brsrch1
 		blsrch2 brsrch2 blsrchx brsrchx
-	) ) or BAIL_OUT;
+	)) or BAIL_OUT;
 }
-diag( "Testing Sort::Search $Sort::Search::VERSION, Perl $], $^X" );
+diag ("Testing Sort::Search $Sort::Search::VERSION, Perl $], $^X");
 
 my $PROTO = '&$;$$';
 foreach (@have_fun) {
