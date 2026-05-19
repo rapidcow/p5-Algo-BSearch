@@ -20,10 +20,10 @@ Sort::Search - binary search on contiguous sorted ranges
     blsrch2 brsrch2 blsrchx brsrchx
   );
 
-  bisectl { OK } ARRAY;   # leftmost True (F to T)
-  bisectr { OK } ARRAY;   # rightmost True (T to F)
-  bixectl { OK } ARRAY;   # any True  (F to T)
-  bixectr { OK } ARRAY;   # any True  (T to F)
+  bisectl { OK } ARRAY;   # leftmost TRUE (F to T)
+  bisectr { OK } ARRAY;   # rightmost TRUE (T to F)
+  bixectl { OK } ARRAY;   # any TRUE  (F to T)
+  bixectr { OK } ARRAY;   # any TRUE  (T to F)
 
   blsrch0 { ORD } ARRAY;  # leftmost >= 0 (- to +)
   blsrch1 { ORD } ARRAY;  # leftmost > 0  (- to +)
@@ -53,30 +53,42 @@ for distinction.  A brief definition follows.
 =item *
 
 The I<bisection method> works with a monotonic predicate
-(B<OK>) with a unique transition point from False to True, or
+(B<OK>) with a unique transition point from FALSE to TRUE, or
 vice versa.
 
 For example, the array C<[0, 1, 2, 3, 4]> with respect to the
-predicate C<< $_ >= 2 >> transitions from False at C<1> into
-True at C<2>, and the array C<[5, 4, 3, 2, 1]> with respect
-to the predicate C<< $_ >= 3 >> transitions from True at C<3>
-to False at C<2>.  We name the boundary between these two
-elements the I<bisection point>.
+predicate C<< $_ >= 2 >> transitions from FALSE at C<1> into
+TRUE at C<2>, and the array C<[5, 4, 3, 2, 1]> with respect
+to the predicate C<< $_ >= 3 >> transitions from TRUE at C<3>
+to FALSE at C<2>.  We name the boundary between the two sides
+of such a transition the I<bisection point>.
+
+It is important to note that such a bisection point sits in
+the (imaginary) gap between the boundary indices, and it is up
+to you to decide which one you want so this module can address
+that point in form of an index.  It is also important to note
+that either one of these indices may not point to an actual
+array element, and while this module retains information to
+help you find out whether or not that is the case, it does not
+interpret nor invalidate the found index in form of a sentinel
+index (such as C<-1> or C<undef>).  So whenever the index you
+receive makes no sense, think of it as one end of a bisection
+point, and hopefully it will start to make sense. :)
 
 =item *
 
 The I<binary search> works with a C-like comparison function,
 named the I<ordering> (B<ORD>), with two unique transition
-points from negative to 0, then 0 to positive.  Such a
-function is typically constructed with respect to a target
+points: one from negative to 0, and one from 0 to positive.
+Such a function is typically constructed with respect to a target
 value to be located within the array (hence the name "search").
 
 For example, suppose we want to locate C<$x = 3> in the array
-C<[1, 2, 3, 3, 4]>.  We can consider the ordering C<< $_ <=>
-$x >>, which returns negatives for C<[1, 2]>, zeros for C<[3, 3]>,
-and positives for C<[4]>.  We name the boundary between the
-negatives and the zeros the I<lower bisection point>, and that
-between the zeros and the positives the I<upper bisection point>.
+C<[1, 2, 3, 3, 4]>.  We can consider the ordering C<< $_ <=> $x >>,
+which returns negatives for C<[1, 2]>, zeros for C<[3, 3]>, and
+positives for C<[4]>.  We name the boundary between the negatives
+and the zeros the I<lower bisection point>, and that between
+the zeros and the positives the I<upper bisection point>.
 
 =back
 
@@ -192,9 +204,9 @@ return as soon as it finds a match.
 =item *
 
 B<bixectl> is a modified version of B<bisectl> that
-returns any index for which the predicate returns True.
-In the case that the predicate attains True at exactly
-one point or never attains True, they behave identically.
+returns any index for which the predicate returns TRUE.
+In the case that the predicate attains TRUE at exactly
+one point or never attains TRUE, they behave identically.
 For B<bixectr>, it's the same against B<bisectr>.
 
 =item *
