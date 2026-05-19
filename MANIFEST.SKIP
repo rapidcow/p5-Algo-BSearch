@@ -1,15 +1,16 @@
-.git/                   Git repository
-.gitattributes          Git archive exclude rules
-.gitignore              Git exclude rules
-Makefile                Makefile.PL artifact
-Makefile.old            ditto
-MANIFEST.bak            ditto
-MANIFEST.SKIP           This MANIFEST exclude ruleset
-MYMETA.json             Makefile.PL artifact
-MYMETA.yml              Makefile.PL artifact
-blib/                   Build lib
-xlib/                   Experimental code (think "contrib"?)
-cpanfile                CPAN dependencies
-pm_to_blib              Makefile.PL artifact
-src/                    Extra
-xt/                     Experimental tests (author tests?)
+^\.git/                 Git repository
+^\.gitattributes$       Git archive exclude rules
+^\.gitignore$           Git exclude rules
+^Makefile$              Makefile.PL artifact
+^Makefile\.old$         ditto
+^MANIFEST\.bak$         ditto
+^MANIFEST\.SKIP$        This MANIFEST exclude ruleset
+^MYMETA\.json$          Makefile.PL artifact
+^MYMETA\.yml$           Makefile.PL artifact
+^Sort-Search-           This distribution
+^blib/                  Build lib
+^xlib/                  Experimental code (think "contrib"?)
+^cpanfile$              CPAN dependencies
+^pm_to_blib$            Makefile.PL artifact
+^src/                   Extra
+^xt/                    Experimental tests (author tests?)
