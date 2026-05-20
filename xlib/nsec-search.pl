@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-C<xt/nsec-search.pl> -
+C<xlib/nsec-search.pl> -
 Search for predecessor and succesor.
 Inspired by DNSSEC NextSECure (NSEC) records.
 
