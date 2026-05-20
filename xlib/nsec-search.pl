@@ -60,15 +60,38 @@ sub _bsrchpx
 		# bounds, by the way.)
 		--$hi;
 		if ($lo == $hi) {
-			# SPECIAL: The search range has almost
-			# collapsed, even though we have found
-			# the (sole) match.  This would be our
-			# common pointer, so return that.
+			# SPECIAL: The search range has almost collapsed,
+			# empty interior spans that would have failed an
+			# interior search, even though we have found the
+			# (sole) match.  This would be our common pointer,
+			# so just return that.
 			$prv = $nxt = $elp;
 		} else {
-			# Search on a possibly long range?
-			($hi, undef, $prv) = _brsrch(0, sub { $_[0] <= 0 }, $ord, $map, $hi, $mid);
+			# Search on a possibly long range on either ends
+			# of the interior spans [$lo, $mid) and ($mid, $hi].
+#			print STDERR "You are long, [$lo, $mid) ($mid, $hi]!\n";
+#			print STDERR "   LFT RNG $_\n" for map { sprintf "[%02d] %s", $_, ${$map->($_)} } $lo..$mid-1;
 			($lo, undef, $nxt) = _blsrch(0, sub { $_[0] >= 0 }, $ord, $map, $lo, $mid);
+#			print STDERR sprintf "     IDX %02d ELP %s\n", $lo, defined $nxt ? qq[\\"$$nxt"] : "???";
+			# blsrch0 won't actually check $mid, so if $mid is
+			# already on the far right end (which isn't at all
+			# unlikely, and almost guaranteed if there are only
+			# 2-3 matches (it is in fact guaranteed at 2), we'd
+			# have to use prior knowledge of what lives at $mid...
+			$nxt = $elp if $mid == $lo;
+#			print STDERR sprintf "  ( fixup       %s )\n", qq[\\"$$elp"] if $mid == $lo;
+
+#			print STDERR "   RGT RNG $_\n" for reverse
+#			                                   map { sprintf "[%02d] %s", $_, ${$map->($_)} } $mid+1..$hi;
+			($hi, undef, $prv) = _brsrch(0, sub { $_[0] <= 0 }, $ord, $map, $hi, $mid);
+#			print STDERR sprintf "     IDX %02d ELP %s\n", $hi, defined $prv ? qq[\\"$$prv"] : "???";
+			# The same fixup is necessary here because we don't
+			# know if the extra matches intersect with the left
+			# interior but not the right interior (what the
+			# previous fixup addresses), or vise versa (what
+			# this fixup will address).
+			$prv = $elp if $mid == $hi;
+#			print STDERR sprintf "  ( fixup       %s )\n", qq[\\"$$elp"] if $mid == $hi;
 		}
 	} else {
 		# No match found; now the left and right match cross
@@ -104,8 +127,8 @@ sub cmp_zone
 	my ($p0, $x0, $s0, $r0); $p0 = length($_[0]) - 1;
 	my ($p1, $x1, $s1, $r1); $p1 = length($_[1]) - 1;
 	# Skip the root zone dot
-	$p0-- if $p0 > 0 && substr($_[0], $p0, 1) eq '.';
-	$p1-- if $p1 > 0 && substr($_[1], $p1, 1) eq '.';
+	$p0-- if $p0 >= 0 && substr($_[0], $p0, 1) eq '.';
+	$p1-- if $p1 >= 0 && substr($_[1], $p1, 1) eq '.';
 	do {
 		$r0 = ($x0 = rindex($_[0], ".", $p0)) > 0;
 		$r1 = ($x1 = rindex($_[1], ".", $p1)) > 0;
