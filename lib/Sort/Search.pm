@@ -258,7 +258,7 @@ sub _bisectl
 			$lo = ++$mid;    # exclude
 			# Why?  Because to accommodate the case
 			# of an early return, we don't actually
-			# return $hi like we're supposed to;
+			# return $hi like we're supposed to.
 			# The above deals with the case where
 			# the last match is successful, in which
 			# case $mid needs no modification.  Here,
