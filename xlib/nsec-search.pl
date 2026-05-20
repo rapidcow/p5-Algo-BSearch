@@ -49,17 +49,15 @@ sub _bsrchpx
 	my ($prv, $nxt);
 	my ($mid, $res, $elp, $lo, $hi) = _blsrch(1, sub { $_[0] >= 0 }, @_);
 
-	if (defined $res && $res == 0) {
-		# $hi has been generously suspended by
-		# "blsrchx" as it thinks we are still
-		# looking for an (exclusive) upper bound
-		# ... which we aren't, so we're good to
-		# exclude it. :)  (This is equivalent to
-		# what they do in traditional binary search
-		# with closed bounds instead of half-open
-		# bounds, by the way.)
-		--$hi;
+	# Normally, our search functions operate on
+	# asymmetric half-open intervals -- such as
+	# [$lo, $hi) in this case of left search.
+	#
+	# Not today! :)  We're making it [$lo, $hi]
+	# since we need to search backwards too...
+	--$hi;
 
+	if (defined $res && $res == 0) {
 		# Search on a (possibly) long range on either ends
 		# of the interior spans [$lo, $mid) and ($mid, $hi].
 		# (We tell b?srch to ignore $mid, because we already
@@ -91,8 +89,9 @@ sub _bsrchpx
 		# No match found; now the left and right match cross
 		# over one other to become successor and predecessor
 		$nxt = $elp;
-		$prv = --$hi < $min ? undef :
-			defined $map ? $map->($hi) : \$hi;
+		unless ($hi < $min) {
+			$prv = $map ? $map->($hi) : \$hi;
+		}
 	}
 	($hi, defined $prv ? $$prv : undef,
 	 $lo, defined $nxt ? $$nxt : undef);
