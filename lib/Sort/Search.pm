@@ -410,7 +410,7 @@ sub blsrchx (&$;$$) { _blsrch(1, sub { $_[0] >= 0 }, _parse(LTR, @_)); }
 sub _brsrch
 {
 	my ($any, $ok, $ord, $map, $hi, $lo) = @_;
-	my ($cmp, $res, $elp, $img, $mid);
+	my ($cmp, $res, $elp, $img, $mid);  $mid = $lo;
 	while ($lo < $hi) {
 		# Pick ceil( (L+H)/2 )
 		$mid = _rmean($lo, $hi);
