@@ -35,12 +35,12 @@ use constant RTL => 0;  # right-to-left
 #    $ori:  search orientation (1 for left/LTR, 0 for right/RTL)
 #    @args: arguments from caller
 # Return:
-#    ($fun, undef, $beg, $end)   for index form.
+#    ($fun, undef, $beg, $end)   for index form;
 # and
-#    ($fun, $map,  $beg, $end)   for ARRAY/CODE form;
+#    ($fun, $map,  $beg, $end)   for ARRAY/CODE form
 # where $fun is a predicate or an ordering, and
 # $map returns a ref to the image at the index.
-# On parse failure, croak.
+# Croak on parse failure.
 sub _parse
 {
 	my ($ori, @args) = @_;
@@ -105,6 +105,29 @@ EOM
 			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
 		($fun, $arg, $beg, $end);
+	}
+	elsif (!defined $arg) {
+		if (@args < 1) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
+not enough arguments for explicit index form (expected at least 3, got $nargs)
+EOM
+		}
+		if (@args > 2) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
+too many arguments for explicit index form (expected at most 4, got $nargs)
+EOM
+		}
+		if (@args == 2) {
+			($beg, $end) = (@args);
+		}
+		else {
+			# $hi = $arg, $lo inferred
+			my $arg = shift @args;
+			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
+		}
+		($fun, undef, $beg, $end);
 	}
 	else {
 		# Same way as how we handle the CODE form above,
