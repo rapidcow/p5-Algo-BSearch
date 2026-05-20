@@ -13,7 +13,7 @@ For an example of extending the real C<Search.pm>
 with this, see C<xt/nsec-search.t>.  I don't have
 a good name for this, nor see a good use case for
 it besides the (unrealistic) use case as a DNSSEC
-name server in action, so it will lives in the
+name server in action, so it will live in the
 C<xlib/> directory for now.
 
 =cut
