@@ -101,8 +101,8 @@ sub cmp_zone
 {
 	my $cmp;
 	# Pointer indeX String Remaining
-	my ($p0, $x0, $s0, $r0) = (length($_[0]) - 1);
-	my ($p1, $x1, $s1, $r1) = (length($_[1]) - 1);
+	my ($p0, $x0, $s0, $r0); $p0 = length($_[0]) - 1;
+	my ($p1, $x1, $s1, $r1); $p1 = length($_[1]) - 1;
 	# Skip the root zone dot
 	$p0-- if $p0 > 0 && substr($_[0], $p0, 1) eq '.';
 	$p1-- if $p1 > 0 && substr($_[1], $p1, 1) eq '.';
