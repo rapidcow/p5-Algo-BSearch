@@ -78,7 +78,7 @@ RR
 	is ($nxt, "$ORIGIN 1 IN SOA");
 
 	# This is impossible in practice; nothing can
-	# precede the apex in a zone file manages.
+	# precede the apex in a zone file it manages.
 	#
 	# Doesn't stop me from testing that, though! :p
 	($hi, $prv, $lo, $nxt) = bsrchpx
