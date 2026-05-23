@@ -1,0 +1,47 @@
+*** zeros.pl
+
+> w
+ 11:54:45 up 5 days,  9:30,  2 users,  load average: 0.15, 0.30, 0.27
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU  WHAT
+emeng             52.119.103.130   09:51    9:05m  0.00s  0.08s sshd: emeng [priv]
+gdm      tty1     -                Mon02    5days 18:53   0.10s /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Scre
+> uname -a
+Linux vm-instunix-06.cs.wisc.edu 6.8.0-117-generic #117-Ubuntu SMP PREEMPT_DYNAMIC Tue May  5 19:26:24 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+> perl -le 'print "Perl $] $^X"'
+Perl 5.042000 /home/emeng/opt/x86_64/brew/Cellar/perl/5.42.0/bin/perl
+
+> git hash-object zeros.pl
+d2539ee212b69592948a541e4aa1c29fae48d918
+> /usr/bin/time perl zeros.pl
+Sort::Search 0.01 found.
+List::MoreUtils 0.430 found.
+List::Search 0.31 found.
+List::BinarySearch::PP 0.25 found.
+List::BinarySearch::XS 0.09 found.
+Benchmark count: -10
+Registering Sort::Search (S::S) tests...
+Registering List::MoreUtils (L::MU) test...
+Registering List::Search (L::S) test...
+Registering List::BinarySearch::PP (L::BS::PP) test...
+Registering List::BinarySearch::XS (L::BS::XS) test...
+                 Rate L::MU(eq) L::MU(lb+ub) S::S[0+1] S::S(0+1) L::BS::PP S::S[2] S::S(2) L::S L::BS::XS
+L::MU(eq)      1093/s        --         -34%      -96%      -96%      -97%    -97%    -97% -98%     -100%
+L::MU(lb+ub)   1647/s       51%           --      -94%      -94%      -95%    -95%    -95% -97%      -99%
+S::S[0+1]     26373/s     2314%        1502%        --      -10%      -17%    -22%    -27% -56%      -92%
+S::S(0+1)     29204/s     2573%        1674%       11%        --       -8%    -13%    -19% -51%      -91%
+L::BS::PP     31600/s     2792%        1819%       20%        8%        --     -6%    -13% -47%      -90%
+S::S[2]       33600/s     2975%        1941%       27%       15%        6%      --     -7% -44%      -89%
+S::S(2)       36195/s     3213%        2098%       37%       24%       15%      8%      -- -39%      -89%
+L::S          59622/s     5357%        3521%      126%      104%       89%     77%     65%   --      -81%
+L::BS::XS    317318/s    28940%       19172%     1103%      987%      904%    844%    777% 432%        --
+110.31user 0.05system 1:50.39elapsed 99%CPU (0avgtext+0avgdata 15360maxresident)k
+0inputs+0outputs (0major+2700minor)pagefaults 0swaps
+
+$: List::MoreUtils is only slow because it turns
+$: the array into a flat list.  Other than that,
+$: I think it should be up there with List::Search.
+$:
+$: Peeling away one layer of indirect map was not
+$: even that significant, oh well... :(
+$:
+$: (XS is crazy though... like not even close bro D:)
