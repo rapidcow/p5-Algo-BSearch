@@ -235,37 +235,38 @@ sub _bisectl
 	# Assumption: If $ok->($x) true, $x <= $y => $ok->($y) true.
 	# Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
 	#             - If $x < $lo,  $ok->($x) is false if defined.
-	while ($lo < $hi) {
+SRCH:	while ($lo < $hi) {
 		# Prefer floor of (L+H)/2, so that $mid < $hi,
 		# and so either branch is guaranteed to converge.
 		$mid = _lmean($lo, $hi);
 		$img = $map ? $map->($mid) : \$mid;
-		local *_ = $img;
-		if ($res = $ok->($mid)) {
-			# This is a successful match, so the
-			# intermediates into our return values.
-			# But *don't* clobber $hi in case this
-			# is an early return.  (This is mostly
-			# significant for the b*srchx later,
-			# but for consistency do it here too.)
-			$cmp = $res;
-			$elp = $img;
-			last if $any;
-			$hi = $mid;      # include
-		} else {
-			# This ++ may appear insignificant, but
-			# it's what keeps $mid inside [$lo, $hi].
-			$lo = ++$mid;    # exclude
-			# Why?  Because to accommodate the case
-			# of an early return, we don't actually
-			# return $hi like we're supposed to.
-			# The above deals with the case where
-			# the last match is successful, in which
-			# case $mid needs no modification.  Here,
-			# $mid is unsuccessful and is thus unfit
-			# for return.  Fittingly it is excluded
-			# but since we might be the last branch
-			# we have to increment $mid with $lo too.
+		foreach ($$img) {
+			if ($res = $ok->($mid)) {
+				# This is a successful match, so the
+				# intermediates into our return values.
+				# But *don't* clobber $hi in case this
+				# is an early return.  (This is mostly
+				# significant for the b*srchx later,
+				# but for consistency do it here too.)
+				$cmp = $res;
+				$elp = $img;
+				last SRCH if $any;
+				$hi = $mid;      # include
+			} else {
+				# This ++ may appear insignificant, but
+				# it's what keeps $mid inside [$lo, $hi].
+				$lo = ++$mid;    # exclude
+				# Why?  Because to accommodate the case
+				# of an early return, we don't actually
+				# return $hi like we're supposed to.
+				# The above deals with the case where
+				# the last match is successful, in which
+				# case $mid needs no modification.  Here,
+				# $mid is unsuccessful and is thus unfit
+				# for return.  Fittingly it is excluded
+				# but since we might be the last branch
+				# we have to increment $mid with $lo too.
+			}
 		}
 	}
 	wantarray ? ($mid, $cmp, $elp, $lo, $hi) : $mid;
@@ -307,19 +308,20 @@ sub _bisectr
 	# Assumption: If $ok->($y) true, $x <= $y => $ok->($x) true.
 	# Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
 	#             - If $x > $hi,  $ok->($x) is false if defined.
-	while ($lo < $hi) {
+SRCH:	while ($lo < $hi) {
 		# Prefer ceiling of (L+H)/2, so that $lo > $mid,
 		# and so either branch is guaranteed to converge.
 		$mid = _rmean($lo, $hi);
 		$img = $map ? $map->($mid) : \$mid;
-		local *_ = $img;
-		if ($res = $ok->($mid)) {
-			$cmp = $res;
-			$elp = $img;
-			last if $any;
-			$lo = $mid;      # include
-		} else {
-			$hi = --$mid;    # exclude
+		foreach ($$img) {
+			if ($res = $ok->($mid)) {
+				$cmp = $res;
+				$elp = $img;
+				last SRCH if $any;
+				$lo = $mid;      # include
+			} else {
+				$hi = --$mid;    # exclude
+			}
 		}
 	}
 	wantarray ? ($mid, $cmp, $elp, $hi, $lo) : $mid;
@@ -377,22 +379,23 @@ sub _blsrch
 {
 	my ($any, $ok, $ord, $map, $lo, $hi) = @_;
 	my ($cmp, $res, $elp, $img, $mid);  $mid = $hi;
-	while ($lo < $hi) {
+SRCH:	while ($lo < $hi) {
 		# Pick floor( (L+H)/2 )
 		$mid = _lmean($lo, $hi);
 		$img = $map ? $map->($mid) : \$mid;
-		local *_ = $img;
-		if ($ok->($res = $ord->($mid))) {
-			# Be careful not to clobber $hi yet,
-			# as blsrch2 uses us for narrowing
-			# the search range!  See comment for
-			# _blsrch above.
-			$cmp = $res;
-			$elp = $img;
-			last if $any && $res == 0;
-			$hi = $mid;       # include
-		} else {
-			$lo = ++$mid;     # exclude
+		foreach ($$img) {
+			if ($ok->($res = $ord->($mid))) {
+				# Be careful not to clobber $hi yet,
+				# as blsrch2 uses us for narrowing
+				# the search range!  See comment for
+				# _blsrch above.
+				$cmp = $res;
+				$elp = $img;
+				last SRCH if $any && $res == 0;
+				$hi = $mid;       # include
+			} else {
+				$lo = ++$mid;     # exclude
+			}
 		}
 	}
 	wantarray ? ($mid, $cmp, $elp, $lo, $hi) : $mid;
@@ -434,18 +437,19 @@ sub _brsrch
 {
 	my ($any, $ok, $ord, $map, $hi, $lo) = @_;
 	my ($cmp, $res, $elp, $img, $mid);  $mid = $lo;
-	while ($lo < $hi) {
+SRCH:	while ($lo < $hi) {
 		# Pick ceil( (L+H)/2 )
 		$mid = _rmean($lo, $hi);
 		$img = $map ? $map->($mid) : \$mid;
-		local *_ = $img;
-		if ($ok->($res = $ord->($mid))) {
-			$cmp = $res;
-			$elp = $img;
-			last if $any && $res == 0;
-			$lo = $mid;       # include
-		} else {
-			$hi = --$mid;     # exclude
+		foreach ($$img) {
+			if ($ok->($res = $ord->($mid))) {
+				$cmp = $res;
+				$elp = $img;
+				last SRCH if $any && $res == 0;
+				$lo = $mid;       # include
+			} else {
+				$hi = --$mid;     # exclude
+			}
 		}
 	}
 	wantarray ? ($mid, $cmp, $elp, $hi, $lo) : $mid;
