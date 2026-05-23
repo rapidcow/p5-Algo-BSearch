@@ -39,7 +39,7 @@ sub have {
 	my $filename = $module;
 	$filename =~ s{::}{/}g;
 	$filename .= '.pm';
-	exists $INC{$filename} and !$version ||
+	defined $INC{$filename} and !$version ||
 	eval { $module->VERSION($version); 1 };
 }
 
