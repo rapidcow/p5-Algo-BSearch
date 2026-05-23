@@ -68,13 +68,13 @@ sub {
 
 if (have qw( List::MoreUtils 0.420_001 )) {
 	print STDERR "Registering List::MoreUtils (L::MU) test...\n";
-	$bench{"L::MU eq"} = eval q{
+	$bench{"L::MU(eq)"} = eval q{
 
 sub { equal_range { ($_ >> 8) <=> 123 } @array; }
 
 	} or die "Compiler error: $@";
 
-	$bench{"L::MU lb+ub"} = eval q{
+	$bench{"L::MU(lb+ub)"} = eval q{
 
 sub { ( lower_bound { ($_ >> 8) <=> 123 } @array ),
       ( upper_bound { ($_ >> 8) <=> 123 } @array ); }
