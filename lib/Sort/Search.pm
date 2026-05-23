@@ -8,7 +8,7 @@
 #
 package Sort::Search;
 
-our $VERSION = '0.00_39';
+our $VERSION = '0.00_40';
 $VERSION = eval $VERSION;
 
 use 5.006;
@@ -500,8 +500,8 @@ sub _blsrch2
 	my ($ord, $map) = @_;
 	my ($mid, $res, undef, $lo, $hi) = _blsrch(1, sub { $_[0] >= 0 }, @_);
 	if (defined $res && $res == 0) {
-		$lo = _bisectl(0, sub { &$ord >= 0 }, $map, $lo, $mid);
-		$hi = _bisectl(0, sub { &$ord > 0 }, $map, $mid + 1, $hi);
+		$lo = _bisectl(0, sub { &$ord >= 0 }, $map, $lo,     $mid);
+		$hi = _bisectl(0, sub { &$ord >  0 }, $map, $mid + 1, $hi);
 	}
 	wantarray ? ($lo, $hi) : ($hi - $lo);
 }
@@ -509,15 +509,15 @@ sub _blsrch2
 # It is worth noting that the lower bound is exclusive now
 # (equivalent to brsrch1) and the upper bound is inclusive
 # (equivalent to brsrch0).  For the first part we search as
-# we do in brsrchx, and when a zero is found, [$hi, $mid)
+# we do in brsrchx, and when a zero is found, [$lo, $mid)
 # has the lower bound and [$mid, $hi] has the upper bound.
 sub _brsrch2
 {
 	my ($ord, $map) = @_;
 	my ($mid, $res, undef, $hi, $lo) = _brsrch(1, sub { $_[0] >= 0 }, @_);
 	if (defined $res && $res == 0) {
-		$hi = _bisectr(0, sub { &$ord >= 0 }, $map, $hi, $mid);
-		$lo = _bisectr(0, sub { &$ord > 0 }, $map, $mid - 1, $lo);
+		$hi = _bisectr(0, sub { &$ord >= 0 }, $map, $hi,     $mid);
+		$lo = _bisectr(0, sub { &$ord >  0 }, $map, $mid - 1, $lo);
 	}
 	wantarray ? ($hi, $lo) : ($hi - $lo);
 }
