@@ -45,3 +45,42 @@ $: Peeling away one layer of indirect map was not
 $: even that significant, oh well... :(
 $:
 $: (XS is crazy though... like not even close bro D:)
+
+re-run with List::MoreUtils::XS:
+
+> w
+ 14:36:57 up 5 days, 12:12,  2 users,  load average: 0.20, 0.09, 0.14
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU  WHAT
+emeng             52.119.103.130   09:51   11:47m  0.00s  0.08s sshd: emeng [priv]
+gdm      tty1     -                Mon02    5days 19:16   0.10s /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Scre
+> uname -a
+Linux vm-instunix-06.cs.wisc.edu 6.8.0-117-generic #117-Ubuntu SMP PREEMPT_DYNAMIC Tue May  5 19:26:24 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+> perl -le 'print "Perl $] $^X"'
+Perl 5.042000 /home/emeng/opt/x86_64/brew/Cellar/perl/5.42.0/bin/perl
+
+> /usr/bin/time perl zeros.pl
+Sort::Search 0.0039 found.
+List::MoreUtils::PP 0.430 found.
+List::MoreUtils::XS 0.430 found.
+List::Search 0.31 found.
+List::BinarySearch::PP 0.25 found.
+List::BinarySearch::XS 0.09 found.
+Benchmark count: -10
+Registering Sort::Search (S::S) tests...
+Registering List::MoreUtils::PP (L::MU::PP) test...
+Registering List::MoreUtils::XS (L::MU::XS) test...
+Registering List::Search (L::S) test...
+Registering List::BinarySearch::PP (L::BS::PP) test...
+Registering List::BinarySearch::XS (L::BS::XS) test...
+                     Rate L::MU::PP(eq) L::MU::PP(lb+ub) L::MU::XS(lb+ub) L::MU::XS(eq) S::S[0+1] L::BS::PP S::S[2] L::S L::BS::XS
+L::MU::PP(eq)      1096/s            --             -36%             -48%          -74%      -96%      -97%    -97% -98%     -100%
+L::MU::PP(lb+ub)   1704/s           55%               --             -19%          -60%      -94%      -95%    -95% -97%      -99%
+L::MU::XS(lb+ub)   2113/s           93%              24%               --          -50%      -92%      -93%    -94% -97%      -99%
+L::MU::XS(eq)      4263/s          289%             150%             102%            --      -84%      -87%    -88% -93%      -99%
+S::S[0+1]         27480/s         2408%            1513%            1200%          545%        --      -15%    -21% -55%      -92%
+L::BS::PP         32344/s         2852%            1798%            1431%          659%       18%        --     -7% -47%      -90%
+S::S[2]           34776/s         3074%            1941%            1546%          716%       27%        8%      -- -43%      -89%
+L::S              61254/s         5490%            3495%            2799%         1337%      123%       89%     76%   --      -81%
+L::BS::XS        328137/s        29844%           19157%           15428%         7598%     1094%      915%    844% 436%        --
+108.97user 0.03system 1:49.03elapsed 99%CPU (0avgtext+0avgdata 15232maxresident)k
+0inputs+0outputs (0major+2605minor)pagefaults 0swaps
