@@ -8,7 +8,7 @@
 #
 package Sort::Search;
 
-our $VERSION = '0.00_37';
+our $VERSION = '0.00_38';
 $VERSION = eval $VERSION;
 
 use 5.006;
@@ -56,11 +56,34 @@ EOM
 	}
 	my ($fun, $arg) = splice @args, 0, 2;
 	my ($beg, $end);
+	if (!defined $arg) {
+		if (@args < 1) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
+not enough arguments for explicit index form (expected at least 3, got $nargs)
+EOM
+		}
+		if (@args > 2) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
+too many arguments for explicit index form (expected at most 4, got $nargs)
+EOM
+		}
+		if (@args == 2) {
+			($beg, $end) = (@args);
+		}
+		else {
+			# $hi = $arg, $lo inferred
+			my $arg = shift @args;
+			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
+		}
+		($fun, undef, $beg, $end);
+	}
 	# If $arg is a normal ARRAY ref or a blessed
 	# ARRAY ref, map its index to its elements.
 	# <https://stackoverflow.com/a/64160/19411800>
 	# (Tied ARRAY refs should be OK too.)
-	if (UNIVERSAL::isa($arg, 'ARRAY')) {
+	elsif (UNIVERSAL::isa($arg, 'ARRAY')) {
 		if (@args > 2) {
 			my $nargs = @args + 2;
 			Carp::croak($caller, ": ", <<EOM);
@@ -105,29 +128,6 @@ EOM
 			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
 		($fun, $arg, $beg, $end);
-	}
-	elsif (!defined $arg) {
-		if (@args < 1) {
-			my $nargs = @args + 2;
-			Carp::croak($caller, ": ", <<EOM);
-not enough arguments for explicit index form (expected at least 3, got $nargs)
-EOM
-		}
-		if (@args > 2) {
-			my $nargs = @args + 2;
-			Carp::croak($caller, ": ", <<EOM);
-too many arguments for explicit index form (expected at most 4, got $nargs)
-EOM
-		}
-		if (@args == 2) {
-			($beg, $end) = (@args);
-		}
-		else {
-			# $hi = $arg, $lo inferred
-			my $arg = shift @args;
-			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
-		}
-		($fun, undef, $beg, $end);
 	}
 	else {
 		# Same way as how we handle the CODE form above,
