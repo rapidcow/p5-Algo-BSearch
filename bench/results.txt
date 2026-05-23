@@ -1,3 +1,70 @@
+*** lzero.pl
+
+# Still on the same machine 
+> uname -a
+Linux vm-instunix-06.cs.wisc.edu 6.8.0-117-generic #117-Ubuntu SMP PREEMPT_DYNAMIC Tue May  5 19:26:24 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+> w
+ 17:18:24 up 5 days, 14:54,  2 users,  load average: 0.08, 0.36, 0.38
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU  WHAT
+emeng             52.119.103.130   09:51   14:29m  0.00s  0.08s sshd: emeng [priv]
+gdm      tty1     -                Mon02    5days 19:38   0.10s /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Scre
+
+> ./lzero.pl
+Sort::Search 0.004 found.
+List::MoreUtils::PP 0.430 found.
+List::MoreUtils::XS 0.430 found.
+List::Search 0.31 found.
+List::BinarySearch::PP 0.25 found.
+List::BinarySearch::XS 0.09 found.
+Benchmark count: -10
+Registering Sort::Search (S::S) tests...
+Registering List::MoreUtils::PP (L::MU::PP) test...
+Registering List::MoreUtils::XS (L::MU::XS) test...
+Registering List::Search (L::S) test...
+Registering List::BinarySearch::PP (L::BS::PP) test...
+Registering List::BinarySearch::XS (L::BS::XS) test...
+               Rate L::MU::PP L::MU::XS LINEAR S::S[0] S::S(0) S::S[L] S::S(L) L::BS::PP S::S(x) L::S L::S{} L::BS::XS
+L::MU::PP    3414/s        --      -19%   -83%    -93%    -94%    -94%    -95%      -95%    -97% -97%   -97%     -100%
+L::MU::XS    4238/s       24%        --   -79%    -91%    -92%    -92%    -93%      -94%    -96% -97%   -97%     -100%
+LINEAR      19746/s      478%      366%     --    -60%    -64%    -65%    -68%      -72%    -83% -85%   -85%      -98%
+S::S[0]     49172/s     1340%     1060%   149%      --    -11%    -13%    -21%      -29%    -59% -63%   -64%      -96%
+S::S(0)     55292/s     1520%     1205%   180%     12%      --     -2%    -11%      -20%    -54% -59%   -59%      -95%
+S::S[L]     56283/s     1549%     1228%   185%     14%      2%      --    -10%      -19%    -53% -58%   -58%      -95%
+S::S(L)     62222/s     1723%     1368%   215%     27%     13%     11%      --      -10%    -48% -53%   -54%      -95%
+L::BS::PP   69422/s     1934%     1538%   252%     41%     26%     23%     12%        --    -42% -48%   -49%      -94%
+S::S(x)    119165/s     3391%     2712%   503%    142%    116%    112%     92%       72%      -- -11%   -12%      -90%
+L::S       133381/s     3807%     3047%   575%    171%    141%    137%    114%       92%     12%   --    -2%      -88%
+L::S{}     135500/s     3869%     3097%   586%    176%    145%    141%    118%       95%     14%   2%     --      -88%
+L::BS::XS 1146814/s    33496%    26959%  5708%   2232%   1974%   1938%   1743%     1552%    862% 760%   746%        --
+
+> ./lzero.pl
+Sort::Search 0.0041 found.
+List::MoreUtils::PP 0.430 found.
+List::MoreUtils::XS 0.430 found.
+List::Search 0.31 found.
+List::BinarySearch::PP 0.25 found.
+List::BinarySearch::XS 0.09 found.
+Benchmark count: -10
+Registering Sort::Search (S::S) tests...
+Registering List::MoreUtils::PP (L::MU::PP) test...
+Registering List::MoreUtils::XS (L::MU::XS) test...
+Registering List::Search (L::S) test...
+Registering List::BinarySearch::PP (L::BS::PP) test...
+Registering List::BinarySearch::XS (L::BS::XS) test...
+               Rate L::MU::PP L::MU::XS LINEAR S::S[0] S::S[L] S::S(0) S::S(L) L::BS::PP S::S(x) L::S L::S{} L::BS::XS
+L::MU::PP    3224/s        --      -25%   -84%    -94%    -94%    -95%    -95%      -96%    -97% -98%   -98%     -100%
+L::MU::XS    4309/s       34%        --   -79%    -92%    -93%    -93%    -94%      -94%    -97% -97%   -97%     -100%
+LINEAR      20683/s      542%      380%     --    -62%    -64%    -67%    -69%      -71%    -84% -85%   -85%      -98%
+S::S[0]     54091/s     1578%     1155%   162%      --     -7%    -14%    -20%      -25%    -58% -60%   -60%      -95%
+S::S[L]     58183/s     1705%     1250%   181%      8%      --     -7%    -14%      -19%    -55% -57%   -57%      -95%
+S::S(0)     62834/s     1849%     1358%   204%     16%      8%      --     -7%      -12%    -51% -53%   -54%      -94%
+S::S(L)     67482/s     1993%     1466%   226%     25%     16%      7%      --       -6%    -47% -50%   -50%      -94%
+L::BS::PP   71798/s     2127%     1566%   247%     33%     23%     14%      6%        --    -44% -47%   -47%      -94%
+S::S(x)    128217/s     3878%     2875%   520%    137%    120%    104%     90%       79%      --  -5%    -6%      -89%
+L::S       135071/s     4090%     3034%   553%    150%    132%    115%    100%       88%      5%   --    -1%      -88%
+L::S{}     136135/s     4123%     3059%   558%    152%    134%    117%    102%       90%      6%   1%     --      -88%
+L::BS::XS 1130384/s    34967%    26131%  5365%   1990%   1843%   1699%   1575%     1474%    782% 737%   730%        --
+
 *** zeros.pl
 
 > w
