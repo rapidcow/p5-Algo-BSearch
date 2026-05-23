@@ -22,7 +22,8 @@ BEGIN {
 	);
 	require Exporter;
 	want qw( List::Search  0 ) => qw( custom_list_search );
-	want qw( List::BinarySearch 0 ) => qw( binsearch_pos );
+	want qw( List::BinarySearch::PP );
+	want qw( List::BinarySearch::XS );
 }
 
 print STDERR "Benchmark count: $count\n";
@@ -92,14 +93,25 @@ sub { custom_list_search ( sub { ($_[0] >> 8) <=> ($_[1] >> 8) }, (123 << 8), \@
 	} or die "Compiler error: $@";
 }
 
-if (have qw( List::BinarySearch )) {
-	print STDERR "Registering List::BinarySearch (L::BS) test...\n";
-	$bench{"L::BS"} = eval q{
+if (have qw( List::BinarySearch::PP )) {
+	print STDERR "Registering List::BinarySearch::PP (L::BS::PP) test...\n";
+	$bench{"L::BS::PP"} = eval q{
 
 sub {
-	my $lb = binsearch_pos { ($a >> 8) <=> ($b >> 8) } (123 << 8), @array;
-	my $ub = binsearch_pos { ($a >> 8) <=> ($b >> 8) } (124 << 8), @array;
-	($lb, $ub);
+	( List::BinarySearch::PP::binsearch_pos { ($a >> 8) <=> ($b >> 8) } (123 << 8), @array ),
+	( List::BinarySearch::PP::binsearch_pos { ($a >> 8) <=> ($b >> 8) } (124 << 8), @array );
+}
+
+	} or die "Compiler error: $@";
+}
+
+if (have qw( List::BinarySearch::XS )) {
+	print STDERR "Registering List::BinarySearch::XS (L::BS::XS) test...\n";
+	$bench{"L::BS::XS"} = eval q{
+
+sub {
+	( List::BinarySearch::XS::binsearch_pos { ($a >> 8) <=> ($b >> 8) } (123 << 8), @array ),
+	( List::BinarySearch::XS::binsearch_pos { ($a >> 8) <=> ($b >> 8) } (124 << 8), @array );
 }
 
 	} or die "Compiler error: $@";
