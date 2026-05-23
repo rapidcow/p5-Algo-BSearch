@@ -8,7 +8,7 @@
 #
 package Sort::Search;
 
-our $VERSION = '0.00_38';
+our $VERSION = '0.00_39';
 $VERSION = eval $VERSION;
 
 use 5.006;
@@ -56,7 +56,7 @@ EOM
 	}
 	my ($fun, $arg) = splice @args, 0, 2;
 	my ($beg, $end);
-	if (!defined $arg) {
+	unless (defined $arg) {
 		if (@args < 1) {
 			my $nargs = @args + 2;
 			Carp::croak($caller, ": ", <<EOM);
