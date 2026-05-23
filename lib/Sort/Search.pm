@@ -8,7 +8,7 @@
 #
 package Sort::Search;
 
-our $VERSION = '0.01_00';
+our $VERSION = '0.00_37';
 $VERSION = eval $VERSION;
 
 use 5.006;
