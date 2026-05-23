@@ -16,7 +16,6 @@ BEGIN {
 
 	need qw( Sort::Search  0 ) => qw(
 		blsrch0 blsrch1 blsrch2
-		brsrch2 brsrch1 brsrch0
 	);
 	want qw( List::MoreUtils 0.420_001 )  => qw(
 		equal_range lower_bound upper_bound
@@ -30,24 +29,17 @@ print STDERR "Benchmark count: $count\n";
 
 my @array = ( 0 .. (1 << 16) - 1 );
 my @expect = ( 123 << 8, 124 << 8 );
-my (%bench, %proc);
+my %bench;
 
 {
 	print STDERR "Registering Sort::Search (S::S) tests...\n";
-	$bench{"S::S LTR 2"} = eval q{
+	$bench{"S::S[2]"} = eval q{
 
 sub { blsrch2 { ($_ >> 8) <=> 123 } \@array; }
 
 	} or die "Compiler error: $@";
 
-	$bench{"S::S RTL 2"} = eval q{
-
-sub { brsrch2 { 123 <=> ($_ >> 8) } \@array; }
-
-	} or die "Compiler error: $@";
-	$proc{"S::S RTL 2"} = sub { reverse map { $_ + 1 } @_ };
-
-	$bench{"S::S LTR 0+1"} = eval q{
+	$bench{"S::S[0+1]"} = eval q{
 
 sub {
 	my $lb = blsrch0 { ($_ >> 8) <=> 123 } \@array;
@@ -57,16 +49,21 @@ sub {
 
 	} or die "Compiler error: $@";
 
-	$bench{"S::S RTL 0+1"} = eval q{
+	$bench{"S::S(2)"} = eval q{
+
+sub { blsrch2 { ($array[$_] >> 8) <=> 123 } @array; }
+
+	} or die "Compiler error: $@";
+
+	$bench{"S::S(0+1)"} = eval q{
 
 sub {
-	my $ub = brsrch0 { 123 <=> ($_ >> 8) } \@array;
-	my $lb = brsrch1 { 123 <=> ($_ >> 8) } \@array, $ub, -1;
+	my $lb = blsrch0 { ($array[$_] >> 8) <=> 123 } @array;
+	my $ub = blsrch1 { ($array[$_] >> 8) <=> 123 } $lb, @array;
 	($lb, $ub);
 }
 
 	} or die "Compiler error: $@";
-	$proc{"S::S RTL 0+1"} = sub { map { $_ + 1 } @_ };
 }
 
 if (have qw( List::MoreUtils 0.420_001 )) {
@@ -89,11 +86,8 @@ if (have qw( List::Search )) {
 	print STDERR "Registering List::Search (L::S) test...\n";
 	$bench{"L::S"} = eval q{
 
-sub {
-	my $lb = custom_list_search sub { ($_[0] >> 8) <=> ($_[1] >> 8) }, (123 << 8), \@array;
-	my $ub = custom_list_search sub { ($_[0] >> 8) <=> ($_[1] >> 8) }, (124 << 8), \@array;
-	($lb, $ub);
-}
+sub { custom_list_search ( sub { ($_[0] >> 8) <=> ($_[1] >> 8) }, (123 << 8), \@array ),
+      custom_list_search ( sub { ($_[0] >> 8) <=> ($_[1] >> 8) }, (124 << 8), \@array ); }
 
 	} or die "Compiler error: $@";
 }
@@ -113,9 +107,6 @@ sub {
 
 foreach my $name (sort keys %bench) {
 	my @result = $bench{$name}->();
-	if ($proc{$name}) {
-		@result = $proc{$name}->(@result);
-	}
 	if (@result != @expect or grep {
 		$result[$_] != $expect[$_]
 	} 0..$#result) {
