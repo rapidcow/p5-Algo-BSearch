@@ -30,7 +30,7 @@ print STDERR "Benchmark count: $count\n";
 
 my @array = ( 0 .. (1 << 16) - 1 );
 my @expect = ( 123 << 8, 124 << 8 );
-my %bench;
+my (%bench, %proc);
 
 {
 	print STDERR "Registering Sort::Search (S::S) tests...\n";
@@ -42,9 +42,10 @@ sub { blsrch2 { ($_ >> 8) <=> 123 } \@array; }
 
 	$bench{"S::S RTL 2"} = eval q{
 
-sub { reverse map { $_ + 1 } brsrch2 { 123 <=> ($_ >> 8) } \@array; }
+sub { brsrch2 { 123 <=> ($_ >> 8) } \@array; }
 
 	} or die "Compiler error: $@";
+	$proc{"S::S RTL 2"} = sub { reverse map { $_ + 1 } @_ };
 
 	$bench{"S::S LTR 0+1"} = eval q{
 
@@ -61,10 +62,11 @@ sub {
 sub {
 	my $ub = brsrch0 { 123 <=> ($_ >> 8) } \@array;
 	my $lb = brsrch1 { 123 <=> ($_ >> 8) } \@array, $ub, -1;
-	$lb++;  $ub++;  ($lb, $ub);
+	($lb, $ub);
 }
 
 	} or die "Compiler error: $@";
+	$proc{"S::S RTL 0+1"} = sub { map { $_ + 1 } @_ };
 }
 
 if (have qw( List::MoreUtils 0.420_001 )) {
@@ -111,6 +113,9 @@ sub {
 
 foreach my $name (sort keys %bench) {
 	my @result = $bench{$name}->();
+	if ($proc{$name}) {
+		@result = $proc{$name}->(@result);
+	}
 	if (@result != @expect or grep {
 		$result[$_] != $expect[$_]
 	} 0..$#result) {
