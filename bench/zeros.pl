@@ -17,9 +17,8 @@ BEGIN {
 	need qw( Sort::Search  0 ) => qw(
 		blsrch0 blsrch1 blsrch2
 	);
-	want qw( List::MoreUtils 0.420_001 )  => qw(
-		equal_range lower_bound upper_bound
-	);
+	want qw( List::MoreUtils::PP 0.420_001 );
+	want qw( List::MoreUtils::XS 0.420_001 );
 	require Exporter;
 	want qw( List::Search  0 ) => qw( custom_list_search );
 	want qw( List::BinarySearch::PP );
@@ -54,7 +53,7 @@ sub {
 
 sub { blsrch2 { ($array[$_] >> 8) <=> 123 } @array; }
 
-	} or die "Compiler error: $@";
+	} or die "Compiler error: $@" if 0;
 
 	$bench{"S::S(0+1)"} = eval q{
 
@@ -64,23 +63,25 @@ sub {
 	($lb, $ub);
 }
 
-	} or die "Compiler error: $@";
+	} or die "Compiler error: $@" if 0;
 }
 
-if (have qw( List::MoreUtils 0.420_001 )) {
-	print STDERR "Registering List::MoreUtils (L::MU) test...\n";
-	$bench{"L::MU(eq)"} = eval q{
+for my $IMPL (qw( PP XS )) {
+	if (have "List::MoreUtils::${IMPL}" => '0.420_001') {
+		print STDERR "Registering List::MoreUtils::${IMPL} (L::MU::${IMPL}) test...\n";
+		$bench{"L::MU::${IMPL}(eq)"} = eval qq{
 
-sub { equal_range { ($_ >> 8) <=> 123 } @array; }
+sub { List::MoreUtils::${IMPL}::equal_range { (\$_ >> 8) <=> 123 } \@array; }
 
-	} or die "Compiler error: $@";
+		} or die "Compiler error: $@";
 
-	$bench{"L::MU(lb+ub)"} = eval q{
+		$bench{"L::MU::${IMPL}(lb+ub)"} = eval qq{
 
-sub { ( lower_bound { ($_ >> 8) <=> 123 } @array ),
-      ( upper_bound { ($_ >> 8) <=> 123 } @array ); }
+sub { ( List::MoreUtils::${IMPL}::lower_bound { (\$_ >> 8) <=> 123 } \@array ),
+      ( List::MoreUtils::${IMPL}::upper_bound { (\$_ >> 8) <=> 123 } \@array ); }
 
-	} or die "Compiler error: $@";
+		} or die "Compiler error: $@";
+	}
 }
 
 if (have qw( List::Search )) {
@@ -93,28 +94,18 @@ sub { custom_list_search ( sub { ($_[0] >> 8) <=> ($_[1] >> 8) }, (123 << 8), \@
 	} or die "Compiler error: $@";
 }
 
-if (have qw( List::BinarySearch::PP )) {
-	print STDERR "Registering List::BinarySearch::PP (L::BS::PP) test...\n";
-	$bench{"L::BS::PP"} = eval q{
+for my $IMPL (qw( PP XS )) {
+	if (have "List::BinarySearch::${IMPL}") {
+		print STDERR "Registering List::BinarySearch::${IMPL} (L::BS::${IMPL}) test...\n";
+		$bench{"L::BS::${IMPL}"} = eval qq{
 
 sub {
-	( List::BinarySearch::PP::binsearch_pos { ($a >> 8) <=> ($b >> 8) } (123 << 8), @array ),
-	( List::BinarySearch::PP::binsearch_pos { ($a >> 8) <=> ($b >> 8) } (124 << 8), @array );
+	( List::BinarySearch::${IMPL}::binsearch_pos { (\$a >> 8) <=> (\$b >> 8) } (123 << 8), \@array ),
+	( List::BinarySearch::${IMPL}::binsearch_pos { (\$a >> 8) <=> (\$b >> 8) } (124 << 8), \@array );
 }
 
-	} or die "Compiler error: $@";
-}
-
-if (have qw( List::BinarySearch::XS )) {
-	print STDERR "Registering List::BinarySearch::XS (L::BS::XS) test...\n";
-	$bench{"L::BS::XS"} = eval q{
-
-sub {
-	( List::BinarySearch::XS::binsearch_pos { ($a >> 8) <=> ($b >> 8) } (123 << 8), @array ),
-	( List::BinarySearch::XS::binsearch_pos { ($a >> 8) <=> ($b >> 8) } (124 << 8), @array );
-}
-
-	} or die "Compiler error: $@";
+		} or die "Compiler error: $@";
+	}
 }
 
 foreach my $name (sort keys %bench) {
