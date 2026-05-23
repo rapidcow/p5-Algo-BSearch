@@ -8,7 +8,7 @@
 #
 package Sort::Search;
 
-our $VERSION = '0.00_40';
+our $VERSION = '0.00_41';
 $VERSION = eval $VERSION;
 
 use 5.006;
@@ -401,9 +401,12 @@ SRCH:	while ($lo < $hi) {
 	wantarray ? ($mid, $cmp, $elp, $lo, $hi) : $mid;
 }
 
-sub blsrch0 (&$;$$) { _blsrch(0, sub { $_[0] >= 0 }, _parse(LTR, @_)); }
-sub blsrch1 (&$;$$) { _blsrch(0, sub { $_[0] >  0 }, _parse(LTR, @_)); }
-sub blsrchx (&$;$$) { _blsrch(1, sub { $_[0] >= 0 }, _parse(LTR, @_)); }
+sub _pOK_0 { $_[0] >= 0 }
+sub _pOK_1 { $_[0] >  0 }
+
+sub blsrch0 (&$;$$) { _blsrch(0, \&_pOK_0, _parse(LTR, @_)); }
+sub blsrch1 (&$;$$) { _blsrch(0, \&_pOK_1, _parse(LTR, @_)); }
+sub blsrchx (&$;$$) { _blsrch(1, \&_pOK_0, _parse(LTR, @_)); }
 
 # This is right binary search (brsrch[01]), similarly.
 # This ordering is assumed to be monotonic DECREASING:
@@ -455,9 +458,9 @@ SRCH:	while ($lo < $hi) {
 	wantarray ? ($mid, $cmp, $elp, $hi, $lo) : $mid;
 }
 
-sub brsrch0 (&$;$$) { _brsrch(0, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
-sub brsrch1 (&$;$$) { _brsrch(0, sub { $_[0] >  0 }, _parse(RTL, @_)); }
-sub brsrchx (&$;$$) { _brsrch(1, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
+sub brsrch0 (&$;$$) { _brsrch(0, \&_pOK_0, _parse(RTL, @_)); }
+sub brsrch1 (&$;$$) { _brsrch(0, \&_pOK_1, _parse(RTL, @_)); }
+sub brsrchx (&$;$$) { _brsrch(1, \&_pOK_0, _parse(RTL, @_)); }
 
 # b?srch2 is a shorthand that returns b?srch0 and b?srch1.
 # Effectively, this gives you a half-open interval for all
@@ -498,10 +501,10 @@ sub brsrchx (&$;$$) { _brsrch(1, sub { $_[0] >= 0 }, _parse(RTL, @_)); }
 sub _blsrch2
 {
 	my ($ord, $map) = @_;
-	my ($mid, $res, undef, $lo, $hi) = _blsrch(1, sub { $_[0] >= 0 }, @_);
+	my ($mid, $res, undef, $lo, $hi) = _blsrch(1, \&_pOK_0, @_);
 	if (defined $res && $res == 0) {
-		$lo = _bisectl(0, sub { &$ord >= 0 }, $map, $lo,     $mid);
-		$hi = _bisectl(0, sub { &$ord >  0 }, $map, $mid + 1, $hi);
+		$lo = _blsrch(0, \&_pOK_0, $ord, $map, $lo,     $mid);
+		$hi = _blsrch(0, \&_pOK_1, $ord, $map, $mid + 1, $hi);
 	}
 	wantarray ? ($lo, $hi) : ($hi - $lo);
 }
@@ -514,10 +517,10 @@ sub _blsrch2
 sub _brsrch2
 {
 	my ($ord, $map) = @_;
-	my ($mid, $res, undef, $hi, $lo) = _brsrch(1, sub { $_[0] >= 0 }, @_);
+	my ($mid, $res, undef, $hi, $lo) = _brsrch(1, \&_pOK_0, @_);
 	if (defined $res && $res == 0) {
-		$hi = _bisectr(0, sub { &$ord >= 0 }, $map, $hi,     $mid);
-		$lo = _bisectr(0, sub { &$ord >  0 }, $map, $mid - 1, $lo);
+		$hi = _brsrch(0, \&_pOK_0, $ord, $map, $hi,     $mid);
+		$lo = _brsrch(0, \&_pOK_1, $ord, $map, $mid - 1, $lo);
 	}
 	wantarray ? ($hi, $lo) : ($hi - $lo);
 }
