@@ -29,7 +29,21 @@ print STDERR "Benchmark count: $count\n";
 
 my @array = ( 0 .. (1 << 16) - 1 );
 my @expect = ( 123 << 8, 124 << 8 );
-my %bench;
+my %bench = (
+	"LINEAR" => sub {
+		my ($lo, $hi) = (-1, scalar @array);
+		foreach (0 .. $#array) {
+			my $compar = ($array[$_] >> 8) <=> 123;
+			if ($compar < 0) {
+				$lo = $_;
+			} elsif ($compar > 0) {
+				$hi = $_;
+				last;
+			}
+		}
+		($lo + 1, $hi);
+	}
+);
 
 {
 	print STDERR "Registering Sort::Search (S::S) tests...\n";
