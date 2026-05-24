@@ -138,3 +138,54 @@ BADCODE
 }
 
 Benchmark::cmpthese($count, \%bench);
+
+__END__
+
+Most recent run:
+
+> w
+ 07:00:58 up 6 days,  4:36,  2 users,  load average: 0.00, 0.04, 0.06
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU  WHAT
+emeng             52.119.103.130   Sat09    4:11m  0.00s  0.08s sshd: emeng [priv]
+gdm      tty1     -                18May26  6days 21:36   0.10s /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Scre
+
+> uname -a
+Linux vm-instunix-06.cs.wisc.edu 6.8.0-117-generic #117-Ubuntu SMP PREEMPT_DYNAMIC Tue May  5 19:26:24 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+> perl -le 'print "Perl $] $^X"'
+Perl 5.042000 /home/emeng/opt/x86_64/brew/Cellar/perl/5.42.0/bin/perl
+
+> /usr/bin/time ./zeros.pl
+Sort::Search 0.0043 found.
+List::MoreUtils::PP 0.430 found.
+List::MoreUtils::XS 0.430 found.
+List::Search 0.31 found.
+List::BinarySearch::PP 0.25 found.
+List::BinarySearch::XS 0.09 found.
+Benchmark count: -10
+Registering Sort::Search (S::S) tests...
+Registering List::MoreUtils::PP (L::MU::PP) test...
+Registering List::MoreUtils::XS (L::MU::XS) test...
+Registering List::Search (L::S) test...
+Registering List::BinarySearch::PP (L::BS::PP) test...
+Registering List::BinarySearch::XS (L::BS::XS) test...
+                     Rate  LINEAR L::MU::PP(eq) L::MU::PP(lb+ub) L::MU::XS(lb+ub) L::MU::XS(eq) S::S[0+1] L::BS::PP S::S[2]  L::S L::BS::XS
+LINEAR              226/s      --          -78%             -86%             -89%          -95%      -99%      -99%    -99% -100%     -100%
+L::MU::PP(eq)      1032/s    356%            --             -34%             -50%          -76%      -96%      -97%    -97%  -98%     -100%
+L::MU::PP(lb+ub)   1570/s    594%           52%               --             -24%          -63%      -94%      -95%    -95%  -97%     -100%
+L::MU::XS(lb+ub)   2057/s    809%           99%              31%               --          -51%      -93%      -94%    -94%  -96%      -99%
+L::MU::XS(eq)      4223/s   1766%          309%             169%             105%            --      -85%      -87%    -88%  -93%      -99%
+S::S[0+1]         28151/s  12339%         2627%            1693%            1269%          567%        --      -13%    -17%  -52%      -91%
+L::BS::PP         32401/s  14216%         3039%            1964%            1475%          667%       15%        --     -4%  -44%      -90%
+S::S[2]           33910/s  14883%         3185%            2060%            1549%          703%       20%        5%      --  -42%      -90%
+L::S              58355/s  25684%         5554%            3618%            2737%         1282%      107%       80%     72%    --      -82%
+L::BS::XS        329780/s 145614%        31850%           20910%           15933%         7710%     1071%      918%    873%  465%        --
+124.02user 0.05system 2:04.11elapsed 99%CPU (0avgtext+0avgdata 15232maxresident)k
+0inputs+0outputs (0major+2671minor)pagefaults 0swaps
+
+Yeah... it's slow.  A 20% improvement from
+lower+upper to equal variants, compared to
+105% in L::MU::XS.
+
+The difference between XS(lb+ub) and XS(eq)
+is quite telling though.
