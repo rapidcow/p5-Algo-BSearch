@@ -48,9 +48,9 @@ C<< $hi < $lo >> (in fact, they differ by 1).
 
 sub _bsrchpx
 {
-	my ($ord, $map, $min) = @_;
+	my ($ord, $ref, $map, $min) = @_;
 	my ($prv, $nxt);
-	my ($mid, $res, $elp, $lo, $hi) = _blsrch(1, \&_pOK_0, @_);
+	my ($mid, $res, $elp, $lo, $hi) = _bltsrch(1, \&_pOK_0, @_);
 
 	# Normally, our search functions operate on
 	# asymmetric half-open intervals -- such as
@@ -67,7 +67,7 @@ sub _bsrchpx
 		# know what it is. ;)
 #		print STDERR "You are long, [$lo, $mid) ($mid, $hi]!\n";
 #		print STDERR "   LFT RNG $_\n" for map { sprintf "[%02d] %s", $_, ${$map->($_)} } $lo..$mid-1;
-		($lo, undef, $nxt) = _blsrch(0, \&_pOK_0, $ord, $map, $lo, $mid);
+		($lo, undef, $nxt) = _bltsrch(0, \&_pOK_0, $ord, $ref, $map, $lo, $mid);
 #		print STDERR sprintf "     IDX %02d ELP %s\n", $lo, defined $nxt ? qq[\\"$$nxt"] : "???";
 		# blsrch0 won't actually check $mid, so if $mid is
 		# already on the far right end (which isn't at all
@@ -79,7 +79,7 @@ sub _bsrchpx
 
 #		print STDERR "   RGT RNG $_\n" for reverse
 #		                                   map { sprintf "[%02d] %s", $_, ${$map->($_)} } $mid+1..$hi;
-		($hi, undef, $prv) = _brsrch(0, \&_nOK_0, $ord, $map, $hi, $mid);
+		($hi, undef, $prv) = _brtsrch(0, \&_nOK_0, $ord, $ref, $map, $hi, $mid);
 #		print STDERR sprintf "     IDX %02d ELP %s\n", $hi, defined $prv ? qq[\\"$$prv"] : "???";
 		# The same fixup is necessary here because we don't
 		# know if the extra matches intersect with the left
@@ -93,7 +93,8 @@ sub _bsrchpx
 		# over one other to become successor and predecessor
 		$nxt = $elp;
 		unless ($hi < $min) {
-			$prv = $map ? $map->($hi) : \$hi;
+			$prv = ($ref eq 'ARRAY' ? \$map->[$hi] :
+				$ref eq 'CODE' ? $map->($hi) : \$hi);
 		}
 	}
 	($hi, defined $prv ? $$prv : undef,

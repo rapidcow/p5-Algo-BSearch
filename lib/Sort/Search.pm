@@ -8,7 +8,7 @@
 #
 package Sort::Search;
 
-our $VERSION = '0.00_41';
+our $VERSION = '0.00_42';
 $VERSION = eval $VERSION;
 
 use 5.006;
@@ -35,9 +35,9 @@ use constant RTL => 0;  # right-to-left
 #    $ori:  search orientation (1 for left/LTR, 0 for right/RTL)
 #    @args: arguments from caller
 # Return:
-#    ($fun, undef, $beg, $end)   for index form;
+#    ($fun, '', undef, $beg, $end)     for index form;
 # and
-#    ($fun, $map,  $beg, $end)   for ARRAY/CODE form
+#    ($fun, $ref, $map,  $beg, $end)   for ARRAY/CODE form
 # where $fun is a predicate or an ordering, and
 # $map returns a ref to the image at the index.
 # Croak on parse failure.
@@ -77,7 +77,7 @@ EOM
 			my $arg = shift @args;
 			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
-		($fun, undef, $beg, $end);
+		($fun, '', undef, $beg, $end);
 	}
 	# If $arg is a normal ARRAY ref or a blessed
 	# ARRAY ref, map its index to its elements.
@@ -104,7 +104,7 @@ EOM
 			defined $lo or $lo = -1;
 			($beg, $end) = ($hi, $lo);
 		}
-		($fun, sub { \$arg->[$_[0]] }, $beg, $end);
+		($fun, 'ARRAY', $arg, $beg, $end);
 	}
 	elsif (UNIVERSAL::isa($arg, 'CODE')) {
 		if (@args < 1) {
@@ -127,7 +127,7 @@ EOM
 			my $arg = shift @args;
 			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
-		($fun, $arg, $beg, $end);
+		($fun, 'CODE', $arg, $beg, $end);
 	}
 	else {
 		# Same way as how we handle the CODE form above,
@@ -147,7 +147,7 @@ EOM
 			# $hi = $arg, $lo inferred
 			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
-		($fun, undef, $beg, $end);
+		($fun, '', undef, $beg, $end);
 	}
 }
 
@@ -225,7 +225,7 @@ sub _rmean
 # on said range [ $lo, $hi ).
 sub _bisectl
 {
-	my ($any, $ok, $map, $lo, $hi) = @_;
+	my ($any, $ok, $ref, $map, $lo, $hi) = @_;
 	# Fun fact!  The following are written in the order
 	# of right-to-left notation of function composition.
 	# ($cmp = $res is the image of ${$elp = $img} via $ok,
@@ -239,7 +239,8 @@ SRCH:	while ($lo < $hi) {
 		# Prefer floor of (L+H)/2, so that $mid < $hi,
 		# and so either branch is guaranteed to converge.
 		$mid = _lmean($lo, $hi);
-		$img = $map ? $map->($mid) : \$mid;
+		$img = ($ref eq 'ARRAY' ? \$map->[$mid] :
+			$ref eq 'CODE' ? $map->($mid) : \$mid);
 		foreach ($$img) {
 			if ($res = $ok->($mid)) {
 				# This is a successful match, so the
@@ -302,7 +303,7 @@ sub bixectl (&$;$$) { _bisectl(1, _parse(LTR, @_)); }
 # The exact return value is documented above _bisectl.
 sub _bisectr
 {
-	my ($any, $ok, $map, $hi, $lo) = @_;
+	my ($any, $ok, $ref, $map, $hi, $lo) = @_;
 	my ($cmp, $res, $elp, $img, $mid);  $mid = $lo;
 
 	# Assumption: If $ok->($y) true, $x <= $y => $ok->($x) true.
@@ -312,7 +313,8 @@ SRCH:	while ($lo < $hi) {
 		# Prefer ceiling of (L+H)/2, so that $lo > $mid,
 		# and so either branch is guaranteed to converge.
 		$mid = _rmean($lo, $hi);
-		$img = $map ? $map->($mid) : \$mid;
+		$img = ($ref eq 'ARRAY' ? \$map->[$mid] :
+			$ref eq 'CODE' ? $map->($mid) : \$mid);
 		foreach ($$img) {
 			if ($res = $ok->($mid)) {
 				$cmp = $res;
@@ -375,20 +377,22 @@ sub bixectr (&$;$$) { _bisectr(1, _parse(RTL, @_)); }
 # find a zero.  If you care about an _exact_ match, you
 # should call in list context and check if $cmp is 0 or
 # undef (or compare it again yourself!  TMTOWTDI... :)
-sub _blsrch
+sub _bltsrch
 {
-	my ($any, $ok, $ord, $map, $lo, $hi) = @_;
+	my ($any, $ok, $ord, $ref, $map, $lo, $hi) = @_;
 	my ($cmp, $res, $elp, $img, $mid);  $mid = $hi;
+
 SRCH:	while ($lo < $hi) {
 		# Pick floor( (L+H)/2 )
 		$mid = _lmean($lo, $hi);
-		$img = $map ? $map->($mid) : \$mid;
+		$img = ($ref eq 'ARRAY' ? \$map->[$mid] :
+			$ref eq 'CODE' ? $map->($mid) : \$mid);
 		foreach ($$img) {
 			if ($ok->($res = $ord->($mid))) {
 				# Be careful not to clobber $hi yet,
 				# as blsrch2 uses us for narrowing
 				# the search range!  See comment for
-				# _blsrch above.
+				# _bisectl above.
 				$cmp = $res;
 				$elp = $img;
 				last SRCH if $any && $res == 0;
@@ -404,9 +408,9 @@ SRCH:	while ($lo < $hi) {
 sub _pOK_0 { $_[0] >= 0 }
 sub _pOK_1 { $_[0] >  0 }
 
-sub blsrch0 (&$;$$) { _blsrch(0, \&_pOK_0, _parse(LTR, @_)); }
-sub blsrch1 (&$;$$) { _blsrch(0, \&_pOK_1, _parse(LTR, @_)); }
-sub blsrchx (&$;$$) { _blsrch(1, \&_pOK_0, _parse(LTR, @_)); }
+sub blsrch0 (&$;$$) { _bltsrch(0, \&_pOK_0, _parse(LTR, @_)); }
+sub blsrch1 (&$;$$) { _bltsrch(0, \&_pOK_1, _parse(LTR, @_)); }
+sub blsrchx (&$;$$) { _bltsrch(1, \&_pOK_0, _parse(LTR, @_)); }
 
 # This is right binary search (brsrch[01]), similarly.
 # This ordering is assumed to be monotonic DECREASING:
@@ -435,15 +439,17 @@ sub blsrchx (&$;$$) { _blsrch(1, \&_pOK_0, _parse(LTR, @_)); }
 #
 # The x (brsrchx) variant works in exactly the same
 # way as 0 (brsrch0), except it returns on any zero.
-# Same caveats apply (look above for `_blsrch'...)
-sub _brsrch
+# Same caveats apply (look above for `_bltsrch'...)
+sub _brtsrch
 {
-	my ($any, $ok, $ord, $map, $hi, $lo) = @_;
+	my ($any, $ok, $ord, $ref, $map, $hi, $lo) = @_;
 	my ($cmp, $res, $elp, $img, $mid);  $mid = $lo;
+
 SRCH:	while ($lo < $hi) {
 		# Pick ceil( (L+H)/2 )
 		$mid = _rmean($lo, $hi);
-		$img = $map ? $map->($mid) : \$mid;
+		$img = ($ref eq 'ARRAY' ? \$map->[$mid] :
+			$ref eq 'CODE' ? $map->($mid) : \$mid);
 		foreach ($$img) {
 			if ($ok->($res = $ord->($mid))) {
 				$cmp = $res;
@@ -458,9 +464,9 @@ SRCH:	while ($lo < $hi) {
 	wantarray ? ($mid, $cmp, $elp, $hi, $lo) : $mid;
 }
 
-sub brsrch0 (&$;$$) { _brsrch(0, \&_pOK_0, _parse(RTL, @_)); }
-sub brsrch1 (&$;$$) { _brsrch(0, \&_pOK_1, _parse(RTL, @_)); }
-sub brsrchx (&$;$$) { _brsrch(1, \&_pOK_0, _parse(RTL, @_)); }
+sub brsrch0 (&$;$$) { _brtsrch(0, \&_pOK_0, _parse(RTL, @_)); }
+sub brsrch1 (&$;$$) { _brtsrch(0, \&_pOK_1, _parse(RTL, @_)); }
+sub brsrchx (&$;$$) { _brtsrch(1, \&_pOK_0, _parse(RTL, @_)); }
 
 # b?srch2 is a shorthand that returns b?srch0 and b?srch1.
 # Effectively, this gives you a half-open interval for all
@@ -500,11 +506,11 @@ sub brsrchx (&$;$$) { _brsrch(1, \&_pOK_0, _parse(RTL, @_)); }
 #   equal range would actually fall fully inside our bounds.)
 sub _blsrch2
 {
-	my ($ord, $map) = @_;
-	my ($mid, $res, undef, $lo, $hi) = _blsrch(1, \&_pOK_0, @_);
+	my ($ord, $ref, $map) = @_;
+	my ($mid, $res, undef, $lo, $hi) = _bltsrch(1, \&_pOK_0, @_);
 	if (defined $res && $res == 0) {
-		$lo = _blsrch(0, \&_pOK_0, $ord, $map, $lo,     $mid);
-		$hi = _blsrch(0, \&_pOK_1, $ord, $map, $mid + 1, $hi);
+		$lo = _bltsrch(0, \&_pOK_0, $ord, $ref, $map, $lo,     $mid);
+		$hi = _bltsrch(0, \&_pOK_1, $ord, $ref, $map, $mid + 1, $hi);
 	}
 	wantarray ? ($lo, $hi) : ($hi - $lo);
 }
@@ -516,11 +522,11 @@ sub _blsrch2
 # has the lower bound and [$mid, $hi] has the upper bound.
 sub _brsrch2
 {
-	my ($ord, $map) = @_;
-	my ($mid, $res, undef, $hi, $lo) = _brsrch(1, \&_pOK_0, @_);
+	my ($ord, $ref, $map) = @_;
+	my ($mid, $res, undef, $hi, $lo) = _brtsrch(1, \&_pOK_0, @_);
 	if (defined $res && $res == 0) {
-		$hi = _brsrch(0, \&_pOK_0, $ord, $map, $hi,     $mid);
-		$lo = _brsrch(0, \&_pOK_1, $ord, $map, $mid - 1, $lo);
+		$hi = _brtsrch(0, \&_pOK_0, $ord, $ref, $map, $hi,     $mid);
+		$lo = _brtsrch(0, \&_pOK_1, $ord, $ref, $map, $mid - 1, $lo);
 	}
 	wantarray ? ($hi, $lo) : ($hi - $lo);
 }
