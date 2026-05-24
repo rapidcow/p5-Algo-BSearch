@@ -8,7 +8,7 @@
 #
 package Sort::Search;
 
-our $VERSION = '0.00_42';
+our $VERSION = '0.00_43';
 $VERSION = eval $VERSION;
 
 use 5.006;
@@ -31,13 +31,18 @@ BEGIN {
 use constant LTR => 1;  # left-to-right
 use constant RTL => 0;  # right-to-left
 
+use constant MF_NONE => 0;  # index form
+use constant MF_ARRAY => 1; # ARRAY form
+use constant MF_CODE => 2;  # CODE form
+
 # Parse input arguments.
 #    $ori:  search orientation (1 for left/LTR, 0 for right/RTL)
 #    @args: arguments from caller
 # Return:
-#    ($fun, '', undef, $beg, $end)     for index form;
+#    ($fun, MF_NONE, undef, $beg, $end)   for index form;
 # and
-#    ($fun, $ref, $map,  $beg, $end)   for ARRAY/CODE form
+#    ($fun, MF_ARRAY, $map,  $beg, $end)  for ARRAY form,
+#    ($fun, MF_CODE, $map,  $beg, $end)   for CODE form
 # where $fun is a predicate or an ordering, and
 # $map returns a ref to the image at the index.
 # Croak on parse failure.
@@ -77,7 +82,7 @@ EOM
 			my $arg = shift @args;
 			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
-		($fun, '', undef, $beg, $end);
+		($fun, MF_NONE, undef, $beg, $end);
 	}
 	# If $arg is a normal ARRAY ref or a blessed
 	# ARRAY ref, map its index to its elements.
@@ -104,7 +109,7 @@ EOM
 			defined $lo or $lo = -1;
 			($beg, $end) = ($hi, $lo);
 		}
-		($fun, 'ARRAY', $arg, $beg, $end);
+		($fun, MF_ARRAY, $arg, $beg, $end);
 	}
 	elsif (UNIVERSAL::isa($arg, 'CODE')) {
 		if (@args < 1) {
@@ -127,7 +132,7 @@ EOM
 			my $arg = shift @args;
 			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
-		($fun, 'CODE', $arg, $beg, $end);
+		($fun, MF_CODE, $arg, $beg, $end);
 	}
 	else {
 		# Same way as how we handle the CODE form above,
@@ -147,7 +152,7 @@ EOM
 			# $hi = $arg, $lo inferred
 			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
 		}
-		($fun, '', undef, $beg, $end);
+		($fun, MF_NONE, undef, $beg, $end);
 	}
 }
 
@@ -239,8 +244,8 @@ SRCH:	while ($lo < $hi) {
 		# Prefer floor of (L+H)/2, so that $mid < $hi,
 		# and so either branch is guaranteed to converge.
 		$mid = _lmean($lo, $hi);
-		$img = ($ref eq 'ARRAY' ? \$map->[$mid] :
-			$ref eq 'CODE' ? $map->($mid) : \$mid);
+		$img = ($ref == MF_ARRAY ? \$map->[$mid] :
+			$ref == MF_CODE ? $map->($mid) : \$mid);
 		foreach ($$img) {
 			if ($res = $ok->($mid)) {
 				# This is a successful match, so the
@@ -313,8 +318,8 @@ SRCH:	while ($lo < $hi) {
 		# Prefer ceiling of (L+H)/2, so that $lo > $mid,
 		# and so either branch is guaranteed to converge.
 		$mid = _rmean($lo, $hi);
-		$img = ($ref eq 'ARRAY' ? \$map->[$mid] :
-			$ref eq 'CODE' ? $map->($mid) : \$mid);
+		$img = ($ref == MF_ARRAY ? \$map->[$mid] :
+			$ref == MF_CODE ? $map->($mid) : \$mid);
 		foreach ($$img) {
 			if ($res = $ok->($mid)) {
 				$cmp = $res;
@@ -385,8 +390,8 @@ sub _bltsrch
 SRCH:	while ($lo < $hi) {
 		# Pick floor( (L+H)/2 )
 		$mid = _lmean($lo, $hi);
-		$img = ($ref eq 'ARRAY' ? \$map->[$mid] :
-			$ref eq 'CODE' ? $map->($mid) : \$mid);
+		$img = ($ref == MF_ARRAY ? \$map->[$mid] :
+			$ref == MF_CODE ? $map->($mid) : \$mid);
 		foreach ($$img) {
 			if ($ok->($res = $ord->($mid))) {
 				# Be careful not to clobber $hi yet,
@@ -448,8 +453,8 @@ sub _brtsrch
 SRCH:	while ($lo < $hi) {
 		# Pick ceil( (L+H)/2 )
 		$mid = _rmean($lo, $hi);
-		$img = ($ref eq 'ARRAY' ? \$map->[$mid] :
-			$ref eq 'CODE' ? $map->($mid) : \$mid);
+		$img = ($ref == MF_ARRAY ? \$map->[$mid] :
+			$ref == MF_CODE ? $map->($mid) : \$mid);
 		foreach ($$img) {
 			if ($ok->($res = $ord->($mid))) {
 				$cmp = $res;

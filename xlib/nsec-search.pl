@@ -93,8 +93,8 @@ sub _bsrchpx
 		# over one other to become successor and predecessor
 		$nxt = $elp;
 		unless ($hi < $min) {
-			$prv = ($ref eq 'ARRAY' ? \$map->[$hi] :
-				$ref eq 'CODE' ? $map->($hi) : \$hi);
+			$prv = ($ref == MF_ARRAY ? \$map->[$hi] :
+				$ref == MF_CODE ? $map->($hi) : \$hi);
 		}
 	}
 	($hi, defined $prv ? $$prv : undef,
