@@ -28,7 +28,10 @@ sub rmean { scalar bixectr { 1 } $_[1], $_[0] }
 sub lmean_ok {
 	local $Test::Builder::Level = $Test::Builder::Level + 1;
 	my $mesg = sprintf "lmean(%s, %s) = %s", map {
-		ref ? "$_" : sprintf '%s%#x', (
+		# Explicitly pass $_ here, as it may be
+		# mistaken for ref ?PATTERN? (deprecated
+		# in v5.14 and only removed in v5.22)
+		ref($_) ? "$_" : sprintf '%s%#x', (
 			$_ < 0 ? ('-', -$_) : ('+', +$_)
 		)
 	} @_;
@@ -61,7 +64,7 @@ lmean_ok +( uvmax-3, uvmax ) => ( uvmax - 2 );
 sub rmean_ok {
 	local $Test::Builder::Level = $Test::Builder::Level + 1;
 	my $mesg = sprintf "rmean(%s, %s) = %s", map {
-		ref ? "$_" : sprintf '%s%#x', (
+		ref($_) ? "$_" : sprintf '%s%#x', (
 			$_ < 0 ? ('-', -$_) : ('+', +$_)
 		)
 	} @_;
