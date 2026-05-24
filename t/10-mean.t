@@ -94,48 +94,52 @@ rmean_ok +( uvmax-1, uvmax ) => ( uvmax );
 rmean_ok +( uvmax-2, uvmax ) => ( uvmax - 1 );
 rmean_ok +( uvmax-3, uvmax ) => ( uvmax - 1 );
 
-# Math::BigInt should be core...
-use Math::BigInt;
-use constant ZERO => Math::BigInt->new("0");
-use constant ONE  => Math::BigInt->new("1");
+# Math::BigInt should be in core, but technically
+# we never required it ourselves in TEST_REQUIRES...
+SKIP: {
+	skip "No Math::BigInt", 30 unless eval { require Math::BigInt; 1 };
+
+	my $ZERO = Math::BigInt->new("0");
+	my $ONE = Math::BigInt->new("1");
 
 # Let's use an absurdly big number no system is known
 # to use to ensure that native integer math isn't used.
-use constant U256_min => ZERO();
-use constant U256_max => (ONE() << 256) - ONE();
-use constant I256_min => - (ONE() << 255);
-use constant I256_max => (ONE() << 255) - ONE();
+	my $U256_min = $ZERO;
+	my $U256_max = ($ONE << 256) - $ONE;
+	my $I256_min = - ($ONE << 255);
+	my $I256_max = ($ONE << 255) - $ONE;
 
-lmean_ok +( U256_min, I256_max ) => ( I256_max >> 1 );
-lmean_ok +( U256_min, U256_max-2 ) => ( I256_max ) - 1;
-lmean_ok +( U256_min, U256_max-1 ) => ( I256_max );
-lmean_ok +( U256_min, U256_max ) => ( I256_max );
-lmean_ok +( I256_min, I256_max ) => ( -1 );
-lmean_ok +( I256_min, U256_max ) => ( I256_max >> 1 );
+	lmean_ok +( $U256_min, $I256_max ) => ( $I256_max >> 1 );
+	lmean_ok +( $U256_min, $U256_max-2 ) => ( $I256_max ) - 1;
+	lmean_ok +( $U256_min, $U256_max-1 ) => ( $I256_max );
+	lmean_ok +( $U256_min, $U256_max ) => ( $I256_max );
+	lmean_ok +( $I256_min, $I256_max ) => ( -1 );
+	lmean_ok +( $I256_min, $U256_max ) => ( $I256_max >> 1 );
 
-lmean_ok +( I256_min, I256_min+1 ) => ( I256_min );
-lmean_ok +( I256_min, I256_min+2 ) => ( I256_min + 1 );
-lmean_ok +( I256_min, I256_min+3 ) => ( I256_min + 1 );
-lmean_ok +( I256_max-1, I256_max ) => ( I256_max - 1 );
-lmean_ok +( I256_max-2, I256_max ) => ( I256_max - 1 );
-lmean_ok +( I256_max-3, I256_max ) => ( I256_max - 2 );
-lmean_ok +( U256_max-1, U256_max ) => ( U256_max - 1 );
-lmean_ok +( U256_max-2, U256_max ) => ( U256_max - 1 );
-lmean_ok +( U256_max-3, U256_max ) => ( U256_max - 2 );
+	lmean_ok +( $I256_min, $I256_min+1 ) => ( $I256_min );
+	lmean_ok +( $I256_min, $I256_min+2 ) => ( $I256_min + 1 );
+	lmean_ok +( $I256_min, $I256_min+3 ) => ( $I256_min + 1 );
+	lmean_ok +( $I256_max-1, $I256_max ) => ( $I256_max - 1 );
+	lmean_ok +( $I256_max-2, $I256_max ) => ( $I256_max - 1 );
+	lmean_ok +( $I256_max-3, $I256_max ) => ( $I256_max - 2 );
+	lmean_ok +( $U256_max-1, $U256_max ) => ( $U256_max - 1 );
+	lmean_ok +( $U256_max-2, $U256_max ) => ( $U256_max - 1 );
+	lmean_ok +( $U256_max-3, $U256_max ) => ( $U256_max - 2 );
 
-rmean_ok +( U256_min, I256_max ) => ( I256_max >> 1 ) + 1;
-rmean_ok +( U256_min, U256_max-2 ) => ( I256_max );
-rmean_ok +( U256_min, U256_max-1 ) => ( I256_max );
-rmean_ok +( U256_min, U256_max ) => ( I256_max ) + 1;
-rmean_ok +( I256_min, I256_max ) => ( 0 );
-rmean_ok +( I256_min, U256_max ) => ( I256_max >> 1 ) + 1;
+	rmean_ok +( $U256_min, $I256_max ) => ( $I256_max >> 1 ) + 1;
+	rmean_ok +( $U256_min, $U256_max-2 ) => ( $I256_max );
+	rmean_ok +( $U256_min, $U256_max-1 ) => ( $I256_max );
+	rmean_ok +( $U256_min, $U256_max ) => ( $I256_max ) + 1;
+	rmean_ok +( $I256_min, $I256_max ) => ( 0 );
+	rmean_ok +( $I256_min, $U256_max ) => ( $I256_max >> 1 ) + 1;
 
-rmean_ok +( I256_min, I256_min+1 ) => ( I256_min + 1 );
-rmean_ok +( I256_min, I256_min+2 ) => ( I256_min + 1 );
-rmean_ok +( I256_min, I256_min+3 ) => ( I256_min + 2 );
-rmean_ok +( I256_max-1, I256_max ) => ( I256_max );
-rmean_ok +( I256_max-2, I256_max ) => ( I256_max - 1 );
-rmean_ok +( I256_max-3, I256_max ) => ( I256_max - 1 );
-rmean_ok +( U256_max-1, U256_max ) => ( U256_max );
-rmean_ok +( U256_max-2, U256_max ) => ( U256_max - 1 );
-rmean_ok +( U256_max-3, U256_max ) => ( U256_max - 1 );
+	rmean_ok +( $I256_min, $I256_min+1 ) => ( $I256_min + 1 );
+	rmean_ok +( $I256_min, $I256_min+2 ) => ( $I256_min + 1 );
+	rmean_ok +( $I256_min, $I256_min+3 ) => ( $I256_min + 2 );
+	rmean_ok +( $I256_max-1, $I256_max ) => ( $I256_max );
+	rmean_ok +( $I256_max-2, $I256_max ) => ( $I256_max - 1 );
+	rmean_ok +( $I256_max-3, $I256_max ) => ( $I256_max - 1 );
+	rmean_ok +( $U256_max-1, $U256_max ) => ( $U256_max );
+	rmean_ok +( $U256_max-2, $U256_max ) => ( $U256_max - 1 );
+	rmean_ok +( $U256_max-3, $U256_max ) => ( $U256_max - 1 );
+}
