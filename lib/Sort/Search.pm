@@ -8,7 +8,7 @@
 #
 package Sort::Search;
 
-our $VERSION = '0.00_43';
+our $VERSION = '0.00_44';
 $VERSION = eval $VERSION;
 
 use 5.006;
@@ -194,7 +194,10 @@ sub _rmean
 			($sum + 1) >> 1;
 		}
 	} else {
-		$lo + (($hi - $lo + 1) >> 1);
+		# We can still overflow if $hi is big,
+		# but since $lo < $hi, subtracting 1
+		# should be fine.
+		$lo + 1 + (($hi - $lo - 1) >> 1);
 	}
 }
 
