@@ -66,7 +66,7 @@ L::S{}     136135/s     4123%     3059%   558%    152%    134%    117%    102%  
 L::BS::XS 1130384/s    34967%    26131%  5365%   1990%   1843%   1699%   1575%     1474%    782% 737%   730%        --
 
 $: Left-end only search is just not faster.
-$: (Even after I cheated by using 'x"... :c)
+$: (Even after I cheated by using "x"... :c)
 
 > w
  04:37:31 up 6 days,  2:13,  2 users,  load average: 0.00, 0.05, 0.09
@@ -109,6 +109,48 @@ L::S{}     136143/s     4032%     3230%   539%    137%    133%    118%    113%  
 L::BS::XS 1065874/s    32249%    25969%  4903%   1753%   1721%   1606%   1569%     1452%    805% 708%   683%        --
 149.53user 0.05system 2:29.63elapsed 99%CPU (0avgtext+0avgdata 14208maxresident)k
 0inputs+0outputs (0major+2410minor)pagefaults 0swaps
+
+> w
+ 07:00:58 up 6 days,  4:36,  2 users,  load average: 0.00, 0.04, 0.06
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU  WHAT
+emeng             52.119.103.130   Sat09    4:11m  0.00s  0.08s sshd: emeng [priv]
+gdm      tty1     -                18May26  6days 21:36   0.10s /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Scre
+
+> uname -a
+Linux vm-instunix-06.cs.wisc.edu 6.8.0-117-generic #117-Ubuntu SMP PREEMPT_DYNAMIC Tue May  5 19:26:24 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+> perl -le 'print "Perl $] $^X"'
+Perl 5.042000 /home/emeng/opt/x86_64/brew/Cellar/perl/5.42.0/bin/perl
+
+> /usr/bin/time ./lzero.pl
+Sort::Search 0.0043 found.
+List::MoreUtils::PP 0.430 found.
+List::MoreUtils::XS 0.430 found.
+List::Search 0.31 found.
+List::BinarySearch::PP 0.25 found.
+List::BinarySearch::XS 0.09 found.
+Benchmark count: -10
+Registering Sort::Search (S::S) tests...
+Registering List::MoreUtils::PP (L::MU::PP) test...
+Registering List::MoreUtils::XS (L::MU::XS) test...
+Registering List::Search (L::S) test...
+Registering List::BinarySearch::PP (L::BS::PP) test...
+Registering List::BinarySearch::XS (L::BS::XS) test...
+               Rate L::MU::PP L::MU::XS LINEAR S::S(0) S::S[0] S::S(L) L::BS::PP S::S[L] L::S S::S(x) L::S{} L::BS::XS
+L::MU::PP    3101/s        --      -25%   -82%    -94%    -95%    -95%      -95%    -95% -97%    -97%   -97%     -100%
+L::MU::XS    4120/s       33%        --   -76%    -92%    -93%    -93%      -93%    -93% -96%    -96%   -97%     -100%
+LINEAR      17512/s      465%      325%     --    -67%    -70%    -71%      -72%    -72% -83%    -84%   -85%      -98%
+S::S(0)     53696/s     1632%     1203%   207%      --     -7%    -12%      -14%    -15% -48%    -52%   -55%      -95%
+S::S[0]     57524/s     1755%     1296%   228%      7%      --     -5%       -8%     -9% -45%    -49%   -52%      -95%
+S::S(L)     60811/s     1861%     1376%   247%     13%      6%      --       -2%     -4% -42%    -46%   -49%      -94%
+L::BS::PP   62221/s     1906%     1410%   255%     16%      8%      2%        --     -2% -40%    -45%   -48%      -94%
+S::S[L]     63219/s     1939%     1435%   261%     18%     10%      4%        2%      -- -39%    -44%   -47%      -94%
+L::S       103982/s     3253%     2424%   494%     94%     81%     71%       67%     64%   --     -8%   -13%      -90%
+S::S(x)    112553/s     3529%     2632%   543%    110%     96%     85%       81%     78%   8%      --    -6%      -89%
+L::S{}     119810/s     3763%     2808%   584%    123%    108%     97%       93%     90%  15%      6%     --      -89%
+L::BS::XS 1047291/s    33672%    25322%  5881%   1850%   1721%   1622%     1583%   1557% 907%    830%   774%        --
+155.94user 0.06system 2:36.05elapsed 99%CPU (0avgtext+0avgdata 14208maxresident)k
+0inputs+0outputs (0major+2411minor)pagefaults 0swaps
 
 *** zeros.pl
 
@@ -306,3 +348,43 @@ L::BS::PP         33785/s  13996%         2943%            1937%            1467
 S::S[2]           38145/s  15815%         3336%            2199%            1669%          814%       26%       13%      --  -38%      -89%
 L::S              61139/s  25409%         5407%            3586%            2735%         1365%      101%       81%     60%    --      -82%
 L::BS::XS        339255/s 141446%        30458%           20351%           15633%         8028%     1017%      904%    789%  455%        --
+
+> w
+ 07:00:58 up 6 days,  4:36,  2 users,  load average: 0.00, 0.04, 0.06
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU  WHAT
+emeng             52.119.103.130   Sat09    4:11m  0.00s  0.08s sshd: emeng [priv]
+gdm      tty1     -                18May26  6days 21:36   0.10s /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Scre
+
+> uname -a
+Linux vm-instunix-06.cs.wisc.edu 6.8.0-117-generic #117-Ubuntu SMP PREEMPT_DYNAMIC Tue May  5 19:26:24 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+> perl -le 'print "Perl $] $^X"'
+Perl 5.042000 /home/emeng/opt/x86_64/brew/Cellar/perl/5.42.0/bin/perl
+
+> /usr/bin/time ./zeros.pl
+Sort::Search 0.0043 found.
+List::MoreUtils::PP 0.430 found.
+List::MoreUtils::XS 0.430 found.
+List::Search 0.31 found.
+List::BinarySearch::PP 0.25 found.
+List::BinarySearch::XS 0.09 found.
+Benchmark count: -10
+Registering Sort::Search (S::S) tests...
+Registering List::MoreUtils::PP (L::MU::PP) test...
+Registering List::MoreUtils::XS (L::MU::XS) test...
+Registering List::Search (L::S) test...
+Registering List::BinarySearch::PP (L::BS::PP) test...
+Registering List::BinarySearch::XS (L::BS::XS) test...
+                     Rate  LINEAR L::MU::PP(eq) L::MU::PP(lb+ub) L::MU::XS(lb+ub) L::MU::XS(eq) S::S[0+1] L::BS::PP S::S[2]  L::S L::BS::XS
+LINEAR              226/s      --          -78%             -86%             -89%          -95%      -99%      -99%    -99% -100%     -100%
+L::MU::PP(eq)      1032/s    356%            --             -34%             -50%          -76%      -96%      -97%    -97%  -98%     -100%
+L::MU::PP(lb+ub)   1570/s    594%           52%               --             -24%          -63%      -94%      -95%    -95%  -97%     -100%
+L::MU::XS(lb+ub)   2057/s    809%           99%              31%               --          -51%      -93%      -94%    -94%  -96%      -99%
+L::MU::XS(eq)      4223/s   1766%          309%             169%             105%            --      -85%      -87%    -88%  -93%      -99%
+S::S[0+1]         28151/s  12339%         2627%            1693%            1269%          567%        --      -13%    -17%  -52%      -91%
+L::BS::PP         32401/s  14216%         3039%            1964%            1475%          667%       15%        --     -4%  -44%      -90%
+S::S[2]           33910/s  14883%         3185%            2060%            1549%          703%       20%        5%      --  -42%      -90%
+L::S              58355/s  25684%         5554%            3618%            2737%         1282%      107%       80%     72%    --      -82%
+L::BS::XS        329780/s 145614%        31850%           20910%           15933%         7710%     1071%      918%    873%  465%        --
+124.02user 0.05system 2:04.11elapsed 99%CPU (0avgtext+0avgdata 15232maxresident)k
+0inputs+0outputs (0major+2671minor)pagefaults 0swaps
