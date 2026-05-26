@@ -115,7 +115,7 @@ sub TIEARRAY {
 	bless \$_[1], $_[0];
 }
 sub FETCH {
-	0 <= $_[1] < length( ${$_[0]} ) ?
+	0 <= $_[1] && $_[1] < length( ${$_[0]} ) ?
 	substr( ${$_[0]}, $_[1], 1 ) : undef;
 }
 sub STORE {
