@@ -15,6 +15,30 @@ our @EXPORT = qw(
 );
 our @ISA = qw(Exporter);
 
+sub BST_leap {
+	my ($acomp, $list, $node) = @_;
+	# Step 1: bound the whole subtree
+	my ($lo, $hi) = blsrch2 { $acomp->($_, $node) - 1 } $list;
+
+	# Step 2: iterate direct children, skipping subtrees
+	my @children;
+	while ($lo < $hi) {
+		my $child = $list->[$lo];
+		push @children, $child;
+		# blsrch1 finds first element where acomp > 0 relative to $child,
+		# i.e. first successor — skips $child's entire subtree
+		$lo = blsrch1 { $acomp->($_, $child) - 1 } $list, $lo + 1, $hi;
+	}
+	@children;
+}
+
+sub BST_delv {
+	my ($acomp, $list, $node) = @_;
+	# Just bound the whole subtree
+	my ($lo, $hi) = blsrch2 { $acomp->($_, $node) - 1 } $list;
+	@{$list}[$lo .. $hi-1];
+}
+
 sub uri_strtok {
 	my ($path) = @_;
 	$path =~ s{^/}{};
