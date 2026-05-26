@@ -22,8 +22,8 @@ BEGIN {
 	}
 }
 
-sub lmean { scalar bixectl { 1 } $_[0], $_[1] }
-sub rmean { scalar bixectr { 1 } $_[1], $_[0] }
+sub lmean { scalar bixectl { 1 } $_[0], $_[1]; }
+sub rmean { scalar bixectr { 1 } $_[1], $_[0]; }
 
 sub lmean_ok {
 	local $Test::Builder::Level = $Test::Builder::Level + 1;
