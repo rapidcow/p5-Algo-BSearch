@@ -72,7 +72,9 @@ sub acomp {
 		$res = ($_ < @$atok) - ($_ < @$btok);
 		return $res if $res;
 
-		$res = $strcmp->($atok->[$_], $btok->[$_]);
+		$res = $strcmp
+			? $strcmp->($atok->[$_], $btok->[$_])
+			: $atok->[$_] cmp $btok->[$_];
 		return $res < 0 ? -2 : 2 if $res;
 	}
 	return $res;
@@ -89,24 +91,52 @@ use File::Find;
 use File::Spec;
 no locale;
 
-my @excl;
-GetOptions('x=s@' => \@excl) or die "usage: $0 [-x EXCL]* [ROOT]";
+use constant BST_PKG => 'Sort::Search::Tree';
 
-my $root = shift;
-$root ||= ".";
+sub usage {
+<<USE;
+usage: $0 find [-x EXCL]* [ROOT] > TREE
+       $0 leap [-K KIND] NODE < TREE
+       $0 delv [-K KIND] NODE < TREE
+USE
+}
 
-find({
-	preprocess => sub { sort @_ },
-	wanted => sub {
-		my $filename = File::Spec->abs2rel($File::Find::name, $root);
+my $cmd = $ARGV[0];
 
-		for my $excl (@excl) {
-			if ($filename eq $excl) {
-				$File::Find::prune = 1;
-				return;
+if (!defined $cmd) {
+	$cmd = 'find';
+} else {
+	shift;
+}
+
+if ($cmd eq 'find') {
+	my @excl;
+	GetOptions('x=s@' => \@excl) or die usage();
+
+	my $root = shift;
+	$root ||= ".";
+
+	find({
+		preprocess => sub { sort @_ },
+		wanted => sub {
+			my $filename = File::Spec->abs2rel($File::Find::name, $root);
+
+			for my $excl (@excl) {
+				if ($filename eq $excl) {
+					$File::Find::prune = 1;
+					return;
+				}
 			}
-		}
 
-		print "$filename$/";
-	}
-}, $root);
+			print "$filename$/";
+		}
+	}, $root);
+} else {
+	my $kind = 'uri';
+	GetOptions('K=s' => \$kind) and my $node = shift or die usage();
+
+	chomp (my @list = <STDIN>);
+	my $acomp = do { no strict 'refs'; &{BST_PKG . "::make_acomp"}(\&{BST_PKG . "::${kind}_strtok"})};
+	my @children = do { no strict 'refs'; \&{BST_PKG . "::BST_${cmd}"} }->($acomp, \@list, $node);
+	print "$_$/" foreach @children;
+}
