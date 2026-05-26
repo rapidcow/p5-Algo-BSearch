@@ -28,8 +28,8 @@ sub BST_leap {
 	while ($lo < $hi) {
 		my $child = $list->[$lo];
 		push @children, $child;
-		# blsrch1 finds first element where acomp > 0 relative to $child,
-		# i.e. first successor — skips $child's entire subtree
+		# blsrch1 finds first element where acomp > 1 relative to $child,
+		# i.e. first successor -- skips $child's entire subtree
 		$lo = blsrch1 { $acomp->($_, $child) - 1 } $list, $lo + 1, $hi;
 	}
 	@children;
@@ -106,10 +106,10 @@ USE
 
 my $cmd = $ARGV[0];
 
-if (!defined $cmd) {
-	$cmd = 'find';
-} else {
+if (defined $cmd && grep { $cmd eq $_ } qw(find leap delv)) {
 	shift;
+} else {
+	$cmd = 'find';
 }
 
 if ($cmd eq 'find') {
