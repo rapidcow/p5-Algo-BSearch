@@ -21,24 +21,27 @@ BEGIN {
 subtest "uri_strtok" => sub {
 	is_deeply [uri_strtok("a/b/c")],  [qw(a b c)], "relative path";
 	is_deeply [uri_strtok("/a/b/c")], [qw(a b c)], "absolute path (leading slash stripped)";
-	is_deeply [uri_strtok("a")],      [qw(a)],      "single component";
+	is_deeply [uri_strtok("a")],      [qw(a)],     "single component";
+	is_deeply [uri_strtok("/")],      [],          "root directory";
+	is_deeply [uri_strtok(".")],      [],          "current directory";
 };
 
 subtest "dns_strtok" => sub {
 	is_deeply [dns_strtok("www.example.com")],  [qw(com example www)], "labels reversed";
 	is_deeply [dns_strtok("www.example.com.")], [qw(com example www)], "trailing dot stripped";
 	is_deeply [dns_strtok("example.com")],      [qw(com example)],     "parent zone";
+	is_deeply [dns_strtok(".")],                [],                    "root zone";
 };
 
 # ------------------------------------------------------------------ acomp
 
-subtest "acomp — all five relationships" => sub {
+subtest "acomp 5 states" => sub {
 	my $cmp = sub { $_[0] cmp $_[1] };
-	is Sort::Search::Tree::acomp([qw(a b)],   [qw(a b)],   $cmp),  0, "equal      →  0";
-	is Sort::Search::Tree::acomp([qw(a b c)], [qw(a b)],   $cmp),  1, "suffix     → +1";
-	is Sort::Search::Tree::acomp([qw(a b)],   [qw(a b c)], $cmp), -1, "prefix     → -1";
-	is Sort::Search::Tree::acomp([qw(a c)],   [qw(a b)],   $cmp),  2, "successor  → +2";
-	is Sort::Search::Tree::acomp([qw(a a)],   [qw(a b)],   $cmp), -2, "predecessor → -2";
+	is Sort::Search::Tree::acomp([qw(a b)],   [qw(a b)],   $cmp),  0, "   equal    =>  0";
+	is Sort::Search::Tree::acomp([qw(a b c)], [qw(a b)],   $cmp),  1, "   suffix   => +1";
+	is Sort::Search::Tree::acomp([qw(a b)],   [qw(a b c)], $cmp), -1, "   prefix   => -1";
+	is Sort::Search::Tree::acomp([qw(a c)],   [qw(a b)],   $cmp),  2, " successor  => +2";
+	is Sort::Search::Tree::acomp([qw(a a)],   [qw(a b)],   $cmp), -2, "predecessor => -2";
 };
 
 # ------------------------------------------------------------------ path tree
@@ -56,7 +59,7 @@ my @PATHS = qw(
 
 my $path_cmp = make_acomp(\&uri_strtok, sub { $_[0] cmp $_[1] });
 
-subtest "BST_delv — all descendants (path)" => sub {
+subtest "BST_delv -- all descendants (path)" => sub {
 	is_deeply [BST_delv($path_cmp, \@PATHS, "a")],
 		[qw(a/b a/b/c a/b/d a/e)], "all under a/";
 
@@ -70,7 +73,7 @@ subtest "BST_delv — all descendants (path)" => sub {
 		[], "no match";
 };
 
-subtest "BST_leap — direct children only (path)" => sub {
+subtest "BST_leap -- direct children only (path)" => sub {
 	is_deeply [BST_leap($path_cmp, \@PATHS, "a")],
 		[qw(a/b a/e)], "direct children of a/";
 
@@ -87,11 +90,11 @@ subtest "BST_leap — direct children only (path)" => sub {
 # ------------------------------------------------------------------ DNS tree
 #
 # Listing must be sorted by reversed-label order (as dns_strtok produces):
-#   dns_strtok("example.com")          → (com, example)
-#   dns_strtok("api.example.com")      → (com, example, api)
-#   dns_strtok("staging.api.example.com") → (com, example, api, staging)
-#   dns_strtok("mail.example.com")     → (com, example, mail)
-#   dns_strtok("www.example.com")      → (com, example, www)
+#   dns_strtok("example.com")          => (com, example)
+#   dns_strtok("api.example.com")      => (com, example, api)
+#   dns_strtok("staging.api.example.com") => (com, example, api, staging)
+#   dns_strtok("mail.example.com")     => (com, example, mail)
+#   dns_strtok("www.example.com")      => (com, example, www)
 
 my @DNS = qw(
 	example.com
@@ -103,7 +106,7 @@ my @DNS = qw(
 
 my $dns_cmp = make_acomp(\&dns_strtok, sub { $_[0] cmp $_[1] });
 
-subtest "BST_delv — all descendants (DNS)" => sub {
+subtest "BST_delv -- all descendants (DNS)" => sub {
 	is_deeply [BST_delv($dns_cmp, \@DNS, "example.com")],
 		[qw(api.example.com staging.api.example.com mail.example.com www.example.com)],
 		"all subdomains of example.com";
@@ -113,7 +116,7 @@ subtest "BST_delv — all descendants (DNS)" => sub {
 		"all subdomains of api.example.com";
 };
 
-subtest "BST_leap — direct children only (DNS)" => sub {
+subtest "BST_leap -- direct children only (DNS)" => sub {
 	is_deeply [BST_leap($dns_cmp, \@DNS, "example.com")],
 		[qw(api.example.com mail.example.com www.example.com)],
 		"direct subdomains of example.com (staging skipped)";

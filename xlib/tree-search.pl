@@ -42,7 +42,7 @@ sub BST_delv {
 sub uri_strtok {
 	my ($path) = @_;
 	$path =~ s{^/}{};
-	split m{/}, $path, -1;
+	grep { $_ ne '.' } split m{/}, $path, -1;
 }
 
 sub dns_strtok {
