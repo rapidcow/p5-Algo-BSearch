@@ -177,7 +177,7 @@ wouldn't be able to tell unless you call in list context.))
                                                    ^^^
                               [Notice the lack of explicit bounds
                                taken to mean "I don't care how you
-                               do it, just search whole array"]
+                               do it; just search whole array"]
 
     $ux = bisectl {  ( ($_ <=> 5) ) >  0  } \@array;
                         ^^
