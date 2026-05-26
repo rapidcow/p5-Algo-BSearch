@@ -107,7 +107,7 @@ SKIP: {
 # Math::BigInt should be in core, but technically
 # we never required it ourselves in TEST_REQUIRES...
 SKIP: {
-	skip "No Math::BigInt", 30 unless eval { require Math::BigInt; 1 };
+	eval { require Math::BigInt; 1 } or skip ("No Math::BigInt", 30);
 
 	my $ZERO = Math::BigInt->new("0");
 	my $ONE = Math::BigInt->new("1");
