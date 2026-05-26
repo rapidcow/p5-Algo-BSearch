@@ -112,11 +112,11 @@ subtest "bisectr on tied ARRAY" => sub {
 package Tie::StrArray;
 
 sub TIEARRAY {
-	bless \$_[1], $_[0];
+	return bless \$_[1], $_[0];
 }
 sub FETCH {
-	0 <= $_[1] && $_[1] < length( ${$_[0]} ) ?
-	substr( ${$_[0]}, $_[1], 1 ) : undef;
+	return 0 <= $_[1] && $_[1] < length( ${$_[0]} ) ?
+		substr( ${$_[0]}, $_[1], 1 ) : undef;
 }
 sub STORE {
 	${$_[0]} .= "\0" x ($_[1] - length( ${$_[0]} ) + 1)
@@ -124,7 +124,7 @@ sub STORE {
 	substr( ${$_[0]}, $_[1], 1, $_[2] );
 }
 sub FETCHSIZE {
-	length( ${$_[0]} );
+	return length( ${$_[0]} );
 }
 sub STORESIZE {
 	if ($_[1] < length( ${$_[0]} )) {
