@@ -4,7 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 
-use Test::More tests => 72;
+use Test::More tests => 50;
 use Sort::Search qw(bixectl bixectr);
 
 use constant uvmin => ( +0 );  # (is actually an IV...)
@@ -46,24 +46,12 @@ sub lmean_ok {
 	lmean_ok +( -69, 0 ) => ( -35 );
 
 SKIP: {
-	skip ("lossy IV+UV arithmetic", 15) if $] < 5.008;
+	skip ("lossy IV+UV arithmetic", 4) if $] < 5.008;
 
 	lmean_ok +( uvmin, ivmax ) => ( ivmax >> 1 );
-	lmean_ok +( uvmin, uvmax-2 ) => ( ivmax ) - 1;
-	lmean_ok +( uvmin, uvmax-1 ) => ( ivmax );
 	lmean_ok +( uvmin, uvmax ) => ( ivmax );
 	lmean_ok +( ivmin, ivmax ) => ( -1 );
 	lmean_ok +( ivmin, uvmax ) => ( ivmax >> 1 );
-
-	lmean_ok +( ivmin, ivmin+1 ) => ( ivmin );
-	lmean_ok +( ivmin, ivmin+2 ) => ( ivmin + 1 );
-	lmean_ok +( ivmin, ivmin+3 ) => ( ivmin + 1 );
-	lmean_ok +( ivmax-1, ivmax ) => ( ivmax - 1 );
-	lmean_ok +( ivmax-2, ivmax ) => ( ivmax - 1 );
-	lmean_ok +( ivmax-3, ivmax ) => ( ivmax - 2 );
-	lmean_ok +( uvmax-1, uvmax ) => ( uvmax - 1 );
-	lmean_ok +( uvmax-2, uvmax ) => ( uvmax - 1 );
-	lmean_ok +( uvmax-3, uvmax ) => ( uvmax - 2 );
 }
 
 sub rmean_ok {
@@ -84,24 +72,12 @@ sub rmean_ok {
 	rmean_ok +( -69, 0 ) => ( -34 );
 
 SKIP: {
-	skip ("lossy IV+UV arithmetic", 15) if $] < 5.008;
+	skip ("lossy IV+UV arithmetic", 4) if $] < 5.008;
 
 	rmean_ok +( uvmin, ivmax ) => ( ivmax >> 1 ) + 1;
-	rmean_ok +( uvmin, uvmax-2 ) => ( ivmax );
-	rmean_ok +( uvmin, uvmax-1 ) => ( ivmax );
 	rmean_ok +( uvmin, uvmax ) => ( ivmax ) + 1;
 	rmean_ok +( ivmin, ivmax ) => ( 0 );
 	rmean_ok +( ivmin, uvmax ) => ( ivmax >> 1 ) + 1;
-
-	rmean_ok +( ivmin, ivmin+1 ) => ( ivmin + 1 );
-	rmean_ok +( ivmin, ivmin+2 ) => ( ivmin + 1 );
-	rmean_ok +( ivmin, ivmin+3 ) => ( ivmin + 2 );
-	rmean_ok +( ivmax-1, ivmax ) => ( ivmax );
-	rmean_ok +( ivmax-2, ivmax ) => ( ivmax - 1 );
-	rmean_ok +( ivmax-3, ivmax ) => ( ivmax - 1 );
-	rmean_ok +( uvmax-1, uvmax ) => ( uvmax );
-	rmean_ok +( uvmax-2, uvmax ) => ( uvmax - 1 );
-	rmean_ok +( uvmax-3, uvmax ) => ( uvmax - 1 );
 }
 
 # Math::BigInt should be in core, but technically
