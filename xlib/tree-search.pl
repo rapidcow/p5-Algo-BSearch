@@ -4,8 +4,8 @@ package Sort::Search::Tree;
 
 use strict;
 use warnings;
-use List::Util qw(min);
-use Sort::Search qw(blsrch2);
+use List::Util qw(max);
+use Sort::Search qw(blsrch1 blsrch2);
 use Exporter ();
 
 our @EXPORT = qw(
@@ -48,7 +48,7 @@ sub uri_strtok {
 sub dns_strtok {
 	my ($path) = @_;
 	$path =~ s{\.$}{};
-	split m{\.}, $path, -1;
+	reverse split m{\.}, $path, -1;
 }
 
 sub make_acomp {
@@ -58,7 +58,7 @@ sub make_acomp {
 		my (@atok, @btok);
 
 		@atok = $strtok->($_[0]);
-		@btok = $strtok->($_[0]);
+		@btok = $strtok->($_[1]);
 
 		acomp(\@atok, \@btok, $strcmp);
 	};
