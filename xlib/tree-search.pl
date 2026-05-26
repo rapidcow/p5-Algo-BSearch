@@ -6,14 +6,17 @@ use strict;
 use warnings;
 use List::Util qw(max);
 use Sort::Search qw(blsrch1 blsrch2);
-use Exporter ();
 
-our @EXPORT = qw(
-	BST_leap BST_delv
-	uri_strtok dns_strtok
-	make_acomp
-);
-our @ISA = qw(Exporter);
+use Exporter ();
+our (@ISA, @EXPORT);
+BEGIN {
+	@ISA = qw(Exporter);
+	@EXPORT = qw(
+		BST_leap BST_delv
+		uri_strtok dns_strtok
+		make_acomp
+	);
+}
 
 sub BST_leap {
 	my ($acomp, $list, $node) = @_;
@@ -91,7 +94,7 @@ use File::Find;
 use File::Spec;
 no locale;
 
-use constant BST_PKG => 'Sort::Search::Tree';
+BEGIN { Sort::Search::Tree->import(); }
 
 sub usage {
 <<USE;
@@ -136,7 +139,7 @@ if ($cmd eq 'find') {
 	GetOptions('K=s' => \$kind) and my $node = shift or die usage();
 
 	chomp (my @list = <STDIN>);
-	my $acomp = do { no strict 'refs'; &{BST_PKG . "::make_acomp"}(\&{BST_PKG . "::${kind}_strtok"})};
-	my @children = do { no strict 'refs'; \&{BST_PKG . "::BST_${cmd}"} }->($acomp, \@list, $node);
+	my $acomp = make_acomp(do { no strict 'refs'; \&{"${kind}_strtok"} });
+	my @children = do { no strict 'refs'; \&{"BST_${cmd}"} }->($acomp, \@list, $node);
 	print "$_$/" foreach @children;
 }
