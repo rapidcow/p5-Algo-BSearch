@@ -2,7 +2,7 @@
 
 
 /*                                                            *\
- * This file continues the introduction (00INTRO.txt).        *
+ * This document continues the introduction (00INTRO.txt).    *
  * It's still an introduction though!  Here we talk about     *
  * the *real* binary search methods.                          *
 \*                                                            */
@@ -116,7 +116,7 @@ search is WAY cooler than that!)
 
 This well-definedness leads to the natural notion of
 *transition points*, which is what left/right bisection
-introduced in the previous file was all about.  (First
+introduced in the previous document was all about.  (First
 true, last true...)  Though bisection works with monotonic
 predicates, it is easily to derive them from the ordering
 by observing that transition happens in two parts:
