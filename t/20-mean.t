@@ -38,28 +38,33 @@ sub lmean_ok {
 	cmp_ok (lmean( $_[0], $_[1] ), '==', ( $_[2] ), $mesg);
 }
 
-lmean_ok +( 0, 1 ) => ( 0 );
-lmean_ok +( -10, 42 ) => ( 16 );
-lmean_ok +( 0, 69 ) => ( 34 );
-lmean_ok +( -1, 0 ) => ( -1 );
-lmean_ok +( -42, 10 ) => ( -16 );
-lmean_ok +( -69, 0 ) => ( -35 );
-lmean_ok +( uvmin, ivmax ) => ( ivmax >> 1 );
-lmean_ok +( uvmin, uvmax-2 ) => ( ivmax ) - 1;
-lmean_ok +( uvmin, uvmax-1 ) => ( ivmax );
-lmean_ok +( uvmin, uvmax ) => ( ivmax );
-lmean_ok +( ivmin, ivmax ) => ( -1 );
-lmean_ok +( ivmin, uvmax ) => ( ivmax >> 1 );
+	lmean_ok +( 0, 1 ) => ( 0 );
+	lmean_ok +( -10, 42 ) => ( 16 );
+	lmean_ok +( 0, 69 ) => ( 34 );
+	lmean_ok +( -1, 0 ) => ( -1 );
+	lmean_ok +( -42, 10 ) => ( -16 );
+	lmean_ok +( -69, 0 ) => ( -35 );
 
-lmean_ok +( ivmin, ivmin+1 ) => ( ivmin );
-lmean_ok +( ivmin, ivmin+2 ) => ( ivmin + 1 );
-lmean_ok +( ivmin, ivmin+3 ) => ( ivmin + 1 );
-lmean_ok +( ivmax-1, ivmax ) => ( ivmax - 1 );
-lmean_ok +( ivmax-2, ivmax ) => ( ivmax - 1 );
-lmean_ok +( ivmax-3, ivmax ) => ( ivmax - 2 );
-lmean_ok +( uvmax-1, uvmax ) => ( uvmax - 1 );
-lmean_ok +( uvmax-2, uvmax ) => ( uvmax - 1 );
-lmean_ok +( uvmax-3, uvmax ) => ( uvmax - 2 );
+SKIP: {
+	skip ("lossy IV+UV arithmetic", 15) if $] < 5.008;
+
+	lmean_ok +( uvmin, ivmax ) => ( ivmax >> 1 );
+	lmean_ok +( uvmin, uvmax-2 ) => ( ivmax ) - 1;
+	lmean_ok +( uvmin, uvmax-1 ) => ( ivmax );
+	lmean_ok +( uvmin, uvmax ) => ( ivmax );
+	lmean_ok +( ivmin, ivmax ) => ( -1 );
+	lmean_ok +( ivmin, uvmax ) => ( ivmax >> 1 );
+
+	lmean_ok +( ivmin, ivmin+1 ) => ( ivmin );
+	lmean_ok +( ivmin, ivmin+2 ) => ( ivmin + 1 );
+	lmean_ok +( ivmin, ivmin+3 ) => ( ivmin + 1 );
+	lmean_ok +( ivmax-1, ivmax ) => ( ivmax - 1 );
+	lmean_ok +( ivmax-2, ivmax ) => ( ivmax - 1 );
+	lmean_ok +( ivmax-3, ivmax ) => ( ivmax - 2 );
+	lmean_ok +( uvmax-1, uvmax ) => ( uvmax - 1 );
+	lmean_ok +( uvmax-2, uvmax ) => ( uvmax - 1 );
+	lmean_ok +( uvmax-3, uvmax ) => ( uvmax - 2 );
+}
 
 sub rmean_ok {
 	local $Test::Builder::Level = $Test::Builder::Level + 1;
@@ -71,28 +76,33 @@ sub rmean_ok {
 	cmp_ok (rmean( $_[0], $_[1] ), '==', ( $_[2] ), $mesg);
 }
 
-rmean_ok +( 0, 1 ) => ( 1 );
-rmean_ok +( -10, 42 ) => ( 16 );
-rmean_ok +( 0, 69 ) => ( 35 );
-rmean_ok +( -1, 0 ) => ( 0 );
-rmean_ok +( -42, 10 ) => ( -16 );
-rmean_ok +( -69, 0 ) => ( -34 );
-rmean_ok +( uvmin, ivmax ) => ( ivmax >> 1 ) + 1;
-rmean_ok +( uvmin, uvmax-2 ) => ( ivmax );
-rmean_ok +( uvmin, uvmax-1 ) => ( ivmax );
-rmean_ok +( uvmin, uvmax ) => ( ivmax ) + 1;
-rmean_ok +( ivmin, ivmax ) => ( 0 );
-rmean_ok +( ivmin, uvmax ) => ( ivmax >> 1 ) + 1;
+	rmean_ok +( 0, 1 ) => ( 1 );
+	rmean_ok +( -10, 42 ) => ( 16 );
+	rmean_ok +( 0, 69 ) => ( 35 );
+	rmean_ok +( -1, 0 ) => ( 0 );
+	rmean_ok +( -42, 10 ) => ( -16 );
+	rmean_ok +( -69, 0 ) => ( -34 );
 
-rmean_ok +( ivmin, ivmin+1 ) => ( ivmin + 1 );
-rmean_ok +( ivmin, ivmin+2 ) => ( ivmin + 1 );
-rmean_ok +( ivmin, ivmin+3 ) => ( ivmin + 2 );
-rmean_ok +( ivmax-1, ivmax ) => ( ivmax );
-rmean_ok +( ivmax-2, ivmax ) => ( ivmax - 1 );
-rmean_ok +( ivmax-3, ivmax ) => ( ivmax - 1 );
-rmean_ok +( uvmax-1, uvmax ) => ( uvmax );
-rmean_ok +( uvmax-2, uvmax ) => ( uvmax - 1 );
-rmean_ok +( uvmax-3, uvmax ) => ( uvmax - 1 );
+SKIP: {
+	skip ("lossy IV+UV arithmetic", 15) if $] < 5.008;
+
+	rmean_ok +( uvmin, ivmax ) => ( ivmax >> 1 ) + 1;
+	rmean_ok +( uvmin, uvmax-2 ) => ( ivmax );
+	rmean_ok +( uvmin, uvmax-1 ) => ( ivmax );
+	rmean_ok +( uvmin, uvmax ) => ( ivmax ) + 1;
+	rmean_ok +( ivmin, ivmax ) => ( 0 );
+	rmean_ok +( ivmin, uvmax ) => ( ivmax >> 1 ) + 1;
+
+	rmean_ok +( ivmin, ivmin+1 ) => ( ivmin + 1 );
+	rmean_ok +( ivmin, ivmin+2 ) => ( ivmin + 1 );
+	rmean_ok +( ivmin, ivmin+3 ) => ( ivmin + 2 );
+	rmean_ok +( ivmax-1, ivmax ) => ( ivmax );
+	rmean_ok +( ivmax-2, ivmax ) => ( ivmax - 1 );
+	rmean_ok +( ivmax-3, ivmax ) => ( ivmax - 1 );
+	rmean_ok +( uvmax-1, uvmax ) => ( uvmax );
+	rmean_ok +( uvmax-2, uvmax ) => ( uvmax - 1 );
+	rmean_ok +( uvmax-3, uvmax ) => ( uvmax - 1 );
+}
 
 # Math::BigInt should be in core, but technically
 # we never required it ourselves in TEST_REQUIRES...
