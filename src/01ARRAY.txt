@@ -254,20 +254,123 @@ and "bisect1" is "blsrch1".)
       first $a[$i] > $x ------'
      (bisect1 returns this)
 
+Left binary search is common in the standard libraries
+of many programming languages, many of which were direct
+influences for my implementation of "blsrch[01]".
 
+Though said librarys usually end at just that.  However,
+My emphasis on "left", of all things, should suggest the
+fact that we can construct a "right" binary search in an
+analogous way... and that's what we will do next.
 
-#
-#########################################################################
-#
-#       [1  1  2  3  3  4  5  5  5  6  8  9  9]       x
-#        +  +  +  +  +  +  0  0  0  -  -  -  -    cmp(5, x) := (5 <=> x)
-#                         |
-#                         | $_ >= 0             predicate 0
-#                         | $_ >  0             predicate 1
-#                         v
-#        T  T  T  ...   T  T  T (T) F  F  ...
-#        T  T  T  ...  (T) F  F  F  F  F  ...
-#        --------------------------------------
-#        0  1  2        5[ 6  7  8] 9  10 ...     index
-#
-#########################################################################
+Let's unwind a bit...
+
+    $lb = blsrch0 {  $_ <=> 5  } \@array;
+    $ux = blsrch1 {  $_ <=> 5  } \@array;
+
+    # is equivalent to...
+
+    $lb = bisectl {  ($_ <=> 5)  >= 0  } \@array;
+    $ux = bisectl {  ($_ <=> 5)  >  0  } \@array;
+
+The premise is that our ordering of choice "$_ <=> 5" turns
+the increasing @array into an image of negatives then zeros
+then positives, zeros being another term for "equal range".
+We get the inclusive lower bound, $lb, by finding the first
+positive or zero, and we get the exclusive upper bound, $ub,
+by finding the first positive.  The rest is then delegated to
+"bisectl", which finds the first instance of the first true.
+
+Recall that "first" is relative to orientation in which we
+search; when we scan from left to right, the first instance
+we hit is the LEFTMOST.  In the mirror image where we scan
+from right to left instead, that first would become last,
+or the RIGHTMOST instance.
+
+Which one then do we reverse, the predicate or the ordering?
+Well, the decision I made is to reverse the ordering, such
+that the negatives and positives swap places.  (Not a choice
+I can justify much... but what matters is we have something
+CONSTANT.  (We even get to keep the predicates' names!))
+
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]       x
+    +  +  +  +  +  +  0  0  0  -  -  -  -    cmp(5, x) := (5 <=> x)
+                    ^^       ^^
+      zero to positive       negative to zero
+                     .
+                     | $_ >= 0             predicate 0
+                     | $_ >  0             predicate 1
+                     v
+    T  T  T  ...  (T) F  F  F  F  F  ...
+    T  T  T  ...   T  T  T (T) F  F  ...
+    --------------------------------------
+    0  1  2        5[ 6  7  8] 9  10 ...     index
+                   ^^^      ^^^
+
+  # use Sort::Search qw(bisectr);
+
+    $ub = bisectr {  (5 <=> $_)  >= 0  } \@array;
+    $lx = bisectr {  (5 <=> $_)  >  0  } \@array;
+
+    # is equivalent to...
+
+  # use Sort::Search qw(brsrch0 brsrch1);
+
+    $ub = brsrch0 {  5 <=> $_  } \@array;
+    $lx = brsrch1 {  5 <=> $_  } \@array;
+
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]     x?  (lx,ub]  SPAN
+    --------------------------------------
+  []0  1  2                                    0   [-1,-1)  <EMPTY>
+  [ 0  1] 2  3                                 1   [-1, 1)
+    0  1[ 2] 3  4                              2   [ 1, 2)
+       1  2[ 3  4] 5  6                        3   [ 2, 4)
+             3  4[ 5] 6  7                     4   [ 4, 5)
+                4  5[ 6  7  8] 9  10           5   [ 5, 8)
+                            8[ 9] 10 11        6   [ 8, 9)
+                            8  9[]10 11        7   [ 9, 9)  <EMPTY>
+                            8  9[ 10]11 12     8   [ 9,10)
+                               9  10[11 12]    9   [10,12)
+                                  10 11 12[]   10  [12,12)  <EMPTY>
+
+What we have now is an inclusive upper bound and an
+exclusive lower bound.
+
+How are $lb and $lx related?  It's easy to convince
+yourself that they merely differ by one.  That means
+wherever you need $lx, you can compute $lb - 1, and
+vice versa.  The same for $ub and $lx.  So are the
+libraries providing left search only justified?
+Absolutely.  Does it convey the intention as fluently?
+Well I beg to differ... :)
+
+I also think that naively reversing the image this way
+makes the framing of the question more uniform: instead
+of asking >= here and <= there, we ask for one direction
+only: either >= for predicate 0 (the inclusive bound) or
+predicate 1 (the exclusive bound).  As to left or right,
+we look for the leftmost match or the rightmost match; or
+first or last, if you will.  Putting these together,
+we get:
+
+    blsrch0 :  leftmost  >= 0, w.r.t. ordering - 0 +
+                            "inclusive lower bound"
+    blsrch1 :  leftmost  >  0, w.r.t. ordering - 0 +
+                            "exclusive upper bound"
+      * (blsrch1 - blsrch0) is the SPAN
+
+           ( $_ <=> $KEY   if array is increasing )
+           ( $KEY <=> $_   if array is decreasing )
+
+    brsrch0 :  rightmost >= 0, w.r.t. ordering + 0 -
+                            "inclusive upper bound"
+    brsrch1 :  rightmost >  0, w.r.t. ordering + 0 -
+                            "exclusive lower bound"
+      * (brsrch0 - brsrch1) is the SPAN
+
+           ( $KEY <=> $_   if array is increasing )
+           ( $_ <=> $KEY   if array is decreasing )
+
+Of course, that means you have to adapt the ordering
+flexibly; but I think that is worth it.  It's just like
+ambidexterity, in a way! ;)
