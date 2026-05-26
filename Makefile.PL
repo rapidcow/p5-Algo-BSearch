@@ -17,7 +17,7 @@ my %WriteMakefileArgs = (
 		'ExtUtils::MakeMaker' => '0',
 	},
 	TEST_REQUIRES => {
-		'Test::More' => '0',
+		'Test::More' => '0.94',
 	},
 	PREREQ_PM => {
 		'Carp'     => '0',
