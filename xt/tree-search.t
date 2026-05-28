@@ -3,7 +3,7 @@
 use 5.006;
 use strict;
 use warnings;
-use Test::More 'no_plan';
+use Test::More;
 
 BEGIN {
 	unless (eval {
@@ -14,11 +14,13 @@ BEGIN {
 		note "eval error: $@";
 		plan skip_all => "SKIP: failed to load \`./xlib/tree-search.pl'";
 	}
+	plan tests => 8;
 }
 
 # ------------------------------------------------------------------ tokenizers
 
 subtest "uri_strtok" => sub {
+	plan tests => 5;
 	is_deeply [uri_strtok("a/b/c")],  [qw(a b c)], "relative path";
 	is_deeply [uri_strtok("/a/b/c")], [qw(a b c)], "absolute path (leading slash stripped)";
 	is_deeply [uri_strtok("a")],      [qw(a)],     "single component";
@@ -27,6 +29,7 @@ subtest "uri_strtok" => sub {
 };
 
 subtest "dns_strtok" => sub {
+	plan tests => 4;
 	is_deeply [dns_strtok("www.example.com")],  [qw(com example www)], "labels reversed";
 	is_deeply [dns_strtok("www.example.com.")], [qw(com example www)], "trailing dot stripped";
 	is_deeply [dns_strtok("example.com")],      [qw(com example)],     "parent zone";
@@ -36,6 +39,7 @@ subtest "dns_strtok" => sub {
 # ------------------------------------------------------------------ acomp
 
 subtest "acomp 5 states" => sub {
+	plan tests => 5;
 	my $cmp = sub { $_[0] cmp $_[1] };
 	is Sort::Search::Tree::acomp([qw(a b)],   [qw(a b)],   $cmp),  0, "   equal    =>  0";
 	is Sort::Search::Tree::acomp([qw(a b c)], [qw(a b)],   $cmp),  1, "   suffix   => +1";
@@ -60,6 +64,7 @@ my @PATHS = qw(
 my $path_cmp = make_acomp(\&uri_strtok, sub { $_[0] cmp $_[1] });
 
 subtest "BST_delv -- all descendants (path)" => sub {
+	plan tests => 4;
 	is_deeply [BST_delv($path_cmp, \@PATHS, "a")],
 		[qw(a/b a/b/c a/b/d a/e)], "all under a/";
 
@@ -74,6 +79,7 @@ subtest "BST_delv -- all descendants (path)" => sub {
 };
 
 subtest "BST_leap -- direct children only (path)" => sub {
+	plan tests => 4;
 	is_deeply [BST_leap($path_cmp, \@PATHS, "a")],
 		[qw(a/b a/e)], "direct children of a/";
 
@@ -139,6 +145,7 @@ xt/tree-search.t
 );
 
 subtest "SANITY CHECK" => sub {
+	plan tests => 6;
 	my $uri_cmp = make_acomp(\&uri_strtok);
 	is_deeply (\@xt_tree, [ sort { $uri_cmp->($a, $b) } @xt_tree ], "uri sort is OK");
 	is_deeply ([ BST_delv ($uri_cmp, \@xt_tree, "xt") ], [ grep { m!^xt/! } @xt_tree ], "ls -r xt");
@@ -168,6 +175,7 @@ my @DNS = qw(
 my $dns_cmp = make_acomp(\&dns_strtok, sub { $_[0] cmp $_[1] });
 
 subtest "BST_delv -- all descendants (DNS)" => sub {
+	plan tests => 2;
 	is_deeply [BST_delv($dns_cmp, \@DNS, "example.com")],
 		[qw(api.example.com staging.api.example.com mail.example.com www.example.com)],
 		"all subdomains of example.com";
@@ -178,6 +186,7 @@ subtest "BST_delv -- all descendants (DNS)" => sub {
 };
 
 subtest "BST_leap -- direct children only (DNS)" => sub {
+	plan tests => 1;
 	is_deeply [BST_leap($dns_cmp, \@DNS, "example.com")],
 		[qw(api.example.com mail.example.com www.example.com)],
 		"direct subdomains of example.com (staging skipped)";

@@ -9,6 +9,9 @@ use File::Spec;
 use IPC::Open3 qw(open3);
 use Test::More;
 
+# Explicitly load IO::Handle for perls older than v5.14.0.
+use IO::Handle;
+
 my $min_tcm = 0.9;
 eval "use Test::CheckManifest $min_tcm";
 plan skip_all => "Test::CheckManifest $min_tcm required" if $@;

@@ -37,7 +37,7 @@ is ((bisectl { 0 } 0, 0), 0, "degenerate case of all F");
 	# https://www.perlmonks.org/?node_id=741744
 	my $isqrt = sub {
 		my ($i) = @_;
-		return -bisectl { $_ * $_ <= $i } -$i, 0;
+		return -(bisectl { $_ * $_ <= $i } -$i, 0);
 	};
 	is ($isqrt->(2025), 45, "isqrt with bisectl");
 }
