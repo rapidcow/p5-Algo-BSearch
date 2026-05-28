@@ -22,4 +22,17 @@ __DATA__
 #!/bin/sh
 
 . xt/lib/test-functions.sh
-skip_all TODO
+
+if ! {
+	[ -f xlib/tree-search.pl ] &&
+	[ -x xlib/tree-search.pl ] &&
+	dot=$(xlib/tree-search.pl find "$tmp" 2>/dev/null)
+}
+then
+	skip_all "can't exec xlib/tree-search.pl"
+fi
+
+plan 1
+
+[ "$dot" = . ]
+ok "find <empty> is a dot"
