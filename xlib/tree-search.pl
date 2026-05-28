@@ -90,7 +90,6 @@ package main;
 use strict;
 use warnings;
 use Getopt::Long;
-use File::Find;
 use File::Spec;
 no locale;
 
@@ -119,21 +118,27 @@ if ($cmd eq 'find') {
 	my $root = shift;
 	$root ||= ".";
 
-	find({
-		preprocess => sub { sort @_ },
-		wanted => sub {
-			my $filename = File::Spec->abs2rel($File::Find::name, $root);
-
-			for my $excl (@excl) {
-				if ($filename eq $excl) {
-					$File::Find::prune = 1;
-					return;
-				}
+	# File::Find sorts directories separately from files...
+	# We have to roll our own traversal, sadly. :(
+	my @stack = ($root);
+	while (@stack) {
+		my $path = pop @stack;
+		my $rel = File::Spec->abs2rel($path, $root);
+		# Mimic our "wanted" function from before
+		# that prunes files and directories alike.
+		next if grep { $rel eq $_ } @excl;
+		print "$rel$/";
+		if (-d $path && !-l $path) {
+			my ($dh, @kids);
+			unless (opendir $dh, $path) {
+				warn "opendir $path: $!\n";
+				next;
 			}
-
-			print "$filename$/";
+			@kids = sort { $b cmp $a } File::Spec->no_upwards(readdir $dh);
+			closedir $dh;
+			push @stack, map { "$path/$_" } @kids;
 		}
-	}, $root);
+	}
 } else {
 	my $kind = 'uri';
 	GetOptions('K=s' => \$kind) and my $node = shift or die usage();
