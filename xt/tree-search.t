@@ -87,6 +87,67 @@ subtest "BST_leap -- direct children only (path)" => sub {
 		[], "no match";
 };
 
+# Should work on us right???
+#
+# $ tree xt
+# xt
+# ├── 00-load.t
+# ├── changes.t
+# ├── essay.t
+# ├── manifest.t
+# ├── nsec-search.t
+# ├── old
+# │   ├── 10-bisectl.t
+# │   ├── 10-bisectr.t
+# │   ├── 50-bisect120.t
+# │   ├── 50-scope.t
+# │   ├── README
+# │   └── doctest.t
+# ├── overflow.t
+# ├── pod-coverage.t
+# ├── pod.t
+# ├── sib.t
+# └── tree-search.t
+#
+# 2 directories, 16 files
+
+my @xt_tree = qw(
+.
+lib/Sort
+lib/Sort/Search
+lib/Sort/Search/Cookbook.pod
+lib/Sort/Search.pm
+lib/Sort/Search.pod
+xt
+xt/00-load.t
+xt/changes.t
+xt/essay.t
+xt/manifest.t
+xt/nsec-search.t
+xt/old
+xt/old/10-bisectl.t
+xt/old/10-bisectr.t
+xt/old/50-bisect120.t
+xt/old/50-scope.t
+xt/old/README
+xt/old/doctest.t
+xt/overflow.t
+xt/pod-coverage.t
+xt/pod.t
+xt/sib.t
+xt/tree-search.t
+);
+
+subtest "SANITY CHECK" => sub {
+	my $uri_cmp = make_acomp(\&uri_strtok);
+	is_deeply (\@xt_tree, [ sort { $uri_cmp->($a, $b) } @xt_tree ], "uri sort is OK");
+	is_deeply ([ BST_delv ($uri_cmp, \@xt_tree, "xt") ], [ grep { m!^xt/! } @xt_tree ], "ls -r xt");
+	is_deeply ([ BST_leap ($uri_cmp, \@xt_tree, "xt") ], [ grep { m!^xt/! && !m!^xt/.*/! } @xt_tree ], "ls xt");
+	is_deeply ([ BST_delv ($uri_cmp, \@xt_tree, "xt/old") ], [ grep { m!^xt/old/! } @xt_tree ], "ls -r xt/old");
+	is_deeply ([ BST_leap ($uri_cmp, \@xt_tree, "xt/old") ], [ grep { m!^xt/old/! } @xt_tree ], "ls xt/old");
+	is_deeply ([ BST_leap ($uri_cmp, \@xt_tree, "lib/Sort") ], [ qw( lib/Sort/Search lib/Sort/Search.pm lib/Sort/Search.pod ) ], "ls lib/Sort");
+};
+
 # ------------------------------------------------------------------ DNS tree
 #
 # Listing must be sorted by reversed-label order (as dns_strtok produces):
