@@ -5,6 +5,7 @@ use 5.006;
 use strict;
 use warnings;
 use Test::More tests => 5;
+
 use Sort::Search qw(
 	blsrch0 blsrch1 blsrch2 blsrchx
 	brsrch0 brsrch1 brsrch2

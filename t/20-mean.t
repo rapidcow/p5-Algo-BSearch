@@ -3,8 +3,8 @@
 use 5.006;
 use strict;
 use warnings;
-
 use Test::More tests => 50;
+
 use Sort::Search qw(bixectl bixectr);
 
 use constant uvmin => ( +0 );  # (is actually an IV...)
