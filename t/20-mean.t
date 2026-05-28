@@ -1,5 +1,5 @@
 #!perl
-# t/10-mean.t - midpoints over potentially big IV/UV
+# t/20-mean.t - integer range midpoint
 use 5.006;
 use strict;
 use warnings;

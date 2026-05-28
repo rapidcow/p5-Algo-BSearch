@@ -7,4 +7,6 @@ lib/Sort/Search.pm      Module code
 lib/Sort/Search.pod     Documentation
 lib/Sort/Search/Cookbook.pod   Practical examples
 t/00-load.t             Test - basic load
+t/10-array.t            Test - ARRAY input form
+t/20-mean.t             Test - integer range midpoint
 t/podtest.t             Test - documentation examples
