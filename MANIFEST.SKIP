@@ -1,6 +1,7 @@
 ^\.git/                 Git repository
 ^\.gitattributes$       Git archive exclude rules
 ^\.gitignore$           Git exclude rules
+^\.mailmap$             Git mailmap
 ^LICENSE$               License fulltext
 ^Makefile$              Makefile.PL artifact
 ^Makefile\.old$         ditto
