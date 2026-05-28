@@ -2,9 +2,9 @@
 
 use strict;
 use warnings;
+use Test::More tests => 16;
 
 use Sort::Search;
-use Test::More tests => 16;
 
 # https://stackoverflow.com/a/15133735/19411800
 use constant uvmin => +0;  # (is actually an IV...)

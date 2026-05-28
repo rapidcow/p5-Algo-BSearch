@@ -9,7 +9,7 @@ sub bisect (&$$) {
     scalar &Sort::Search::bisectl;
 }
 
-plan tests => 1;
+BEGIN { plan tests => 1; }
 
 {
 	my @uvw =

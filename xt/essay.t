@@ -2,9 +2,9 @@
 
 use strict;
 use warnings;
+use Test::More tests => 1;
 
 use Sort::Search qw(bisectl bisectr);
-use Test::More tests => 1;
 
 subtest '00INTRO.txt' => sub {
 plan tests => 16;

@@ -2,8 +2,8 @@
 
 use strict;
 use warnings;
-
 use Test::More;
+
 use Sort::Search qw(blsrch2 brsrch2);
 
 my @pi = (1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9);

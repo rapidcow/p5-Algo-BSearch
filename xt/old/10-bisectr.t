@@ -3,9 +3,9 @@
 use 5.006;
 use strict;
 use warnings;
+use Test::More tests => 5;
 
 use Sort::Search qw(bisectr);
-use Test::More tests => 5;
 
 {
 	my $isqrt = sub {

@@ -38,7 +38,7 @@ sub bisect2 (&$$) {
 	}, $array);
 };
 
-plan tests => 56;
+BEGIN { plan tests => 56; }
 
 {
 	my $dates = [20241217, 20250105, 20250105];

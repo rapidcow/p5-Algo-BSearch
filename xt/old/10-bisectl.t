@@ -3,9 +3,9 @@
 use 5.006;
 use strict;
 use warnings;
+use Test::More tests => 7;
 
 use Sort::Search qw(bisectl);
-use Test::More tests => 7;
 
 is ((bisectl { -$_ < 1 } 0, 8), 0, "case of all T");
 is ((bisectl {  $_ > 2 } 0, 8), 3, "case of some F, some T");
