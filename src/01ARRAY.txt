@@ -8,7 +8,7 @@
 \*                                                         */
 
        (continued) Introduction to Sort::Search
-            ((now for actually "search"ing))
+           (( now for actually "search"ing ))
 
                        * * *
 
