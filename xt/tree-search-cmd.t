@@ -31,7 +31,7 @@ if ! {
 	dot=$(xlib/tree-search.pl find "$tmp" 2>/dev/null)
 }
 then
-	skip_all "can't exec xlib/tree-search.pl"
+	skip_all "can't exec \`xlib/tree-search.pl'"
 fi
 
 plan 8

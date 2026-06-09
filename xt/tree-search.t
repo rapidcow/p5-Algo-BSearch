@@ -11,7 +11,7 @@ BEGIN {
 		1;
 	}) {
 		note "eval error: $@";
-		plan skip_all => "SKIP: failed to load \`./xlib/tree-search.pl'";
+		plan skip_all => "can't load \`./xlib/tree-search.pl'";
 	}
 	plan tests => 9;
 }
