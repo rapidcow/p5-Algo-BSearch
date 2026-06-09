@@ -230,12 +230,12 @@ caller to define and interpret the meaning of the zeros.
 
 Another thing to note is that, given the same underlying
 array, the ordering should be reversed when the orientation
-is flipped.  Usually you can flip the operands to
-achieve this, as I have shown above with C<< $_ <=> $x >>
-for left search and C<< $x <=> $_ >> for right search.
-But in cases where you don't have access to both operands
-and have to work with the ordering as a blackboxed unary
-function of C<$_>, you can negate the ordering instead.
+is flipped.  Usually you can flip the operands to achieve
+this, as I have shown above with C<< $_ <=> $x >> for left
+search and C<< $x <=> $_ >> for right search.  But in cases
+where you don't have access to both operands and have to
+work with the ordering as a blackboxed unary function of
+C<$_>, you can negate the ordering instead.
 
 
 =head2 Existence variants
@@ -289,7 +289,7 @@ For reference, the following relations should hold:
 =head1 SUBROUTINES
 
 All subroutines are exported on-demand.  All subroutines
-share the same interface for input and output deferred to
+share the same interface for input and output as described
 in L</COMMON INTERFACE>.  For basic uses though, always
 call in scalar context and pass the array by reference.
 
@@ -321,7 +321,7 @@ C<< $ok->($x) >> is true.
 
 =item *
 
-For all valid index C<< $y < $x >>, it follows that C<< $ok->($y) >> is false.
+For every valid index C<< $y < $x >>, it follows that C<< $ok->($y) >> is false.
 
 =back
 
@@ -355,7 +355,7 @@ C<< $ok->($x) >> is true.
 
 =item *
 
-For all valid index C<< $y > $x >>, it follows that C<< $ok->($y) >> is false.
+For every valid index C<< $y > $x >>, it follows that C<< $ok->($y) >> is false.
 
 =back
 
@@ -366,9 +366,9 @@ If the interval C<[$lo, $hi]> is empty, return C<$lo>.
 =back
 
 In general, a return value of C<$hi> (for left bisection) and
-C<$lo> (for right bisection) is not meaningful as it is the only
-index taken to be true for granted.  Caller should handle it
-separately, or check if the comparison result and/or element
+C<$lo> (for right bisection) may not be meaningful as it is the
+only index taken to be true for granted.  Caller should examine
+it separately, or check if the comparison result and/or element
 are defined by calling in list context.
 
 =over
@@ -401,7 +401,7 @@ C<< $ord->($lb) >= 0 >>.
 
 =item *
 
-For all valid index C<< $x < $lb >>, it follows that C<< $ord->($x) < 0 >>.
+For every valid index C<< $x < $lb >>, it follows that C<< $ord->($x) < 0 >>.
 As a result, C<$lb> is the first instance where C<< $ord >= 0 >>,
 while C<$lb - 1> is the last instance where C<< $ord < 0 >>.
 (Compare this to C<$lx> returned by B<brsrch1>.)
@@ -423,7 +423,7 @@ C<< $ord->($ux) > 0 >>.
 
 =item *
 
-For all valid index C<< $x < $ux >>, it follows that C<< $ord->($x) <= 0 >>.
+For every valid index C<< $x < $ux >>, it follows that C<< $ord->($x) <= 0 >>.
 As a result, C<$ux> is the first instance where C<< $ord > 0 >>,
 while C<$ux - 1> is the last instance where C<< $ord <= 0 >>.
 (Compare this to C<$ub> returned by B<brsrch0>.)
@@ -463,7 +463,7 @@ C<< $ord->($ub) >= 0 >>.
 
 =item *
 
-For all valid index C<< $x > $ub >>, it follows that C<< $ord->($x) < 0 >>.
+For every valid index C<< $x > $ub >>, it follows that C<< $ord->($x) < 0 >>.
 As a result, C<$ub> is the last instance where C<< -$ord <= 0 >> and
 C<$ub + 1> is the first instance where C<< -$ord > 0 >>.
 (Compare this to C<$ux> returned by B<blsrch1>.)
@@ -485,7 +485,7 @@ C<< $ord->($lx) > 0 >>.
 
 =item *
 
-For all valid index C<< $x > $lx >>, it follows that C<< $ord->($x) <= 0 >>.
+For every valid index C<< $x > $lx >>, it follows that C<< $ord->($x) <= 0 >>.
 As a result, C<$lx> is the last instance where C<< -$ord < 0 >> and
 C<$lx + 1> is the first instance where C<< -$ord >= 0 >>.
 (Compare this to C<$lb> returned by B<blsrch0>.)
