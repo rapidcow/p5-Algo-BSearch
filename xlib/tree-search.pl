@@ -41,26 +41,26 @@ example. :)
 Suppose we have a directory listing on the C<xt> directory,
 and we compare with respect to the C<xt/old> key:
 
-    $_                 acomp($_, $K)
-    -------           ---------------
-    xt                      -1
-    xt/00-load.t            -2
-    xt/changes.t            -2     prev   (-2 and -1)
-    xt/essay.t              -2
-    xt/manifest.t           -2
-    xt/nsec-search.t        -2
-    xt/old                   0  =- root   (0 == xt/old)
-    xt/old/10-bisectl.t      1  \
-    xt/old/10-bisectr.t      1  |
-    xt/old/50-bisect120.t    1  }- child  (1 =~ xt/old/*)
-    xt/old/50-scope.t        1  |
-    xt/old/README            1  |
-    xt/old/doctest.t         1  /
-    xt/overflow.t            2
-    xt/pod-coverage.t        2
-    xt/pod.t                 2     succ   (+2)
-    xt/sib.t                 2
-    xt/tree-search.t         2
+   $_                 acomp($_, $K)
+   -------           ---------------
+   xt                      -1
+   xt/00-load.t            -2
+   xt/changes.t            -2     prev   (-2 and -1)
+   xt/essay.t              -2
+   xt/manifest.t           -2
+   xt/nsec-search.t        -2
+   xt/old                   0  =- root   (0 == xt/old)
+   xt/old/10-bisectl.t      1  \
+   xt/old/10-bisectr.t      1  |
+   xt/old/50-bisect120.t    1  }- child  (1 =~ xt/old/*)
+   xt/old/50-scope.t        1  |
+   xt/old/README            1  |
+   xt/old/doctest.t         1  /
+   xt/overflow.t            2
+   xt/pod-coverage.t        2
+   xt/pod.t                 2     succ   (+2)
+   xt/sib.t                 2
+   xt/tree-search.t         2
 
 Normally, range searches like B<blsrch2> would find zeros:
 in this case, the exact match against the key C<xt/old>,
