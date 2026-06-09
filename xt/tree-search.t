@@ -13,7 +13,7 @@ BEGIN {
 		note "eval error: $@";
 		plan skip_all => "SKIP: failed to load \`./xlib/tree-search.pl'";
 	}
-	plan tests => 8;
+	plan tests => 9;
 }
 
 # ------------------------------------------------------------------ tokenizers
@@ -189,4 +189,28 @@ subtest "BST_leap -- direct children only (DNS)" => sub {
 	is_deeply [BST_leap($dns_cmp, \@DNS, "example.com")],
 		[qw(api.example.com mail.example.com www.example.com)],
 		"direct subdomains of example.com (staging skipped)";
+};
+
+# ------------------------------------------------------------------ sparse tree
+#
+# BST_leap currently assumes every internal node is present: the
+# first element in a descendant range is taken to be a direct child.
+# When an intermediate node is missing (sparse tree -- think empty
+# non-terminals in a DNS zone), it instead returns the *maximal
+# proper descendants*, reporting grandchildren as children.
+
+my @SPARSE_DNS = grep { $_ ne 'api.example.com' } @DNS;
+my @SPARSE_PATHS = grep { $_ ne 'a/b' } @PATHS;
+
+subtest "BST_leap -- sparse tree" => sub {
+	plan tests => 2;
+	local $TODO = "BST_leap assumes internal nodes are present";
+
+	is_deeply [BST_leap($dns_cmp, \@SPARSE_DNS, "example.com")],
+		[qw(mail.example.com www.example.com)],
+		"absent api.example.com does not surface its subtree";
+
+	is_deeply [BST_leap($path_cmp, \@SPARSE_PATHS, "a")],
+		[qw(a/e)],
+		"absent a/b does not surface a/b/c, a/b/d";
 };
