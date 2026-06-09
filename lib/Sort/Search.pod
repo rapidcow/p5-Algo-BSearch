@@ -230,14 +230,12 @@ caller to define and interpret the meaning of the zeros.
 
 Another thing to note is that, given the same underlying
 array, the ordering should be reversed when the orientation
-is flipped (as shown above with C<< $_ <=> $x >> on left
-searches and C<< $x <=> $_ >> on right searches).  Usually
-when you could flip the operands to achieve this, as I
-have shown above with C<< $_ <=> $x >> for left search and
-C<< $x <=> $_ >> for right search.  But in cases where you
-don't have access to both operands and have to work with
-the ordering as a blackboxed unary function of C<$_>, you
-can negate the ordering instead.
+is flipped.  Usually when you could flip the operands to
+achieve this, as I have shown above with C<< $_ <=> $x >>
+for left search and C<< $x <=> $_ >> for right search.
+But in cases where you don't have access to both operands
+and have to work with the ordering as a blackboxed unary
+function of C<$_>, you can negate the ordering instead.
 
 
 =head2 Existence variants
