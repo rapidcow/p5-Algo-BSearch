@@ -72,7 +72,7 @@ before zeros, zeros before positive.)
 I find the mapping C<acomp - 1> to be the simplest for this.
 
 This core of this proof of concept was written by Claude,
-based on my L<mtree(5)>-like directory integrity utility.
+based on my L<mtree(5)>-like directory integrity utility
 (you can audit the extent of that from git blame), which
 implemented this premature idea of leaping over subtrees,
 but written with primitives like C<bisectl> when my binary
@@ -81,7 +81,7 @@ search library lacked support for searching on sub-arrays.
 =head2 PLAN9 ACOMP
 
 The B<acomp> function, as found in C</sys/src/cmd/look.c>
-from Plan9, is an extended comparison function that returns
+from Plan 9, is an extended comparison function that returns
 one of the five following states:  (We assume C<a> and C<b>
 are the operands, in that order.)
 
