@@ -3,6 +3,7 @@
 use 5.006;
 use strict;
 use warnings;
+use POSIX ();
 
 my $pipe;
 if (!open($pipe, '|-', '/bin/sh', '-')) {
@@ -15,7 +16,8 @@ while (<DATA>) {
 }
 close $pipe;
 my $child = $?;
-print sprintf "[Child exited with code 0x%X]\n", $child;
+print sprintf "[Child exited with wstat 0x%X]\n", $child;
+POSIX::raise($child & 127) if $child & 127;
 exit $child >> 8;
 
 __DATA__
