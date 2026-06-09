@@ -96,27 +96,46 @@ In both cases, we call the return value of the
 predicate/ordering the I<comparison result>, or
 C<$cmp> for short.
 
+It is worth noting that an ordering need not be associated
+with a specific target, despite all the above examples
+associated with one; to the search function, it is merely
+a unary function no different than the predicate (other
+than that the latter is concerned with finding truths,
+while the former, finding zeros).
+
 =head2 Orientation variants
 
 For every function in the conventional direction (i.e.,
-left-to-right, true-to-false, increasing), a dual variant
+left-to-right, false-to-true, increasing), a dual variant
 is provided.  The conventional and dual directions are
-identified by the lowercase letter L and R.  To re-use
-my examples, this:
+identified by the lowercase letter L and R.  Broadly
+speaking, all L variants return the leftmost instance
+on an increasing image; and all R variants return the
+rightmost instance on a decreasing image.
+
+In the context of bisection method, increasing means that
+the predicate goes from false to true, and decreasing
+means true to false.  In the context of binary search,
+increasing means C<-> to C<+>, and decreasing means
+C<+> to C<->.
+
+To re-use my examples, this:
 
   use Sort::Search qw(bisectl);
+  #         F  F  T  T  T
   my @A = ( 0, 1, 2, 3, 4 );
   print $A[ bisectl { $_ >= 2 } \@A ];
 
-prints C<2> because the left-variants prefer to return
+prints C<2> because the L variants prefer to return
 the leftmost index of the matching range C<[2, 3, 4]>,
 or one past the final index (C<5>) if no such range exists.
 
   use Sort::Search qw(bisectr);
+  #         T  T  T  F  F
   my @B = ( 5, 4, 3, 2, 1 );
   print $B[ bisectr { $_ >= 3 } \@B ];
 
-prints C<3> because the right-variants prefer to return
+prints C<3> because the R variants prefer to return
 the rightmost index of the matching range C<[5, 4, 3]>,
 or one below the initial index (C<-1>) if no such range
 exists.  (Care should be taken in this specific case

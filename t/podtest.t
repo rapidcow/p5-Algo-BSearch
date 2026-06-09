@@ -4,12 +4,25 @@
 use 5.006;
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More tests => 6;
 
 use Sort::Search qw(
+	bisectl bisectr
 	blsrch0 blsrch1 blsrch2 blsrchx
 	brsrch0 brsrch1 brsrch2
 );
+
+subtest ('Description :: Orientation variants' => sub {
+	plan tests => 2;
+
+	my @A = ( 0, 1, 2, 3, 4 );
+	#         F  T  T  T  T
+	is $A[ bisectl { $_ >= 2 } \@A ], 2, "bisectl on increasing predicate";
+
+	my @B = ( 5, 4, 3, 2, 1 );
+	#         T  T  T  F  F
+	is $B[ bisectr { $_ >= 3 } \@B ], 3, "bisectr on decreasing predicate";
+});
 
 subtest ('Description :: Lower/upper variants' => sub {
 	plan tests => 2;
