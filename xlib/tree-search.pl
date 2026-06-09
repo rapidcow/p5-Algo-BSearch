@@ -1,9 +1,154 @@
 #!/usr/bin/env perl
 
+=head1 NAME
+
+tree-search.pl - prefix search on paths
+
+=head1 SYNOPSIS
+
+   # Command-line usage
+   xlib/tree-search.pl find |
+      xlib/tree-search.pl delv xt |
+         xlib/tree-search.pl leap xt/old
+
+   # Library usage
+   use File::Find;  use File::Spec;
+   require "./xlib/tree-search.pl";
+   my @list;  find {
+       no_chdir => 1,
+       wanted => sub {
+           push @list, File::Spec->abs2rel($_, ".");
+       }
+   } => ".";
+   my $acomp = make_acomp( \&uri_strtok );
+   @list = sort { $acomp->($a, $b) } @list;
+   @list = BST_delv ($acomp, \@list, "xt");
+   @list = BST_leap ($acomp, \@list, "xt/old");
+
+=head1 DESCRIPTION
+
+So... this is the real reason why I introduced plan9 C<acomp>.
+Unlike B<xlib/nsec-search.pl>, which was just an excuse for
+me to practice implementing the five zones correctly, here
+we actually utilize the middle zones where one string is a
+prefix of another.  This is perhaps best illustrated with an
+example. :)
+
+Suppose we have a directory listing on the C<xt> directory,
+and we compare with respect to the C<xt/old> key:
+
+    $_                 acomp($_, $K)
+    -------           ---------------
+    xt                      -1
+    xt/00-load.t            -2
+    xt/changes.t            -2     prev   (-2 and -1)
+    xt/essay.t              -2
+    xt/manifest.t           -2
+    xt/nsec-search.t        -2
+    xt/old                   0  =- root   (0 == xt/old)
+    xt/old/10-bisectl.t      1  \
+    xt/old/10-bisectr.t      1  |
+    xt/old/50-bisect120.t    1  }- child  (1 =~ xt/old/*)
+    xt/old/50-scope.t        1  |
+    xt/old/README            1  |
+    xt/old/doctest.t         1  /
+    xt/overflow.t            2
+    xt/pod-coverage.t        2
+    xt/pod.t                 2     succ   (+2)
+    xt/sib.t                 2
+    xt/tree-search.t         2
+
+Normally, range searches like would find zeros: in this
+case, the exact match against the key C<xt/old>, the root
+directory itself.  However, we can use it to find ones --
+the children prefixed with the key -- by shiftin the 1
+onto 0, while keeping everything monotonous (negatives
+before zeros, zeros before positive.)
+
+I find the mapping C<acomp - 1> to be the simplest for this.
+
+This core of this proof of concept was written by Claude,
+based on my L<mtree(5)>-like directory integrity utility.
+(you can audit the extent of that from git blame), which
+implemented this premature idea of leaping over subtrees,
+but written with primitives like C<bisectl> when my binary
+search library lacked support for searching on sub-arrays.
+
+=head3 PLAN9 ACOMP
+
+The B<acomp> function, as found in B<sys/src/cmd/look.c>
+from Plan9, is an extended comparison function that returns
+one of the five following states:  (We assume C<a> and C<b>
+are the operands, in that order.)
+
+=over 4
+
+=item B<-2>
+
+C<a> precedes C<b>; but excluding the case of B<-1>.
+
+=item B<-1>
+
+C<a> is a prefix of C<b>.
+
+=item B<0>
+
+C<a> equals C<b>.
+
+=item B<1>
+
+C<b> is a prefix of C<a>.
+
+=item B<2>
+
+C<a> follows C<b>; but excluding the case of B<1>.
+
+=back
+
+The B<acomp> function has a few interesting properties:
+
+=over 4
+
+=item *
+
+It is antisymmetrical, like the average comparison function:
+C<acomp(a, b) + acomp(b, a) == 0>.
+
+=item *
+
+It I<looks> like a regular comparison function to sorting
+algorithms that are only aware of negative, zero, and
+positive.  This lets us use it directly in L<sort|perlfunc/sort>,
+as seen in the L</SYNOPSIS>.
+
+=item *
+
+When C<b> is fixed, the negatives precede 0s, the 0s precede
+the 1s, and the 1s precede the 2s.  (There is, however, no
+monotonicity among the negatives.)
+
+=back
+
+This last property is the most interesting because it means that
+we can extend our notion of equality to consider the root node
+I<and> any child node (map 0 and 1 both to 0), or just the child
+nodes alone (map 1 to 0, 0 to negatives).
+
+=cut
+
 use strict;
 use warnings;
 use List::Util qw(max);
 use Sort::Search qw(blsrch1 blsrch2);
+
+=head1 SUBROUTINES
+
+=head2 BST_leap ACOMP, LIST, NODE
+
+Find the immediate children of B<NODE> from B<LIST>,
+with respect to the acomp function B<ACOMP>.
+
+=cut
 
 sub BST_leap {
 	my ($acomp, $list, $node) = @_;
@@ -22,12 +167,30 @@ sub BST_leap {
 	@children;
 }
 
+=head2 BST_delv ACOMP, LIST, NODE
+
+Find all children of B<NODE> from B<LIST>, with
+respect to the acomp function B<ACOMP>.
+
+=cut
+
 sub BST_delv {
 	my ($acomp, $list, $node) = @_;
 	# Just bound the whole subtree
 	my ($lo, $hi) = blsrch2 { $acomp->($_, $node) - 1 } $list;
 	@{$list}[$lo .. $hi-1];
 }
+
+=head2 uri_strtok PATH
+
+=head2 dns_strtok PATH
+
+Split string path into tokens for hierarchical, lexicographical comparison.
+The former splits on a Unix path/URI path, while the latter splits on an
+Internet domain name.  The absolute leading slash/trailing dot is discarded.
+In addition, single dots in a Unix path split are a no-op and are discarded.
+
+=cut
 
 sub uri_strtok {
 	my ($path) = @_;
@@ -41,14 +204,22 @@ sub dns_strtok {
 	reverse split m{\.}, $path, -1;
 }
 
+=head2 make_acomp STRTOK[, STRCMP]
+
+Create an I<acomp> function from a tokenizer and (optionally) a
+per-token comparison function.  String comparison is used if a
+comparison function is not explicitly given.
+
+=cut
+
 sub make_acomp {
 	my ($strtok, $strcmp) = @_;
 	sub {
 		my ($atok, $btok) = @_;
 		my (@atok, @btok);
 
-		@atok = $strtok->($_[0]);
-		@btok = $strtok->($_[1]);
+		@atok = $strtok->($atok);
+		@btok = $strtok->($btok);
 
 		acomp(\@atok, \@btok, $strcmp);
 	};
