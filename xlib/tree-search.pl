@@ -166,7 +166,7 @@ sub BST_leap {
 	my @children;
 	while ($lo < $hi) {
 		my $child = $list->[$lo];
-		push @children, $child;
+		push @children, $child if !$acomp->( [ $child, $node ], $child );
 		# blsrch1 finds first element where acomp > 1 relative to $child,
 		# i.e. first successor -- skips $child's entire subtree
 		$lo = blsrch1 { $acomp->( [ $_, $node ], $child ) - 1 } $list, $lo + 1, $hi;
