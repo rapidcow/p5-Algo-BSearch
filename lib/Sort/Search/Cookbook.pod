@@ -283,7 +283,7 @@ be significant if the second needle occurs more than once.
 
   ($low_ix, $high_ix)
       = map { my $want = $_;
-           scalar blsrch0 { $_ cmp $want }
+           scalar blsrch0 { $_ <=> $want }
                  \@num_array } (200, 400);
       # Returns (1, 3)
 

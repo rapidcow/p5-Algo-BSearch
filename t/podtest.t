@@ -214,7 +214,7 @@ subtest ('Conversion :: List::BinarySearch' => sub {
 
 	($low_ix, $high_ix)
 	    = map { my $want = $_;
-	         scalar blsrch0 { $_ cmp $want }
+	         scalar blsrch0 { $_ <=> $want }
 	               \@num_array } (200, 400);
 
 	is_deeply [$low_ix, $high_ix], [1, 3] => "binsearch_range 2";
