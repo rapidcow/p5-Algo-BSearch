@@ -339,7 +339,7 @@ exclusive lower bound.
 How are $lb and $lx related?  It's easy to convince
 yourself that they merely differ by one.  That means
 wherever you need $lx, you can compute $lb - 1, and
-vice versa.  The same for $ub and $lx.  So are the
+vice versa.  The same for $ub and $ux.  So are the
 libraries providing left search only justified?
 Absolutely.  Does it convey the intention as fluently?
 Well I beg to differ... :)
