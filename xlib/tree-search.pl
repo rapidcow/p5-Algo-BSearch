@@ -337,7 +337,7 @@ I<KIND> is one of C<uri> and C<dns> and defaults to C<uri>.
 
 else {
 	my $kind = 'uri';
-	GetOptions('K=s' => \$kind) and my $node = shift or die usage();
+	GetOptions('K=s' => \$kind) and defined (my $node = shift) or die usage();
 
 	chomp (my @list = <STDIN>);
 	my $acomp = make_acomp(do { no strict 'refs'; \&{"${kind}_strtok"} });

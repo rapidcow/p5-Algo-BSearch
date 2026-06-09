@@ -34,7 +34,7 @@ then
 	skip_all "can't exec xlib/tree-search.pl"
 fi
 
-plan 6
+plan 8
 
 [ "$dot" = . ]
 ok "find <empty> is a dot"
@@ -98,5 +98,21 @@ xt/sib.t
 xt/tree-search.t
 EOF
 is "$tmp"/actual "$tmp"/expect "diff <(ls xt)"
+
+tmpZERO=$tmp/ZERO
+mkdir -p "$tmpZERO"/0
+touch "$tmpZERO"/0/a.txt \
+      "$tmpZERO"/0/b.txt \
+      "$tmpZERO"/0/c.txt
+xlib/tree-search.pl find "$tmpZERO" |
+    xlib/tree-search.pl leap 0 \
+    >"$tmp"/actual
+ok "ls 0"
+cat <<'EOF' >"$tmp"/expect
+0/a.txt
+0/b.txt
+0/c.txt
+EOF
+is "$tmp"/actual "$tmp"/expect "diff <(ls 0)"
 
 conclude
