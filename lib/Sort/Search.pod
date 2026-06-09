@@ -99,8 +99,8 @@ C<$cmp> for short.
 It is worth noting that an ordering need not be associated
 with a specific target, despite all the above examples
 associated with one; to the search function, it is merely
-a unary function no different than the predicate (other
-than that the latter is concerned with finding truths,
+a unary function no different than the predicate (besides
+the fact that the latter is concerned with finding truths,
 while the former, finding zeros).
 
 =head2 Orientation variants
@@ -108,16 +108,15 @@ while the former, finding zeros).
 For every function in the conventional direction (i.e.,
 left-to-right, false-to-true, increasing), a dual variant
 is provided.  The conventional and dual directions are
-identified by the lowercase letter L and R.  Broadly
-speaking, all L variants return the leftmost instance
-on an increasing image; and all R variants return the
-rightmost instance on a decreasing image.
+identified by the lowercase letter L and R.
 
-In the context of bisection method, increasing means that
-the predicate goes from false to true, and decreasing
-means true to false.  In the context of binary search,
-increasing means C<-> to C<+>, and decreasing means
-C<+> to C<->.
+Broadly speaking, all L variants return the leftmost instance
+on an increasing image; and all R variants return the rightmost
+instance on a decreasing image.  In the context of bisection
+method, increasing means that the predicate goes from false to
+true, and decreasing means true to false.  In the context of
+binary search, increasing means C<- 0 +>, and decreasing means
+C<+ 0 ->.
 
 To re-use my examples, this:
 
