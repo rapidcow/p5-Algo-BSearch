@@ -1,11 +1,11 @@
 
 
 
-/*                                                            *\
- * This document continues the introduction (00INTRO.txt).    *
- * It's still an introduction though!  Here we talk about     *
- * the *real* binary search methods.                          *
-\*                                                            */
+/*                                                         *\
+ * This document continues the introduction (00INTRO.txt). *
+ * It's still an introduction though!  Here we talk about  *
+ * the *real* binary search methods.                       *
+\*                                                         */
 
        (continued) Introduction to Sort::Search
             ((now for actually "search"ing))
