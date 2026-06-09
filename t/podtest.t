@@ -13,15 +13,23 @@ use Sort::Search qw(
 );
 
 subtest ('Description :: Orientation variants' => sub {
-	plan tests => 2;
+	plan tests => 4;
 
+	#         F  F  T  T  T
 	my @A = ( 0, 1, 2, 3, 4 );
-	#         F  T  T  T  T
-	is $A[ bisectl { $_ >= 2 } \@A ], 2, "bisectl on increasing predicate";
+	is +( bisectl { $_ >= 2 } \@A ), 2, "bisectl on increasing predicate";
 
-	my @B = ( 5, 4, 3, 2, 1 );
-	#         T  T  T  F  F
-	is $B[ bisectr { $_ >= 3 } \@B ], 3, "bisectr on decreasing predicate";
+	#         T   T   T   F   F
+	my @B = ( 0, -1, -2, -3, -4 );
+	is +( bisectr { $_ >= -2 } \@B ), 2, "bisectr on decreasing predicate";
+
+	#         -  -  0  0  +
+	my @p = ( 5, 6, 7, 7, 9 );
+	is +( blsrch0 { $_ <=> 7 } \@p ), 2, "blsrch0 on increasing ordering";
+
+	#           +  0  0  -  -
+	my @q = qw( x  D  d  c  C );
+	is +( brsrch0 { lc($_) cmp 'd' } \@q ), 2, "brsrch0 on decreasing ordering";
 });
 
 subtest ('Description :: Lower/upper variants' => sub {

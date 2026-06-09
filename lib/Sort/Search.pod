@@ -86,9 +86,28 @@ value to be located within the array (hence the name "search").
 For example, suppose we want to locate C<$x = 3> in the array
 C<[1, 2, 3, 3, 4]>.  We can consider the ordering C<< $_ <=> $x >>,
 which returns negatives for C<[1, 2]>, zeros for C<[3, 3]>, and
-positives for C<[4]>.  We name the boundary between the negatives
-and the zeros the I<lower bisection point>, and that between
-the zeros and the positives the I<upper bisection point>.
+positives for C<[4]>.  This ordering is said to be I<increasing>,
+which is suitable for left searches (such as B<blsrch0>).
+We name the boundary between the negatives and the zeros the
+I<lower bisection point>, and that between the zeros and the
+positives the I<upper bisection point>.
+
+Note the asymmetrical treatment of target and array element.
+In certain cases, the target may not need to undergo the
+same treatment that the element does if the target is already
+processed.  For example, suppose we want to locate C<$y = d>
+case-insensitively in the array C<[x, D, d, c, C]>.  The
+ordering C<< lc($_) cmp $y >> returns positives for C<[x]>,
+zeros for C<[D, d]>, and positives for C<[c, C]>.  (There, since
+C<$y> is already lowercase, there is no need to call C<lc($y)>.)
+In contrast, this ordering is said to be I<decreasing>, and is
+suitable for right searches (such as B<brsrch0>).
+
+An ordering, in fact, need not be associated with any specific
+target at all.  To the binary search function, it is merely
+a unary function like the predicate (besides the fact that
+the latter is concerned with finding truths, while the former,
+finding zeros).
 
 =back
 
@@ -96,22 +115,15 @@ In both cases, we call the return value of the
 predicate/ordering the I<comparison result>, or
 C<$cmp> for short.
 
-It is worth noting that an ordering need not be associated
-with a specific target, despite all the above examples
-associated with one; to the search function, it is merely
-a unary function no different than the predicate (besides
-the fact that the latter is concerned with finding truths,
-while the former, finding zeros).
-
 =head2 Orientation variants
 
 For every function in the conventional direction (i.e.,
 left-to-right, false-to-true, increasing), a dual variant
 is provided.  The conventional and dual directions are
-identified by the lowercase letter L and R.
+identified by the lowercase letter "L" and "R".
 
-Broadly speaking, all L variants return the leftmost instance
-on an increasing image; and all R variants return the rightmost
+Broadly speaking, all "L" variants return the leftmost instance
+on an increasing image; and all "R" variants return the rightmost
 instance on a decreasing image.  In the context of bisection
 method, increasing means that the predicate goes from false to
 true, and decreasing means true to false.  In the context of
@@ -121,24 +133,44 @@ C<+ 0 ->.
 To re-use my examples, this:
 
   use Sort::Search qw(bisectl);
-  #         F  F  T  T  T
+  #         0  1  2  3  4      [index]
   my @A = ( 0, 1, 2, 3, 4 );
-  print $A[ bisectl { $_ >= 2 } \@A ];
+  #         F  F  T  T  T      [image]
+  print scalar bisectl { $_ >= 2 } \@A;
 
-prints C<2> because the L variants prefer to return
+prints C<2> because the "L" variants prefer to return
 the leftmost index of the matching range C<[2, 3, 4]>,
 or one past the final index (C<5>) if no such range exists.
 
   use Sort::Search qw(bisectr);
-  #         T  T  T  F  F
-  my @B = ( 5, 4, 3, 2, 1 );
-  print $B[ bisectr { $_ >= 3 } \@B ];
+  #         0   1   2   3   4      [index]
+  my @B = ( 0, -1, -2, -3, -4 );
+  #         T   T   T   F   F      [image]
+  print scalar bisectr { $_ >= -2 } \@B;
 
-prints C<3> because the R variants prefer to return
-the rightmost index of the matching range C<[5, 4, 3]>,
-or one below the initial index (C<-1>) if no such range
-exists.  (Care should be taken in this specific case
-as indexing by C<-1> wraps back to the last element.)
+also prints C<2> because the "R" variants prefer to return
+the rightmost index of the matching range C<[0, -1, -2]>, or
+one below the initial index (C<-1>) if no such range exists.
+(Care should be taken in this specific case as indexing by
+C<-1> wraps back to the last element.)
+
+Without getting too far ahead of myself, the semantics for
+the searches are identical:
+
+  use Sort::Search qw(blsrch0 brsrch0);
+  #           0  1  2  3  4    [index]
+  my @p =   ( 5, 6, 7, 7, 9 );
+  #           -  -  0  0  +    [image]
+  print scalar blsrch0 { $_ <=> 7 } \@p;
+
+  #           0  1  2  3  4    [index]
+  my @q = qw( x  D  d  c  C );
+  #           +  0  0  -  -    [image]
+  print scalar brsrch0 { lc($_) cmp 'd' } \@q;
+
+Here, the "L" variant returns leftmost instance of
+C<0 +>, and the "R" variant returns the rightmost
+instance of C<+ 0>.  Both of them still print C<2>.
 
 =head2 Lower/upper variants
 
