@@ -115,7 +115,7 @@ The B<acomp> function has a few interesting properties:
 
 =item *
 
-It is antisymmetrical, like the average comparison function:
+It is anticommutative, like the average comparison function:
 C<acomp(a, b) + acomp(b, a) == 0>.
 
 =item *
