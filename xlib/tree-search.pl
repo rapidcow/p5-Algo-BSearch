@@ -66,12 +66,12 @@ Normally, range searches like B<blsrch2> would find zeros:
 in this case, the exact match against the key C<xt/old>,
 the root directory itself.  However, we can use it to find
 ones -- the children prefixed with the key -- by shifting
-the 1 onto 0, while keeping everything monotonous (negatives
-before zeros, zeros before positive.)
+the 1 onto 0, while keeping everything monotonic (negatives
+before zeros, zeros before positives.)
 
 I find the mapping C<acomp - 1> to be the simplest for this.
 
-This core of this proof of concept was written by Claude,
+The core of this proof of concept was written by Claude,
 based on my L<mtree(5)>-like directory integrity utility
 (you can audit the extent of that from git blame), which
 implemented this premature idea of leaping over subtrees,
@@ -129,8 +129,8 @@ as seen in the L</SYNOPSIS>.
 
 When C<b> is fixed, the negatives precede 0s, the 0s precede
 the 1s, and the 1s precede the 2s.  (There is, however, no
-monotonicity among the negatives: -2s is easily interwoven
-between the -1s, as already evident from the example above.)
+monotonicity among the negatives: -2s are easily interwoven
+with the -1s, as already evident from the example above.)
 
 =back
 
@@ -176,7 +176,7 @@ sub BST_leap {
 
 =item B<BST_delv> I<ACOMP>, I<LIST>, I<NODE>
 
-Find all children of B<NODE> from B<LIST>, with
+Find all descendants of B<NODE> from B<LIST>, with
 respect to the acomp function B<ACOMP>.
 
 =cut
