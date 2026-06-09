@@ -6,7 +6,11 @@ tree-search.pl - prefix search on paths
 
 =head1 SYNOPSIS
 
-   # Command-line usage
+   # Command-line usage:
+   xlib/tree-search.pl find [-x EXCL]* [ROOT] > TREE
+   xlib/tree-search.pl leap [-K KIND] NODE < TREE
+   xlib/tree-search.pl delv [-K KIND] NODE < TREE
+
    xlib/tree-search.pl find |
       xlib/tree-search.pl delv xt |
          xlib/tree-search.pl leap xt/old
@@ -266,6 +270,25 @@ if (defined $cmd && grep { $cmd eq $_ } qw(find leap delv)) {
 	$cmd = 'find';
 }
 
+=head1 SUBCOMMANDS
+
+All the sub-commands assume that we are dealing with paths.
+Newline-delimited paths, more specifically.
+
+=over
+
+=item B<find> [-x I<EXCL>] [I<ROOT>]
+
+Basically B<find>(1) but sorted per-component.  The
+B<-x> flag is a primitive exclude rule that can be used
+to, say, skip over the ".git" directory: C<-x .git>.
+It basically acts like C<-path EXCL -prune -o ...> and
+can be specified multiple times.  The root is optional
+and defaults to the current directory.  There is at most
+one root, though only because I forgot forests existed.
+
+=cut
+
 if ($cmd eq 'find') {
 	my @excl;
 	GetOptions('x=s@' => \@excl) or die usage();
@@ -294,7 +317,19 @@ if ($cmd eq 'find') {
 			push @stack, map { "$path/$_" } @kids;
 		}
 	}
-} else {
+}
+
+=item B<delv> [-K I<KIND>] I<NODE>
+
+=item B<leap> [-K I<KIND>] I<NODE>
+
+Calls L</BST_delv> and L</BST_leap>.  Input is read from STDIN.
+
+I<KIND> is one of C<uri> and C<dns> and defaults to C<uri>.
+
+=cut
+
+else {
 	my $kind = 'uri';
 	GetOptions('K=s' => \$kind) and my $node = shift or die usage();
 
@@ -303,3 +338,7 @@ if ($cmd eq 'find') {
 	my @children = do { no strict 'refs'; \&{"BST_${cmd}"} }->($acomp, \@list, $node);
 	print "$_$/" foreach @children;
 }
+
+=back
+
+=cut
