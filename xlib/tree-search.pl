@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-tree-search.pl - prefix search on paths
+xlib/tree-search.pl - prefix search on paths
 
 =head1 SYNOPSIS
 

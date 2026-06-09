@@ -2,8 +2,8 @@
 
 =head1 NAME
 
-C<xlib/nsec-search.pl> -
-Search for predecessor and succesor.
+xlib/nsec-search.pl - search for predecessor and succesor
+
 Inspired by DNSSEC NextSECure (NSEC) records.
 
 Modified from C<blsrch2>.  The funny suffix
