@@ -169,7 +169,7 @@ sub BST_leap {
 		push @children, $child;
 		# blsrch1 finds first element where acomp > 1 relative to $child,
 		# i.e. first successor -- skips $child's entire subtree
-		$lo = blsrch1 { $acomp->($_, $child) - 1 } $list, $lo + 1, $hi;
+		$lo = blsrch1 { $acomp->( [ $_, $node ], $child ) - 1 } $list, $lo + 1, $hi;
 	}
 	@children;
 }
@@ -224,9 +224,23 @@ sub make_acomp {
 	sub {
 		my ($atok, $btok) = @_;
 		my (@atok, @btok);
+		my (@aref, @bref);
 
-		@atok = $strtok->($atok);
-		@btok = $strtok->($btok);
+		if (UNIVERSAL::isa($atok, "ARRAY")) {
+			@atok = $strtok->($atok->[0]);
+			@aref = $strtok->($atok->[1]);
+			@atok = splice @atok, 0, @aref + 1;
+		} else {
+			@atok = $strtok->($atok);
+		}
+
+		if (UNIVERSAL::isa($btok, "ARRAY")) {
+			@btok = $strtok->($btok->[0]);
+			@bref = $strtok->($btok->[1]);
+			@btok = splice @btok, 0, @bref + 1;
+		} else {
+			@btok = $strtok->($btok);
+		}
 
 		acomp(\@atok, \@btok, $strcmp);
 	};
