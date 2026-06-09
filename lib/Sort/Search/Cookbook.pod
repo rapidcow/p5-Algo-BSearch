@@ -22,7 +22,7 @@ to have been read.
 
 As a general rule of thumb, any existing binary search
 function most definitely translates to a "left search"
-here.  Despite examples are provided for both, keep in
+here.  Although examples are provided for both, keep in
 mind that "right search" is unconventional (at least
 to my knowledge) and can be counterintuitive.
 
@@ -78,9 +78,9 @@ and (2) if the return index corresponds to an exact match.
 For (1), check C<$cmp> is defined.
 For (2), check if C<$cmp> equals zero, which
 is equivalent to checking C<< $array->[$idx] <=> $want >>,
-but it save you an extra comparison.  If you also need
-the array element, use the third field C<$elt>, which is
-equivalent to C<< $array->[$idx] >>.
+but it saves you an extra comparison.  If you also need
+the array element, use the third field C<$elp>, which is
+equivalent to C<< \$array->[$idx] >>.
 
 Concretely, given the numerically sorted array:
 
@@ -182,7 +182,7 @@ From (other) CPAN modules:
 
 =item *
 
-For L<List::MoreUtils> (which this module in fact
+For L<List::MoreUtils> (which this module was in fact
 inspired by!) it's basically a verbatim translation.
 Namely this:
 
@@ -261,7 +261,7 @@ ordinary scalar context:
 C<binsearch_range> is equivalent to calling C<binsearch_pos>
 against the two needles, which means calling B<blsrch0> twice.
 This is I<different> from B<blsrch2>, though it would only
-significant if the second needle occurs more than once.
+be significant if the second needle occurs more than once.
 
   # use List::BinarySearch qw(binsearch_range);
   ( $low_ix, $high_ix )
