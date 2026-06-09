@@ -44,7 +44,7 @@ quick references and examples for common use cases.
 =head2 Terminology
 
 This module implements two classes of search algorithms,
-which will named separately in this document as the
+which will be named separately in this document as the
 I<bisection method> and the (ordinary) I<binary search>
 for distinction.  A brief definition follows.
 
@@ -98,7 +98,7 @@ same treatment that the element does if the target is already
 processed.  For example, suppose we want to locate C<$y = d>
 case-insensitively in the array C<[x, D, d, c, C]>.  The
 ordering C<< lc($_) cmp $y >> returns positives for C<[x]>,
-zeros for C<[D, d]>, and positives for C<[c, C]>.  (There, since
+zeros for C<[D, d]>, and negatives for C<[c, C]>.  (Here, since
 C<$y> is already lowercase, there is no need to call C<lc($y)>.)
 In contrast, this ordering is said to be I<decreasing>, and is
 suitable for right searches (such as B<brsrch0>).
@@ -230,7 +230,7 @@ caller to define and interpret the meaning of the zeros.
 
 Another thing to note is that, given the same underlying
 array, the ordering should be reversed when the orientation
-is flipped.  Usually when you could flip the operands to
+is flipped.  Usually you can flip the operands to
 achieve this, as I have shown above with C<< $_ <=> $x >>
 for left search and C<< $x <=> $_ >> for right search.
 But in cases where you don't have access to both operands
@@ -241,7 +241,7 @@ function of C<$_>, you can negate the ordering instead.
 =head2 Existence variants
 
 The bisection and the 0 variants have x variants which
-return as soon as it finds a match.
+return as soon as they find a match.
 (Mnemonic: "x" stands for "eXists".)
 
 =over
@@ -257,7 +257,7 @@ For B<bixectr>, it's the same against B<bisectr>.
 =item *
 
 B<blsrchx> is a modified version of B<blsrch0> that
-returns any index for which the predicate returns 0.
+returns any index for which the ordering returns 0.
 In the case that the ordering attains 0 at exactly
 one point or skips it entirely, they behave identically.
 For B<brsrchx>, it's the same against B<brsrch0>.
