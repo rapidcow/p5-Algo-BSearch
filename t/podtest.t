@@ -46,9 +46,10 @@ subtest ('Examples :: Exact match' => sub {
 	my @array = qw( 12 17a 17b 17c 21 );
 	my $lsearch = sub {
 	    my ($array, $want) = @_;
-	    my ($idx, $cmp, $elp) = blsrch0
-	            { no warnings 'numeric'; $_ <=> $want }
-	            $array;
+	    my ($idx, $cmp, $elp) = blsrch0 {
+	        ($_ =~ /([0-9]+)/g)[0] <=>
+	        ($want =~ /([0-9]+)/g)[0]
+	        } $array;
 	    if (!defined $cmp) { "$want not found anywhere"; }
 	    elsif ($cmp != 0)  { "$want not found; best "
 	                             . "is $$elp at [$idx]"; }
@@ -65,9 +66,10 @@ subtest ('Examples :: Exact match' => sub {
 	# Implementation 1
 	sub {
 	    my ($array, $want) = @_;
-	    my ($idx, $cmp, $elp) = brsrch0
-	            { no warnings 'numeric'; $want <=> $_ }
-	            $array;
+	    my ($idx, $cmp, $elp) = brsrch0 {
+	        ($want =~ /([0-9]+)/)[0]
+	        <=> ($_ =~ /([0-9]+)/)[0]
+	        } $array;
 	    if (!defined $cmp) { "$want not found anywhere"; }
 	    elsif ($cmp != 0)  { "$want not found; best "
 	                             . "is $$elp at [$idx]"; }
@@ -76,15 +78,17 @@ subtest ('Examples :: Exact match' => sub {
 	# Implementation 2
 	sub {
 	    my ($array, $want) = @_;
-	    my $idx = blsrch1
-	        { no warnings 'numeric'; $_ <=> $want }
+	    my $idx = blsrch1 {
+	        ($_ =~ /([0-9]+)/)[0] <=>
+	        ($want =~ /([0-9]+)/)[0] }
 	        $array;
 	    --$idx;
 	    if ($idx < 0) {
 	        "$want not found anywhere";
 	    } else {
 	        my $elt = $array->[$idx];
-	        my $cmp = $elt <=> $want;
+	        my $cmp = ($elt =~ /([0-9]+)/)[0]
+	            <=> ($want =~ /([0-9]+)/)[0];
 	        $cmp == 0
 	        ? "$want found at $elt [$idx] :)"
 	        : "$want not found; best is $elt at [$idx]";
@@ -109,7 +113,10 @@ foreach my $impl ($[..$#rsearch) {
 	    my ($lo, $hi);
 	    my ($array, $want) = @_;
 
-	    ($lo, $hi) = blsrch2 { $_ <=> $want } $array;
+	    ($lo, $hi) = blsrch2 {
+	        ($_ =~ /([0-9]+)/)[0] <=>
+	        ($want =~ /([0-9]+)/)[0]
+	        } $array;
 	    map { "[$_]=$array->[$_]" } ($lo .. $hi-1);
 	},
 	# Implementation 2
@@ -117,7 +124,10 @@ foreach my $impl ($[..$#rsearch) {
 	    my ($lo, $hi);
 	    my ($array, $want) = @_;
 
-	    ($hi, $lo) = brsrch2 { $want <=> $_ } $array;
+	    ($hi, $lo) = brsrch2 {
+	        ($want =~ /([0-9]+)/)[0]
+	        <=> ($_ =~ /([0-9]+)/)[0]
+	        } $array;
 	    map { "[$_]=$array->[$_]" } ($lo+1 .. $hi);
 	});
 

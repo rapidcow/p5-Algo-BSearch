@@ -86,7 +86,8 @@ Concretely, given the numerically sorted array:
 
     my @array = qw( 12 17a 17b 17c 21 );
 
-and the numeric ordering:
+and the numeric ordering (ignoring the fact that
+C<numeric> warnings would complain about the letters):
 
                           (-) $_  precedes $want
     sub { $_ <=> $want }  (0) $_  equals   $want
