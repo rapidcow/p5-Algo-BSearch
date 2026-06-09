@@ -1,22 +1,9 @@
 #!/usr/bin/env perl
 
-package Sort::Search::Tree;
-
 use strict;
 use warnings;
 use List::Util qw(max);
 use Sort::Search qw(blsrch1 blsrch2);
-
-use Exporter ();
-our (@ISA, @EXPORT);
-BEGIN {
-	@ISA = qw(Exporter);
-	@EXPORT = qw(
-		BST_leap BST_delv
-		uri_strtok dns_strtok
-		make_acomp
-	);
-}
 
 sub BST_leap {
 	my ($acomp, $list, $node) = @_;
@@ -85,15 +72,11 @@ sub acomp {
 
 return 1 if caller;
 
-package main;
-
 use strict;
 use warnings;
 use Getopt::Long;
 use File::Spec;
 no locale;
-
-BEGIN { Sort::Search::Tree->import(); }
 
 sub usage {
 <<USE;

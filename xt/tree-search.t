@@ -8,7 +8,6 @@ use Test::More;
 BEGIN {
 	unless (eval {
 		require './xlib/tree-search.pl';
-		Sort::Search::Tree->import();
 		1;
 	}) {
 		note "eval error: $@";
@@ -41,11 +40,11 @@ subtest "dns_strtok" => sub {
 subtest "acomp 5 states" => sub {
 	plan tests => 5;
 	my $cmp = sub { $_[0] cmp $_[1] };
-	is Sort::Search::Tree::acomp([qw(a b)],   [qw(a b)],   $cmp),  0, "   equal    =>  0";
-	is Sort::Search::Tree::acomp([qw(a b c)], [qw(a b)],   $cmp),  1, "   suffix   => +1";
-	is Sort::Search::Tree::acomp([qw(a b)],   [qw(a b c)], $cmp), -1, "   prefix   => -1";
-	is Sort::Search::Tree::acomp([qw(a c)],   [qw(a b)],   $cmp),  2, " successor  => +2";
-	is Sort::Search::Tree::acomp([qw(a a)],   [qw(a b)],   $cmp), -2, "predecessor => -2";
+	is acomp([qw(a b)],   [qw(a b)],   $cmp),  0, "   equal    =>  0";
+	is acomp([qw(a b c)], [qw(a b)],   $cmp),  1, "   suffix   => +1";
+	is acomp([qw(a b)],   [qw(a b c)], $cmp), -1, "   prefix   => -1";
+	is acomp([qw(a c)],   [qw(a b)],   $cmp),  2, " successor  => +2";
+	is acomp([qw(a a)],   [qw(a b)],   $cmp), -2, "predecessor => -2";
 };
 
 # ------------------------------------------------------------------ path tree
