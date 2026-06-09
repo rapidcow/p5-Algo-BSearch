@@ -15,9 +15,9 @@ Sort::Search - binary search on contiguous sorted ranges
 =head1 SYNOPSIS
 
   use Sort::Search qw(
-    bisectl bisectr bixectl bixectr
-    blsrch0 brsrch0 blsrch1 brsrch1
-    blsrch2 brsrch2 blsrchx brsrchx
+      bisectl bisectr bixectl bixectr
+      blsrch0 brsrch0 blsrch1 brsrch1
+      blsrch2 brsrch2 blsrchx brsrchx
   );
 
   bisectl { OK } ARRAY;   # leftmost TRUE (F to T)
