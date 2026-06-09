@@ -292,8 +292,8 @@ in the argument list.  The prototype is C<&$;$$>.
 The predicate should be increasing over every pair of adjacent indices
 it is defined on.  That is, true values always follow false values:
 
-   F F F ... F T T T   ok(x)
-   0 1 2     6 7 8 9      x
+  F F F ... F T T T   ok(x)
+  0 1 2     6 7 8 9      x
 
 Let C<$ok> denote the predicate, and set C<< $ok->($hi) = 1 >>.
 The return value of B<bisectl> is the unique index C<$x> on the
@@ -326,8 +326,8 @@ in the argument list.  The prototype is C<&$;$$>.
 The predicate should be decreasing over every pair of adjacent indices
 it is defined on.  That is, true values always precede false values:
 
-   T T T ... T F F F   ok(x)
-   0 1 2     6 7 8 9      x
+  T T T ... T F F F   ok(x)
+  0 1 2     6 7 8 9      x
 
 Let C<$ok> denote the predicate, and set C<< $ok->($lo) = 1 >>.
 The return value of B<bisectr> is the unique index C<$x> on the
