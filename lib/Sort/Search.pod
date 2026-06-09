@@ -271,13 +271,13 @@ bisection point to the left of the whole array.
 
 =back
 
-To re-re-use the examples from the L</DESCRIPTION> section
-(assuming L<$[|perlvar/$[> is 0), the implicit search range for
-C<< bisectl { ... } \@A >> is C<$lo = 0> and C<$hi = 5>, and
-the implicit search range for C<< bisectr { ... } \@B >> is
-C<$lo = -1> and C<$hi = 4>.  Note that the two searches
-have different fallback indices: C<$hi = 5> for the left
-search and C<$lo = -1> for the right search.
+To re-re-use the examples from the L</DESCRIPTION> section,
+the implicit search range for C<< bisectl { ... } \@A >> is
+C<$lo = 0> and C<$hi = 5>, and the implicit search range for
+C<< bisectr { ... } \@B >> is C<$lo = -1> and C<$hi = 4>.
+Note that the two searches have different fallback indices:
+C<$hi = 5> for the left search and C<$lo = -1> for the right
+search.
 
 =over
 
