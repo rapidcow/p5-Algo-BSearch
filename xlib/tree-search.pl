@@ -208,7 +208,7 @@ sub uri_strtok {
 sub dns_strtok {
 	my ($path) = @_;
 	$path =~ s{\.$}{};
-	reverse split m{\.}, $path, -1;
+	grep { 1 } reverse split m{\.}, $path, -1;
 }
 
 =item B<make_acomp> I<STRTOK>[, I<STRCMP>]
@@ -224,20 +224,20 @@ sub make_acomp {
 	sub {
 		my ($atok, $btok) = @_;
 		my (@atok, @btok);
-		my (@aref, @bref);
+		my ($aref, $bref);
 
 		if (UNIVERSAL::isa($atok, "ARRAY")) {
 			@atok = $strtok->($atok->[0]);
-			@aref = $strtok->($atok->[1]);
-			@atok = splice @atok, 0, @aref + 1;
+			$aref = $strtok->($atok->[1]);
+			@atok = splice @atok, 0, $aref + 1;
 		} else {
 			@atok = $strtok->($atok);
 		}
 
 		if (UNIVERSAL::isa($btok, "ARRAY")) {
 			@btok = $strtok->($btok->[0]);
-			@bref = $strtok->($btok->[1]);
-			@btok = splice @btok, 0, @bref + 1;
+			$bref = $strtok->($btok->[1]);
+			@btok = splice @btok, 0, $bref + 1;
 		} else {
 			@btok = $strtok->($btok);
 		}
