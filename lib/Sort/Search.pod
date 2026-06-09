@@ -511,12 +511,12 @@ for which C<$ord == 0>.
 =head1 CAVEATS
 
 Prior to Perl 5.8.0, arithmetic precision is limited to the
-precision of floating-points.  This precision is dependent on
-C<nv_preserves_uv_bits> of your perl, which is 53 for x86_64.
-Bounds greater than C<2 ** nv_preserves_uv_bits> will show
-round-off errors and, in some cases, fail to converge at all.
-L<Math::BigInt> will be necessary in such cases, even if
-both bounds technically fit in an IV/UV.
+precision of floating-point arithmetic.  This precision is
+dependent on C<nv_preserves_uv_bits> of your perl, which is
+53 on x86_64.  Bounds greater than C<2 ** nv_preserves_uv_bits>
+will generate round-off errors and, in some cases, fail to
+converge at all.  L<Math::BigInt> will be necessary in such
+cases, even if both bounds technically fit in an IV/UV.
 
 =head1 SEE ALSO
 
