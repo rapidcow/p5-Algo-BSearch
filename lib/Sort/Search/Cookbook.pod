@@ -226,7 +226,7 @@ For L<List::BinarySearch>, borrowing the definitions there:
   my @str_array = qw(Bach Beethoven Brahms Mozart Schubert);
 
 C<binsearch> is equivalent to B<blsrch0>, minus the special case
-where no match is found which must be invalidated explicitly:
+where no match is found, which must be invalidated explicitly:
 
   # use List::BinarySearch qw(binsearch);
   $index = binsearch {$a <=> $b} 300, @num_array;      # 2
