@@ -217,30 +217,27 @@ and B<blsrch1> is the exclusive upper bound.  The 2
 variants (B<blsrch2>, B<brsrch2>) return both inclusive
 and exclusive bounds at once, in that order; in scalar
 context, they return the absolute difference which
-corresponds to the range of equal values (i.e. the "0"s).
+corresponds to the range of equal values (i.e. the zeros).
 
 A more compact (albeit possibly obscure) characterization
 of the 0,1 variants is that they are the composition of
 the predicates C<< &$ord >= 0 >> and C<< &$ord > 0 >>
 on top of the bisection functions of the corresponding
-orientations.  Note that this formal characterization
-intentionally makes no mention of consistency with the
-total order from which it is derived; in particular it is
-possible to extend the notion of equality by mapping any
-contiguous region one wishes to find to "0", provided
-that it is properly bounded by "+" and "-".
+orientations.  This formal characterization does, however,
+reinforce the idea that an ordering is merely a predicate
+with a different specialized output; and it is up to the
+caller to define and interpret the meaning of the zeros.
 
 Another thing to note is that, given the same underlying
-array, the ordering should be reversed when orientation
-is flipped.  Usually when you could flip the operands to
-achieve this, as I have shown above with C<< $_ <=> $x >>
-for left search and C<< $x <=> $_ >> for right search.
-But in restrained cases where either (1) you don't have
-access to both operands and have to work with the ordering
-as a blackboxed unary function of C<$_>, or (2) the
-needle is not interchangeable with C<$_> (say, when the
-needle is a field of a larger structure), you can negate
-the ordering instead.
+array, the ordering should be reversed when the orientation
+is flipped (as shown above with C<< $_ <=> $x >> on left
+searches and C<< $x <=> $_ >> on right searches).  Usually
+when you could flip the operands to achieve this, as I
+have shown above with C<< $_ <=> $x >> for left search and
+C<< $x <=> $_ >> for right search.  But in cases where you
+don't have access to both operands and have to work with
+the ordering as a blackboxed unary function of C<$_>, you
+can negate the ordering instead.
 
 
 =head2 Existence variants
