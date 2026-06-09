@@ -58,11 +58,11 @@ and we compare with respect to the C<xt/old> key:
     xt/sib.t                 2
     xt/tree-search.t         2
 
-Normally, range searches like would find zeros: in this
-case, the exact match against the key C<xt/old>, the root
-directory itself.  However, we can use it to find ones --
-the children prefixed with the key -- by shiftin the 1
-onto 0, while keeping everything monotonous (negatives
+Normally, range searches like B<blsrch2> would find zeros:
+in this case, the exact match against the key C<xt/old>,
+the root directory itself.  However, we can use it to find
+ones -- the children prefixed with the key -- by shifting
+the 1 onto 0, while keeping everything monotonous (negatives
 before zeros, zeros before positive.)
 
 I find the mapping C<acomp - 1> to be the simplest for this.
@@ -74,7 +74,7 @@ implemented this premature idea of leaping over subtrees,
 but written with primitives like C<bisectl> when my binary
 search library lacked support for searching on sub-arrays.
 
-=head3 PLAN9 ACOMP
+=head2 PLAN9 ACOMP
 
 The B<acomp> function, as found in B<sys/src/cmd/look.c>
 from Plan9, is an extended comparison function that returns
@@ -125,7 +125,8 @@ as seen in the L</SYNOPSIS>.
 
 When C<b> is fixed, the negatives precede 0s, the 0s precede
 the 1s, and the 1s precede the 2s.  (There is, however, no
-monotonicity among the negatives.)
+monotonicity among the negatives: -2s is easily interwoven
+between the -1s, as already evident from the example above.)
 
 =back
 
