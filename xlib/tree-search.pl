@@ -148,7 +148,9 @@ use Sort::Search qw(blsrch1 blsrch2);
 
 =head1 SUBROUTINES
 
-=head2 BST_leap ACOMP, LIST, NODE
+=over
+
+=item B<BST_leap> I<ACOMP>, I<LIST>, I<NODE>
 
 Find the immediate children of B<NODE> from B<LIST>,
 with respect to the acomp function B<ACOMP>.
@@ -172,7 +174,7 @@ sub BST_leap {
 	@children;
 }
 
-=head2 BST_delv ACOMP, LIST, NODE
+=item B<BST_delv> I<ACOMP>, I<LIST>, I<NODE>
 
 Find all children of B<NODE> from B<LIST>, with
 respect to the acomp function B<ACOMP>.
@@ -186,9 +188,9 @@ sub BST_delv {
 	@{$list}[$lo .. $hi-1];
 }
 
-=head2 uri_strtok PATH
+=item B<uri_strtok> I<PATH>
 
-=head2 dns_strtok PATH
+=item B<dns_strtok> I<PATH>
 
 Split string path into tokens for hierarchical, lexicographical comparison.
 The former splits on a Unix path/URI path, while the latter splits on an
@@ -209,7 +211,7 @@ sub dns_strtok {
 	reverse split m{\.}, $path, -1;
 }
 
-=head2 make_acomp STRTOK[, STRCMP]
+=item B<make_acomp> I<STRTOK>[, I<STRCMP>]
 
 Create an I<acomp> function from a tokenizer and (optionally) a
 per-token comparison function.  String comparison is used if a
@@ -245,6 +247,10 @@ sub acomp {
 	}
 	return $res;
 }
+
+=back
+
+=cut
 
 return 1 if caller;
 
@@ -323,7 +329,7 @@ if ($cmd eq 'find') {
 
 =item B<leap> [-K I<KIND>] I<NODE>
 
-Calls L</BST_delv> and L</BST_leap>.  Input is read from STDIN.
+Calls B<BST_delv> and B<BST_leap>.  Input is read from STDIN.
 
 I<KIND> is one of C<uri> and C<dns> and defaults to C<uri>.
 
