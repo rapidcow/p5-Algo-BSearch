@@ -80,7 +80,7 @@ search library lacked support for searching on sub-arrays.
 
 =head2 PLAN9 ACOMP
 
-The B<acomp> function, as found in B<sys/src/cmd/look.c>
+The B<acomp> function, as found in C</sys/src/cmd/look.c>
 from Plan9, is an extended comparison function that returns
 one of the five following states:  (We assume C<a> and C<b>
 are the operands, in that order.)
