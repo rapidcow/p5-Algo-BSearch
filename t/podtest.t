@@ -95,7 +95,7 @@ subtest ('Examples :: Exact match' => sub {
 	    }
 	});
 
-foreach my $impl ($[..$#rsearch) {
+foreach my $impl (0 .. $#rsearch) {
 	my $rsearch = $rsearch[$impl];
 	my $n = $impl + 1 - $[;
 
@@ -131,7 +131,7 @@ foreach my $impl ($[..$#rsearch) {
 	    map { "[$_]=$array->[$_]" } ($lo+1 .. $hi);
 	});
 
-foreach my $impl ($[..$#srchall) {
+foreach my $impl (0 .. $#srchall) {
 	my $srchall = $srchall[$impl];
 	my $n = $impl + 1 - $[;
 
