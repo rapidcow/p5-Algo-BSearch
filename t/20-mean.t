@@ -70,7 +70,7 @@ SKIP: {
 	my $uvmin = ( +0 );  # (is actually an IV...)
 	my $uvmax = ( ~0 );
 	my $ivmax = ( $uvmax >> 1 );
-	( my $ivmin = -$ivmax )--;
+	-- ( my $ivmin = - $ivmax );
 
 	note "DBG: uvmin " . numfmt $uvmin;
 	note "DBG: uvmax " . numfmt $uvmax;
