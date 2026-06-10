@@ -166,9 +166,14 @@ sub BST_leap {
 	my @children;
 	while ($lo < $hi) {
 		my $child = $list->[$lo];
+		# Gasp -- a human child?  Say no more!  Add 'em to our
+		# collection (but *only* if it has the right length.)
+		#
+		# This is wacky stuff, but it's the best I can do
+		# without direct access to the tokenizer function.
 		push @children, $child if !$acomp->( [ $child, $node ], $child );
-		# blsrch1 finds first element where acomp > 1 relative to $child,
-		# i.e. first successor -- skips $child's entire subtree
+		# Find first element where acomp > 1 relative to $child,
+		# i.e. first successor -- skips $child's entire subtree.
 		$lo = blsrch1 { $acomp->( [ $_, $node ], $child ) - 1 } $list, $lo + 1, $hi;
 	}
 	@children;
