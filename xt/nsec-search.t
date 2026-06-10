@@ -10,7 +10,7 @@ BEGIN {
 		1;
 	}) {
 		note "eval error: $@";
-		plan skip_all => "SKIP: failed to load \`./xlib/nsec-search.pl'";
+		plan skip_all => "failed to load \`./xlib/nsec-search.pl'";
 	}
 
 	plan tests => 1;
