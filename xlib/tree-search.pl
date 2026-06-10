@@ -217,6 +217,16 @@ Create an I<acomp> function from a tokenizer and (optionally) a
 per-token comparison function.  String comparison is used if a
 comparison function is not explicitly given.
 
+Either operand of the returned function may be an annotated pair
+C<[TOK, REF]> instead of a plain string, in which case B<TOK> is
+truncated to one token below B<REF> before comparison; this is how
+B<BST_leap> forms the I<implied child> on sparse trees, where the
+encountered entry may lie deeper than the children being listed.
+Truncation to a fixed depth is weakly monotone with respect to the
+acomp order (prefixes sort first), so the binary search contract
+of L</PLAN9 ACOMP> is preserved -- provided B<REF> is held constant
+throughout a single search.
+
 =cut
 
 sub make_acomp {
