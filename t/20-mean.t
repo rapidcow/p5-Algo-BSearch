@@ -57,7 +57,7 @@ sub rmean_ok {
 	rmean_ok +( -69, 0 ) => ( -34 );
 
 SKIP: {
-	skip ("lossy IV+UV arithmetic", 8) if $] < 5.008;
+	$] >= 5.008 or skip ("lossy IV+UV arithmetic", 8);
 
 	lmean_ok +( $uvmin, $ivmax ) => ( $ivmax >> 1 );
 	lmean_ok +( $uvmin, $uvmax ) => ( $ivmax );
