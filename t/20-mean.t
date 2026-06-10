@@ -30,16 +30,6 @@ sub numfmt {
 	);
 }
 
-my $uvmin = ( +0 );  # (is actually an IV...)
-my $uvmax = ( ~0 );
-my $ivmax = ( $uvmax >> 1 );
-( my $ivmin = -$ivmax )--;
-
-note "DBG: uvmin " . numfmt $uvmin;
-note "DBG: uvmax " . numfmt $uvmax;
-note "DBG: ivmax " . numfmt $ivmax;
-note "DBG: ivmin " . numfmt $ivmin;
-
 sub lmean { scalar bixectl { 1 } $_[0], $_[1]; }
 sub rmean { scalar bixectr { 1 } $_[1], $_[0]; }
 
@@ -75,6 +65,16 @@ sub rmean_ok {
 
 SKIP: {
 	PERL_PRESERVE_IVUV or skip ("lossy IV+UV arithmetic", 8);
+
+	my $uvmin = ( +0 );  # (is actually an IV...)
+	my $uvmax = ( ~0 );
+	my $ivmax = ( $uvmax >> 1 );
+	( my $ivmin = -$ivmax )--;
+
+	note "DBG: uvmin " . numfmt $uvmin;
+	note "DBG: uvmax " . numfmt $uvmax;
+	note "DBG: ivmax " . numfmt $ivmax;
+	note "DBG: ivmin " . numfmt $ivmin;
 
 	lmean_ok +( $uvmin, $ivmax ) => ( $ivmax >> 1 );
 	lmean_ok +( $uvmin, $uvmax ) => ( $ivmax );
