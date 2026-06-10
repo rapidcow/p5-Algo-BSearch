@@ -39,15 +39,6 @@ sub lmean_ok {
 	lmean_ok +( -42, 10 ) => ( -16 );
 	lmean_ok +( -69, 0 ) => ( -35 );
 
-SKIP: {
-	skip ("lossy IV+UV arithmetic", 4) if $] < 5.008;
-
-	lmean_ok +( $uvmin, $ivmax ) => ( $ivmax >> 1 );
-	lmean_ok +( $uvmin, $uvmax ) => ( $ivmax );
-	lmean_ok +( $ivmin, $ivmax ) => ( -1 );
-	lmean_ok +( $ivmin, $uvmax ) => ( $ivmax >> 1 );
-}
-
 sub rmean_ok {
 	local $Test::Builder::Level = $Test::Builder::Level + 1;
 	my $mesg = sprintf "rmean(%s, %s) = %s", map {
@@ -66,7 +57,12 @@ sub rmean_ok {
 	rmean_ok +( -69, 0 ) => ( -34 );
 
 SKIP: {
-	skip ("lossy IV+UV arithmetic", 4) if $] < 5.008;
+	skip ("lossy IV+UV arithmetic", 8) if $] < 5.008;
+
+	lmean_ok +( $uvmin, $ivmax ) => ( $ivmax >> 1 );
+	lmean_ok +( $uvmin, $uvmax ) => ( $ivmax );
+	lmean_ok +( $ivmin, $ivmax ) => ( -1 );
+	lmean_ok +( $ivmin, $uvmax ) => ( $ivmax >> 1 );
 
 	rmean_ok +( $uvmin, $ivmax ) => ( $ivmax >> 1 ) + 1;
 	rmean_ok +( $uvmin, $uvmax ) => ( $ivmax ) + 1;
