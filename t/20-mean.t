@@ -5,6 +5,23 @@ use strict;
 use warnings;
 use Test::More tests => 50;
 
+# PERL_PRESERVE_IVUV was introduced in Perl v5.8.0.
+# Specifically, in 16b7a9a47b (tags/perl-5.7.1~968,
+# "faster and 64 bit preserving arithmetic").  The
+# compiler flag appears to be defined by default.
+#
+# Prior to this, Perl promotes integers to floating
+# points unconditionally, where integers larger than
+# 2 ** $Config{ nv_preserves_uv_bits } (or eval
+# "$Config{ nv_overflows_integers_at }") cannot be
+# computed losslessly.
+#
+# If PERL_PRESERVE_IVUV is absent from your perl -V,
+# (which I don't know how to check for here), please
+# set this to 1...
+#
+use constant PERL_PRESERVE_IVUV => ( $] >= 5.008 );
+
 use Sort::Search qw(bixectl bixectr);
 
 sub numfmt {
@@ -57,7 +74,7 @@ sub rmean_ok {
 	rmean_ok +( -69, 0 ) => ( -34 );
 
 SKIP: {
-	$] >= 5.008 or skip ("lossy IV+UV arithmetic", 8);
+	PERL_PRESERVE_IVUV or skip ("lossy IV+UV arithmetic", 8);
 
 	lmean_ok +( $uvmin, $ivmax ) => ( $ivmax >> 1 );
 	lmean_ok +( $uvmin, $uvmax ) => ( $ivmax );
