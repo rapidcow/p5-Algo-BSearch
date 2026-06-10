@@ -1,8 +1,0 @@
-also like, this should be obvious as broad daylight
-(one of the selling points of git, code auditing...)
-but $_[0] $_[1] were already loaded into readable
-names $atok $btok.  Naturally I took advantage of
-that... (trying to explain code kind of forces you
-to see weird stuff. :v but that's obvious and i'm
-tired... so leave me be, i'm not trying to be the
-perfect guy here.....)
