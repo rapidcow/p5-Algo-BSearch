@@ -66,6 +66,7 @@ sub rmean_ok {
 SKIP: {
 	PERL_PRESERVE_IVUV or skip ("lossy IV+UV arithmetic", 8);
 
+	# https://stackoverflow.com/a/15133735
 	my $uvmin = ( +0 );  # (is actually an IV...)
 	my $uvmax = ( ~0 );
 	my $ivmax = ( $uvmax >> 1 );
