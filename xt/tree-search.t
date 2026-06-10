@@ -202,15 +202,17 @@ subtest "BST_leap -- direct children only (DNS)" => sub {
 my @SPARSE_DNS = grep { $_ ne 'api.example.com' } @DNS;
 my @SPARSE_PATHS = grep { $_ ne 'a/b' } @PATHS;
 
-subtest "BST_leap -- sparse tree" => sub {
-	plan tests => 2;
+{
 	local $TODO = "BST_leap assumes internal nodes are present";
+	subtest "BST_leap -- sparse tree" => sub {
+		plan tests => 2;
 
-	is_deeply [BST_leap($dns_cmp, \@SPARSE_DNS, "example.com")],
-		[qw(mail.example.com www.example.com)],
-		"absent api.example.com does not surface its subtree";
+		is_deeply [BST_leap($dns_cmp, \@SPARSE_DNS, "example.com")],
+			[qw(mail.example.com www.example.com)],
+			"absent api.example.com does not surface its subtree";
 
-	is_deeply [BST_leap($path_cmp, \@SPARSE_PATHS, "a")],
-		[qw(a/e)],
-		"absent a/b does not surface a/b/c, a/b/d";
-};
+		is_deeply [BST_leap($path_cmp, \@SPARSE_PATHS, "a")],
+			[qw(a/e)],
+			"absent a/b does not surface a/b/c, a/b/d";
+	};
+}
