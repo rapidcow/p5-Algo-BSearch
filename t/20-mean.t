@@ -3,7 +3,7 @@
 use 5.006;
 use strict;
 use warnings;
-use Test::More tests => 50;
+use Test::More tests => 52;
 
 # PERL_PRESERVE_IVUV was introduced in Perl v5.8.0.
 # Specifically, in 16b7a9a47b (tags/perl-5.7.1~968,
@@ -64,7 +64,7 @@ sub rmean_ok {
 	rmean_ok +( -69, 0 ) => ( -34 );
 
 SKIP: {
-	PERL_PRESERVE_IVUV or skip ("lossy IV+UV arithmetic", 8);
+	PERL_PRESERVE_IVUV or skip ("lossy IV+UV arithmetic", 10);
 
 	# https://stackoverflow.com/a/15133735
 	my $uvmin = ( +0 );
@@ -86,6 +86,15 @@ SKIP: {
 	rmean_ok +( $uvmin, $uvmax ) => ( $ivmax ) + 1;
 	rmean_ok +( $ivmin, $ivmax ) => ( 0 );
 	rmean_ok +( $ivmin, $uvmax ) => ( $ivmax >> 1 ) + 1;
+
+	-- ( my $ivmax_m1 = $ivmax );
+	++ ( my $ivmax_p1 = $ivmax );
+
+	note "DBG: ivmax_m1 " . numfmt $ivmax_m1;
+	note "DBG: ivmax_p1 " . numfmt $ivmax_p1;
+
+	lmean_ok +( $ivmax_m1, $ivmax ) => ( $ivmax_m1 );
+	rmean_ok +( $ivmax_m1, $ivmax_p1 ) => ( $ivmax );
 }
 
 # Math::BigInt should be in core, but technically
