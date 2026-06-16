@@ -290,8 +290,10 @@ For reference, the following relations should hold:
 
 All subroutines are exported on-demand.  All subroutines
 share the same interface for input and output as described
-in L</COMMON INTERFACE>.  For basic uses though, always
-call in scalar context and pass the array by reference.
+in L</COMMON INTERFACE>.  For basic uses, call in scalar
+context and pass the search range as an array reference.
+This way, C<$_> will be the current array element in the
+callback code, while C<$_[0]> is the current array index.
 
 =over
 
