@@ -74,8 +74,8 @@ put the operands:
     left   |  $want <=> $_    $_ <=> $want
     right  |  $_ <=> $want    $want <=> $_
 
-One invariant worth noting is that, reading across, the
-ordering function has the same monotonity: for left search
+One invariant worth noting is that, reading across, both
+ordering functions have the same monotonity: for left search
 it's C<- 0 +> (negative, zero, positive in that order);
 for right search it's C<+ 0 -> (positive, zero, negative).
 
