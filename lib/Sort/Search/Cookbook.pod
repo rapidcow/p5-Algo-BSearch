@@ -58,15 +58,6 @@ C<undef> if none was found.
 
 =back
 
-You import the appropriate functions into your
-current namespace like this:
-
-  use Sort::Search qw( blsrch0 blsrch1 );
-         # imports `blsrch0', `blsrch1'
-
-... you get the point.  If you need more just add
-more to the list. :)
-
 =head1 EXAMPLES
 
 =head2 Exact match
