@@ -291,11 +291,11 @@ For reference, the following relations should hold:
 Functions are exported on-demand, or they must be fully
 qualified, such as C<Sort::Search::bisectl { ... }>.
 All functions share the same interface for input and output,
-as described in L</COMMON INTERFACE>.  For basic uses,
-call in scalar context and pass the search range as an
-array reference.  This way, C<$_> will be the current
-array element in the callback code, while C<$_[0]> is
-the current array index.
+as described in L</COMMON INTERFACE>.  For most common uses,
+I suggest calling in scalar context and passing the search
+range as an array reference.  This way, C<$_> will be the
+current array element in the callback code, while C<$_[0]>
+is the index of that element.
 
 =over
 
