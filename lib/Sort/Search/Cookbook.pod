@@ -58,6 +58,27 @@ C<undef> if none was found.
 
 =back
 
+=head1 QUICK REFERENCES
+
+=head2 Ordering from sorted elements
+
+Ordering can be constructed from comparing each
+element (C<$_>) against a given target (C<$want>).
+Here is a handy table for which way you should
+put the operands:
+
+                    SORT ORDERING?
+   ORIEN-  | f(i) <= f(i+1)  f(i) >= f(i+1)
+   TATION? |  (increasing)    (decreasing)
+  ---------+--------------------------------
+    left   |  $want <=> $_    $_ <=> $want
+    right  |  $_ <=> $want    $want <=> $_
+
+One invariant worth noting is that, reading across, the
+ordering function has the same monotonity: for left search
+it's C<- 0 +> (negative, zero, positive in that order);
+for right search it's C<+ 0 -> (positive, zero, negative).
+
 =head1 EXAMPLES
 
 =head2 Exact match
