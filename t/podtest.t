@@ -4,12 +4,12 @@
 use 5.006;
 use strict;
 use warnings;
-use Test::More tests => 6;
+use Test::More tests => 8;
 
 use Sort::Search qw(
 	bisectl bisectr
 	blsrch0 blsrch1 blsrch2 blsrchx
-	brsrch0 brsrch1 brsrch2
+	brsrch0 brsrch1 brsrch2 brsrchx
 );
 
 subtest ('Description :: Orientation variants' => sub {
@@ -163,6 +163,146 @@ foreach my $impl (0 .. $#srchall) {
 	is_deeply [$srchall->( \@array => 99 )], []  => "srchall impl-$n 5";
 }
 });  # 'Examples :: Exact match' subtest
+
+{
+	my @array = qw( 12 17a 17b 17c 21 );
+
+subtest ('Examples :: Insertion point' => sub {
+	plan tests => 14;
+
+	my $fmt_isrt = sub {
+		my ($array, $index) = @_;
+		my $out = "";
+		foreach (0 .. $#$array) {
+			$out .= $index == $_ ? " |" : "  ";
+			$out .= $array->[$_];
+		}
+		$out .= $index == @$array ? "|" : " ";
+		$out .= " i=$index";
+		$out;
+	};
+
+	my $insert = sub {
+	    my ($array, $value) = @_;
+	    $fmt_isrt->($array, blsrch0 {
+	        ($_ =~ /([0-9]+)/)[0] <=>
+	        ($value =~ /([0-9]+)/)[0]
+	    } $array);
+	};
+
+	is $insert->(\@array, 11),
+		" |12  17a  17b  17c  21  i=0",
+		"insert 11";
+	is $insert->(\@array, 12),
+		" |12  17a  17b  17c  21  i=0",
+		"insert 12";
+	is $insert->(\@array, 16),
+		"  12 |17a  17b  17c  21  i=1",
+		"insert 16";
+	is $insert->(\@array, 17),
+		"  12 |17a  17b  17c  21  i=1",
+		"insert 17";
+	is $insert->(\@array, 18),
+		"  12  17a  17b  17c |21  i=4",
+		"insert 18";
+	is $insert->(\@array, 21),
+		"  12  17a  17b  17c |21  i=4",
+		"insert 21";
+	is $insert->(\@array, 99),
+		"  12  17a  17b  17c  21| i=5",
+		"insert 99";
+
+	my $insort = sub {
+	    my ($array, $value) = @_;
+	    $fmt_isrt->($array, blsrch1 {
+	        ($_ =~ /([0-9]+)/)[0] <=>
+	        ($value =~ /([0-9]+)/)[0]
+	    } $array);
+	};
+
+	is $insort->(\@array, 11),
+		" |12  17a  17b  17c  21  i=0",
+		"insort 11";
+	is $insort->(\@array, 12),
+		"  12 |17a  17b  17c  21  i=1",
+		"insort 12";
+	is $insort->(\@array, 16),
+		"  12 |17a  17b  17c  21  i=1",
+		"insort 16";
+	is $insort->(\@array, 17),
+		"  12  17a  17b  17c |21  i=4",
+		"insort 17";
+	is $insort->(\@array, 18),
+		"  12  17a  17b  17c |21  i=4",
+		"insort 18";
+	is $insort->(\@array, 21),
+		"  12  17a  17b  17c  21| i=5",
+		"insort 21";
+	is $insort->(\@array, 99),
+		"  12  17a  17b  17c  21| i=5",
+		"insort 99";
+});  # 'Examples :: Insertion point'
+
+	my @marry = ( 2, 3, 5, 7, 12, 17 );
+
+subtest ('Examples :: Insertion point (uniq only)' => sub {
+	plan tests => 8;
+
+	my $uinsert = sub {
+	    my ($array, $value) = @_;
+	    my ($idx, $cmp, $elp) = blsrchx {
+	        ($_ =~ /([0-9]+)/)[0] <=>
+	        ($value =~ /([0-9]+)/)[0]
+	    } $array;
+	    if (defined $cmp && $cmp == 0) {
+	        "= [$idx] found $$elp";
+	    } else {
+	        "+ [$idx]";
+	    }
+	};
+
+
+	is $uinsert->(\@marry, 17),
+		"= [5] found 17",
+		"uniq insert 17 + strictly monotone";
+	is $uinsert->(\@marry, 29),
+		"+ [6]",
+		"uniq insert 29 + strictly monotone";
+	is $uinsert->(\@array, 17),
+		"= [2] found 17b",
+		"uniq insert 17";
+	is $uinsert->(\@array, 29),
+		"+ [5]",
+		"uniq insert 29";
+
+	my $uinsort = sub {
+	    my ($array, $value) = @_;
+	    my ($idx, $cmp, $elp) = brsrchx {
+	        ($value =~ /([0-9]+)/)[0]
+	        <=> ($_ =~ /([0-9]+)/)[0]
+	    } $array;
+	    if (defined $cmp && $cmp == 0) {
+	        "= [$idx] found $$elp";
+	    } else {
+	        $idx++;   # IMPORTANT! convert r0 to l1 index
+	        "+ [$idx]";
+	    }
+	};
+
+	is $uinsort->(\@marry, 17),
+		"= [5] found 17",
+		"uniq insort 17 + strictly monotone";
+	is $uinsort->(\@marry, 29),
+		"+ [6]",
+		"uniq insort 29 + strictly monotone";
+	is $uinsort->(\@array, 17),
+		"= [2] found 17b",
+		"uniq insort 17";
+	is $uinsort->(\@array, 29),
+		"+ [5]",
+		"uniq insort 29";
+});  # 'Examples :: Insertion point (uniq only)'
+}
 
 subtest ('Conversion :: List::MoreUtils' => sub {
 	plan tests => 6;
