@@ -230,19 +230,19 @@ if the element to be inserted does not already exist.
 In the examples above, note how the same index is derived
 for 11,16,18,99.
 
-To insert in a deduplicating manner (i.e. maintain strict
-monotonicity), you can use one of the inclusive variants
-to figure out if an exact match exists, and insert only if
-it doesn't exist.  Consider the following monotone array
-consisting of unique elements:
+To insert unique elements, you can use one of the inclusive
+variants to figure out if an exact match exists, and insert
+only if it doesn't exist.  Consider the following strictly
+monotone array:
 
   my @marry = ( 2, 3, 5, 7, 12, 17 );
 
 In the case of finding the first index fit for insertion,
 B<blsrch0> or B<blsrchx> can be used directly.  Both are
-inclusive as desired, but the "x" variant takes a shortcut
-and aborts upon seeing I<any> equal value; when it cannot
-find such, the results are identical to the "0" variant.
+inclusive variants as desired, but the "x" variant may
+take a shortcut and aborts upon seeing I<any> equal value;
+when it cannot find such, the results are identical to
+those of the "0" variant.
 
   sub uinsert {
       my ($array, $value) = @_;
@@ -268,7 +268,7 @@ find such, the results are identical to the "0" variant.
 The case of finding the last index though is a bit trickier,
 since we can't utilize the results of B<blsrch1> for the
 duplication message.  But recall B<blsrch1> and B<brsrch0>
-are differ by 1, so we can exploit the latter for the message
+differ by 1, so we can exploit the latter for the message
 and adjust the index for insertion.
 
   sub uinsort {
