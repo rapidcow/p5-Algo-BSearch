@@ -543,10 +543,48 @@ your only escape hatch.)
 Recall that left search probes C<[$lo, $hi)> while right
 search probes C<($lo, $hi]>.  In either search orientation,
 C<$hi> is required in this form and is obtained from the
-first argument.  C<$lo> is inferred if omitted; the default
+first argument.  C<$lo> is inferred if omitted: the default
 is 0 for left search and -1 for right search.  That is to
 say, C<bisectr { ... } N> searches on C<(-1, N]>, while
 C<bisectl { ... } N> searches on C<[0, N)>.
+
+=item B<ARRAY form>
+
+  bisectl { OK }  ARRAY [,[LO,] HI];  # also: bixectl
+  blsrch0 { ORD } ARRAY [,[LO,] HI];  # also: blsrchx blsrch1 blsrch2
+  bisectr { OK }  ARRAY [,HI [,LO]];  # also: bixectr
+  brsrch0 { ORD } ARRAY [,HI [,LO]];  # also: brsrchx brsrch1 brsrch2
+
+When given an array, C<$_> is instead aliased to the
+array element instead.  Omitting C<$lo> is subject to
+inference as with the index form, however this time,
+C<$hi> too can be inferred: the default is one past
+the last index of the passed array for left search
+(or equivalently, the size) and the last index itself
+for right search.
+
+Note that the scalar prototype enables you to pass
+C<@array> directly:
+
+  my ($want, @array, $lo);
+  my $hi = blsrch1 { $_ <=> $want }
+             \@array, $lo, @array;
+  #                        ^^^^^^
+  # No "scalar" or 0+ necessary here!
+
+=item B<CODE form>
+
+  bisectl { OK }  CODE, [LO,] HI;  # also: bixectl
+  blsrch0 { ORD } CODE, [LO,] HI;  # also: blsrchx blsrch1 blsrch2
+  bisectr { OK }  CODE, HI [,LO];  # also: bixectr
+  brsrch0 { ORD } CODE, HI [,LO];  # also: brsrchx brsrch1 brsrch2
+
+As a generalization of the ARRAY form, the CODE form
+accepts any arbitrary function that maps an index to
+a SCALAR reference to an element.  (The ARRAY form is
+in fact eqivalent to C<sub { \$array[$_[0]] }>.)  In
+the callback, C<$_> is aliased to the referent, and
+C<$hi>, like in index form, must be given explicitly.
 
 =back
 
