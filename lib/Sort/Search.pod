@@ -327,12 +327,10 @@ of the search range to explain the mathematical contract
 by which the binary search algorithm should abide.
 
 Also: for convenience, the predicate and ordering are written
-as simple unary functions on the array index.  But know
-that this isn't how they are called (well, it's not really
-lying; C<$_[0]> would be the index.  But C<$_> is more
-versatile and aliased to the array element itself in the
-array form.  Either way, the part where C<$_> is localized
-and aliased is left out to your imagination. :)
+simply as unary functions on the array index.  But know that
+the actual invocation is a bit more involved, since it also has
+to bind C<$_>.  My advice is to treat them more as mathematical
+formulas than as runnable code... :)
 
 =over
 
