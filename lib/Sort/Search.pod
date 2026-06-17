@@ -324,7 +324,7 @@ performed on C<@array>, the range had been C<$hi = $#array>
 
 The remainer of this section will make explicit mentions
 of the search range to explain the mathematical contract
-that the binary search algorithm should abide by.
+by which the binary search algorithm should abide.
 
 Also: for convenience, the predicate and ordering are written
 as simple unary functions on the array index.  But know
