@@ -505,7 +505,50 @@ for which C<$ord == 0>.
 
 =head1 COMMON INTERFACE
 
-  # TODO !
+This section describes the input forms (index, ARRAY, and CODE),
+common to all functions, and the output forms (scalar and list
+contexts) for the 2-variants (i.e. B<blsrch2> and B<brsrch2>)
+and for everyone else.
+
+=head2 Input forms
+
+The input form determines the meaning of C<$_> in the predicate
+/ ordering callback, though C<$_[0]> stays the current index in
+all three scenarios.
+
+=over
+
+=item B<index form>
+
+  bisectl { OK }  [undef,] [LO,] HI;  # also: bixectl
+  blsrch0 { ORD } [undef,] [LO,] HI;  # also: blsrchx blsrch1 blsrch2
+  bisectr { OK }  [undef,] HI [,LO];  # also: bixectr
+  brsrch0 { ORD } [undef,] HI [,LO];  # also: brsrchx brsrch1 brsrch2
+
+As the name implies, C<$_> here is aliased to the index
+C<$_[0]> itself with no additional mapping.  The index
+form is inferred whenever the first argument following
+is neither an ARRAY nor a CODE reference, though it may be
+explicitly pinned by prefixing the index with C<undef>:
+
+  bisectr { $_ * $_ <= 2025 }        2025;  # Implicit
+  bisectr { $_ * $_ <= 2025 } undef, 2025;  # Explicit
+
+(There should not be a need to prefix a bigint with C<undef>:
+as far as I can tell, L<Math::BigInt> had always been either
+a blessed SCALAR or a blessed HASH, but never blessed ARRAY.
+Should my naive assumption break however, explicit form is
+your only escape hatch.)
+
+Recall that left search probes C<[$lo, $hi)> while right
+search probes C<($lo, $hi]>.  In either search orientation,
+C<$hi> is required in this form and is obtained from the
+first argument.  C<$lo> is inferred if omitted; the default
+is 0 for left search and -1 for right search.  That is to
+say, C<bisectr { ... } N> searches on C<(-1, N]>, while
+C<bisectl { ... } N> searches on C<[0, N)>.
+
+=back
 
 =head1 CAVEATS
 
