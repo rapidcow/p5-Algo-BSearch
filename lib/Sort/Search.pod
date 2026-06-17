@@ -112,7 +112,7 @@ finding zeros).
 =back
 
 In both cases, we call the return value of the
-predicate/ordering the I<comparison result>, or
+predicate / ordering the I<comparison result>, or
 C<$cmp> for short.
 
 =head2 Orientation variants
@@ -172,7 +172,7 @@ Here, the "L" variant returns leftmost instance of
 C<0 +>, and the "R" variant returns the rightmost
 instance of C<+ 0>.  Both of them still print C<2>.
 
-=head2 Lower/upper variants
+=head2 Lower / upper variants
 
 For I<binary search> functions in particular, there are
 the 0,1 variants corresponding to the aforementioned
