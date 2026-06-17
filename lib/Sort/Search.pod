@@ -288,14 +288,51 @@ For reference, the following relations should hold:
 
 =head1 FUNCTIONS
 
-Functions are exported on-demand, or they must be fully
-qualified, such as C<Sort::Search::bisectl { ... }>.
-All functions share the same interface for input and output,
-as described in L</COMMON INTERFACE>.  For most common uses,
-I suggest calling in scalar context and passing the search
-range as an array reference.  This way, C<$_> will be the
-current array element in the callback code, while C<$_[0]>
-is the index of that element.
+All functions share the same interface for input and output
+(with the exception of the outputs of B<blsrch2> and
+B<brsrch2>, which still share the same input mechanism
+nonetheless).  The full story of that will be deferred to
+L</COMMON INTERFACE>, though it helps to establish a few
+concepts.
+
+Up until this point I have been exclusively talking about
+searches with an implied I<search range> on entire arrays.
+What follows is a formal definition.  Like lower and upper
+bounds, the search range is asymmetrically identified by
+a low index (C<$lo>) and a high index (C<$hi>):
+
+=over
+
+=item *
+
+A left search is presented with the challenge of finding
+a candidate with index on the range C<[$lo, $hi)>; and
+should it fail to meet that challenge, it yields C<$hi>.
+Previously, whenever a left search was performed on an array
+named, say, C<@array>, the range had been C<$lo = 0> (lowest
+index) and C<$hi = $#array + 1> (one above the highest index).
+
+=item *
+
+A right search is presented with the challenge of finding
+a candidate with index on the range C<($lo, $hi]>, and yield
+C<$lo> on failure.  Previously, whenever a right search was
+performed on C<@array>, the range had been C<$hi = $#array>
+(highest index) and C<$lo = -1> (one below the lowest index).
+
+=back
+
+The remainer of this section will make explicit mentions
+of the search range to explain the mathematical contract
+that the binary search algorithm should abide by.
+
+Also: for convenience, the predicate and ordering are written
+as simple unary functions on the array index.  But know
+that this isn't how they are called (well, it's not really
+lying; C<$_[0]> would be the index.  But C<$_> is more
+versatile and aliased to the array element itself in the
+array form.  Either way, the part where C<$_> is localized
+and aliased is left out to your imagination. :)
 
 =over
 
