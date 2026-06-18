@@ -17,8 +17,9 @@ use Test::More tests => 52;
 # computed losslessly.
 #
 # If PERL_PRESERVE_IVUV is absent from your perl -V,
-# (which I don't know how to check for here), please
-# set this to 1...
+# (which I don't know how to check for here, other
+# than assuming that Perl 5.8.0 and onward have it),
+# please set this to 0 to skip those tests...
 #
 use constant PERL_PRESERVE_IVUV => ( $] >= 5.008 );
 
