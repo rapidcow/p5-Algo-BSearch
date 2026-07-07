@@ -282,9 +282,9 @@ those of the "0" variant.
   uinsert [ @array ] => 17;  # = [2] found 17b*
   uinsert [ @array ] => 29;  # + [5]
 
-  # *This would be [1] "17a" if blsrch0 were used,
-  #  the absolute first equal instance. It wouldn't
-  #  make a whole lot of difference, though. ;p
+  # * This would be [1] "17a" if blsrch0 were used,
+  #   the absolute first equal instance. It wouldn't
+  #   make a whole lot of difference, though. ;p
 
 The case of finding the last index though is a bit trickier,
 since we can't utilize the results of B<blsrch1> for the
