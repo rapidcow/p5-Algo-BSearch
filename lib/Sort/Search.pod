@@ -602,10 +602,9 @@ Note that the scalar prototype enables you to pass
 C<@array> directly:
 
   my ($want, @array, $lo);
-  my $hi = blsrch1 { $_ <=> $want }
-             \@array, $lo, @array;
-  #                        ^^^^^^
-  # No "scalar" or 0+ necessary here!
+  my $hi = blsrch1 { $_ <=> $want } \@array, $lo, @array;
+  #                                               ^^^^^^
+  #                     No "scalar" or 0+ necessary here!
 
 =item B<CODE form>
 
@@ -617,8 +616,8 @@ C<@array> directly:
 As a generalization of the ARRAY form, the CODE form
 accepts any arbitrary function that maps an index to
 a SCALAR reference to an element.  (The ARRAY form is
-in fact eqivalent to C<sub { \$array[$_[0]] }>.)  In
-the callback, C<$_> is aliased to the referent, and
+in fact equivalent to C<< sub { \$array->[$_[0]] } >>.)
+In the callback, C<$_> is aliased to the referent, and
 C<$hi>, like in index form, must be given explicitly.
 
 =back
