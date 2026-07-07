@@ -261,7 +261,6 @@ subtest ('Examples :: Insertion point (uniq only)' => sub {
 	    }
 	};
 
-
 	is $uinsert->(\@marry, 17),
 		"= [5] found 17",
 		"uniq insert 17 + strictly monotone";
