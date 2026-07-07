@@ -246,7 +246,7 @@ element at; this preserves the regular insertion order
   insort [ @array ] => 21;  #  12  17a 17b 17c  21| i=5
   insort [ @array ] => 99;  #  12  17a 17b 17c  21| i=5
 
-Note that B<linsert> and B<rinsert> coincide if and only
+Note that B<insert> and B<insort> coincide if and only
 if the element to be inserted does not already exist.
 In the examples above, note how the same index is derived
 for 11,16,18,99.
