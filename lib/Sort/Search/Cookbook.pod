@@ -400,8 +400,6 @@ ordinary scalar context:
 
 C<binsearch_range> is equivalent to calling C<binsearch_pos>
 against the two needles, which means calling B<blsrch0> twice.
-This is I<different> from B<blsrch2>, though it would only
-be significant if the second needle occurs more than once.
 
   # use List::BinarySearch qw(binsearch_range);
   ( $low_ix, $high_ix )
