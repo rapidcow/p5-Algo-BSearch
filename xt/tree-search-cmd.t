@@ -81,8 +81,8 @@ is "$tmp"/actual "$tmp"/expect "diff <(ls -r xt/old)"
 
 # ---- leap xt: direct children (xt/old subtree skipped) ----
 xlib/tree-search.pl find "$tmpROOT" |
-    xlib/tree-search.pl leap xt \
-    >"$tmp"/actual
+	xlib/tree-search.pl leap xt \
+	>"$tmp"/actual
 ok "ls xt/old"
 cat <<'EOF' >"$tmp"/expect
 xt/00-load.t
@@ -105,8 +105,8 @@ touch "$tmpZERO"/0/a.txt \
       "$tmpZERO"/0/b.txt \
       "$tmpZERO"/0/c.txt
 xlib/tree-search.pl find "$tmpZERO" |
-    xlib/tree-search.pl leap 0 \
-    >"$tmp"/actual
+	xlib/tree-search.pl leap 0 \
+	>"$tmp"/actual
 ok "ls 0"
 cat <<'EOF' >"$tmp"/expect
 0/a.txt
