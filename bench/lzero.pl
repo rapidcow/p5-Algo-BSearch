@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-# zero.pl - finding (left) exact match
+# lzero.pl - finding (left) exact match
 
 use strict;
 use warnings;
