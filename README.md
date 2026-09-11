@@ -75,7 +75,7 @@ See LICENSE for a copy of Perl's licenses.
 
 Disclaimer:
 xlib and xt are *not part of the module*.  They are experimental
-and **contains existing AI-generated code.**  lib and t do not
+and **contain existing AI-generated code.**  lib and t do not
 contain AI-generated code (with exceptions of typo corrections.)
 
 There won't be new AI-generated code, but just out of safety,
