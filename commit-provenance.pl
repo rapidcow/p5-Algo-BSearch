@@ -180,5 +180,5 @@ my @dangling  = grep { !$_->{connected} } @rows;
 my @connected = grep {  $_->{connected} } @rows;
 
 for my $r (topo_sort_by_date(@dangling), topo_sort_by_date(@connected)) {
-    print join("\t", $r->{meta}, $r->{commit}, $r->{parent}, $r->{peer}), "\n";
+    print join("\t", $r->{date}, $r->{meta}, $r->{commit}, $r->{parent}, $r->{peer}), "\n";
 }
