@@ -60,6 +60,16 @@ sub augment_peer {
     return $from;
 }
 
+my %subject_cache;
+sub subject_of {
+    my ($oid) = @_;
+    return $subject_cache{$oid} //= do {
+        my $s = qx(git log -1 --format=%s '$oid' 2>/dev/null);
+        chomp $s;
+        $s;
+    };
+}
+
 my %resolved;
 sub resolve {
     my ($abbrev) = @_;
@@ -144,6 +154,25 @@ for my $e (@events) {
         if (@added_pairs == @removed_pairs) {
             for my $i (0 .. $#added_pairs) {
                 $revision_of{ $added_pairs[$i][0] } = $removed_pairs[$i][0];
+            }
+        } elsif (@added_pairs > @removed_pairs) {
+            # Dumb heuristic for "-N+M" with M > N: line up both sides
+            # oldest-first (git rev-list returns newest-first, so reverse),
+            # walk the first N positions from there, and call two commits
+            # the same "revision" when they share a commit SUBJECT (not the
+            # tree -- deliberately loose). The M-N commits left over at the
+            # *newest* end are just a normal new push, not a replacement --
+            # verified against a real case where the genuinely-new commit
+            # was the tip and the true replacement sat one position deeper.
+            # This still won't recover a mid-series insertion (confirmed
+            # against another real range-diff in refs/notes/amends), but
+            # that's the "dumb" tradeoff.
+            my @added_oldest_first   = reverse @added_pairs;
+            my @removed_oldest_first = reverse @removed_pairs;
+            my $n = scalar(@removed_oldest_first);
+            for my $i (0 .. $n - 1) {
+                my ($a, $r) = ($added_oldest_first[$i][0], $removed_oldest_first[$i][0]);
+                $revision_of{$a} = $r if subject_of($a) eq subject_of($r);
             }
         } else {
             warn sprintf("asymmetric forced update in %s (delta %s): "
