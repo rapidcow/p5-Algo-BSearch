@@ -10,7 +10,8 @@ use warnings;
 # The same commit can legitimately get more than one row (once per event
 # that touched it).
 #
-#   <info-ref event oid>  <commit oid>  <parent oid (all-zero if root)>  <peer>
+#   <date>  <info-ref event oid>  <commit oid>  <parent oid (all-zero if root)>
+#   <revision oid (all-zero if not a forced-update replacement)>  <peer>
 #
 # Run `git name-rev <event oid>` to see which ref/offset an event came from.
 
@@ -108,7 +109,7 @@ sub parse_ref {
             next unless $ref eq 'refs/heads/master';
             my ($added) = $delta =~ /\+(\d+)/;
             push @events, { meta => $hash, date => $date, old => $old, new => $new,
-                            added => $added, from => $from, mail => $mail };
+                            added => $added, delta => $delta, from => $from, mail => $mail };
         }
     }
     return @events;
@@ -116,30 +117,49 @@ sub parse_ref {
 
 my @events = (parse_ref('rpi-self'), parse_ref('rdk-self'));
 
-my @rows;   # { meta, commit, parent, peer, date, connected }
+my @rows;   # { meta, commit, parent, revision, peer, date, connected }
 for my $e (@events) {
     my $new_full = resolve($e->{new});
     next unless defined $new_full;   # nothing to walk from at all
     my $old_full = resolve($e->{old});
     my $peer = augment_peer($e->{from}, $e->{mail});
 
-    my %seen_this_event;
-    my @pairs;
+    my (@added_pairs, @removed_pairs);
     if (defined $old_full) {
-        push @pairs, parents_in_range("${old_full}..${new_full}");   # added side
-        push @pairs, parents_in_range("${new_full}..${old_full}");   # removed side (empty if old is an ancestor of new)
+        @added_pairs   = parents_in_range("${old_full}..${new_full}");
+        @removed_pairs = parents_in_range("${new_full}..${old_full}");   # empty if old is an ancestor of new
     } elsif ($e->{old} =~ /^0+$/) {
-        push @pairs, parents_in_range($new_full);                    # brand new ref
+        @added_pairs = parents_in_range($new_full);                     # brand new ref
     } elsif (defined $e->{added}) {
-        push @pairs, parents_in_range("-n $e->{added} $new_full");
+        @added_pairs = parents_in_range("-n $e->{added} $new_full");
     }
 
-    for my $pair (@pairs) {
+    # A forced update ("-N+M") is only a clean 1:1 revision (each new commit
+    # replacing exactly one old commit, aligned from the tip backward like
+    # git range-diff) when N == M. Anything else -- commits genuinely added
+    # or dropped alongside the rewrite -- doesn't have a well-defined
+    # per-commit correspondence, so just warn and leave it unpaired.
+    my %revision_of;   # added-side commit oid => its old-side counterpart oid
+    if (@added_pairs && @removed_pairs) {
+        if (@added_pairs == @removed_pairs) {
+            for my $i (0 .. $#added_pairs) {
+                $revision_of{ $added_pairs[$i][0] } = $removed_pairs[$i][0];
+            }
+        } else {
+            warn sprintf("asymmetric forced update in %s (delta %s): "
+                       . "%d added vs %d removed commits -- not pairing\n",
+                       $e->{meta}, $e->{delta}, scalar(@added_pairs), scalar(@removed_pairs));
+        }
+    }
+
+    my %seen_this_event;
+    for my $pair (@added_pairs, @removed_pairs) {
         my ($c, $p) = @$pair;
         next if $seen_this_event{$c}++;
         push @rows, {
             meta => $e->{meta}, commit => $c,
             parent => (defined $p ? $p : $ZERO),
+            revision => ($revision_of{$c} // $ZERO),
             peer => $peer, date => $e->{date},
             connected => ($all270{$c} ? 1 : 0),
         };
@@ -161,16 +181,21 @@ for my $oid (keys %all270) {
     chomp $date;
     push @rows, {
         meta => '', commit => $oid, parent => $parent,
+        revision => $ZERO,
         peer => '', date => $date, connected => 1,
     };
 }
 
 # ---- sort: dangling commits first, connected (part of HEAD's 270) last;
-# within each group, topological (parent before child) then event date ----
+# within each group, topological (old revision before its replacement) then
+# event date. Ordered by the revision column, not the git-parent column:
+# most rows have no revision predecessor at all (only forced-update rewrites
+# do), so this only constrains amend chains to read old-then-new and leaves
+# everything else to sort by date.
 sub topo_sort_by_date {
     my (@nodes) = @_;
     my %indeg;
-    my %succs;     # parent-commit => [ rows whose commit is that parent's child ]
+    my %succs;     # old-revision commit => [ rows whose revision is that commit ]
     my %producers; # commit => [ rows that ARE this commit (could be >1, same commit multiple events) ]
     push @{ $producers{ $_->{commit} } }, $_ for @nodes;
 
@@ -178,8 +203,8 @@ sub topo_sort_by_date {
         $indeg{$n} = 0;
     }
     for my $n (@nodes) {
-        next if $n->{parent} eq $ZERO;
-        if (my $preds = $producers{ $n->{parent} }) {
+        next if $n->{revision} eq $ZERO;
+        if (my $preds = $producers{ $n->{revision} }) {
             $indeg{$n} += scalar(@$preds);
             push @{ $succs{$_} }, $n for @$preds;
         }
@@ -207,5 +232,5 @@ my @dangling  = grep { !$_->{connected} } @rows;
 my @connected = grep {  $_->{connected} } @rows;
 
 for my $r (topo_sort_by_date(@dangling), topo_sort_by_date(@connected)) {
-    print join("\t", $r->{date}, $r->{meta}, $r->{commit}, $r->{parent}, $r->{peer}), "\n";
+    print join("\t", $r->{date}, $r->{meta}, $r->{commit}, $r->{parent}, $r->{revision}, $r->{peer}), "\n";
 }
