@@ -43,12 +43,20 @@ my %vm = (
 );
 
 sub augment_peer {
-    my ($raw) = @_;
-    return $raw if $raw =~ /\(/;   # already has a parenthetical
-    if ($raw =~ /^(\d+\.\d+\.\d+\.\d+):\d+/ && exists $vm{$1}) {
-        return "$raw ($vm{$1})";
+    my ($from, $mail) = @_;
+    return $from if $from =~ /\(/;   # already has a parenthetical
+    if ($mail =~ /@(.+\.(?:
+            local        |# RFC 6762 (mDNS | Bonjour)
+            arpa         |# RFC 3172, BCP 52 (e.g. home.arpa)
+            # RFC 2606, BCP 32; RFC 6761. (reserved TLD)
+            test|example|localhost|invalid
+    ))$/x) {
+        return "$from ($1)";
     }
-    return $raw;
+    if ($from =~ /^(\d+\.\d+\.\d+\.\d+):\d+/ && exists $vm{$1}) {
+        return "$from ($vm{$1})";
+    }
+    return $from;
 }
 
 my %resolved;
@@ -79,7 +87,7 @@ sub parents_in_range {
 
 sub parse_ref {
     my ($refname) = @_;
-    my @lines = qx(git log --format='%x01COMMIT %H %ct%n%B' refs/info/$refname);
+    my @lines = qx(git log --format='%x01COMMIT %H %ct %ae%n%B' refs/info/$refname);
     my $text = join('', @lines);
     my @chunks = split /\x01COMMIT /, $text;
     shift @chunks while @chunks && $chunks[0] !~ /\S/;
@@ -89,7 +97,7 @@ sub parse_ref {
         next unless $chunk =~ /\S/;
         my ($header, $body) = split /\n/, $chunk, 2;
         $body //= '';
-        my ($hash, $date) = $header =~ /^(\S+)\s+(\S+)/;
+        my ($hash, $date, $mail) = $header =~ /^(\S+) (\S+) (.+)/;
         next unless $hash;
 
         my ($from) = $body =~ /^From:\s*(.+)$/m;
@@ -100,7 +108,7 @@ sub parse_ref {
             next unless $ref eq 'refs/heads/master';
             my ($added) = $delta =~ /\+(\d+)/;
             push @events, { meta => $hash, date => $date, old => $old, new => $new,
-                            added => $added, from => $from };
+                            added => $added, from => $from, mail => $mail };
         }
     }
     return @events;
@@ -113,7 +121,7 @@ for my $e (@events) {
     my $new_full = resolve($e->{new});
     next unless defined $new_full;   # nothing to walk from at all
     my $old_full = resolve($e->{old});
-    my $peer = augment_peer($e->{from});
+    my $peer = augment_peer($e->{from}, $e->{mail});
 
     my %seen_this_event;
     my @pairs;
