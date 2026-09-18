@@ -84,6 +84,31 @@ sub resolve {
 my %all270 = map { chomp; $_ => 1 } qx(git rev-list $HEAD);
 my $ZERO = '0' x 40;
 
+# Manual correction for the one event the positional heuristic can't get
+# right: 431f1fe..9824040 (-6+9) has a commit inserted mid-series, which
+# shifts every pairing after it. From `git notes --ref=amends show
+# 957ff10dc6389359f002ef8b73dcb4cc95df1901`'s range-diff:
+#
+#      1:  3625a59 !  1:  010e040 Begin another experiment
+#      -:  ------- >  2:  2a76a85 BST_leap and BST_delv proof of concept
+#      2:  cf3d66d =  3:  c752079 xlib/tree-search: fix four bugs; xt/tree-search: add tests
+#      3:  c913fa9 =  4:  94da660 tree-search tests fixup
+#      4:  a8385ea =  5:  fce804a Expose as BST_{leap,delv} as subcommands
+#      5:  2c8c063 =  6:  17e5196 Just import all the names please
+#      6:  431f1fe !  7:  477409e xlib/tree-search: Fix a few other spots
+#      -:  ------- >  8:  87e5c21 tree-search find: roll our own lexicograpical sort
+#      -:  ------- >  9:  9824040 tree-search: sanity check on self
+#
+# (the three "-------" rows are genuinely new, no old counterpart -- left out)
+my %HARDCODED_REVISION = (
+    '010e0401498786163b7de171474047f4eaa63cfa' => '3625a59f75664dca1136a89ce9fdbd1bdba991eb',
+    'c752079604ebc61609928c8092903102f907fdfb' => 'cf3d66d55dc5908f182633198f274dba5d3a3eb7',
+    '94da660aa373ab2baa6e2747da1ad3e6f82abeab' => 'c913fa921b9f8f4af792c6524048d759eddb3917',
+    'fce804a5b3d41422affcf0af1def327760ddbea2' => 'a8385ea4bf801ba766a5dbf464a106a097480687',
+    '17e51964f174eb2150377561bf0bdd2c239b6f49' => '2c8c0634b172bef1fdc988387719dc487b93dae1',
+    '477409e2bf305bb807c9cae15b5bbf48c34d51d5' => '431f1fe306284cad6fdac1aa0719ad0b67568878',
+);
+
 # git rev-list --parents <range> => "commit [parent]" per line (root commits
 # have no parent token). Returns a list of [commit, parent-or-undef].
 sub parents_in_range {
@@ -173,8 +198,22 @@ for my $e (@events) {
             my $matched = 0;
             for my $i (0 .. $n - 1) {
                 my ($a, $r) = ($added_oldest_first[$i][0], $removed_oldest_first[$i][0]);
-                if (subject_of($a) eq subject_of($r)) {
+                if (exists $HARDCODED_REVISION{$a}) {
+                    $revision_of{$a} = $HARDCODED_REVISION{$a};
+                    $matched++;
+                } elsif (subject_of($a) eq subject_of($r)) {
                     $revision_of{$a} = $r;
+                    $matched++;
+                }
+            }
+            # A mid-series insertion shifts every pairing after it out of the
+            # naive N-window, so also check hardcoded fixes against whatever
+            # the window missed.
+            for my $pair (@added_pairs) {
+                my $a = $pair->[0];
+                next if exists $revision_of{$a};
+                if (exists $HARDCODED_REVISION{$a}) {
+                    $revision_of{$a} = $HARDCODED_REVISION{$a};
                     $matched++;
                 }
             }
