@@ -79,7 +79,7 @@ sub parents_in_range {
 
 sub parse_ref {
     my ($refname) = @_;
-    my @lines = qx(git log --format='%x01COMMIT %H %cI%n%B' refs/info/$refname);
+    my @lines = qx(git log --format='%x01COMMIT %H %ct%n%B' refs/info/$refname);
     my $text = join('', @lines);
     my @chunks = split /\x01COMMIT /, $text;
     shift @chunks while @chunks && $chunks[0] !~ /\S/;
@@ -162,7 +162,7 @@ sub topo_sort_by_date {
     my @out;
     my %done;
     while (@ready) {
-        @ready = sort { $a->{date} cmp $b->{date} } @ready;
+        @ready = sort { $a->{date} <=> $b->{date} } @ready;
         my $n = shift @ready;
         next if $done{$n}++;
         push @out, $n;
@@ -172,7 +172,7 @@ sub topo_sort_by_date {
             push @ready, $s if $indeg{$s} <= 0;
         }
     }
-    push @out, sort { $a->{date} cmp $b->{date} } grep { !$done{$_} } @nodes;
+    push @out, sort { $a->{date} <=> $b->{date} } grep { !$done{$_} } @nodes;
     return @out;
 }
 
