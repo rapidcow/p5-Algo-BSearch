@@ -170,9 +170,19 @@ for my $e (@events) {
             my @added_oldest_first   = reverse @added_pairs;
             my @removed_oldest_first = reverse @removed_pairs;
             my $n = scalar(@removed_oldest_first);
+            my $matched = 0;
             for my $i (0 .. $n - 1) {
                 my ($a, $r) = ($added_oldest_first[$i][0], $removed_oldest_first[$i][0]);
-                $revision_of{$a} = $r if subject_of($a) eq subject_of($r);
+                if (subject_of($a) eq subject_of($r)) {
+                    $revision_of{$a} = $r;
+                    $matched++;
+                }
+            }
+            if ($matched < $n) {
+                warn sprintf("asymmetric forced update in %s (delta %s): "
+                           . "heuristic only paired %d of %d removed commits by subject "
+                           . "-- check for a mid-series insertion\n",
+                           $e->{meta}, $e->{delta}, $matched, $n);
             }
         } else {
             warn sprintf("asymmetric forced update in %s (delta %s): "
