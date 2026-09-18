@@ -146,6 +146,25 @@ for my $e (@events) {
     }
 }
 
+# Some commits (e.g. ones predating refs/info/* logging entirely) never show
+# up in either log at all, so the loop above never emits a row for them.
+# Still list them -- with no event/peer to report -- so every one of HEAD's
+# commits is guaranteed at least one row, using the commit's own parent and
+# its own committer date (there's no push event to borrow a date from).
+my %have_row = map { $_->{commit} => 1 } @rows;
+for my $oid (keys %all270) {
+    next if $have_row{$oid};
+    my $parent = qx(git rev-parse -q --verify '${oid}^' 2>/dev/null);
+    chomp $parent;
+    $parent = $ZERO unless $parent =~ /^[0-9a-f]{40}$/;
+    my $date = qx(git log -1 --format=%ct '$oid');
+    chomp $date;
+    push @rows, {
+        meta => '', commit => $oid, parent => $parent,
+        peer => '', date => $date, connected => 1,
+    };
+}
+
 # ---- sort: dangling commits first, connected (part of HEAD's 270) last;
 # within each group, topological (parent before child) then event date ----
 sub topo_sort_by_date {
