@@ -44,15 +44,15 @@ for my $key (keys %parent_edges) {
     push @{ $parents_of{$commit} }, $parent;
 }
 
-my %strong_edge;   # "parent\tcommit" => 1
+my %strong_edge;      # "parent\tcommit" => 1
+my %reachable_node;   # commit oid => 1 (on some path up to a tip, tip included)
 
 sub mark_reachable {
     my ($start) = @_;
-    my %seen;
     my @stack = ($start);
     while (@stack) {
         my $node = pop @stack;
-        next if $seen{$node}++;
+        next if $reachable_node{$node}++;
         for my $parent (@{ $parents_of{$node} // [] }) {
             $strong_edge{"$parent\t$node"} = 1;
             push @stack, $parent;
@@ -92,12 +92,50 @@ for my $node (keys %adj) {
     push @revision_groups, \@component if @component > 1;
 }
 
+my %all_commit;
+for my $key (keys %parent_edges) {
+    my ($parent, $commit) = split /\t/, $key;
+    $all_commit{$parent} = 1;
+    $all_commit{$commit} = 1;
+}
+for my $key (keys %revision_edges) {
+    my ($rev, $commit) = split /\t/, $key;
+    $all_commit{$rev} = 1;
+    $all_commit{$commit} = 1;
+}
+
 print "digraph provenance {\n";
 print qq{  rankdir=TB;\n};
+print qq{  nodesep=1.2;\n};   # spaces same-rank (horizontal) nodes apart, so
+                              # the flat revision/ref edges read as visibly
+                              # long rather than collapsing to a stub
 print qq{  node [shape=box, fontname="monospace"];\n};
+
+# Explicit per-node attributes (unlike a later `node [...]` default
+# statement) win regardless of where the node's name first appears in the
+# file, so the tag-like ref look survives being mentioned earlier by the
+# rank=same pairing below.
+for my $refname (keys %tip) {
+    print qq{  "$refname" [shape=cds, style=filled, fillcolor=lightyellow, fontname="monospace"];\n};
+}
+
+# Commits unreachable from every tip (dead/superseded history) get a dotted
+# outline; live ones keep the default solid box.
+for my $oid (sort keys %all_commit) {
+    my $style = $reachable_node{$oid} ? 'solid' : 'dotted';
+    print qq{  "} . short($oid) . qq{" [style=$style];\n};
+}
 
 for my $group (@revision_groups) {
     print "  { rank=same; " . join(' ', map { qq{"} . short($_) . qq{"} } @$group) . "; }\n";
+}
+
+# Pin each ref right next to the commit it points at, on the same rank,
+# instead of leaving it wherever an unconstrained edge happens to land it.
+for my $refname (keys %tip) {
+    my $tip_oid = $tip{$refname};
+    next unless defined $tip_oid;
+    print "  { rank=same; \"$refname\" \"" . short($tip_oid) . "\"; }\n";
 }
 
 for my $key (sort keys %parent_edges) {
@@ -114,8 +152,7 @@ for my $key (sort keys %revision_edges) {
     print qq{  "} . short($rev) . qq{" -> "} . short($commit) . qq{";\n};
 }
 
-print qq{\n  node [shape=cds, style=filled, fillcolor=lightyellow];\n};
-print qq{  edge [style=bold, penwidth=4, color=orange, constraint=false];\n};
+print qq{\n  edge [style=bold, penwidth=4, color=orange, constraint=false];\n};
 for my $refname (keys %tip) {
     my $tip = $tip{$refname};
     next unless defined $tip;
