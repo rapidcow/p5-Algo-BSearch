@@ -152,7 +152,7 @@ for my $key (sort keys %revision_edges) {
     print qq{  "} . short($rev) . qq{" -> "} . short($commit) . qq{";\n};
 }
 
-print qq{\n  edge [style=bold, penwidth=4, color=orange, constraint=false];\n};
+print qq{\n  edge [penwidth=4, color=orange, constraint=false];\n};
 for my $refname (keys %tip) {
     my $tip = $tip{$refname};
     next unless defined $tip;
