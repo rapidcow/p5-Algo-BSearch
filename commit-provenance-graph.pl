@@ -16,14 +16,16 @@ use warnings;
 # moves through distinct commit positions and scanning ACROSS one row shows
 # how many times that position got revised.
 #
-#   perl commit-provenance-graph.pl < commit-provenance.tsv > provenance.dot
+#   perl commit-provenance-graph.pl > provenance.dot
 #   dot -Tsvg provenance.dot -o provenance.svg
 
 my $ZERO = '0' x 40;
 my %parent_edges;     # "parent\tcommit" => 1
 my %revision_edges;   # "revision\tcommit" => 1
 
-while (my $line = <STDIN>) {
+my $tsv = 'commit-provenance.tsv';
+open my $fh, '<', $tsv or die "open $tsv: $!\n";
+while (my $line = <$fh>) {
     chomp $line;
     next unless length $line;
     next if $line =~ /^;/;
@@ -32,6 +34,7 @@ while (my $line = <STDIN>) {
     $parent_edges{"$parent\t$commit"} = 1 if defined $parent && length($parent) && $parent ne $ZERO;
     $revision_edges{"$revision\t$commit"} = 1 if defined $revision && length($revision) && $revision ne $ZERO;
 }
+close $fh;
 
 sub short { substr($_[0], 0, 8) }
 

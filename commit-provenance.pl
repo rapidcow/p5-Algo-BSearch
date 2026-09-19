@@ -309,9 +309,12 @@ sub topo_sort_by_date {
 my @dangling  = grep { !$_->{connected} } @rows;
 my @connected = grep {  $_->{connected} } @rows;
 
+my $tsv = 'commit-provenance.tsv';
+open my $fh, '>', $tsv or die "open $tsv: $!\n";
 for my $r (topo_sort_by_date(@dangling), topo_sort_by_date(@connected)) {
-    print join("\t", $r->{date}, $r->{meta}, $r->{commit}, $r->{parent}, $r->{revision}, $r->{peer}), "\n";
+    print $fh join("\t", $r->{date}, $r->{meta}, $r->{commit}, $r->{parent}, $r->{revision}, $r->{peer}), "\n";
 }
+close $fh;
 
 # Companion file: the full commit history of each info-ref ITSELF (every
 # commit ever made to refs/info/rpi-self / rdk-self, not just the ones whose
