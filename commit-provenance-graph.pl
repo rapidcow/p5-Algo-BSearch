@@ -28,20 +28,47 @@ while (my $line = <STDIN>) {
 
 sub short { substr($_[0], 0, 8) }
 
-my %tip = (
+# Walk the parent DAG backward from each tip (no git calls -- everything
+# needed is already in %parent_edges) to find every edge on some path up to
+# a tip, i.e. the "strong" links, so they can be drawn bold.
+my %parents_of;   # commit => [ parent, parent, ... ]
+for my $key (keys %parent_edges) {
+    my ($parent, $commit) = split /\t/, $key;
+    push @{ $parents_of{$commit} }, $parent;
+}
+
+my %strong_edge;   # "parent\tcommit" => 1
+my %tip;
+
+sub mark_reachable {
+    my ($start) = @_;
+    my %seen;
+    my @stack = ($start);
+    while (@stack) {
+        my $node = pop @stack;
+        next if $seen{$node}++;
+        for my $parent (@{ $parents_of{$node} // [] }) {
+            $strong_edge{"$parent\t$node"} = 1;
+            push @stack, $parent;
+        }
+    }
+}
+
+%tip = (
 	'refs/info/rpi-self' => '29a7737034c5afe164ea003f19a7095c7d48f35a',
 	'refs/info/rdk-self' => '382fbf9e77a028c2463c82c02e45bc484c49c36b',
 	'refs/heads/master' => '134828d4d5f689c02e1a8f013187faad8f7f6ae4',
 );
+mark_reachable($_) for values %tip;
 
 print "digraph provenance {\n";
 print qq{  rankdir=LR;\n};
 print qq{  node [shape=box, fontname="monospace"];\n};
 
-print qq{  edge [style=solid];\n};
 for my $key (sort keys %parent_edges) {
     my ($parent, $commit) = split /\t/, $key;
-    print qq{  "} . short($parent) . qq{" -> "} . short($commit) . qq{";\n};
+    my $style = $strong_edge{$key} ? 'bold' : 'solid';
+    print qq{  "} . short($parent) . qq{" -> "} . short($commit) . qq{" [style=$style];\n};
 }
 
 print qq{  edge [style=dotted];\n};
