@@ -61,8 +61,6 @@ sub mark_reachable {
 }
 
 my %tip = (
-	'refs/info/rpi-self' => '29a7737034c5afe164ea003f19a7095c7d48f35a',
-	'refs/info/rdk-self' => '382fbf9e77a028c2463c82c02e45bc484c49c36b',
 	'refs/heads/master' => '134828d4d5f689c02e1a8f013187faad8f7f6ae4',
 );
 mark_reachable($_) for values %tip;
