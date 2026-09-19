@@ -312,3 +312,21 @@ my @connected = grep {  $_->{connected} } @rows;
 for my $r (topo_sort_by_date(@dangling), topo_sort_by_date(@connected)) {
     print join("\t", $r->{date}, $r->{meta}, $r->{commit}, $r->{parent}, $r->{revision}, $r->{peer}), "\n";
 }
+
+# Companion file: the full commit history of each info-ref ITSELF (every
+# commit ever made to refs/info/rpi-self / rdk-self, not just the ones whose
+# "updated:" line touched refs/heads/master) -- i.e. every time that ref
+# changed. The graph generator reads this so it never has to hardcode a
+# "current tip" oid or call git itself; the newest row's commit is whatever
+# the ref currently points at.
+#   refname <TAB> parent-or-zero <TAB> commit
+open my $refs_out, '>', 'commit-provenance-refs.tsv' or die "open commit-provenance-refs.tsv: $!";
+for my $refname (qw(rpi-self rdk-self)) {
+    my @chain = split /\n/, qx(git log --format=%H --reverse refs/info/$refname);
+    my $prev = $ZERO;
+    for my $commit (@chain) {
+        print $refs_out join("\t", "refs/info/$refname", $prev, $commit), "\n";
+        $prev = $commit;
+    }
+}
+close $refs_out;

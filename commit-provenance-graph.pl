@@ -157,4 +157,33 @@ for my $refname (keys %tip) {
     print qq{  "$refname" -> "} . short($tip) . qq{";\n};
 }
 
+# Every time refs/info/rpi-self or refs/info/rdk-self changed (every commit
+# ever made to that ref, not just the ones commit-provenance.tsv already
+# covers), drawn as its own chain -- the first update's "parent" is all
+# zeros. From the companion file commit-provenance.pl also writes, so this
+# script still never has to call git itself; the newest commit in each
+# chain is simply whatever that ref currently points at, no hardcoding.
+my %ref_color = (
+    'refs/info/rpi-self' => 'pink',
+    'refs/info/rdk-self' => 'cornflowerblue',
+);
+if (open my $refs_in, '<', 'commit-provenance-refs.tsv') {
+    my %by_ref;
+    while (my $line = <$refs_in>) {
+        chomp $line;
+        my ($refname, $parent, $commit) = split /\t/, $line;
+        next unless defined $refname && exists $ref_color{$refname};
+        push @{ $by_ref{$refname} }, [$parent, $commit];
+    }
+    close $refs_in;
+
+    for my $refname (sort keys %ref_color) {
+        print qq{\n  edge [style=solid, penwidth=2, color=$ref_color{$refname}];\n};
+        for my $pair (@{ $by_ref{$refname} // [] }) {
+            my ($parent, $commit) = @$pair;
+            print qq{  "} . short($parent) . qq{" -> "} . short($commit) . qq{";\n};
+        }
+    }
+}
+
 print "}\n";
