@@ -316,20 +316,27 @@ for my $r (topo_sort_by_date(@dangling), topo_sort_by_date(@connected)) {
 }
 close $fh;
 
-# Companion file: the full commit history of each info-ref ITSELF (every
-# commit ever made to refs/info/rpi-self / rdk-self, not just the ones whose
-# "updated:" line touched refs/heads/master) -- i.e. every time that ref
-# changed. The graph generator reads this so it never has to hardcode a
-# "current tip" oid or call git itself; the newest row's commit is whatever
-# the ref currently points at.
+# Companion file: what refs/heads/master looked like, as recorded in each
+# info-ref's OWN snapshot of info/refs (the dumb-http ref listing every
+# git-shell push regenerates and commits alongside itself), walking
+# refs/info/rpi-self / rdk-self oldest to newest. Only a row per actual
+# CHANGE -- most snapshots repeat the same master value (a push that only
+# touched refs/notes/*, a "git shell: setacl", ...), so consecutive
+# duplicates are skipped. The graph generator reads this so it never has to
+# hardcode a "current tip" oid or call git itself; the newest row's commit
+# is whatever that ref's most recent snapshot says master is.
 #   refname <TAB> parent-or-zero <TAB> commit
 open my $refs_out, '>', 'commit-provenance-refs.tsv' or die "open commit-provenance-refs.tsv: $!";
 for my $refname (qw(rpi-self rdk-self)) {
     my @chain = split /\n/, qx(git log --format=%H --reverse refs/info/$refname);
     my $prev = $ZERO;
-    for my $commit (@chain) {
-        print $refs_out join("\t", "refs/info/$refname", $prev, $commit), "\n";
-        $prev = $commit;
+    for my $meta (@chain) {
+        my $blob = qx(git cat-file blob '$meta:info/refs' 2>/dev/null);
+        my ($master) = $blob =~ /^([0-9a-f]{40})\trefs\/heads\/master$/m;
+        next unless defined $master;
+        next if $master eq $prev;
+        print $refs_out join("\t", "refs/info/$refname", $prev, $master), "\n";
+        $prev = $master;
     }
 }
 close $refs_out;
