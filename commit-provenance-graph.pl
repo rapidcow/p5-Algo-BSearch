@@ -181,7 +181,7 @@ if (open my $refs_in, '<', 'commit-provenance-refs.tsv') {
     close $refs_in;
 
     for my $refname (sort keys %ref_color) {
-        print qq{\n  edge [style=solid, penwidth=2, color=$ref_color{$refname}];\n};
+        print qq{\n  edge [style=solid, penwidth=2, color=$ref_color{$refname}, constraint=true];\n};
         for my $pair (@{ $by_ref{$refname} // [] }) {
             my ($parent, $commit) = @$pair;
             print qq{  "} . short($parent) . qq{" -> "} . short($commit) . qq{";\n};
