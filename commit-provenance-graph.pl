@@ -152,7 +152,7 @@ for my $key (sort keys %parent_edges) {
 print qq{  edge [style=dotted, constraint=false];\n};
 for my $key (sort keys %revision_edges) {
     my ($rev, $commit) = split /\t/, $key;
-    print qq{  "} . short($rev) . qq{" -> "} . short($commit) . qq{";\n};
+    print qq{  "} . short($commit) . qq{" -> "} . short($rev) . qq{";\n};
 }
 
 print qq{\n  edge [style=solid, penwidth=1, color=orange, constraint=false];\n};
