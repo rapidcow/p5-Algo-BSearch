@@ -142,7 +142,9 @@ for my $refname (keys %tip) {
 for my $key (sort keys %parent_edges) {
     my ($parent, $commit) = split /\t/, $key;
     my $penwidth = $strong_edge{$key} ? 4 : 1;
-    print qq{  "} . short($parent) . qq{" -> "} . short($commit) . qq{" [penwidth=$penwidth];\n};
+    # child -> parent, like the real git commit graph (a commit object
+    # points backward to its parent, not the other way around).
+    print qq{  "} . short($commit) . qq{" -> "} . short($parent) . qq{" [penwidth=$penwidth];\n};
 }
 
 # constraint=false: these two nodes are already pinned to the same rank
