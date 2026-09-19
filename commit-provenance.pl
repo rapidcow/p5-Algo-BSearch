@@ -70,15 +70,68 @@ sub subject_of {
     };
 }
 
+sub object_exists {
+    my ($oid) = @_;
+    qx(git cat-file -e '$oid' 2>/dev/null);
+    return $? == 0;
+}
+
+# The push-log "updated: ... OLD..NEW (+N)" summaries only ever give a
+# 7-char abbreviation, but every meta-commit's own tree has an info/refs
+# blob (the dumb-http ref listing, regenerated on every push) recording the
+# FULL 40-char oid of every ref at that point in time -- including ones for
+# refs the abbreviation didn't come from, so this works regardless of which
+# ref "old"/"new" belonged to. That's always there (barring a race), so an
+# abbreviation only fails to expand here if $meta itself lacks the file.
+my %info_refs_cache;   # meta oid => [ full oid, full oid, ... ]
+sub full_oid_from_info_refs {
+    my ($abbrev, $meta) = @_;
+    return undef unless defined $meta;
+    my $list = $info_refs_cache{$meta} //= do {
+        my $blob = qx(git cat-file blob '$meta:info/refs' 2>/dev/null);
+        [ $blob =~ /^([0-9a-f]{40})\t/mg ];
+    };
+    for my $full (@$list) {
+        return $full if index($full, $abbrev) == 0;
+    }
+    return undef;
+}
+
+# These old amend-chain objects are gc'd from rpi/HEAD's own history but
+# still sitting on rdk+vpn specifically (confirmed by hand), so once we have
+# the real full oid (only obtainable via info/refs, above -- a 7-char
+# abbreviation alone isn't enough to `git fetch` by name), try fetching it
+# from wherever might still have it.
+my @FETCH_REMOTES = qw(rpi macbook rdk+ssh rdk+vpn);
+
 my %resolved;
 sub resolve {
-    my ($abbrev) = @_;
+    my ($abbrev, $meta) = @_;
     return undef if $abbrev =~ /^0+$/;
-    return $resolved{$abbrev} if exists $resolved{$abbrev};
+    my $cache_key = "$abbrev\@" . ($meta // '');
+    return $resolved{$cache_key} if exists $resolved{$cache_key};
+
     my $full = qx(git rev-parse -q --verify '${abbrev}^{commit}' 2>/dev/null);
     chomp $full;
-    $full = undef unless $full =~ /^[0-9a-f]{40}$/;
-    return $resolved{$abbrev} = $full;
+    undef $full unless $full =~ /^[0-9a-f]{40}$/;
+
+    if (!defined $full) {
+        my $candidate = full_oid_from_info_refs($abbrev, $meta);
+        if (defined $candidate) {
+            if (object_exists($candidate)) {
+                $full = $candidate;
+            } else {
+                for my $remote (@FETCH_REMOTES) {
+                    qx(git fetch --no-write-fetch-head '$remote' '$candidate' 2>/dev/null);
+                    if (object_exists($candidate)) {
+                        $full = $candidate;
+                        last;
+                    }
+                }
+            }
+        }
+    }
+    return $resolved{$cache_key} = $full;
 }
 
 my %all270 = map { chomp; $_ => 1 } qx(git rev-list $HEAD);
@@ -154,9 +207,9 @@ my @events = (parse_ref('rpi-self'), parse_ref('rdk-self'));
 
 my @rows;   # { meta, commit, parent, revision, peer, date, connected }
 for my $e (@events) {
-    my $new_full = resolve($e->{new});
+    my $new_full = resolve($e->{new}, $e->{meta});
     next unless defined $new_full;   # nothing to walk from at all
-    my $old_full = resolve($e->{old});
+    my $old_full = resolve($e->{old}, $e->{meta});
     my $peer = augment_peer($e->{from}, $e->{mail});
 
     my (@added_pairs, @removed_pairs);
