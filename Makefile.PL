@@ -27,7 +27,7 @@ my %WriteMakefileArgs = (
 		'strict'   => '0',
 		'warnings' => '0',
 	},
-	dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
+	dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz' },
 	clean => { FILES => 'Sort-Search-*' },
 	META_MERGE => {
 		# Hyperlinks in the MetaCPAN side bar (Spec 2.x)
@@ -43,7 +43,7 @@ my %WriteMakefileArgs = (
 				url  => 'https://codeberg.org/rapidcow/p5-Sort-Search.git',
 				web  => 'https://codeberg.org/rapidcow/p5-Sort-Search',
 			},
-		}
+		},
 	},
 );
 
