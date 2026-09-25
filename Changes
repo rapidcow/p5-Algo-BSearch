@@ -21,5 +21,80 @@ Revision history for Sort::Search
 0.00_36  2026-05-23  RAPIDCOW (55910b6)
    - Use for-loop for localized $_ alias
 
+0.00_35  2026-05-20  RAPIDCOW (126e046)
+   - Punctuation
+   - Allow undef for the explicit index form
+
+0.00_33  2026-05-20  RAPIDCOW (f34a872)
+   - Generalize output for degenerate ranges
+
+0.00_32  2026-05-06  RAPIDCOW (3563ad8)
+   - Call bisectl/bisectr "bisection methods" consistently
+
+0.00_31  2026-03-15  RAPIDCOW (7bf41b4)
+   - Drop "support" for non-zero array bases
+
+0.00_30  2026-03-15  RAPIDCOW (0ff93fa)
+   - Prefer "<DIR> binary search" wording
+
+0.00_29  2026-03-14  RAPIDCOW (bae5c1b)
+   - Use && for boolean AND consistently
+   - Expand to five-element form
+   - Return just the SCALAR ref for element
+
+0.00_25  2026-03-14  RAPIDCOW (f639ebc)
+   - Fix diagram and proof for two-index search
+
+0.00_24  2026-03-14  RAPIDCOW (801c6ff)
+   - Remove vestigial reference to bisectl_map
+   - Drop unnecessary explicit returns
+
+0.00_22  2026-03-14  RAPIDCOW (1be77a3)
+   - Use $lo consistently in brsrch*
+
+0.00_21  2026-03-08  RAPIDCOW (34fe25f)
+   - Update stale renames in the comments
+
+0.00_20  2026-03-08  RAPIDCOW (9775b10)
+   - Add copyright to sources
+
+0.00_19  2026-03-08  RAPIDCOW (cfd2206)
+   - Comment the 2-index searches
+
+0.00_18  2026-03-08  RAPIDCOW (fa35cd2)
+   - Re-implement brsrch2
+
+0.00_17  2026-03-08  RAPIDCOW (bcaa2f7)
+   - Re-implement blsrch2
+
+0.00_16  2026-03-08  RAPIDCOW (04685b3)
+   - Refactor
+
+0.00_15  2026-02-16  RAPIDCOW (a9b2cb3)
+   - Add overflow guard for mixed IV/UV bounds
+
+0.00_14  2026-02-15  RAPIDCOW (32455d9)
+   - Refine b[lr]srch2
+
+0.00_13  2026-02-15  RAPIDCOW (2e1d2c2)
+   - s/program/module/ throughout
+
+0.00_12  2026-02-14  RAPIDCOW (3f82925)
+   - Move AUTHOR and LICENSE into the source file
+
+0.00_11  2026-02-14  RAPIDCOW (96ae8b5)
+   - Separate .pod from .pm
+
+0.00_06  2025-12-05  RAPIDCOW (7262722)
+   - Fix the inconsistent error messages too
+   - Fix brsrch[01x] calling the wrong implementation
+   - Clean up imports
+
+0.00_03  2025-11-30  RAPIDCOW (7e178d2)
+   - Replace "use vars" with "our"
+
+0.00_01  2025-11-29  RAPIDCOW (e3247b2)
+   - Say "module" consistently instead of "program"
+
 0.00_00  2025-11-29  RAPIDCOW (eea2ef1)
    - Initial migration from FastLook.pm
