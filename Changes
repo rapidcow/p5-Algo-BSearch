@@ -1,9 +1,25 @@
 Revision history for Sort::Search
 
-0.00_??  2026-0?-?? RAPIDCOW
-   - Initial migration from FastLook.pm
-   #TODO#
-     POD docs?
-     Tests?
-     perlmodstyle(1)???
+0.00_44  2026-05-24  RAPIDCOW (c18361a)
+   - Mean overflow guard
+   - Use MF_* enums instead of strings
 
+0.00_42  2026-05-24  RAPIDCOW (7325145)
+   - Peel off ARRAY wrapper
+
+0.00_41  2026-05-23  RAPIDCOW (28a172a)
+   - Factor out anon subs
+   - Align arguments in the b*srch2 variants
+   - Replace "if (!" with "unless ("?
+
+0.00_38  2026-05-23  RAPIDCOW (db2a69d)
+   - Move explicit index form check up
+
+0.00_37  2026-05-23  RAPIDCOW (ab15e0d)
+   - Officially use 0.00_x versions
+
+0.00_36  2026-05-23  RAPIDCOW (55910b6)
+   - Use for-loop for localized $_ alias
+
+0.00_00  2025-11-29  RAPIDCOW (eea2ef1)
+   - Initial migration from FastLook.pm
