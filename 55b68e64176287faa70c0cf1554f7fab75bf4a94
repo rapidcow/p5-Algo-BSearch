@@ -1,0 +1,30 @@
+Originally identified by:
+
+commit 370fcb7babcc687d49626082261441b2493a5b1f
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Sun Nov 30 02:05:07 2025 -0600
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Sun Nov 30 02:05:07 2025 -0600
+
+    Add author test with Test::CPAN::Changes
+
+    Didn't know there was a format spec for
+    CPAN Changes files.... thank you RRA /\
+
+This commit was first seen in:
+
+commit 1b60dcd966a74ce898134ec21890deae1baa6e1c
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed Jan 14 05:43:52 2026 +0800
+Commit:     Git Daemon <git@rpi-4b.local>
+CommitDate: Wed Jan 14 05:43:52 2026 +0800
+
+    Receive pack via ssh transport
+
+    created:
+      refs/heads/master 0000000..e90ac4b (+15)
+       17 files changed, 1632 insertions(+)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fe80::4422:d6a4:1b86:e5df%wlan0]:46522
+    Host: [fe80::8aa2:9eff:fe1a:b25a%wlan0]:22
