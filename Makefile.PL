@@ -12,6 +12,8 @@ my %WriteMakefileArgs = (
 	# https://metacpan.org/pod/CPAN::Meta::Spec#license
 	LICENSE          => 'perl_5',
 	MIN_PERL_VERSION => '5.006',
+	# Please don't descend into CPAN
+	NORECURS => 1,
 	CONFIGURE_REQUIRES => {
 		'ExtUtils::MakeMaker' => '0',
 	},
