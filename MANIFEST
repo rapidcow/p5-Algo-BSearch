@@ -6,3 +6,7 @@ t/00-load.t             Test from FastLook.pm - basic load
 t/01-bisectl.t          Test from FastLook.pm - left search
 t/01-bisectr.t          Test from FastLook.pm - right search
 t/doctest.t             Test from FastLook.pm - POD test
+xt/changes.t            Author test - CPAN Change log
+xt/manifest.t           Author test - Manifest
+xt/pod-coverage.t       Author test - POD coverage
+xt/pod.t                Author test - just POD
