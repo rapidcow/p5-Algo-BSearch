@@ -1,0 +1,27 @@
+Originally identified by:
+
+commit 94d43430e0fbabf8ac0cd3565fb9d05c7174eadc
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Mon Feb 16 04:01:51 2026 -0600
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Mon Feb 16 04:01:51 2026 -0600
+
+    Do soft-dependency import correctly
+
+This commit was first seen in:
+
+commit 684ae540ee5b985c23c53cb96230057bd2a1043d
+Author:     Ethan Meng <rapidcow@RCs-MacBook-Pro.local>
+AuthorDate: Mon Feb 16 04:05:22 2026 -0600
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Mon Feb 16 04:05:22 2026 -0600
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master a9b2cb3..94d4343 (+1)
+       1 file changed, 1 insertion(+), 1 deletion(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-MacBook-Pro.local>
+    From: 100.94.117.111:54463 (RCs-MacBook-Pro.tails.endfind.me)
+    Host: 100.66.245.9:22 (RPi-4B.tails.endfind.me)
