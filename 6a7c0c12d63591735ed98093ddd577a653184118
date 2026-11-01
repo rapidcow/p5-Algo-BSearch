@@ -1,0 +1,36 @@
+Originally identified by:
+
+commit 25005e518a60958f4588cceca56e9a245eae3171
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Sun Nov 30 01:56:30 2025 -0600
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Sun Feb 15 22:35:41 2026 -0600
+
+    Add List::BisectSearch tests, I guess...?
+
+    Looks like they act as a pretty good sanity check
+    for blsrch2... I'm adding them, welp :v
+
+    (also I think doctest.t actually comes from POD of
+    FastLook.pm... this list context is kind of new.
+    either way, I'm putting it at the top in case that
+    is confusing -- think of xt as tests that have yet
+    to graduate into the real (t) tests...)
+
+This commit was first seen in:
+
+commit e8cfd2de4209cd23e0a7a2c579aadee23b5d196e
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Mon Feb 16 03:36:34 2026 -0600
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Mon Feb 16 03:36:34 2026 -0600
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master 836d5d3..cacc737 (+8)
+       9 files changed, 424 insertions(+), 15 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:53950 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
