@@ -1,0 +1,149 @@
+Originally identified by:
+
+commit 88644f2bd70451f7507edc4bed6cc7efb89a05f4
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Tue May 19 10:33:34 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Tue May 19 10:46:01 2026 -0500
+
+    MANIFEST.SKIP uses regular expression
+
+    is it just me or does day feel so long...
+
+    like wdym it's only 10 o'clock ToT
+
+    (... OH yeah this is something i did for
+    List-Search; thought i'd do it eventually
+    for here too, so. :x)
+
+This commit was first seen in:
+
+commit 6a19af4a73057c74983bdc1a36d455aacd513013
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Tue May 19 10:45:20 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Tue May 19 10:45:20 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master e345238..04fe98b (+3)
+       4 files changed, 50 insertions(+), 40 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:47650 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
+
+then in:
+
+commit 7d475174daebf25ed5ce77bd8ec7283a6136cbd3
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Tue May 19 10:46:05 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Tue May 19 10:46:05 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master 04fe98b..5efdb43 (-1+1)
+       1 file changed, 2 insertions(+), 2 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:56116 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
+
+with the following changes:
+
+$ ~/tree/utils/diff-range 04fe98b 1 5efdb43
+ORIG = 04fe98b025d4c47dba595fbdccdba7e3a460cc9b
+HEAD = 5efdb4321835f6ca8576e6c896ce04993154d2dc
+ 0:  04fe98b !  0:  5efdb43 MANIFEST.SKIP uses a regular expression
+--- a/04fe98b025d4c47dba595fbdccdba7e3a460cc9b	2026-05-19 15:33:34.000000000 +0000
++++ b/5efdb4321835f6ca8576e6c896ce04993154d2dc	2026-05-19 15:46:01.000000000 +0000
+@@ -1,8 +1,8 @@
+-tree d9692cad554470dd5a735e802dedbb0d8031f377
++tree defb7f06be9ce495c467f108f1208d121f57109b
+ parent 39a8b188b0f441303b7b2aa86b5f9ff8dd05d400
+ author Ethan Meng <ethan@rapidcow.org> 1779204814 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779204814 -0500
++committer Ethan Meng <ethan@rapidcow.org> 1779205561 -0500
+
+ MANIFEST.SKIP uses a regular expression
+
+ is it just me or does day feel so long...
+
+then in:
+
+commit ca028c54501d3179c629c7efcfef82d59359a965
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Tue May 19 10:47:50 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Tue May 19 10:47:50 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master 5efdb43..38c342e (-3+3)
+       (identical trees)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:55436 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
+
+with the following changes:
+
+$ ~/tree/utils/diff-range 5efdb43 3 38c342e
+ORIG = 5efdb4321835f6ca8576e6c896ce04993154d2dc
+HEAD = 38c342eb71c5c00a2da57cd3c75b7eac8312b049
+ 0:  5efdb43 =  0:  38c342e MANIFEST.SKIP uses a regular expression
+ 1:  39a8b18 =  1:  5015604 Consistent-ize spacing in existing real-tests
+ 2:  a5f39aa !  2:  f050bff Make introductory pod not suck
+--- a/a5f39aa4695861e3680257bcd1a7bae1fa563018	2026-05-19 15:21:05.000000000 +0000
++++ b/f050bffb8c440495adf0f01a0bf01ea466f4939c	2026-05-19 15:21:05.000000000 +0000
+@@ -9,6 +9,6 @@
+ supposed to be convinced to use this... x_v
+
+ also, part of me has developed a partiality
+ for TRUE / FALSE after one semester with R.
+-sorry Python/stdbool.h; i'm writing it like
+-that now...
++sorry Python/stdbool.h/builtin::{true,false};
++i'm writing it like that now...
+
+then in:
+
+commit 1e11ae7f3e42532ca9ca807888478bbcd0a6b751
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Tue May 19 11:46:45 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Tue May 19 11:46:45 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master 38c342e..88644f2 (-1+1)
+       (identical trees)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:40650 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
+
+with the following changes:
+
+$ ~/tree/utils/diff-range 38c342e 1 88644f2
+ORIG = 38c342eb71c5c00a2da57cd3c75b7eac8312b049
+HEAD = 88644f2bd70451f7507edc4bed6cc7efb89a05f4
+ 0:  38c342e !  0:  88644f2 MANIFEST.SKIP uses a regular expression
+--- a/38c342eb71c5c00a2da57cd3c75b7eac8312b049	2026-05-19 15:46:01.000000000 +0000
++++ b/88644f2bd70451f7507edc4bed6cc7efb89a05f4	2026-05-19 15:46:01.000000000 +0000
+@@ -2,9 +2,9 @@
+ parent 50156045e9d23bac2c3e5de72284b86f0a9bcdf1
+ author Ethan Meng <ethan@rapidcow.org> 1779204814 -0500
+ committer Ethan Meng <ethan@rapidcow.org> 1779205561 -0500
+
+-MANIFEST.SKIP uses a regular expression
++MANIFEST.SKIP uses regular expression
+
+ is it just me or does day feel so long...
+
+ like wdym it's only 10 o'clock ToT
