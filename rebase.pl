@@ -56,7 +56,7 @@ foreach my $this (`git rev-list --all`) {
 }
 
 my %refs = map { chomp; split } split /^/, <<MAP;
-46253009ee9970805989db8c54919e9483f38a7e refs/heads/master
+fb9d918012b08b9eddd4068f952b552729b60c82 refs/heads/master
 MAP
 # A commit that mentions another commit by its full hash has to be
 # rewritten after it, or the mention would keep the old hash (this
@@ -186,20 +186,7 @@ my $i = 1; foreach (@walk) {
 		}
 	}
 
-	if ($this eq '8f52fcfe9466ad7b06ac932d3c16eba7b0087ea6') {
-		replace_content($tempfh, \$mem,
-			# make this read more clearly
-			<<EOM
-actually make -DR -DS not resolve weirdly
-
-it's a direct path!!!  yeah don't put it through
-some weird fs resolution.... >:[
-
-i thought 1c2cd6ae83b8d32a7ac5a36150b6996ca5296304
-already did it, but apparently not....
-EOM
-		);
-	}
+# PROVENANCE INJECTION HERE!!!
 
 	my $content = get_all_content($tempfh);
 	# Most contents remain untouched, so probably
