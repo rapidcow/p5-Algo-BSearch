@@ -1,0 +1,32 @@
+Originally identified by:
+
+commit c9fe0d1b4c520a742e0b5ce4982ccc1419130411
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Tue Jun 16 07:22:14 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Tue Jun 16 07:22:14 2026 -0500
+
+    Copy fancy-lookin' table from FastLook.pm
+
+    i thought there was a templating tutorial that does
+    something similar to this?  or was it just that CPAN
+    module whose synopsis is about writing a resignation
+    letter to your boss... in a fairly blunt way.....
+
+This commit was first seen in:
+
+commit 2646c7266cd3ce44d82b496fee8a8c8a235d01d0
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Tue Jun 16 20:34:39 2026 +0000
+Commit:     Git Daemon <git@ubuntu.rapidcow.net>
+CommitDate: Tue Jun 16 20:34:39 2026 +0000
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master 694134c..7d13db5 (+2)
+       1 file changed, 21 insertions(+)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: 12.191.77.55:35426
+    Host: 164.90.136.30:22
