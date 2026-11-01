@@ -1,0 +1,42 @@
+Originally identified by:
+
+commit 1437fa676bed64ef2ca933eeb0878c326c97febe
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Tue Jun 16 23:24:33 2026 +0000
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Tue Jun 16 23:37:00 2026 +0000
+
+    Stop calling it "subroutines"
+
+    Maybe keep the section title?  (Actually forget
+    about the title; we're just calling it "FUNCTIONS".)
+
+    Somewhere in the perl community I recall someone
+    saying a subroutine being (to them) a piece of code
+    that runs and returns no output, while a function
+    returns an output?  so if anything it seems even more
+    justified to call it a function (technically a higher-
+    order function too, since it is a function with the
+    first argument, the callback, as another function.)
+
+    (In all honesty I used it only because subroutine just
+    sounded cooler to me (compared to what Python calls it
+    (i.e. functions)).  i apologize about that lol)
+
+This commit was first seen in:
+
+commit 8b563a7aada7bd325fbf92c99429c2fa2c0fb33f
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Thu Jun 18 08:10:14 2026 +0000
+Commit:     Git Daemon <git@ubuntu.rapidcow.net>
+CommitDate: Thu Jun 18 08:10:14 2026 +0000
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master 7d13db5..1c6f71e (+9)
+       1 file changed, 128 insertions(+), 8 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: 120.229.30.25:7300
+    Host: 164.90.136.30:22
