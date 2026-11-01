@@ -11,7 +11,6 @@ while (<STDIN>){
 	chomp;
 	my ($REPLACE, $a, $WITH, $b, $evis) = split / /, $_, 5;
 	my $evi = eval $evis;
-	die $evi;
 	open my $pipefh, '|-', "git notes --ref evi add -F - $b";
 
 	print $pipefh $evi;
