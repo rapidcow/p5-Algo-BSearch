@@ -7,7 +7,7 @@ my %WriteMakefileArgs = (
 	NAME             => 'Algo::BSearch',
 	AUTHOR           => q{rapidcow},
 	VERSION_FROM     => 'lib/RdKw/Algo/BSearch.pm',
-	ABSTRACT_FROM    => 'lib/RdKw/Algo/BSearch.pm',
+	ABSTRACT_FROM    => 'lib/RdKw/Algo/BSearch.pod',
 	# perl_5 is the same license as (Artistic 1 & GPL 1 or later)
 	# https://metacpan.org/pod/CPAN::Meta::Spec#license
 	LICENSE          => 'perl_5',

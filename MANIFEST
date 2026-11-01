@@ -2,6 +2,7 @@ Changes                 Change log
 MANIFEST                This list of files
 Makefile.PL             EU::MM script
 lib/RdKw/Algo/BSearch.pm   a gobbledygook that does uh binary search
+lib/RdKw/Algo/BSearch.pod  docs i guess
 t/00-load.t             Test from FastLook.pm - basic load
 t/01-bisectl.t          Test from FastLook.pm - left search
 t/01-bisectr.t          Test from FastLook.pm - right search

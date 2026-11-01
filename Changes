@@ -1,6 +1,9 @@
 Revision history of Algo-BSearch
 
 
+0.00_44  2026-11-01  RC
+    Import Sort/Search.pm (with legalese removed)
+
 0.00_00  2026-11-01  RC
     Initial import as FastLook.pm from tree.git
 
