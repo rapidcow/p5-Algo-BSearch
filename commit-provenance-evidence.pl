@@ -140,33 +140,43 @@ sub nth {
     return $n ? "$tip~$n" : $tip;
 }
 
-# diff-range BEFORE COUNT AFTER, lined up so that the commit pairs it walks
-# (BEFORE~i against AFTER~i) are exactly the old/new revisions of each
-# other, ending at $old/$new. Usually that reaches all the way up to the
-# event's tips, with AFTER shifted down past any genuinely new commits
-# pushed on top; a mid-series insertion stops it short instead.
-sub diff_range_args {
-    my ($meta, $old, $new) = @_;
+# Every diff-range BEFORE COUNT AFTER the forced update in $meta takes:
+# runs of removed commits whose replacements sit at a constant offset, so
+# diff-range's positional pairing (BEFORE~i against AFTER~i) matches each
+# old revision with its new one. Usually that's one run covering the whole
+# rewrite down to where both sides meet again (BEFORE~COUNT = AFTER~COUNT),
+# with AFTER shifted down past any genuinely new commits pushed on top; a
+# mid-series insertion splits it in two.
+sub event_windows {
+    my ($meta) = @_;
     my ($before, $after) = event_tips($meta);
-    my ($d, $e) = (depth_in($old, $before), depth_in($new, $after));
-    my ($olds, $news) = (first_parents($before), first_parents($after));
-    my $k = 0;
-    while ($k < $d && $k < $e) {
-        my ($o, $n) = ($olds->[$d - $k - 1], $news->[$e - $k - 1]);
-        last unless ($replaced_in{$meta}{$n} // '') eq $o;
-        $k++;
+    my @removed = split /\n/, qx(git rev-list --first-parent '$before' '^$after');
+    my %replacement = reverse %{ $replaced_in{$meta} // {} };
+    my @windows;
+    for my $i (0 .. $#removed) {
+        my $new = $replacement{ $removed[$i] } // next;
+        my $e = depth_in($new, $after);
+        my $w = $windows[-1];
+        if ($w && $w->{i} + $w->{n} == $i && $w->{e} + $w->{n} == $e) {
+            $w->{n}++;
+        } else {
+            push @windows, { i => $i, e => $e, n => 1 };
+        }
     }
-    return (nth($before, $d - $k), $k + 1, nth($after, $e - $k));
+    return map { [ nth($before, $_->{i}), $_->{n}, nth($after, $_->{e}) ] } @windows;
 }
 
-my %diff_range_cache;
 sub diff_range {
     my @args = @_;
-    return $diff_range_cache{"@args"} //= do {
-        my $out = qx('$DIFF_RANGE' -- @args);
-        die "diff-range @args: wstat $?\n" if $?;
-        $out;
-    };
+    my $out = qx('$DIFF_RANGE' -- @args);
+    die "diff-range @args: wstat $?\n" if $?;
+    return "\$ ~/tree/utils/diff-range @args\n$out";
+}
+
+my %changes_cache;
+sub changes_in {
+    my ($meta) = @_;
+    return $changes_cache{$meta} //= join "\n", map { diff_range(@$_) } event_windows($meta);
 }
 
 sub show_meta {
@@ -185,7 +195,7 @@ sub evidence {
             or die "$chain[$i]: no event replacing $chain[$i - 1]\n";
         push @parts, "then in:", show_meta($step->{meta}),
                      "with the following changes:",
-                     diff_range(diff_range_args($step->{meta}, $chain[$i - 1], $chain[$i]));
+                     changes_in($step->{meta});
     }
     chomp @parts;
     return join("\n\n", @parts) . "\n";
