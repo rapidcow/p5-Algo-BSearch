@@ -10,6 +10,7 @@ while (<STDIN>){
 	next unless /^REPLACE/;
 	chomp;
 	my ($REPLACE, $a, $WITH, $b, $evis) = split / /, $_, 5;
+	defined $evis or next;
 	my $evi = eval $evis;
 	open my $pipefh, '|-', "git notes --ref evi add -F - $b";
 
