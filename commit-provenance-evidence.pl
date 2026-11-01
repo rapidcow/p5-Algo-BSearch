@@ -180,7 +180,7 @@ sub diff_range {
     my @pretty_args = pretty(\@args, 0, 2);
     my $out = qx('$DIFF_RANGE' -- @pretty_args);
     die "diff-range @pretty_args: wstat $?\n" if $?;
-    return "\$ ~/tree/utils/diff-range @args\n$out";
+    return "\$ ~/tree/utils/diff-range @pretty_args\n$out";
 }
 
 my %changes_cache;
