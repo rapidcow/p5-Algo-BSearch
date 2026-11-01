@@ -6,7 +6,21 @@ lib/RdKw/Algo/BSearch.pod  docs i guess
 t/00-load.t             Test from FastLook.pm - basic load
 t/01-bisectl.t          Test from FastLook.pm - left search
 t/01-bisectr.t          Test from FastLook.pm - right search
+t/10-array.t            Test - ARRAY input form
+t/20-mean.t             Test - integer range midpoint
+t/50-bisect120.t        Test from List-BisectSearch - 0/1/2 variants
+t/50-scope.t            Test from List-BisectSearch - globals scopes
 t/doctest.t             Test from FastLook.pm - POD test
+t/essay.t               Test - textfile essay tests
+t/nsec-search.t         Test - nsec-search.pl
+t/overflow.t            Test - bounds as integer limits
+t/podtest.t             Test - documentation examples
+t/sib.t                 Test - trisection points / equal-range
+t/tree-search.t         Test - tree-search.pl
+t/tree-search-cmd.t     Test - tree-search.pl CLI
+t/lib/nsec-search.pl    Test lib - NSEC-inspired extension
+t/lib/test-functions.sh Test lib - TAP harness for /bin/sh
+t/lib/tree-search.pl    Test lib - lexicographical strings
 xt/changes.t            Author test - CPAN Change log
 xt/manifest.t           Author test - Manifest
 xt/pod-coverage.t       Author test - POD coverage

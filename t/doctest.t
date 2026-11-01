@@ -3,17 +3,18 @@
 use 5.006;
 use strict;
 use warnings;
-
-use RdKw::Algo::BSearch qw(blsrch0);
 use Test::More tests => 3;
 
+use RdKw::Algo::BSearch qw(blsrch0);
+
 sub search {
-    my ($array, $want) = @_;
-    my ($idx, $cmp, $elp) = blsrch0 { $_ <=> $want } $array;
-    if (!defined $cmp) { "$want not found anywhere" }
-    elsif ($cmp != 0)  { "$want not found; the best "
-                         . "I got was $$elp at [$idx]" }
-    else               { "$want found at [$idx] :)" }
+	my ($array, $want) = @_;
+	my ($idx, $cmp, $elp) = blsrch0 { $_ <=> $want } $array;
+	my $elt = defined $elp ? $$elp : undef;
+	if (!defined $cmp) { "$want not found anywhere" }
+	elsif ($cmp != 0)  { "$want not found; the best "
+	                     . "I got was $elt at [$idx]" }
+	else               { "$want found at [$idx] :)" }
 }
 
 my $list = [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 8, 9, 9];
