@@ -1,0 +1,37 @@
+Originally identified by:
+
+commit 57a2321b94265b1cddda1c56b9f7c04be44de37d
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Sat Nov 29 19:07:47 2025 -0600
+Commit:     GitHub <noreply@github.com>
+CommitDate: Sat Nov 29 19:07:47 2025 -0600
+
+    Create SECURITY.md
+
+    ... with help from the GitHub web interface.
+
+    (actually forget about it ugh, GitHub adds ugly spaces and
+    takes newlines from places they should be in, and throws
+    them in places where they shouldn't be.  AND it insists on
+    committing with the name I use in https://github.com/rapidcow
+    (which I do not want to put my real name in).  I genuinely
+    do not want to put up with this horrendous tasteless GitHub
+    web interface anymore (ㆆ_ㆆ) NO signature for you !!!)
+
+This commit was first seen in:
+
+commit 1b60dcd966a74ce898134ec21890deae1baa6e1c
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed Jan 14 05:43:52 2026 +0800
+Commit:     Git Daemon <git@rpi-4b.local>
+CommitDate: Wed Jan 14 05:43:52 2026 +0800
+
+    Receive pack via ssh transport
+
+    created:
+      refs/heads/master 0000000..e90ac4b (+15)
+       17 files changed, 1632 insertions(+)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fe80::4422:d6a4:1b86:e5df%wlan0]:46522
+    Host: [fe80::8aa2:9eff:fe1a:b25a%wlan0]:22
