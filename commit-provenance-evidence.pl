@@ -166,10 +166,20 @@ sub event_windows {
     return map { [ nth($before, $_->{i}), $_->{n}, nth($after, $_->{e}) ] } @windows;
 }
 
+sub pretty
+{
+	my ($src, @pookie) = @_;
+	my @args = @$src;
+	foreach my $i (@pookie) {
+		$args[$i] =~ s/([[:xdigit:]]{7})[[:xdigit:]]{33}/$1/;
+	}
+	@args;
+}
 sub diff_range {
     my @args = @_;
-    my $out = qx('$DIFF_RANGE' -- @args);
-    die "diff-range @args: wstat $?\n" if $?;
+    my @pretty_args = pretty(\@args, 0, 2);
+    my $out = qx('$DIFF_RANGE' -- @pretty_args);
+    die "diff-range @pretty_args: wstat $?\n" if $?;
     return "\$ ~/tree/utils/diff-range @args\n$out";
 }
 
