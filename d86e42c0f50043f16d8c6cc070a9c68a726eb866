@@ -1,0 +1,31 @@
+Originally identified by:
+
+commit 5ac8eee3d35d1cb67d1c246c09218b0f4e52d5b3
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Sun May 3 00:36:01 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Sun May 3 00:37:08 2026 -0500
+
+    Rename pub to foss
+
+    Just doing something I thought I could still easily
+    do before I actually publish this....  "pub" just
+    never struck me as being the right word for it.
+
+This commit was first seen in:
+
+commit 6060883df67e11eed7638c629f08e9abfdcb0e56
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 6 17:17:25 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 6 17:17:25 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master cfd2206..5d193eb (+52)
+       18 files changed, 1473 insertions(+), 310 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:55252 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
