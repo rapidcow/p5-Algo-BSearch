@@ -1,0 +1,34 @@
+Originally identified by:
+
+commit 2c031ddd9ec2c029c48c7ccefd9fcd256aa26725
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Sun Mar 15 09:28:36 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Sun Mar 15 09:28:36 2026 -0500
+
+    Reword
+
+    This is like saying "the boundaries collapse when
+    they are equal" DX... just awful!
+
+    Also I've already used "lsearch" to indicate search
+    for the leftmost occurrence in the Cookbook, so it
+    may be confusing to reuse it here.
+
+This commit was first seen in:
+
+commit 6060883df67e11eed7638c629f08e9abfdcb0e56
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 6 17:17:25 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 6 17:17:25 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master cfd2206..5d193eb (+52)
+       18 files changed, 1473 insertions(+), 310 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:55252 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
