@@ -1,0 +1,42 @@
+Originally identified by:
+
+commit 09cf02d392bf3277a63e557876d2395fb805cc7f
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Sun Mar 8 10:35:25 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Sun Mar 8 10:38:12 2026 -0500
+
+    Conversion guide for some modules
+
+    one of the first things i've wanted to write! (but
+    didn't feel confident to write about until i've made
+    sure that *my* version works and is comparible with
+    the main players in the first place :,)
+
+    also "conversion" is the better name i am going with,
+    among "translation", "migration" (it's not), "mock-up",
+    "imitation", "coming from X"... i know PyPI calls the
+    tutorial where they document how people can move from
+    setup.py to pyproject.toml "modernizing setup.py-based
+    projects" [0], but that's a word i certainly don't have
+    the audacity of using! :^(
+
+    [0]: https://packaging.python.org/en/latest/guides/modernize-setup-py-project/
+
+This commit was first seen in:
+
+commit 6060883df67e11eed7638c629f08e9abfdcb0e56
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 6 17:17:25 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 6 17:17:25 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master cfd2206..5d193eb (+52)
+       18 files changed, 1473 insertions(+), 310 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:55252 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
