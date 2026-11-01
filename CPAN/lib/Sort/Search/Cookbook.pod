@@ -1,0 +1,487 @@
+#
+# Copyright (c) 2026, Ethan Meng <ethan@rapidcow.org>
+#
+# This module is free software; you can redistribute it
+# and/or modify it under the same terms as Perl itself.
+# See LICENSE at the root directory of your distribution
+# for a copy of Perl's licenses.
+#
+=pod
+
+=head1 NAME
+
+Sort::Search::Cookbook - practical examples for Sort::Search
+
+=head1 SYNOPSIS
+
+This is a collection of quick references and examples on
+how to use L<Sort::Search>.  It is not expected that you
+read this document linearly, although the first two sections
+here are introductory in nature, and are thus understood
+to have been read.
+
+As a general rule of thumb, any existing binary search
+function most definitely translates to a "left search"
+here.  Although examples are provided for both, keep in
+mind that "right search" is unconventional (at least
+to my knowledge) and can be counterintuitive.
+
+=head1 DEFINITION
+
+The terms "predicate", "ordering", "search range" are used in
+the same sense as they are defined in L<Sort::Search/Terminology>.
+In addition, assume these variables mean the following:
+
+=over
+
+=item B<$_>
+
+The current element during a search.
+
+=item B<$idx>
+
+The array index result found by a search.
+The index may not correspond to a real
+element in the array, in which case the
+following two variables would be C<undef>.
+
+=item B<$cmp>
+
+The comparison result returned by the
+predicate/ordering on the found element.
+If there is no such element, this is C<undef>.
+
+=item B<$elp>
+
+The scalar ref to the found element, or
+C<undef> if none was found.
+
+=back
+
+=head1 QUICK REFERENCES
+
+=head2 Ordering from sorted elements
+
+Ordering can be constructed from comparing each
+element (C<$_>) against a given target (C<$want>).
+Here is a handy table for which way you should
+put the operands:
+
+                    SORT ORDERING?
+   ORIEN-  | f(i) <= f(i+1)  f(i) >= f(i+1)
+   TATION? |  (increasing)    (decreasing)
+  ---------+--------------------------------
+    left   |  $want <=> $_    $_ <=> $want
+    right  |  $_ <=> $want    $want <=> $_
+
+One invariant worth noting is that, reading across, both
+ordering functions have the same monotonity: for left search
+it's C<- 0 +> (negative, zero, positive in that order);
+for right search it's C<+ 0 -> (positive, zero, negative).
+
+=head1 EXAMPLES
+
+=head2 Exact match
+
+The second field C<$cmp> can be used to determine (1)
+if the return index corresponds to a real array element
+and (2) if the return index corresponds to an exact match.
+
+For (1), check C<$cmp> is defined.
+For (2), check if C<$cmp> equals zero, which
+is equivalent to checking C<< $array->[$idx] <=> $want >>,
+but it saves you an extra comparison.  If you also need
+the array element, use the third field C<$elp>, which is
+equivalent to C<< \$array->[$idx] >>.
+
+Concretely, given the numerically sorted array:
+
+  my @array = qw( 12 17a 17b 17c 21 );
+
+and the numeric ordering (ignoring the fact that
+C<numeric> warnings would complain about the letters):
+
+                        (-) $_  precedes $want
+  sub { $_ <=> $want }  (0) $_  equals   $want
+                        (+) $_  follows  $want
+
+you can find the first match with B<blsrch0>:
+
+  sub lsearch {
+      my ($array, $want) = @_;
+      my ($idx, $cmp, $elp) = blsrch0 { $_ <=> $want } $array;
+      if (!defined $cmp) { print "$want not found anywhere\n"; }
+      elsif ($cmp != 0)  { print "$want not found; best "
+                               . "is $$elp at [$idx]\n"; }
+      else               { print "$want found at $$elp [$idx] :)\n"; }
+  }
+
+  lsearch \@array => 11;  # 11 not found; best is 12 at [0]
+  lsearch \@array => 12;  # 12 found at 12 [0] :)
+  lsearch \@array => 17;  # 17 found at 17a [1] :)
+  lsearch \@array => 18;  # 18 not found; best is 21 at [4]
+  lsearch \@array => 99;  # 99 not found anywhere
+
+and the last match with B<brsrch0>:
+
+  sub rsearch {
+      my ($array, $want) = @_;
+      my ($idx, $cmp, $elp) = brsrch0 { $want <=> $_ } $array;
+      if (!defined $cmp) { print "$want not found anywhere\n"; }
+      elsif ($cmp != 0)  { print "$want not found; best "
+                               . "is $$elp at [$idx]\n"; }
+      else               { print "$want found at $$elp [$idx] :)\n"; }
+  }
+
+  rsearch \@array => 11;  # 11 not found anywhere
+  rsearch \@array => 12;  # 12 found at 12 [0] :)
+  rsearch \@array => 17;  # 17 found at 17c [3] :)
+  rsearch \@array => 18;  # 18 not found; best is 17c at [3]
+  rsearch \@array => 99;  # 99 not found; best is 21 at [4]
+
+Notice that the ordering is reversed: C<< $want <=> $_ >>
+instead of C<< $_ <=> $want >>, due to using a right search
+instead of a left search.  The conventional left search may
+be used, though C<$cmp> and C<$elp> would be meaningless,
+thus you must check and retrieve the element separately:
+
+  sub rsearch {
+      my ($array, $want) = @_;
+      my $idx = blsrch1 { $_ <=> $want } $array;
+      --$idx;
+      if ($idx < 0) {
+          print "$want not found anywhere\n";
+      } else {
+          my $elt = $array->[$idx];
+          my $cmp = $elt <=> $want;
+          print $cmp == 0
+          ? "$want found at $elt [$idx] :)\n"
+          : "$want not found; best is $elt at [$idx]\n";
+      }
+  }
+
+The output of this C<rsearch> is identical to above.
+
+To get all matches at once, use B<blsrch2> or B<brsrch2>:
+
+  sub srchall {
+      my ($lo, $hi);
+      my ($array, $want) = @_;
+
+      # EITHER:
+      ($lo, $hi) = blsrch2 { $_ <=> $want } $array;
+      print "[$_]=$array->[$_] " for ($lo .. $hi-1);
+
+      # OR:
+      ($hi, $lo) = brsrch2 { $want <=> $_ } $array;
+      print "[$_]=$array->[$_] " for ($lo+1 .. $hi);
+  }
+
+  srchall \@array => 11;  # <empty>
+  srchall \@array => 12;  # [0]=12
+  srchall \@array => 17;  # [1]=17a [2]=17b [3]=17c
+  srchall \@array => 21;  # [4]=21
+  srchall \@array => 99;  # <empty>
+
+Note that the left search range is right-exclusive and
+the right search is left-exclusive.
+
+=head2 Insertion point
+
+When the aforementioned exact condition is not satisfied,
+the index may be interpreted as an insertion point, which
+you can use a zero-length L<splice|perlfunc/splice> on.
+
+To be clear on how we will insert, we follow the convention
+of inserting the new element to the I<left> of the index of
+insertion.  This makes it possible to address insertions from
+L<unshift|perlfunc/unshift> to L<push|perlfunc/push> as 0
+through size of array.  Zero-length splice is consistent with
+this convention.  For example, in the following example:
+
+  my @sample = qw( 0 1 2 3 );
+  my $index = 2;
+  splice @sample, $index, 0, 'NEW';
+  print "@sample";  # 0 1 NEW 2 3
+
+... we can see that C<NEW> is inserted before 2, the index.
+
+Re-using the same array from above:
+
+  my @array = qw( 12 17a 17b 17c 21 );
+
+B<blsrch0> finds the first index you may insert this given
+element at; this preserves the insertion order in reverse
+(newly inserted elements precede their old counterparts):
+
+  sub insert {
+      my ($array, $value) = @_;
+      my $index = blsrch0 { $_ <=> $value } $array;
+      splice @$array, $index, 0, $value;
+  }
+
+  insert [ @array ] => 11;  # |12  17a 17b 17c  21  i=0
+  insert [ @array ] => 12;  # |12  17a 17b 17c  21  i=0
+  insert [ @array ] => 16;  #  12 |17a 17b 17c  21  i=1
+  insert [ @array ] => 17;  #  12 |17a 17b 17c  21  i=1
+  insert [ @array ] => 18;  #  12  17a 17b 17c |21  i=4
+  insert [ @array ] => 21;  #  12  17a 17b 17c |21  i=4
+  insert [ @array ] => 99;  #  12  17a 17b 17c  21| i=5
+
+B<blsrch1> finds the last index you may insert any given
+element at; this preserves the regular insertion order
+(newly inserted elements follow their old counterparts):
+
+  sub insort {
+      my ($array, $value) = @_;
+      my $index = blsrch1 { $_ <=> $value } $array;
+      splice @$array, $index, 0, $value;
+  }
+
+  insort [ @array ] => 11;  # |12  17a 17b 17c  21  i=0
+  insort [ @array ] => 12;  #  12 |17a 17b 17c  21  i=1
+  insort [ @array ] => 16;  #  12 |17a 17b 17c  21  i=1
+  insort [ @array ] => 17;  #  12  17a 17b 17c |21  i=4
+  insort [ @array ] => 18;  #  12  17a 17b 17c |21  i=4
+  insort [ @array ] => 21;  #  12  17a 17b 17c  21| i=5
+  insort [ @array ] => 99;  #  12  17a 17b 17c  21| i=5
+
+Note that B<insert> and B<insort> coincide if and only
+if the element to be inserted does not already exist.
+In the examples above, note how the same index is derived
+for 11,16,18,99.
+
+To insert unique elements, you can use one of the inclusive
+variants to figure out if an exact match exists, and insert
+only if it doesn't exist.  Consider the following strictly
+monotone array:
+
+  my @marry = ( 2, 3, 5, 7, 12, 17 );
+
+In the case of finding the first index fit for insertion,
+B<blsrch0> or B<blsrchx> can be used directly.  Both are
+inclusive variants as desired, but the "x" variant may
+take a shortcut and aborts upon seeing I<any> equal value;
+when it cannot find such, the results are identical to
+those of the "0" variant.
+
+  sub uinsert {
+      my ($array, $value) = @_;
+      my ($idx, $cmp, $elp) = blsrchx { $_ <=> $value } $array;
+      if (defined $cmp && $cmp == 0) {
+          print "= [$idx] found $$elp\n";
+      } else {
+          splice @$array, $idx, 0, $value;
+          print "+ [$idx]\n";
+      }
+  }
+
+  uinsert [ @marry ] => 17;  # = [5] found 17
+  uinsert [ @marry ] => 29;  # + [6]
+
+  uinsert [ @array ] => 17;  # = [2] found 17b*
+  uinsert [ @array ] => 29;  # + [5]
+
+  # * This would be [1] "17a" if blsrch0 were used,
+  #   the absolute first equal instance. It wouldn't
+  #   make a whole lot of difference, though. ;p
+
+The case of finding the last index though is a bit trickier,
+since we can't utilize the results of B<blsrch1> for the
+duplication message.  But recall B<blsrch1> and B<brsrch0>
+differ by 1, so we can exploit the latter for the message
+and adjust the index for insertion.
+
+  sub uinsort {
+      my ($array, $value) = @_;
+      my ($idx, $cmp, $elp) = brsrchx { $value <=> $_ } $array;
+      if (defined $cmp && $cmp == 0) {
+          print "= [$idx] found $$elp\n";
+      } else {
+          ++$idx;   # IMPORTANT! convert r0 to l1 index
+          splice @$array, $idx, 0, $value;
+          print "+ [$idx]\n";
+      }
+  }
+
+  uinsort [ @marry ] => 17;  # = [5] found 17
+  uinsort [ @marry ] => 29;  # + [6]
+
+  uinsort [ @array ] => 17;  # = [2] found 17b*
+  uinsort [ @array ] => 29;  # + [5]
+
+  # * If this were brsrch0, we'd get "17c", the opposite
+  #   end this equal range.  It is purely circumstantial
+  #   that this "x" variant got "17b" too, I think...
+
+=head1 CONVERSION GUIDE
+
+From (other) CPAN modules:
+
+=over
+
+=item *
+
+For L<List::MoreUtils> (which this module was in fact
+inspired by!) it's basically a verbatim translation.
+Namely this:
+
+  my (@ids, $lb, $ub);
+  @ids = (1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4,
+          4, 4, 5, 5, 6, 7, 7, 7, 8, 8, 9, 9,
+          9, 9, 9, 11, 13, 13, 13, 17);
+
+  # use List::MoreUtils qw(lower_bound);
+  $lb = lower_bound { $_ <=> 2 } @ids; # returns 2
+  $lb = lower_bound { $_ <=> 4 } @ids; # returns 10
+
+  # use List::MoreUtils qw(upper_bound);
+  $ub = upper_bound { $_ <=> 2 } @ids; # returns 4
+  $ub = upper_bound { $_ <=> 4 } @ids; # returns 14
+
+  # use List::MoreUtils qw(equal_range);
+  ($lb, $ub) = equal_range { $_ <=> 2 } @ids; # (2,4)
+  ($lb, $ub) = equal_range { $_ <=> 4 } @ids; # (10,14)
+
+is equivalent to:
+
+  $lb = blsrch0 { $_ <=> 2 } \@ids; # returns 2
+  $lb = blsrch0 { $_ <=> 4 } \@ids; # returns 10
+
+  $ub = blsrch1 { $_ <=> 2 } \@ids; # returns 4
+  $ub = blsrch1 { $_ <=> 4 } \@ids; # returns 14
+
+  ($lb, $ub) = blsrch2 { $_ <=> 2 } \@ids; # (2,4)
+  ($lb, $ub) = blsrch2 { $_ <=> 4 } \@ids; # (10,14)
+
+Note that caller context matters for B<blsrch0> and B<blsrch1>.
+Namely they should be called in scalar context.
+
+=item *
+
+For L<List::BinarySearch>, borrowing the definitions there:
+
+  my ($index, $low_ix, $high_ix);
+  my @num_array = (100, 200, 300, 400, 500);
+  my @str_array = qw(Bach Beethoven Brahms Mozart Schubert);
+
+C<binsearch> is equivalent to B<blsrch0>, minus the special case
+where no match is found, which must be invalidated explicitly:
+
+  # use List::BinarySearch qw(binsearch);
+  $index = binsearch {$a <=> $b} 300, @num_array;      # 2
+  $index = binsearch {$a cmp $b} 'Mozart', @str_array; # 3
+  $index = binsearch {$a <=> $b} 42, @num_array;       # undef
+
+  # equivalent to...
+  sub exactly {
+      my ($idx, $cmp) = @_;
+      defined $cmp && $cmp == 0 ? $idx : undef;
+  }
+
+  $index = exactly blsrch0 { $_ <=> 300 } \@num_array;      # 2
+  $index = exactly blsrch0 { $_ cmp 'Mozart' } \@str_array; # 3
+  $index = exactly blsrch0 { $_ <=> 42 } \@num_array;       # undef
+
+C<exactly> invalidates the last 0, where C<$cmp> is 1 (100 > 42).
+
+C<binsearch_pos> is just equivalent to B<blsrch0>, called in
+ordinary scalar context:
+
+  # use List::BinarySearch qw(binsearch_pos);
+  $index = binsearch_pos {$a cmp $b} 'Chopin', @str_array; # 3
+  $index = binsearch_pos {$a <=> $b} 600, @num_array;      # 5
+  $index = binsearch_pos {$a <=> $b} 200, @num_array;      # 1
+
+  # equivalent to:
+  $index = blsrch0 { $_ cmp 'Chopin' } \@str_array; # 3
+  $index = blsrch0 { $_ <=> 600 } \@num_array;      # 5
+  $index = blsrch0 { $_ <=> 200 } \@num_array;      # 1
+
+C<binsearch_range> is equivalent to calling C<binsearch_pos>
+against the two needles, which means calling B<blsrch0> twice.
+
+  # use List::BinarySearch qw(binsearch_range);
+  ( $low_ix, $high_ix )
+      = binsearch_range { $a cmp $b } 'Beethoven', 'Mozart', @str_array;
+      # Returns ( 1, 3 )
+
+  ( $low_ix, $high_ix )
+      = binsearch_range { $a <=> $b } 200, 400, @num_array;
+      # Returns ( 1, 3 )
+
+  # equivalent to:
+  ($low_ix, $high_ix)
+      = ( # ... in either scalar context:
+          scalar ( blsrch0 { $_ cmp 'Beethoven' } \@str_array ),
+          # ... or get just the index in list context:
+          ( blsrch0 { $_ cmp 'Mozart' } \@str_array )[0],
+        );
+      # Returns (1, 3)
+
+  ($low_ix, $high_ix)
+      = map { my $want = $_;
+           scalar blsrch0 { $_ <=> $want }
+                 \@num_array } (200, 400);
+      # Returns (1, 3)
+
+=item *
+
+For L<List::Search>, borrowing the definitions there:
+
+  my ($index, $found);
+  my @list = sort qw( bravo charlie delta );
+  my @numbers = sort { $a <=> $b } ( 10, 20, 100, 200, );
+  my $cmp_code = sub { lc( $_[0] ) cmp lc( $_[1] ) };
+  my @custom_list = sort { $cmp_code->( $a, $b ) } qw( FOO bar BAZ bundy );
+      # => ('bar', 'BAZ', 'bundy', 'FOO');
+
+the following:
+
+  # use List::Search qw(list_search nlist_search custom_list_search);
+  print list_search( 'alpha',   \@list );    #  0
+  print list_search( 'charlie', \@list );    #  1
+  print list_search( 'zebra',   \@list );    #  -1 (not found)
+
+  print nlist_search( 20, \@numbers );       #  1
+
+  print custom_list_search( $cmp_code, 'foo', \@custom_list );  # 3
+
+can be written as
+
+  sub actually {
+      my ($idx, $cmp) = @_;
+      defined $cmp ? $idx : -1;
+  }
+
+  $index = actually blsrch0 { $_ cmp 'alpha'   } \@list;  # 0
+  $index = actually blsrch0 { $_ cmp 'charlie' } \@list;  # 1
+  $index = actually blsrch0 { $_ cmp 'zebra'   } \@list;  # -1
+  $index = actually blsrch0 { $_ <=> 20 } \@numbers;      # 1
+  $index = actually blsrch0
+               { $cmp_code->($_, 'foo') } \@custom_list;  # 3
+
+and for C<s/_search/_contains/>, you can just check C<$cmp>
+without regards to the index and (optionally) swap out with
+an eXistential search (which is only marginally faster, but
+semantically better to read IMO :).
+
+  sub validate {
+      my ($idx, $cmp) = @_;
+      defined $cmp && $cmp == 0;
+  }
+
+  $found = validate blsrchx { $_ cmp 'alpha'   } \@list;  # !!1
+  $found = validate blsrchx { $_ cmp 'charlie' } \@list;  # !!1
+  $found = validate blsrchx { $_ cmp 'zebra'   } \@list;  # !!0
+  $found = validate blsrchx { $_ <=> 20 } \@numbers;      # !!1
+  $found = validate blsrchx
+               { $cmp_code->($_, 'foo') } \@custom_list;  # !!1
+
+=back
+
+=head1 SEE ALSO
+
+L<Sort::Search>, the main documentation.
+
+=cut

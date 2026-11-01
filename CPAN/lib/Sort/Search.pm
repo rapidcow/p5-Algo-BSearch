@@ -1,0 +1,545 @@
+#
+# Copyright (c) 2025, 2026, Ethan Meng <ethan@rapidcow.org>
+#
+# This module is free software; you can redistribute it
+# and/or modify it under the same terms as Perl itself.
+# See LICENSE at the root directory of your distribution
+# for a copy of Perl's licenses.
+#
+package Sort::Search;
+
+our $VERSION = '0.00_44';
+$VERSION = eval $VERSION;
+
+use 5.006;
+use strict;
+use warnings;
+
+use Carp ();
+
+our (@ISA, @EXPORT_OK);
+BEGIN {
+	require Exporter;
+	@ISA = qw(Exporter);
+	@EXPORT_OK = qw(
+		bisectl bisectr bixectl bixectr
+		blsrch0 brsrch0 blsrch1 brsrch1
+		blsrch2 brsrch2 blsrchx brsrchx
+	);
+}
+
+use constant LTR => 1;  # left-to-right
+use constant RTL => 0;  # right-to-left
+
+use constant MF_NONE => 0;  # index form
+use constant MF_ARRAY => 1; # ARRAY form
+use constant MF_CODE => 2;  # CODE form
+
+# Parse input arguments.
+#    $ori:  search orientation (1 for left/LTR, 0 for right/RTL)
+#    @args: arguments from caller
+# Return:
+#    ($fun, MF_NONE, undef, $beg, $end)   for index form;
+# and
+#    ($fun, MF_ARRAY, $map,  $beg, $end)  for ARRAY form,
+#    ($fun, MF_CODE, $map,  $beg, $end)   for CODE form
+# where $fun is a predicate or an ordering, and
+# $map returns a ref to the image at the index.
+# Croak on parse failure.
+sub _parse
+{
+	my ($ori, @args) = @_;
+	my $caller = (caller)[3];  # subroutine name
+	# This should never happen if args are checked
+	# with prototype.  It's still a good idea to
+	# check though, as prototypes can be bypassed.
+	if (@args < 2) {
+		my $nargs = @args;
+		Carp::croak($caller, ": ", <<EOM);
+not enough arguments (expected at least 2, got $nargs)
+EOM
+	}
+	my ($fun, $arg) = splice @args, 0, 2;
+	my ($beg, $end);
+	unless (defined $arg) {
+		if (@args < 1) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
+not enough arguments for explicit index form (expected at least 3, got $nargs)
+EOM
+		}
+		if (@args > 2) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
+too many arguments for explicit index form (expected at most 4, got $nargs)
+EOM
+		}
+		if (@args == 2) {
+			($beg, $end) = (@args);
+		}
+		else {
+			# $hi = $arg, $lo inferred
+			my $arg = shift @args;
+			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
+		}
+		($fun, MF_NONE, undef, $beg, $end);
+	}
+	# If $arg is a normal ARRAY ref or a blessed
+	# ARRAY ref, map its index to its elements.
+	# <https://stackoverflow.com/a/64160/19411800>
+	# (Tied ARRAY refs should be OK too.)
+	elsif (UNIVERSAL::isa($arg, 'ARRAY')) {
+		if (@args > 2) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
+too many arguments for ARRAY form (expected at most 4, got $nargs)
+EOM
+		}
+		if ($ori) {
+			# Left search
+			my ($lo, $hi) = @args;
+			defined $lo or $lo = 0;
+			defined $hi or $hi = 1 + $#$arg;
+			($beg, $end) = ($lo, $hi);
+		}
+		else {
+			# Right search
+			my ($hi, $lo) = @args;
+			defined $hi or $hi = $#$arg;
+			defined $lo or $lo = -1;
+			($beg, $end) = ($hi, $lo);
+		}
+		($fun, MF_ARRAY, $arg, $beg, $end);
+	}
+	elsif (UNIVERSAL::isa($arg, 'CODE')) {
+		if (@args < 1) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
+not enough arguments for CODE form (expected at least 3, got $nargs)
+EOM
+		}
+		if (@args > 2) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
+too many arguments for CODE form (expected at most 4, got $nargs)
+EOM
+		}
+		if (@args == 2) {
+			($beg, $end) = (@args);
+		}
+		else {
+			# $hi = $arg, $lo inferred
+			my $arg = shift @args;
+			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
+		}
+		($fun, MF_CODE, $arg, $beg, $end);
+	}
+	else {
+		# Same way as how we handle the CODE form above,
+		# except $arg is itself an index, so the argument
+		# counts are all shifted down by 1...
+		if (@args > 1) {
+			my $nargs = @args + 2;
+			Carp::croak($caller, ": ", <<EOM);
+too many arguments for index form (expected at most 3, got $nargs)
+EOM
+		}
+		if (@args == 1) {
+			unshift @args, $arg;
+			($beg, $end) = (@args);
+		}
+		else {
+			# $hi = $arg, $lo inferred
+			($beg, $end) = $ori ? (0, $arg) : ($arg, -1);
+		}
+		($fun, MF_NONE, undef, $beg, $end);
+	}
+}
+
+# Very silly workaround for finding the arithmetic
+# mean with mixed IV/UV... this should not break it
+# for bigint since we only do right shifts and only
+# on positive integers.
+#
+# _lmean finds the floor of ($lo+$hi)/2 while _rmean
+# finds the ceiling.  Caller ensures that $lo < $hi.
+sub _lmean
+{
+	my ($lo, $hi) = @_;
+	if ($lo < 0 && $hi > 0) {
+		# $lo and $hi may be very far apart.
+		# Compute the midpoint in a way that
+		# doesn't overflow into a float (NV).
+		my $sum = $lo + $hi;
+		if ($sum < 0) {
+			# >> on a positive integer...
+			- ((1 - $sum) >> 1);
+		} else {
+			$sum >> 1;
+		}
+	} else {
+		$lo + (($hi - $lo) >> 1);
+	}
+}
+
+sub _rmean
+{
+	my ($lo, $hi) = @_;
+	if ($lo < 0 && $hi > 0) {
+		# Same overflow guard for here.
+		my $sum = $lo + $hi;
+		if ($sum < 0) {
+			- ((-$sum) >> 1);
+		} else {
+			($sum + 1) >> 1;
+		}
+	} else {
+		# We can still overflow if $hi is big,
+		# but since $lo < $hi, subtracting 1
+		# should be fine.
+		$lo + 1 + (($hi - $lo - 1) >> 1);
+	}
+}
+
+# This is the left bisection method.  It finds the
+# index of the leftmost TRUE on the range [ $lo, $hi ),
+# though if the predicate is never TRUE, $hi is used.
+#
+# $hi is also used when said range is empty ($lo >= $hi).
+#
+# Remark: For a leftmost TRUE to be well-defined, there
+# must exist at least one boundary that all TRUEs follow:
+#
+#                  valid              BAD
+#
+#          $i    0 1 2 3 4         0 1 2 3 4
+#               -----------       -----------
+#    $ok->($e)   . . . . .|        . . T . .
+#                . . .|T T         . T . T T
+#               |T T T T T         T T . . .
+#
+# It can be shown that whenever such a boundary exists,
+# it is unique and identified by the indices immediately
+# following it and preceding it.  This algorithm finds
+# the one following it.  (To find the preceding index,
+# subtract this index by 1, or negate the predicate and
+# use the right bisection method.)
+#
+# In scalar context, the $index is returned.  In list
+# context, the $index, the last TRUE comparison result,
+# and the last TRUE element are returned.  The latter
+# two should therefore be equivalent to $ok->($index)
+# and ${$map->($index)} iff $index is a "real" index
+# on said range [ $lo, $hi ).
+sub _bisectl
+{
+	my ($any, $ok, $ref, $map, $lo, $hi) = @_;
+	# Fun fact!  The following are written in the order
+	# of right-to-left notation of function composition.
+	# ($cmp = $res is the image of ${$elp = $img} via $ok,
+	# which in turn is the image of $mid, the index...)
+	my ($cmp, $res, $elp, $img, $mid);  $mid = $hi;
+
+	# Assumption: If $ok->($x) true, $x <= $y => $ok->($y) true.
+	# Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
+	#             - If $x < $lo,  $ok->($x) is false if defined.
+SRCH:	while ($lo < $hi) {
+		# Prefer floor of (L+H)/2, so that $mid < $hi,
+		# and so either branch is guaranteed to converge.
+		$mid = _lmean($lo, $hi);
+		$img = ($ref == MF_ARRAY ? \$map->[$mid] :
+			$ref == MF_CODE ? $map->($mid) : \$mid);
+		foreach ($$img) {
+			if ($res = $ok->($mid)) {
+				# This is a successful match, so the
+				# intermediates into our return values.
+				# But *don't* clobber $hi in case this
+				# is an early return.  (This is mostly
+				# significant for the b*srchx later,
+				# but for consistency do it here too.)
+				$cmp = $res;
+				$elp = $img;
+				last SRCH if $any;
+				$hi = $mid;      # include
+			} else {
+				# This ++ may appear insignificant, but
+				# it's what keeps $mid inside [$lo, $hi].
+				$lo = ++$mid;    # exclude
+				# Why?  Because to accommodate the case
+				# of an early return, we don't actually
+				# return $hi like we're supposed to.
+				# The above deals with the case where
+				# the last match is successful, in which
+				# case $mid needs no modification.  Here,
+				# $mid is unsuccessful and is thus unfit
+				# for return.  Fittingly it is excluded
+				# but since we might be the last branch
+				# we have to increment $mid with $lo too.
+			}
+		}
+	}
+	wantarray ? ($mid, $cmp, $elp, $lo, $hi) : $mid;
+}
+
+sub bisectl (&$;$$) { _bisectl(0, _parse(LTR, @_)); }
+sub bixectl (&$;$$) { _bisectl(1, _parse(LTR, @_)); }
+
+# This is the right bisection method.  It finds the
+# index of the rightmost TRUE on the range ( $lo, $hi ],
+# though if the predicate is never TRUE, $hi is used.
+#
+# $lo is also used when said range is empty ($lo <= $hi).
+#
+# Remark: For a rightmost TRUE to be well-defined, there
+# must exist at least one boundary that all TRUEs precede:
+#
+#                  valid              BAD
+#
+#          $i    0 1 2 3 4         0 1 2 3 4
+#               -----------       -----------
+#    $ok->($e)  |. . . . .         T T . T T
+#                T T T|. .         T . T . .
+#                T T T T T|        . . . T T
+#
+# It can be shown that whenever such a boundary exists,
+# it is unique and identified by the indices immediately
+# following it and preceding it.  This algorithm finds
+# the one preceding it.  (To find the following index,
+# add 1 to this index, or negate the predicate and use
+# the left bisection method.)
+#
+# The exact return value is documented above _bisectl.
+sub _bisectr
+{
+	my ($any, $ok, $ref, $map, $hi, $lo) = @_;
+	my ($cmp, $res, $elp, $img, $mid);  $mid = $lo;
+
+	# Assumption: If $ok->($y) true, $x <= $y => $ok->($x) true.
+	# Invariant:  - $ok attains truth somewhere on [ $lo, $hi ].
+	#             - If $x > $hi,  $ok->($x) is false if defined.
+SRCH:	while ($lo < $hi) {
+		# Prefer ceiling of (L+H)/2, so that $lo > $mid,
+		# and so either branch is guaranteed to converge.
+		$mid = _rmean($lo, $hi);
+		$img = ($ref == MF_ARRAY ? \$map->[$mid] :
+			$ref == MF_CODE ? $map->($mid) : \$mid);
+		foreach ($$img) {
+			if ($res = $ok->($mid)) {
+				$cmp = $res;
+				$elp = $img;
+				last SRCH if $any;
+				$lo = $mid;      # include
+			} else {
+				$hi = --$mid;    # exclude
+			}
+		}
+	}
+	wantarray ? ($mid, $cmp, $elp, $hi, $lo) : $mid;
+}
+
+sub bisectr (&$;$$) { _bisectr(0, _parse(RTL, @_)); }
+sub bixectr (&$;$$) { _bisectr(1, _parse(RTL, @_)); }
+
+# This is left binary search (blsrch[01]).  Different
+# from before, we are passed an ordering that returns
+# a trichotomous number: negative, zero, or positive.
+# This ordering is assumed to be monotonic INCREASING:
+# negatives before zeros, and zeros before positives.
+#
+# This "number" may be a blessed ref, but it should, at
+# the very least, understand how it compares numerically
+# with the scalar 0 (not having bool is probably fine.
+# There should be details in 'perldoc overload' for what
+# you want to implement...)
+#
+# (Typically, a concrete interpretation of this number
+# corresponds to the result of a comparison between
+# element in a sorted haystack and a needle, but _how_
+# you compare them depends on how the haystack is sorted.
+# So discussion of this is postponed until the POD...)
+#
+# The 0 (blsrch0) and 1 (blsrch1) variants of the binary
+# left search find the leftmost indices where the ordering
+# returns a non-negative and positive number, respectively.
+# This is a direct application of the left bisection
+# algorithm, with the pre-defined predicates &$ord >= 0
+# and &$ord > 0.  It can be shown that these predicates
+# satisfy the left-predicate assumption, and -- by proxy
+# -- the results of both search variants are well-defined.
+#
+# Intuitively, blsrch0 and blsrch1 effectively trisect
+# the indices bounded by [ $lo, $hi ) into three zones:
+#
+#                         "zeros"
+#          "negatives"  &$ord == 0  "positives"
+#           &$ord < 0    \       /   &$ord > 0
+#    $lo ---------------->|<--->|<---------------- $hi
+#  (incl)                 ^     ^                 (excl)
+#                        /       \
+#                blsrch0           blsrch1
+#             (inclusive)         (exclusive)
+#
+# The x (blsrchx) variant works the same as 0 (blsrch0),
+# except it returns on any zero.  It does NOT complain
+# by returning something negative or undef if it cannot
+# find a zero.  If you care about an _exact_ match, you
+# should call in list context and check if $cmp is 0 or
+# undef (or compare it again yourself!  TMTOWTDI... :)
+sub _bltsrch
+{
+	my ($any, $ok, $ord, $ref, $map, $lo, $hi) = @_;
+	my ($cmp, $res, $elp, $img, $mid);  $mid = $hi;
+
+SRCH:	while ($lo < $hi) {
+		# Pick floor( (L+H)/2 )
+		$mid = _lmean($lo, $hi);
+		$img = ($ref == MF_ARRAY ? \$map->[$mid] :
+			$ref == MF_CODE ? $map->($mid) : \$mid);
+		foreach ($$img) {
+			if ($ok->($res = $ord->($mid))) {
+				# Be careful not to clobber $hi yet,
+				# as blsrch2 uses us for narrowing
+				# the search range!  See comment for
+				# _bisectl above.
+				$cmp = $res;
+				$elp = $img;
+				last SRCH if $any && $res == 0;
+				$hi = $mid;       # include
+			} else {
+				$lo = ++$mid;     # exclude
+			}
+		}
+	}
+	wantarray ? ($mid, $cmp, $elp, $lo, $hi) : $mid;
+}
+
+sub _pOK_0 { $_[0] >= 0 }
+sub _pOK_1 { $_[0] >  0 }
+
+sub blsrch0 (&$;$$) { _bltsrch(0, \&_pOK_0, _parse(LTR, @_)); }
+sub blsrch1 (&$;$$) { _bltsrch(0, \&_pOK_1, _parse(LTR, @_)); }
+sub blsrchx (&$;$$) { _bltsrch(1, \&_pOK_0, _parse(LTR, @_)); }
+
+# This is right binary search (brsrch[01]), similarly.
+# This ordering is assumed to be monotonic DECREASING:
+# positives before zeros, and zeros before negatives.
+#
+# The 0 (brsrch0) and 1 (brsrch1) variants of the binary
+# left search find the rightmost indices where the ordering
+# returns a non-negative and positive number, respectively.
+# This is a direct application of the right bisection
+# algorithm, with the pre-defined predicates &$ord >= 0
+# and &$ord > 0.  It can be shown that these predicates
+# satisfy the right-predicate assumption, and -- by proxy
+# -- the results of both search variants are well-defined.
+#
+# Intuitively, brsrch0 and brsrch1 effectively trisect
+# the indices bounded by ( $lo, $hi ] into three zones:
+#
+#                         "zeros"
+#          "positives"  &$ord == 0  "negatives"
+#           &$ord > 0    \       /   &$ord < 0
+#    $lo ---------------->|<--->|<---------------- $hi
+#  (excl)                 ^     ^                 (incl)
+#                        /       \
+#                brsrch1           brsrch0
+#             (exclusive)         (inclusive)
+#
+# The x (brsrchx) variant works in exactly the same
+# way as 0 (brsrch0), except it returns on any zero.
+# Same caveats apply (look above for `_bltsrch'...)
+sub _brtsrch
+{
+	my ($any, $ok, $ord, $ref, $map, $hi, $lo) = @_;
+	my ($cmp, $res, $elp, $img, $mid);  $mid = $lo;
+
+SRCH:	while ($lo < $hi) {
+		# Pick ceil( (L+H)/2 )
+		$mid = _rmean($lo, $hi);
+		$img = ($ref == MF_ARRAY ? \$map->[$mid] :
+			$ref == MF_CODE ? $map->($mid) : \$mid);
+		foreach ($$img) {
+			if ($ok->($res = $ord->($mid))) {
+				$cmp = $res;
+				$elp = $img;
+				last SRCH if $any && $res == 0;
+				$lo = $mid;       # include
+			} else {
+				$hi = --$mid;     # exclude
+			}
+		}
+	}
+	wantarray ? ($mid, $cmp, $elp, $hi, $lo) : $mid;
+}
+
+sub brsrch0 (&$;$$) { _brtsrch(0, \&_pOK_0, _parse(RTL, @_)); }
+sub brsrch1 (&$;$$) { _brtsrch(0, \&_pOK_1, _parse(RTL, @_)); }
+sub brsrchx (&$;$$) { _brtsrch(1, \&_pOK_0, _parse(RTL, @_)); }
+
+# b?srch2 is a shorthand that returns b?srch0 and b?srch1.
+# Effectively, this gives you a half-open interval for all
+# the indices where the ordering returns zero.
+# (it's like equal_range from C++ STL, if you know that!)
+#
+# Actually, this is just going to be based on C++ STL,
+# namely GNU GCC's implementation of it in libstdc++-v3.
+# Observe that we're effectively finding a range for
+# the zeros.  If this range is empty, the boundaries of
+# this range collapse and both searches converge to the
+# same point; so either search will do the trick, so we
+# will use the search for an inclusive bound (since the
+# inequality &ord >= 0 has the equality we want).  Now
+# here's the ingenious part: if the range is NOT empty,
+# at some point we'd enter this range:
+#
+#    (&ord < 0)    (&ord == 0)            (&ord > 0)
+#    ---------o[-->|<===o===>|<--------------]o-------->
+#           $lo ------->^ found at $mid      $hi
+#             ^<----------------------------- ^<---- ...
+#                             [This is left-search, btw]
+#
+# Up to this point we're doing the same thing as b?srchx,
+# $mid being what it would return.  BUT we continue to
+# search for lower and upper equal matches, which (as
+# you can tell from my meticulously constructed diagram*)
+# falls between [$lo, $mid] and ($mid, $hi].  (Note that
+# the "upper" match is actually one position above it, so
+# the range would exclude $mid, an actual equal match.)
+#
+# * Note that the lower bound exists to the left of any zero
+#   (including it) and the upper bound exists to the right of
+#   any zero (excluding it). In other words, my meticulously
+#   constructed diagram is accurate and you can trust it. :)
+#   (Also note that, since $mid is the FIRST equality, the
+#   equal range would actually fall fully inside our bounds.)
+sub _blsrch2
+{
+	my ($ord, $ref, $map) = @_;
+	my ($mid, $res, undef, $lo, $hi) = _bltsrch(1, \&_pOK_0, @_);
+	if (defined $res && $res == 0) {
+		$lo = _bltsrch(0, \&_pOK_0, $ord, $ref, $map, $lo,     $mid);
+		$hi = _bltsrch(0, \&_pOK_1, $ord, $ref, $map, $mid + 1, $hi);
+	}
+	wantarray ? ($lo, $hi) : ($hi - $lo);
+}
+
+# It is worth noting that the lower bound is exclusive now
+# (equivalent to brsrch1) and the upper bound is inclusive
+# (equivalent to brsrch0).  For the first part we search as
+# we do in brsrchx, and when a zero is found, [$lo, $mid)
+# has the lower bound and [$mid, $hi] has the upper bound.
+sub _brsrch2
+{
+	my ($ord, $ref, $map) = @_;
+	my ($mid, $res, undef, $hi, $lo) = _brtsrch(1, \&_pOK_0, @_);
+	if (defined $res && $res == 0) {
+		$hi = _brtsrch(0, \&_pOK_0, $ord, $ref, $map, $hi,     $mid);
+		$lo = _brtsrch(0, \&_pOK_1, $ord, $ref, $map, $mid - 1, $lo);
+	}
+	wantarray ? ($hi, $lo) : ($hi - $lo);
+}
+
+sub blsrch2 (&$;$$) { _blsrch2(_parse(LTR, @_)); }
+sub brsrch2 (&$;$$) { _brsrch2(_parse(RTL, @_)); }
+
+1;

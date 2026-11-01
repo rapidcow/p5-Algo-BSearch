@@ -1,0 +1,376 @@
+
+
+
+/*                                                         *\
+ * This document continues the introduction (00INTRO.txt). *
+ * It's still an introduction though!  Here we talk about  *
+ * the *real* binary search methods.                       *
+\*                                                         */
+
+       (continued) Introduction to Sort::Search
+           (( now for actually "search"ing ))
+
+                       * * *
+
+So the more traditional statement of binary search is a
+particular case of "linear search" -- or search plainly.
+The common way the problem is framed is with finding a
+needle in a haystack, which helps with the imagery, so
+I'll go with that.
+
+(Concretely though, haystack are just elements in an array,
+and the needle is whatever target we're looking for. ;P)
+
+So how does binary search help with searching for a needle
+in a haystack?  The key insight is that we can convert the
+needle into a PREDICATE we can apply one of the bisection
+methods from the preceding section to, provided that elements
+of the haystack form a TOTAL ORDER.  That's the math term for
+data types that are totally comparable by some comparison
+function, thus endowed with the notion of "small to large".
+For example, integers can be ordered by the comparison function:
+
+   { ( $a > $b )     When negative (-), $a is LESS THAN  $b
+    - ( $a < $b ) }  When     zero (0), $a is EQUAL  to  $b
+  OR { $a <=> $b }   When positive (+), $a is GREATER THAN $b
+
+One may check that this comparison function satisfies the
+axioms of a (strict) total order:
+
+   (Antisymmetry)  It is never the case that `$a < $b' and
+                   `$b < $a' are simultaneously true.
+                                  [True for DISTINCT $a,$b.]
+
+   (Connectivity)  Either `$a < $b' or `$b < $a' holds.
+      [totality]                  [True for DISTINCT $a,$b.]
+
+   (Transitivity)  Chaining inequalities makes sense.
+                   (So `$a < $b && $b < $c' means `$a < $c')
+                                    [True for ANY $a,$b,$c.]
+
+Antisymmetry and connectivity together are equivalent
+to the following condition (which arguably is THE most
+important manifestation of a total order):
+
+   (Trichotomy)   Exactly ONE of the following holds:
+                  `$a < $b',   `$a == $b',  `$a > $b'.
+                                       [True for ANY $a,$b.]
+
+An array is SORTED when elements are arranged "small to large"
+or "large to small" (the former being sorted in "increasing
+order" and the latter in "decreasing order"). A sorted integer
+array of the first 13 decimal digits of \pi is therefore:
+
+    3. 1  4  1  5  9  2  6  5  3  5  8  9
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]   (increasing)
+   [9  9  8  6  5  5  5  4  3  3  2  1  1]   (decreasing)
+
+Now consider the increasing order, and a "needle" we want to
+find in it -- "5", I'll say.  Let's compare each element in
+this haystack against the needle.  (Note that trichotomy
+assures me that the comparison is always well-defined.)
+
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]       x
+    -  -  -  -  -  -  0  0  0  +  +  +  +    cmp(x, 5) := (x <=> 5)
+
+It appears that the negatives, zeros, and positives are well-
+behaved, each taking a sturdy contiguous chunk of the array.
+Is this a coincidence?  Let's see: let `k' be the needle....
+
+ * Do negatives ALWAYS precede zeros?  If `i' were a negative
+   and `j' were a zero, then `j == k' and `i < k'.  By law of
+   substitution, then, `i < j'.  So we know any negative `i'
+   must precede all zeros `j'.
+
+ * Do zeros ALWAYS precede positives?  If `i' were a zero and
+   and `j' were a positive, then `j > k' and `i == k'.  By law
+   of substitution again, `j > i'.  So any positive `j' *indeed*
+   follows any zero `i' -- i.e., any zero precedes any positive.
+
+Notice that so far, the behavior of the comparison benefits
+from the transitivity of equality as an equivalence relation
+(in the guise of substitution, but I'll spare you the full
+details of logic... ;)
+
+Now we need to just check ONE more case...
+
+ * Do negatives ALWAYS precede positives?  If `i' were a
+   negative and `j' were a positive, then `i < k' and `j > k',
+   or `i < k' and `k < j' -- it's transitivity!  Transitivity
+   gives us `i < j' for free.  (Or if you prefer chaining it,
+   you can write `i < k < j' and strike out the `< k <' part.)
+
+So in fact the negatives, zeros, and positives DO look like
+that for ANY needle we pick.  (The blocks may be empty but
+that's something I will discuss in a bit.)
+
+We call such a well-defined mapping into contiguous blocks
+an ORDERING on the array (the -ING is important, because
+terminology has stuck, eh....)  What we have shown is that
+the comparison function that characterizes the total order
+itself is a VALID ordering, but orderings in general need
+not be the comparison function; namely, we may consider a
+larger set of values "equal", such as a *range* of needles.
+(This is what most languages like to conflate when binary
+search is WAY cooler than that!)
+
+This well-definedness leads to the natural notion of
+*transition points*, which is what left/right bisection
+introduced in the previous document was all about.  (First
+true, last true...)  Though bisection works with monotonic
+predicates, it is easily to derive them from the ordering
+by observing that transition happens in two parts:
+
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]       x
+    -  -  -  -  -  -  0  0  0  +  +  +  +    cmp(x, 5) := (x <=> 5)
+                    ^^       ^^
+      negative to zero       zero to positive
+
+To apply left bisection to find the first zero, it is
+natural to use the nonnegative predicate and positive
+predicate, hereinafter "predicate 0" and "predicate 1"
+for brevity.
+
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]       x
+    -  -  -  -  -  -  0  0  0  +  +  +  +    cmp(x, 5) := (x <=> 5)
+                     |
+                     | $_ >= 0             predicate 0
+                     | $_ >  0             predicate 1
+                     v
+    F  F  F  ...   F (T) T  T  T  T  ...
+    F  F  F  ...   F  F  F  F (T) T  ...
+    --------------------------------------
+    0  1  2        5 [6  7  8 ]9  10 ...     index
+                     ^^^     ^^^
+      We now have indices pointing to the start
+      and end of all the 5s: one inclusive lower
+      bound (6) and one exclusive upper bound (9).
+
+      In fact, try it out...
+
+  # use Sort::Search qw(bisectl);
+    my ($lb, $ux);  # I use "x" to remind myself of "eXclusive".
+
+    $lb = bisectl {  ( ($array[$_] <=> 5) ) >= 0  } 0, @array;
+          #          ~~~~~~~~~~~~~~~~~~~~~~~*~~~
+          #             ^+^^^^^^^^^^^^^^    `- predicate
+          #               `-ordering
+
+    $ux = bisectl {  ( ($array[$_] <=> 5) ) >  0  } 0, @array;
+          #          ~~~~~~~~~~~~~~~~~~~~~~~*~~~
+          #             ^+^^^^^^^^^^^^^^    `- predicate
+          #               `-ordering
+
+    print "[$lb, $ux) has my fives!\n";   # ==> [6,9)
+
+
+It can get tedious to work with arrays like this, typing
+$array inside once for the array element retrieval and
+outside once for the bounds -- which is also silly
+considering that arrays are very common things to search
+on!  So appropriately, Sort::Search offers a "shortcut":
+((Well, it's way more than just a shortcut.  But you
+wouldn't be able to tell unless you call in list context.))
+
+    $lb = bisectl {  ( ($_ <=> 5) ) >= 0  } \@array   ;
+                        ^^                      ~~~~*~~
+                                                   ^^^
+                              [Notice the lack of explicit bounds
+                               taken to mean "I don't care how you
+                               do it; just search whole array"]
+
+    $ux = bisectl {  ( ($_ <=> 5) ) >  0  } \@array;
+                        ^^
+             Here, $_ *is* the array element,
+            just like the way you'd expect it
+            in map, grep, and sort with $a/$b...
+
+      (If you still need the array INDEX to
+       distinguish otherwise identical duplicate
+       elements, you can still get it from $_[0].
+       In fact, $_[0] is ALWAYS a numerical index
+       regardless of the input form.)
+
+Note that it is still possible to use a stricter range
+so that the search is performed on a sub-array instead.
+For instance, using the fact that "$lb <= $ux", we may
+search $ux on a sub-array after $lb narrows it down:
+
+    $lb = bisectl { ($_ <=> 5) >= 0 } \@array;
+    $ux = bisectl { ($_ <=> 5) >= 0 } \@array, $lb;
+                                               ^^^
+                              [The omitted upper bound
+                                still means "'til the
+                                 end of this array"]
+
+These are the LEFT BINARY SEARCH algorithms.  They are
+named by the bisection variant (l) and their predicate
+(0/1, "$_ >= 0" or "$_ > 0").  Namely, the above can be
+re-written as:
+
+  # use Sort::Search qw(blsrch0 blsrch1);
+    $lb = blsrch0 {  $array[$_] <=> 5  } 0, @array;
+    $ux = blsrch1 {  $array[$_] <=> 5  } 0, @array;
+
+or, using our newfound array form:
+
+    $lb = blsrch0 {  $_ <=> 5  } \@array;
+    $ux = blsrch1 {  $_ <=> 5  } \@array;
+
+To get a feel for the bounds they return, here are a few
+more examples.  Observe that the search fails precisely
+when the boundaries collapse to the same point.
+
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]     x?  [lb,ux)  SPAN
+    --------------------------------------
+  []0  1  2                                    0   [ 0, 0)  <EMPTY>
+   [0  1 ]2  3                                 1   [ 0, 2)
+    0  1 [2 ]3  4                              2   [ 2, 3)
+       1  2 [3  4 ]5  6                        3   [ 3, 5)
+             3  4 [5 ]6  7                     4   [ 5, 6)
+                4  5 [6  7  8 ]9  10           5   [ 6, 9)
+                            8 [9 ]10 11        6   [ 9,10)
+                            8  9[]10 11        7   [10,10)  <EMPTY>
+                            8  9 [10]11 12     8   [10,11)
+                               9  10[11 12]    9   [11,13)
+                                  10 11 12[]   10  [13,13)  <EMPTY>
+
+Here is an old diagram that I drew (from the original
+version of this module named List::BisectSearch.  Note
+that names have since changed: "bisect0" is "blsrch0"
+and "bisect1" is "blsrch1".)
+
+                            (bisect0 returns this)
+                       ,------ first $a[$i] >= $x
+                      /
+    0  1  2  3  4  5 (6) 7  8  9  a  b  c   index ($i)
+    T  T  T  T  T  T  F  F  F  F  F  F  F   $a[$i] < $x?
+    <<<<<<<<<<<<<<<<<<=========-----------
+     1  1  2  3  3  4  5  5  5  6  8  9  9  value $a[$i]
+    ------------------=========>>>>>>>>>>>
+    F  F  F  F  F  F  F  F  F  T  T  T  T   $a[$i] > $x?
+    0  1  2  3  4  5  6  7  8 (9) a  b  c   index ($i)
+                               /
+      first $a[$i] > $x ------'
+     (bisect1 returns this)
+
+Left binary search is common in the standard libraries
+of many programming languages, many of which were direct
+influences for my implementation of "blsrch[01]".
+
+Though said librarys usually end at just that.  However,
+My emphasis on "left", of all things, should suggest the
+fact that we can construct a "right" binary search in an
+analogous way... and that's what we will do next.
+
+Let's unwind a bit...
+
+    $lb = blsrch0 {  $_ <=> 5  } \@array;
+    $ux = blsrch1 {  $_ <=> 5  } \@array;
+
+    # is equivalent to...
+
+    $lb = bisectl {  ($_ <=> 5)  >= 0  } \@array;
+    $ux = bisectl {  ($_ <=> 5)  >  0  } \@array;
+
+The premise is that our ordering of choice "$_ <=> 5" turns
+the increasing @array into an image of negatives then zeros
+then positives, zeros being another term for "equal range".
+We get the inclusive lower bound, $lb, by finding the first
+positive or zero, and we get the exclusive upper bound, $ub,
+by finding the first positive.  The rest is then delegated to
+"bisectl", which finds the first instance of the first true.
+
+Recall that "first" is relative to orientation in which we
+search; when we scan from left to right, the first instance
+we hit is the LEFTMOST.  In the mirror image where we scan
+from right to left instead, that first would become last,
+or the RIGHTMOST instance.
+
+Which one then do we reverse, the predicate or the ordering?
+Well, the decision I made is to reverse the ordering, such
+that the negatives and positives swap places.  (Not a choice
+I can justify much... but what matters is we have something
+CONSTANT.  (We even get to keep the predicates' names!))
+
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]       x
+    +  +  +  +  +  +  0  0  0  -  -  -  -    cmp(5, x) := (5 <=> x)
+                    ^^       ^^
+      zero to positive       negative to zero
+                     .
+                     | $_ >= 0             predicate 0
+                     | $_ >  0             predicate 1
+                     v
+    T  T  T  ...  (T) F  F  F  F  F  ...
+    T  T  T  ...   T  T  T (T) F  F  ...
+    --------------------------------------
+    0  1  2        5[ 6  7  8] 9  10 ...     index
+                   ^^^      ^^^
+
+  # use Sort::Search qw(bisectr);
+
+    $ub = bisectr {  (5 <=> $_)  >= 0  } \@array;
+    $lx = bisectr {  (5 <=> $_)  >  0  } \@array;
+
+    # is equivalent to...
+
+  # use Sort::Search qw(brsrch0 brsrch1);
+
+    $ub = brsrch0 {  5 <=> $_  } \@array;
+    $lx = brsrch1 {  5 <=> $_  } \@array;
+
+   [1  1  2  3  3  4  5  5  5  6  8  9  9]     x?  (lx,ub]  SPAN
+    --------------------------------------
+  []0  1  2                                    0   [-1,-1)  <EMPTY>
+  [ 0  1] 2  3                                 1   [-1, 1)
+    0  1[ 2] 3  4                              2   [ 1, 2)
+       1  2[ 3  4] 5  6                        3   [ 2, 4)
+             3  4[ 5] 6  7                     4   [ 4, 5)
+                4  5[ 6  7  8] 9  10           5   [ 5, 8)
+                            8[ 9] 10 11        6   [ 8, 9)
+                            8  9[]10 11        7   [ 9, 9)  <EMPTY>
+                            8  9[ 10]11 12     8   [ 9,10)
+                               9  10[11 12]    9   [10,12)
+                                  10 11 12[]   10  [12,12)  <EMPTY>
+
+What we have now is an inclusive upper bound and an
+exclusive lower bound.
+
+How are $lb and $lx related?  It's easy to convince
+yourself that they merely differ by one.  That means
+wherever you need $lx, you can compute $lb - 1, and
+vice versa.  The same for $ub and $ux.  So are the
+libraries providing left search only justified?
+Absolutely.  Does it convey the intention as fluently?
+Well I beg to differ... :)
+
+I also think that naively reversing the image this way
+makes the framing of the question more uniform: instead
+of asking >= here and <= there, we ask for one direction
+only: either >= for predicate 0 (the inclusive bound) or
+predicate 1 (the exclusive bound).  As to left or right,
+we look for the leftmost match or the rightmost match; or
+first or last, if you will.  Putting these together,
+we get:
+
+    blsrch0 :  leftmost  >= 0, w.r.t. ordering - 0 +
+                            "inclusive lower bound"
+    blsrch1 :  leftmost  >  0, w.r.t. ordering - 0 +
+                            "exclusive upper bound"
+      * (blsrch1 - blsrch0) is the SPAN
+
+           ( $_ <=> $KEY   if array is increasing )
+           ( $KEY <=> $_   if array is decreasing )
+
+    brsrch0 :  rightmost >= 0, w.r.t. ordering + 0 -
+                            "inclusive upper bound"
+    brsrch1 :  rightmost >  0, w.r.t. ordering + 0 -
+                            "exclusive lower bound"
+      * (brsrch0 - brsrch1) is the SPAN
+
+           ( $KEY <=> $_   if array is increasing )
+           ( $_ <=> $KEY   if array is decreasing )
+
+Of course, that means you have to adapt the ordering
+flexibly; but I think that is worth it.  It's just like
+ambidexterity, in a way! ;)
