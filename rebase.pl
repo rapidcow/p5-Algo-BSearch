@@ -17,6 +17,13 @@ my %parents;
 $/ = "\012";
 $Data::Dumper::Useqq = 1;
 
+# Per original commit: { author => EMAIL, committer => EMAIL, evidence => TEXT }
+# (see commit-provenance-evidence.pl)
+my %PROVENANCE = %{
+	do './commit-provenance-evidence.dump'
+	// die "commit-provenance-evidence.dump: ", $@ || $!, "\n"
+};
+
 sub hash
 {
 	local ($., $!);
@@ -186,7 +193,16 @@ my $i = 1; foreach (@walk) {
 		}
 	}
 
-# PROVENANCE INJECTION HERE!!!
+	# Only the address changes; name, timestamp and zone stay byte-for-byte.
+	if (my $prov = $PROVENANCE{$this}) {
+		foreach my $field (qw(author committer)) {
+			my $line = get_header($tempfh, $field);
+			(my $newline = $line) =~ s/<[^>]*>/<$prov->{$field}>/;
+			if ($newline ne $line) {
+				replace_header($tempfh, \$mem, $field, $newline);
+			}
+		}
+	}
 
 	my $content = get_all_content($tempfh);
 	# Most contents remain untouched, so probably
@@ -214,7 +230,12 @@ print STDERR "\n" if -t STDERR;
 foreach (sort keys %REPLACE) {
 	my ($this, $that) = ($_, $REPLACE{$_});
 	if ($this ne $that) {
-		print "REPLACE $this WITH $that\n";
+		print "REPLACE $this WITH $that";
+		if (my $prov = $PROVENANCE{$this}) {
+			print " ", Data::Dumper->new([$prov->{evidence}])
+				->Useqq(1)->Indent(0)->Terse(1)->Dump;
+		}
+		print "\n";
 	}
 }
 my @refs = sort {
@@ -295,6 +316,23 @@ sub get_all_content
 	my $morecontent = <$tempfh>;
 	$content .= $morecontent if defined $morecontent;
 	return $content;
+}
+
+sub get_header
+{
+	local $.;
+	local $/ = $/;
+	my ($tempfh, $field) = @_;
+	seek $tempfh, 0, SEEK_SET;
+	$. = 0;
+	while (<$tempfh>) {
+		last unless 1 .. /^$/;
+		if (/\A\Q$field\E /) {
+			chomp;
+			return $_;
+		}
+	}
+	die "no $field header???";
 }
 
 sub get_committer_date

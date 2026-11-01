@@ -14,7 +14,8 @@ my $dry = @ARGV && $ARGV[0] eq '-n';
 
 my %REPLACE;
 while (<STDIN>) {
-	$REPLACE{$1} = $2 if /^REPLACE ([0-9a-f]{40}) WITH ([0-9a-f]{40})$/;
+	# (rebase.pl may follow up with a quoted evidence string)
+	$REPLACE{$1} = $2 if /^REPLACE ([0-9a-f]{40}) WITH ([0-9a-f]{40})(?: |$)/;
 }
 die "no REPLACE lines on stdin; did you forget < rebase.txt?\n" unless %REPLACE;
 
