@@ -1,0 +1,123 @@
+eghhh.... why is there so much difference?
+
+Either way i am hoping no tree difference
+
+(nope there isn't -- PHEW thank goodness....)
+
+ORIG = 7bf41b437416805e3283253d2eae7e57faf1ee35 (devel~2)
+HEAD = 7efd50adedfdf465a6e3e96fd79a743186bdceb7 (rpi/devel)
+ 0:  7bf41b4 =  0:  7efd50a Remove "support" for non-zero array bases
+ 1:  adcf7b7 =  1:  4d02a3c Address overflow.t compiler warnings
+ 2:  eed1676 =  2:  efdb2b2 Use "range" consistently over "span"
+ 3:  3a7ca9d =  3:  d2f14e5 "Terminology" sounds like a better heading
+ 4:  037f9f5 !  4:  cfa20af I forgot to explain what 0,1,2 are!
+--- a/037f9f5612be6052262b9e405482dc2c89ab5ae3	2026-03-15 19:38:31.000000000 +0000
++++ b/cfa20af42c5c6b6ea188fa2ad91c77e7e35cd8ae	2026-03-15 19:38:31.000000000 +0000
+@@ -2,9 +2,9 @@
+ parent [5]
+ author Ethan Meng <ethan@rapidcow.org> 1773598872 -0500
+ committer Ethan Meng <ethan@rapidcow.org> 1773603511 -0500
+ 
+-I forgot to explain what 0,1,2 are!
++I forgot to explain 0,1,2 are!
+ 
+ Just when I thought "search range" was the only
+ thing I haven't explicitly defined....
+ 
+@@ -24,14 +24,14 @@
+ With that said I am pretty glad how this modified
+ diagram from the original List::BisectSearch turned
+ out.  Being able to make it an actual runnable code
+ is out of my expectation (okay not the fact that it
+-was possible; I did it the easy way that is commenting
+-out the diagram part (and I've seen what JAPH can do
+-(like the Camel on the homepage of www.irc.perl.org));
+-what I am surprised to see was how all the code was
+-able to fit and stay aligned with the labels -- a
+-pleasant surprise, of course :)
++was possible this; I did it the easy way that is
++commenting out the diagram part (and I've seen what
++JAPH can do (like the Camel on the homepage of www.
++irc.perl.org)); what I am surprised to see was how
++all the code was able to fit and stay aligned with
++the labels -- a pleasant surprise, of course :)
+ 
+ one other thing i am glad that i was able to pull
+ off was kind of really drill home the idea that
+ bisection points are really indices pointing to gaps
+@@ -57,9 +57,8 @@
+ a choice: left or right.  I think this does quite the
+ justice here. :)
+ 
+ [TEXT]: https://docs.python.org/3/tutorial/introduction.html#text
+-   (Slightly farther down, where it begins to talk about "slicing")
+ [EWD831]: https://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD831.html
+ 
+ (Not that it didn't before... I just thought "you know,
+ wouldn't it be nice if left bounds used LEFT brackets
+ 5:  fc8d399 =  5:  7a9805f Fix inconsistent labels in podtest.t
+ 6:  28de920 =  6:  3ecedce Move trace output to STDOUT
+ 7:  57bf782 =  7:  262c43d Make-up sanity assertions for the test-tests
+ 8:  0ff93fa =  8:  34473ac Prefer "<DIR> binary search" to "binary <DIR> search"
+ 9:  899670d =  9:  3ba0103 Seems like an appropriate time to move this guy up
+10:  4d29458 = 10:  f367e6c Replace $lower/$lb $upper/$ub $lower_x/$lx $upper_x/$ux
+11:  0bcd2a8 = 11:  35c3384 Small tweaks
+12:  2c031dd = 12:  f9c367a Reword
+13:  cdb06d5 = 13:  ba6fa8e Continue draft
+14:  0fb269c = 14:  6eadbf3 Add tests for the text-file thingy
+15:  66fb943 = 15:  567b0d8 Test two more weird edge cases
+16:  2fa053f = 16:  e65cd15 Test out implication of the five-element form
+17:  bae5c1b = 17:  fdd6523 Use && for boolean AND... consistently
+18:  cfba1fb = 18:  5afc845 Comment to explain the magic
+19:  76e287f = 19:  75fe618 Expand to Five-element form?!??
+20:  1437332 = 20:  5eaf820 change: return just the SCALAR ref for element?
+21:  f639ebc = 21:  d10f9aa Fix diagram and proof for two-index search
+22:  801c6ff = 22:  c5619cb Remove vestigial reference to bisectl_map
+23:  4067395 = 23:  9a1305c do we need explicit returns?
+24:  1be77a3 = 24:  6010f4e brsrch* should use $lo for consistency
+25:  813c711 = 25:  5a83a0d Replace 21 with 18 in "Exact match" example
+26:  70c96c5 = 26:  7d69612 Clean up wording
+27:  6a60b32 = 27:  41cc3e6 Remove the "concrete" example amid the main POD
+28:  dcd8b9a = 28:  708c0d9 Have Claude review my draft as well
+29:  a25d250 = 29:  5e7b0d7 Fix a bunch of POD typos
+30:  794cfb8 = 30:  43abb34 Close out the subtest code block for consistency
+31:  7cae5a2 = 31:  94c0b6d Test conversion guide for List::MoreUtils
+32:  dd5d2b3 = 32:  c2cb0f6 probably drop the parens around "plan"
+33:  0f46748 = 33:  2df4824 Add conversion guide for List::Search
+34:  bfc7330 = 34:  0996cd1 Pin the total of List::BinarySearch subtests
+35:  930dc77 = 35:  a8d09c3 Re-write and test List::BinarySearch conversion
+36:  fe345a4 = 36:  5c7b285 Finish exact match tests
+37:  c53519b = 37:  3fbcbbc Bug-catching POD examples with tests
+38:  9a7d4e9 = 38:  2a29f52 Just call these guys "terms"
+39:  3480b25 = 39:  f83e3d3 doctest.t also belongs in the old test suite
+40:  3e3f90f = 40:  ef0536d typography: use B<...> for important words
+41:  34fe25f = 41:  9cd3485 Update renames in the comments
+42:  1f4ea92 = 42:  8f96cdc Be more precise with what the "array" is here
+43:  fa6fc7a = 43:  8a696c9 DRAFT: section of the "paper" about the real search
+44:  2ce903e = 44:  b58801f Stylistic tweaks
+45:  09cf02d = 45:  4948252 Conversion guide for some modules
+46:  60ec712 = 46:  91b09e3 Improve "exact match" examples
+47:  9775b10 = 47:  f183b0b Add copyright to sources
+48:  5b5ed2d = 48:  2aa2954 Test with a larger equal range for fun ;P
+49:  cfd2206 = 49:  1bb4eb7 Comment the 2-index searches
+50:  fa35cd2 = 50:  fcee201 Re-implement brsrch2
+51:  bcaa2f7 = 51:  81ce87d Re-implement blsrch2
+52:  fa7dba0 = 52:  7f74f70 Move attribution out of the "paper"
+53:  9bd1e88 = 53:  02a3db7 Hide copyright from GitHub readme
+54:  7288916 = 54:  7bea16a More range tests on absurd sets of numbers
+55:  04685b3 ! 55:  b88bba4 Refactor
+--- a/04685b3076221042c45c1de063d910132d85a4d4	2026-03-08 09:18:16.000000000 +0000
++++ b/b88bba4c4b9eb34c3bfe004992987c0238c1edf2	2026-03-08 09:18:16.000000000 +0000
+@@ -20,10 +20,10 @@
+ that here we are effectively abandoning the narrower
+ bounds found from each previous search range despite
+ having access to all the other lower-level stuff; the
+ exponential probe only serves to hide that fact and,
+-we might face problems if the step is any larger...
+-it just has to be *somehow* rewritten, blegh!
++we might face problems if is larger... it just has to
++be *somehow* rewritten, blegh!
+ 
+ [0] https://redirect.github.com/gcc-mirror/gcc/blob/254a858ae7ae1400452f1c80125c80de0778bde5/libstdc++-v3/include/bits/stl_algo.h#L2073-L2108
+ 
+ (My takeaway is that we perform blsrchx, *but* keep
