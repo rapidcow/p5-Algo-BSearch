@@ -1,0 +1,50 @@
+Originally identified by:
+
+commit dcd8b9a24d9885fed72b1caba3c8b4d9511c8546
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Tue Mar 10 11:53:52 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Tue Mar 10 12:05:00 2026 -0500
+
+    Have Claude review my draft as well
+
+    And it finds yet more typos for me to fix!
+
+    00*.txt:15: (purely grammatical.)
+
+    00*.txt:29: It was a little confusing, not because 1/2
+    evaluates to 0 (as Claude incorrectly suggests), but that
+    this would suggest we may consider an index between two
+    integers.  It helps to clarify that we're taking the FLOOR
+    of this number in such a circumstance.
+
+    Also added a similar remark for when we switch to taking
+    the ceiling for the mirror image.
+
+    01*.txt:44: (just... typo.)
+    01*.txt:80-83: (same here.)
+
+    The last part is interesting, because technically I kept
+    the diagram to myself as a backup; so I scurrily copied
+    it out of FastLook.pm.  Claude actually tried to parse it,
+    which is how I found out that this was actually the image
+    following an application of {5 <=> $_}, not {$_ <=> 5}!
+    Even as a placeholder it wasn't very correct, so... o_o
+
+This commit was first seen in:
+
+commit 6060883df67e11eed7638c629f08e9abfdcb0e56
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 6 17:17:25 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 6 17:17:25 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master cfd2206..5d193eb (+52)
+       18 files changed, 1473 insertions(+), 310 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:55252 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
