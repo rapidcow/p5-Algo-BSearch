@@ -1,0 +1,38 @@
+Originally identified by:
+
+commit 2fa053fd3d81992d34640eef1024f3b8f62bcbc1
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Sat Mar 14 23:01:18 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Sat Mar 14 23:22:48 2026 -0500
+
+    Test out implication of the five-element form
+
+    ... of a possible method to compute NSEC records
+    on-the-fly?  Though I know it is kind of useless
+    without the RRSIG, and if the zone were signed we
+    only need to find the NSEC identified by just the
+    predecessor, in which case brsrch0 (or even brsrchx)
+    alone would suffice...
+
+    Nevertheless it is fun to think about how in
+    *theory* the additional bounds could be used,
+    so... I'll take it as that :P
+
+This commit was first seen in:
+
+commit 6060883df67e11eed7638c629f08e9abfdcb0e56
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 6 17:17:25 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 6 17:17:25 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master cfd2206..5d193eb (+52)
+       18 files changed, 1473 insertions(+), 310 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:55252 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
