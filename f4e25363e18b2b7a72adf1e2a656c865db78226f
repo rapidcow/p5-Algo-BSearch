@@ -1,0 +1,34 @@
+Originally identified by:
+
+commit 60ec712ef089c53c2c026538642578f71c7f1f18
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Sun Mar 8 09:59:36 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Sun Mar 8 10:34:52 2026 -0500
+
+    Improve "exact match" examples
+
+    the "Search for ..." is redundant (it says so in the
+    name of our module that we're all about *SEARCH*es,
+    duh =n=) also uhhh i don't know i forgot right-search
+    isn't a thing in most programming languages... better
+    add a warning and still provide a solution that uses
+    just left search :x
+
+This commit was first seen in:
+
+commit 6060883df67e11eed7638c629f08e9abfdcb0e56
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 6 17:17:25 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 6 17:17:25 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master cfd2206..5d193eb (+52)
+       18 files changed, 1473 insertions(+), 310 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:55252 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
