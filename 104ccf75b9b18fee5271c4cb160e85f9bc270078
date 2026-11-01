@@ -1,0 +1,33 @@
+Originally identified by:
+
+commit 0ff93fa5429e2f92bafa6e3f6e6d217c041bab12
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Sun Mar 15 09:49:32 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Sun Mar 15 09:49:32 2026 -0500
+
+    Prefer "<DIR> binary search" to "binary <DIR> search"
+
+    even though it is named "blsrch*" and "brsrch*"
+    and not "lbsrch*" or "rbsrch*", well... (I'm
+    gonna say though, "blsrch" looked like it could
+    pass as "bisrch" => "bisect for searching"...
+    it's a play on the letters, I know... sorry :P)
+
+This commit was first seen in:
+
+commit 6060883df67e11eed7638c629f08e9abfdcb0e56
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 6 17:17:25 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 6 17:17:25 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master cfd2206..5d193eb (+52)
+       18 files changed, 1473 insertions(+), 310 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:55252 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
