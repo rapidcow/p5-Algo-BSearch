@@ -1,0 +1,35 @@
+Originally identified by:
+
+commit 297e0da8090fcfd5f6a4a66a263825eb3db3a023
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Wed Jun 17 08:27:34 2026 +0000
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Wed Jun 17 08:42:37 2026 +0000
+
+    better bridge to core algo docs
+
+    i can't stand how we haven't even defined $lo or $hi ugh
+
+    (i'm glad i took the time to fix it though....)
+
+    This should complete my wishlist of defining what in
+    the world i mean by "search range", though I still want
+    to do another read... or two.... or more.
+
+This commit was first seen in:
+
+commit 8b563a7aada7bd325fbf92c99429c2fa2c0fb33f
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Thu Jun 18 08:10:14 2026 +0000
+Commit:     Git Daemon <git@ubuntu.rapidcow.net>
+CommitDate: Thu Jun 18 08:10:14 2026 +0000
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master 7d13db5..1c6f71e (+9)
+       1 file changed, 128 insertions(+), 8 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: 120.229.30.25:7300
+    Host: 164.90.136.30:22
