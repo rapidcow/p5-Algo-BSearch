@@ -17,14 +17,15 @@ while (<STDIN>){
 	my $evi = eval $evis;
 	open my $pipefh, '|-', "git notes --ref evi add -F - $b";
 
-	print $pipefh $evi;
-	if (length $evi) {
-		print $pipefh <<TRAILER;
-
-This commit was was originally $a.
-See blob 5c47204c0877bc58e0a8b4c1bcb1443ee85c0fa9.
+	print $pipefh <<TRAILER;
+This commit was was originally $a:
 TRAILER
+	print $pipefh `git show -s --pretty=fuller $a --`;
+
+	if (length $evi) {
+		print $pipefh "\n";
 	}
+	print $pipefh $evi;
 	close $pipefh;
 }
 
