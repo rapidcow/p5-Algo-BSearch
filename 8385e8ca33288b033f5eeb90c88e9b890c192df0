@@ -1,0 +1,39 @@
+Originally identified by:
+
+commit 134828d4d5f689c02e1a8f013187faad8f7f6ae4
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Sat Jul 11 18:12:33 2026 +0800
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Sat Jul 11 18:12:33 2026 +0800
+
+    CB: bad remark
+
+    I sort of meant something like using
+
+       blsrch2 { int( ($_ <=> $high) + ($_ <=> $low) / 2 ) }
+
+    but that's not obvious (for one you'd probably consider
+    the range where `$low <= $_ < $high' instead of `<= $high',
+    in which case you would not want to map 1 to 0.  and for
+    two... yeah it's not obvious; the fact that exclusivity
+    is a choice that had to be stated and both having justified
+    use cases makes it not obvious which one i meant.)  so uh
+    removing it.
+
+This commit was first seen in:
+
+commit 75f5b2472418d8bb7f4e09cf8d435e4289a21f89
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Sat Jul 11 18:39:09 2026 +0800
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Sat Jul 11 18:39:09 2026 +0800
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master b9d3e23..134828d (+1)
+       1 file changed, 2 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::ea32:d402]:35922 (RCs-T480s.local.mhfamily.rapidcow.net)
+    Host: [fd7a:115c:a1e0::6e32:6f59]:22 (RPi-4B.river.mhfamily.rapidcow.net)
