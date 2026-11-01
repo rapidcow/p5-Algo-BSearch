@@ -56,7 +56,7 @@ use constant ORI_R => 0;
 
 =head1 SYNOPSIS
 
-   use FastLook qw(
+   use RdKw::Algo::BSearch qw(
        bisectl bisectr bixectl bixectr
        blsrch0 brsrch0 blsrch1 brsrch1
        blsrch2 brsrch2 blsrchx brsrchx
