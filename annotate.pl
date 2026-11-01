@@ -17,9 +17,10 @@ while (<STDIN>){
 	my $evi = eval $evis;
 	open my $pipefh, '|-', "git notes --ref evi add -F - $b";
 
-	print $pipefh <<TRAILER;
-This commit was was originally $a:
-TRAILER
+	print $pipefh <<HEADER;
+Originally identified by:
+
+HEADER
 	print $pipefh `git show -s --pretty=fuller $a --`;
 
 	if (length $evi) {
