@@ -19,7 +19,7 @@ while (<STDIN>){
 		print $pipefh <<TRAILER;
 
 This commit was was originally $a.
-See blob a09ff63e2c91c52f0d93dcc89c9d3b5552ea0b53
+See blob 5c47204c0877bc58e0a8b4c1bcb1443ee85c0fa9.
 TRAILER
 	}
 	close $pipefh;
