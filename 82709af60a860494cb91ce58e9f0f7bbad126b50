@@ -1,0 +1,3712 @@
+This is a total rebase.  See 9cada47c646ecb549618232e8dbb0ef84db5143f
+(the refs/notes/commits ref) for the scripts that produced this mayhem.
+
+$ ~/tree/utils/diff-range master 0 5b702d36a0b5956795d2a1f38eeddf46f75844a0
+ORIG = fb9d918012b08b9eddd4068f952b552729b60c82 (master)
+HEAD = 5b702d36a0b5956795d2a1f38eeddf46f75844a0
+  0:  fb9d918 =   0:  5b702d3 this can be done
+  1:  4b92883 =   1:  6d21472 Import Sort-Search tests and X-tests
+  2:  712a8d2 =   2:  316efd4 Import Sort-Search
+  3:  f9ca9db =   3:  0fd947b Include xt/*.t
+  4:  05897ea =   4:  17249ee synopsis ref
+  5:  4a78b02 =   5:  ee7fca3 no recursion please
+  6:  c7e264c =   6:  df167cc basically everything
+  7:  86f8c42 =   7:  fc781b3 Merge Sort-Search into grafted FastLook.pm history
+  8:  e30089a =   8:  ec1256d take what's mine out
+  9:  1b5358c =   9:  915960b move to subdirectory
+ 10:  7c60fe4 =  10:  349c03e abbreviate my name in changelog
+ 11:  40b4471 =  11:  06de6bb Retroactively add entries preceding revision 36
+ 12:  eb45cfa =  12:  8b11b2f Keep a change log
+ 13:  904af74 =  13:  6f4a27f Reserve trailing comma for multi-line expressions
+ 14:  fe7e4ca =  14:  b669c00 use a more general description for Makefile.PL
+ 15:  c17676f =  15:  50741bb Un-tabify to make foreign code more visible
+ 16:  6324120 =  16:  1c918d0 grammar
+ 17:  db860cc =  17:  fb066ba Clarify how xlib/xt may contain subpar code
+ 18:  134828d !  18:  8385e8c CB: bad remark
+--- a/134828d4d5f689c02e1a8f013187faad8f7f6ae4	2026-07-11 10:12:33.000000000 +0000
++++ b/8385e8ca33288b033f5eeb90c88e9b890c192df0	2026-07-11 10:12:33.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 472a3880c0d232f86995b8355ee1d827a7636c65
+ parent [19]
+-author Ethan Meng <ethan@rapidcow.org> 1783764753 +0800
+-committer Ethan Meng <ethan@rapidcow.org> 1783764753 +0800
++author Ethan Meng <rapidcow@RCs-T480s.local> 1783764753 +0800
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1783764753 +0800
+ 
+ CB: bad remark
+ 
+ I sort of meant something like using
+ 19:  b9d3e23 !  19:  fef9453 Correct lzero.pl's NAME
+--- a/b9d3e2395351ee8efc84ef8e47f7e77cd92dca5b	2026-07-11 09:14:46.000000000 +0000
++++ b/fef9453403601024e51992e54777e2d910fcf1ae	2026-07-11 09:14:46.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree af1719d5325618b840fa125eee8a047cbd6215ba
+ parent [20]
+-author Ethan Meng <ethan@rapidcow.org> 1783761286 +0800
+-committer Ethan Meng <ethan@rapidcow.org> 1783761286 +0800
++author Ethan Meng <rapidcow@RCs-T480.local> 1783761286 +0800
++committer Ethan Meng <rapidcow@RCs-T480.local> 1783761286 +0800
+ 
+ Correct lzero.pl's NAME
+ 20:  587b5cb !  20:  f873e28 Use tab indent consistently
+--- a/587b5cb0de3233d54cf16c3b0e5c371e4a555b56	2026-07-11 09:12:38.000000000 +0000
++++ b/f873e2851c1c48f1eae2a51fd053e8282ace655c	2026-07-11 09:12:38.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree abe5fbf9c98a9d670513c8152a7fd2e25b503dde
+ parent [21]
+-author Ethan Meng <ethan@rapidcow.org> 1783761158 +0800
+-committer Ethan Meng <ethan@rapidcow.org> 1783761158 +0800
++author Ethan Meng <rapidcow@RCs-T480.local> 1783761158 +0800
++committer Ethan Meng <rapidcow@RCs-T480.local> 1783761158 +0800
+ 
+ Use tab indent consistently
+ 
+ The only acceptable use of space is aligning
+ 21:  9fcda0c !  21:  9c95523 spurious newline
+--- a/9fcda0c995d4356552ee647cfe6792252303bcc5	2026-07-07 14:25:52.000000000 +0000
++++ b/9c955239f67573cba822ab8d1fcf7b82edcf2844	2026-07-07 14:25:52.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 688eff7fbb540c6249b1475a9dba20633d692167
+ parent [22]
+-author Ethan Meng <ethan@rapidcow.org> 1783434343 +0800
+-committer Ethan Meng <ethan@rapidcow.org> 1783434352 +0800
++author Ethan Meng <rapidcow@RCs-T480s.local> 1783434343 +0800
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1783434352 +0800
+ 
+ spurious newline
+ 22:  fb2ee6d !  22:  78ae81c CB: bad references
+--- a/fb2ee6dfd7ae9edb0bfb9a3c7d26c01299f89d2c	2026-07-07 14:21:41.000000000 +0000
++++ b/78ae81c1d84cca23f70d6da70baafddf14bd5ce4	2026-07-07 14:21:41.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 2844964a9b75a7ca9a0c845d779f6ceaff78daa2
+ parent [23]
+-author Ethan Meng <ethan@rapidcow.org> 1783433703 +0800
+-committer Ethan Meng <ethan@rapidcow.org> 1783434101 +0800
++author Ethan Meng <rapidcow@RCs-T480s.local> 1783433703 +0800
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1783434101 +0800
+ 
+ CB: bad references
+ 
+ aeghh... why did i use these awful names XP
+ 23:  4399e76 !  23:  dffa764 space out consistently
+--- a/4399e767f16c0a1a1f12ed14c8c9175c79e39d92	2026-07-07 14:12:01.000000000 +0000
++++ b/dffa764bc0c2263af67d08152a8e826d193b7970	2026-07-07 14:12:01.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree ebba0719847e282a98f81825c297d63543faca53
+ parent [24]
+-author Ethan Meng <ethan@rapidcow.org> 1783433521 +0800
+-committer Ethan Meng <ethan@rapidcow.org> 1783433521 +0800
++author Ethan Meng <rapidcow@RCs-T480s.local> 1783433521 +0800
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1783433521 +0800
+ 
+ space out consistently
+ 24:  25676f2 !  24:  411181f typographical adj
+--- a/25676f276eab641c0d01858989bfe3baf5552101	2026-07-07 14:09:01.000000000 +0000
++++ b/411181ffc9d19a0271cf3ad76d374bfb4b8fbc48	2026-07-07 14:09:01.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 54eea93361c00dfdd6994addad1a779775a04470
+ parent [25]
+-author Ethan Meng <ethan@rapidcow.org> 1783433249 +0800
+-committer Ethan Meng <ethan@rapidcow.org> 1783433341 +0800
++author Ethan Meng <rapidcow@RCs-T480s.local> 1783433249 +0800
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1783433341 +0800
+ 
+ typographical adj
+ 
+ i'm back :) guess it didn't hurt so much to return...
+ 25:  537fd4a !  25:  6dab885 t/mean.t: Fixup skip instructions
+--- a/537fd4a600a15061d246de63b5410889bb0a2eb2	2026-06-18 08:32:31.000000000 +0000
++++ b/6dab885cb3283ad1e24266593011d5072d63c9cc	2026-06-18 08:32:31.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 856adaf4b24acc24a1561ffc6f99401ac88ebfd7
+ parent [26]
+-author Ethan Meng <ethan@rapidcow.org> 1781771444 +0800
+-committer Ethan Meng <ethan@rapidcow.org> 1781771551 +0800
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781771444 +0800
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781771551 +0800
+ 
+ t/mean.t: Fixup skip instructions
+ 
+ The comments I added in 003b40f weren't right.
+ 26:  1c6f71e !  26:  f089f22 Re-phrase that "don't read too deeply into it"
+--- a/1c6f71e3e0c891e8a2026432441db614c75c7c78	2026-06-17 13:55:56.000000000 +0000
++++ b/f089f2275390242c25ee92275e090cd9d15aa1d7	2026-06-17 13:55:56.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 1f2feb64bc62008574ffcadc12929daa55213250
+ parent [27]
+-author Ethan Meng <ethan@rapidcow.org> 1781704388 +0800
+-committer Ethan Meng <ethan@rapidcow.org> 1781704556 +0800
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781704388 +0800
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781704556 +0800
+ 
+ Re-phrase that "don't read too deeply into it"
+ 
+ Sure is busy for people catching a connecting
+ 27:  cf3dfed !  27:  6933d9d get rid of trailing preposition just while i'm here
+--- a/cf3dfed344b20180555ba42d934be5c41a4139c1	2026-06-17 08:44:20.000000000 +0000
++++ b/6933d9d9e83988a12a2a551e107f47b1fc7b69c8	2026-06-17 08:44:20.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 0c540d8160fd3243ddc1084f96fbfa01d2c32e2a
+ parent [28]
+-author Ethan Meng <ethan@rapidcow.org> 1781685785 -0000
+-committer Ethan Meng <ethan@rapidcow.org> 1781685860 -0000
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781685785 -0000
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781685860 -0000
+ 
+ get rid of trailing preposition just while i'm here
+ 
+ please get out of my head i do not like you <:(
+ 28:  297e0da !  28:  24aaccd better bridge to core algo docs
+--- a/297e0da8090fcfd5f6a4a66a263825eb3db3a023	2026-06-17 08:42:37.000000000 +0000
++++ b/24aaccd926486e6a557d7645d40cf635e2393e29	2026-06-17 08:42:37.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 6ff38110510ad7edd05bcfa18d2f8f70e6f0bc2f
+ parent [29]
+-author Ethan Meng <ethan@rapidcow.org> 1781684854 -0000
+-committer Ethan Meng <ethan@rapidcow.org> 1781685757 -0000
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781684854 -0000
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781685757 -0000
+ 
+ better bridge to core algo docs
+ 
+ i can't stand how we haven't even defined $lo or $hi ugh
+ 29:  463321f !  29:  a6d8bd5 Document ARRAY form and CODE form
+--- a/463321f01a7857e0e27b534cd8233970da1fca54	2026-06-17 07:09:09.000000000 +0000
++++ b/a6d8bd58328c80c9866eee381c4b7156ee2d1c70	2026-06-17 07:09:09.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree d8851d829320801d89d77a0238f92e0cb975f5b9
+ parent [30]
+-author Ethan Meng <ethan@rapidcow.org> 1781679620 -0000
+-committer Ethan Meng <ethan@rapidcow.org> 1781680149 -0000
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781679620 -0000
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781680149 -0000
+ 
+ Document ARRAY form and CODE form
+ 
+ Didn't want to say $#array / $#$array since I'm
+ 30:  591ee00 !  30:  22ef5bf Document index form
+--- a/591ee0041748cf9d2ee50c9ee4fedbea1f18f9ae	2026-06-17 04:27:44.000000000 +0000
++++ b/22ef5bf4e7e1decd0b1f997131e69e1548db2749	2026-06-17 04:27:44.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 29db9a410a5538fe9d995e7f8a768510a1aac4b4
+ parent [31]
+-author Ethan Meng <ethan@rapidcow.org> 1781670464 -0000
+-committer Ethan Meng <ethan@rapidcow.org> 1781670464 -0000
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781670464 -0000
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781670464 -0000
+ 
+ Document index form
+ 
+ I forgot to mention anywhere at all that this was the
+ 31:  9ca60d4 !  31:  07b1ba9 Minor typographical kink: unglue "/"
+--- a/9ca60d4bd71bab995bbe4013e672731844a1c7f8	2026-06-17 04:37:08.000000000 +0000
++++ b/07b1ba994aa919c0592e4bf405a0eefee29bf0a3	2026-06-17 04:37:08.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 4d43a11463144639f0a86f3c44bcab6e0621c7af
+ parent [32]
+-author Ethan Meng <ethan@rapidcow.org> 1781669869 -0000
+-committer Ethan Meng <ethan@rapidcow.org> 1781671028 -0000
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781669869 -0000
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781671028 -0000
+ 
+ Minor typographical kink: unglue "/"
+ 
+ I have a case later with "predicate / ordering" and
+ 32:  457e5bb !  32:  d881c41 Actually, "basic" is just not right for this form
+--- a/457e5bb1924f9288ea565766f5411ca3983c1116	2026-06-16 23:50:08.000000000 +0000
++++ b/d881c4157e6a8cd8c5f7a146a2f6ca0cdda1fe57	2026-06-16 23:50:08.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 2da1cabdcd05ecacdf00b0e43092443c9445345b
+ parent [33]
+-author Ethan Meng <ethan@rapidcow.org> 1781653485 -0000
+-committer Ethan Meng <ethan@rapidcow.org> 1781653808 -0000
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781653485 -0000
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781653808 -0000
+ 
+ Actually, "basic" is just not right for this form
+ 
+ As we know too well by now the ARRAY input form
+ 33:  1437fa6 !  33:  869c57f Stop calling it "subroutines"
+--- a/1437fa676bed64ef2ca933eeb0878c326c97febe	2026-06-16 23:37:00.000000000 +0000
++++ b/869c57f1dcce606ef02a55d2d20bb6447734f7f5	2026-06-16 23:37:00.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree c876860603239cb03a0c716c1374ea1e276fee88
+ parent [34]
+-author Ethan Meng <ethan@rapidcow.org> 1781652273 -0000
+-committer Ethan Meng <ethan@rapidcow.org> 1781653020 -0000
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781652273 -0000
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781653020 -0000
+ 
+ Stop calling it "subroutines"
+ 
+ Maybe keep the section title?  (Actually forget
+ 34:  2eeb3a4 !  34:  80bd224 Explain with more treatment to the basic use case
+--- a/2eeb3a47e8531e16394b9107b715ce21995e389f	2026-06-16 23:15:24.000000000 +0000
++++ b/80bd2246c7db58b6a8e04d13e1d28b54f478f5fa	2026-06-16 23:15:24.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 552b76f4eacd66c9b4847c6ed7aecd38589b44cd
+ parent [35]
+-author Ethan Meng <ethan@rapidcow.org> 1781648909 -0000
+-committer Ethan Meng <ethan@rapidcow.org> 1781651724 -0000
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781648909 -0000
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781651724 -0000
+ 
+ Explain with more treatment to the basic use case
+ 
+ It being named "basic" doesn't make it any less
+ 35:  7d13db5 !  35:  8727a0c Make it plural, so that the comparison is clearer
+--- a/7d13db54202f587decd99af736d81d6669bd0ae2	2026-06-16 18:29:58.000000000 +0000
++++ b/8727a0c03c439c4f1d8c1fb7b0056f39515ad544	2026-06-16 18:29:58.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 65e51602f9ad1ab77bf4d0986efe80c40a1a50da
+ parent [36]
+-author Ethan Meng <ethan@rapidcow.org> 1781634551 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781634598 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781634551 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781634598 -0500
+ 
+ Make it plural, so that the comparison is clearer
+ 36:  c9fe0d1 !  36:  8c84a45 Copy fancy-lookin' table from FastLook.pm
+--- a/c9fe0d1b4c520a742e0b5ce4982ccc1419130411	2026-06-16 12:22:14.000000000 +0000
++++ b/8c84a451e9de62f31b7eba1c18e9d689e5231dc9	2026-06-16 12:22:14.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree bef1bc0394868bf97b5e1d36659b70cc39b9a778
+ parent [37]
+-author Ethan Meng <ethan@rapidcow.org> 1781612534 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781612534 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781612534 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781612534 -0500
+ 
+ Copy fancy-lookin' table from FastLook.pm
+ 
+ i thought there was a templating tutorial that does
+ 37:  694134c !  37:  048e1dd check out whatever the fabulous beauty i just wrote
+--- a/694134c4a9f08ee35c64d612fdb628b5281df4f9	2026-06-16 10:46:59.000000000 +0000
++++ b/048e1dd2c291f4ba4000a517780f34f00d896298	2026-06-16 10:46:59.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 650247c57faacd73c3310ea937c47bba4fe91511
+ parent [38]
+-author Ethan Meng <ethan@rapidcow.org> 1781606578 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781606819 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781606578 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781606819 -0500
+ 
+ check out whatever the fabulous beauty i just wrote
+ 
+ there is a special kind of hallucination at play
+ 38:  d17338e !  38:  b7bee7b CB: stable insertion tutorial
+--- a/d17338e7131653c251deda3af456bbd24d229152	2026-06-16 10:29:04.000000000 +0000
++++ b/b7bee7bfaa0e39fb498b0c21ea516505e23e261e	2026-06-16 10:29:04.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 708190ecd33fdae61d0ad5d7467a803af8e98c49
+ parent [39]
+-author Ethan Meng <ethan@rapidcow.org> 1781605525 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781605744 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781605525 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781605744 -0500
+ 
+ CB: stable insertion tutorial
+ 
+ why is the sky so bright at 5am ready?!?
+ 39:  c746977 !  39:  56daf53 CB: Remove tip on how to import functions
+--- a/c7469772c4f1e67d81b65408c1bf226a912b9408	2026-06-16 06:56:18.000000000 +0000
++++ b/56daf53d4a3ab4e7c21cd9a0e6f458dc75dee98c	2026-06-16 06:56:18.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree ad337df164744e9eed2a12599a7bf90a14e211f0
+ parent [40]
+-author Ethan Meng <ethan@rapidcow.org> 1781592958 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781592978 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781592958 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781592978 -0500
+ 
+ CB: Remove tip on how to import functions
+ 
+ i feel like people know this
+ 40:  784e667 !  40:  2a64d59 t/mean.t: very large but close integers
+--- a/784e667b7a772a19cd7e9c749d78e20453a26827	2026-06-11 01:05:30.000000000 +0000
++++ b/2a64d59bce9b4460922b55cd62e8d0494e38cf21	2026-06-11 01:05:30.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree f2a4ad224eefccdfe2a544570652a3c1521b1cc9
+ parent [41]
+-author Ethan Meng <ethan@rapidcow.org> 1781138521 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781139930 -0500
++author Ethan Meng <rapidcow@NucBox-G3.local> 1781138521 -0500
++committer Ethan Meng <rapidcow@NucBox-G3.local> 1781139930 -0500
+ 
+ t/mean.t: very large but close integers
+ 
+ I don't like how there's nothing I can do when one of
+ 41:  b98bc3a !  41:  c7064b3 Remove comment on the exact integer type
+--- a/b98bc3a0b29d64eef584d95a13fcb50b0f503f47	2026-06-10 19:16:33.000000000 +0000
++++ b/c7064b368381ec151d944676ebdccca17be20dc2	2026-06-10 19:16:33.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 431ee8ae8322af4584f65933c0fa7a24748ccc29
+ parent [42]
+-author Ethan Meng <emeng@cs.wisc.edu> 1781118964 -0500
+-committer Ethan Meng <emeng@cs.wisc.edu> 1781118993 -0500
++author Ethan Meng <emeng@vm-instunix-11.cs.wisc.edu> 1781118964 -0500
++committer Ethan Meng <emeng@vm-instunix-11.cs.wisc.edu> 1781118993 -0500
+ 
+ Remove comment on the exact integer type
+ 
+ I checked with Devel::Peek on this perl 5.6.3
+ 42:  8f6810a !  42:  5085e13 align the semicolons and parentheses....
+--- a/8f6810a038de8ff0857eb1670e70c66594ffb823	2026-06-10 19:14:06.000000000 +0000
++++ b/5085e13523316bd43091ce4595fc1bddc6026acf	2026-06-10 19:14:06.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 89c9c57070ce24e4b13ab135e6ef60a611615eee
+ parent [43]
+-author Ethan Meng <emeng@cs.wisc.edu> 1781118804 -0500
+-committer Ethan Meng <emeng@cs.wisc.edu> 1781118846 -0500
++author Ethan Meng <emeng@vm-instunix-11.cs.wisc.edu> 1781118804 -0500
++committer Ethan Meng <emeng@vm-instunix-11.cs.wisc.edu> 1781118846 -0500
+ 
+ align the semicolons and parentheses....
+ 
+ i'm indulgent, sorry :P
+ 43:  fc33f12 !  43:  797651d give credit to forum answer for computation of int limits
+--- a/fc33f1248623e18a7dee1f8bc1c0a9663641a669	2026-06-10 19:11:23.000000000 +0000
++++ b/797651da6efb2b1108be931679bb7033bf386a96	2026-06-10 19:11:23.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree ac352ad24b24f44631e9856de29ea47a757f2b66
+ parent [44]
+-author Ethan Meng <emeng@cs.wisc.edu> 1781118683 -0500
+-committer Ethan Meng <emeng@cs.wisc.edu> 1781118683 -0500
++author Ethan Meng <emeng@vm-instunix-11.cs.wisc.edu> 1781118683 -0500
++committer Ethan Meng <emeng@vm-instunix-11.cs.wisc.edu> 1781118683 -0500
+ 
+ give credit to forum answer for computation of int limits
+ 
+ A little bit overdue.... this is just so that people
+ 44:  83b4dfc !  44:  b92369c t/mean.t: Defer definitions of IV/UV limits
+--- a/83b4dfc78df02dfb076cb8194ec2b313e31b6e6a	2026-06-10 19:04:13.000000000 +0000
++++ b/b92369c2f749a65d3dbba9749f2249ecf6240d54	2026-06-10 19:04:13.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 5e87b30d570bcf0cd1215f1313dbe425d98f1e49
+ parent [45]
+-author Ethan Meng <emeng@cs.wisc.edu> 1781118125 -0500
+-committer Ethan Meng <emeng@cs.wisc.edu> 1781118253 -0500
++author Ethan Meng <emeng@vm-instunix-11.cs.wisc.edu> 1781118125 -0500
++committer Ethan Meng <emeng@vm-instunix-11.cs.wisc.edu> 1781118253 -0500
+ 
+ t/mean.t: Defer definitions of IV/UV limits
+ 
+ Makes no sense to define them globally at this point either...
+ 45:  25abb55 !  45:  cccb52a t/mean.t: Compute ivmin with decrement
+--- a/25abb552b04df02518c56ecb69af08b2daf60e26	2026-06-10 18:55:05.000000000 +0000
++++ b/cccb52add456c15a2774caf171c9862665903426	2026-06-10 18:55:05.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree b9ad3c06e268cdfb6910ef28e0c6150a47fe4834
+ parent [46]
+-author Ethan Meng <emeng@cs.wisc.edu> 1781117705 -0500
+-committer Ethan Meng <emeng@cs.wisc.edu> 1781117705 -0500
++author Ethan Meng <emeng@vm-instunix-11.cs.wisc.edu> 1781117705 -0500
++committer Ethan Meng <emeng@vm-instunix-11.cs.wisc.edu> 1781117705 -0500
+ 
+ t/mean.t: Compute ivmin with decrement
+ 
+ pp_subtract may resort to NV without PERL_PRESERVE_IVUV, and
+ 46:  003b40f !  46:  6d559b7 t/mean.t: Describe the necessity of the IVUV guard
+--- a/003b40fd0b7313c873aa1c64c9b35cca91e75fc9	2026-06-10 07:25:38.000000000 +0000
++++ b/6d559b72cd606cfda086a9bb8e7a2fe7ecd84cbb	2026-06-10 07:25:38.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree b51b87aef2bf1182a95a0f46b12ad70840a93127
+ parent [47]
+-author Ethan Meng <ethan@rapidcow.org> 1781076007 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781076338 -0500
++author Ethan Meng <rapidcow@NucBox-G3.local> 1781076007 -0500
++committer Ethan Meng <rapidcow@NucBox-G3.local> 1781076338 -0500
+ 
+ t/mean.t: Describe the necessity of the IVUV guard
+ 
+ I keep forgetting that when this goes on CPAN downstream
+ 47:  c4b4e5c !  47:  e8223cb t/mean.t: Start with expected condition in test skips
+--- a/c4b4e5cde7c9c81e714cb6666a0305689b7f7e6d	2026-06-10 07:03:40.000000000 +0000
++++ b/e8223cbb8ee3ec85db87747fe77c1aabb0dc048c	2026-06-10 07:03:40.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree cbf99a63083c4e1d8d88514b7ad54f29c55af497
+ parent [48]
+-author Ethan Meng <ethan@rapidcow.org> 1781074820 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781075020 -0500
++author Ethan Meng <rapidcow@NucBox-G3.local> 1781074820 -0500
++committer Ethan Meng <rapidcow@NucBox-G3.local> 1781075020 -0500
+ 
+ t/mean.t: Start with expected condition in test skips
+ 48:  a6798b3 !  48:  db78f72 Move tricky t/mean.t tests down
+--- a/a6798b3de689030c8260a0ec18d0eb1a0417b724	2026-06-10 06:59:27.000000000 +0000
++++ b/db78f72d32a85619360f67026b77b4035c63d240	2026-06-10 06:59:27.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree a4b4d23e0b6f3a70466cc232f1189156afce3f21
+ parent [49]
+-author Ethan Meng <ethan@rapidcow.org> 1781074706 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781074767 -0500
++author Ethan Meng <rapidcow@NucBox-G3.local> 1781074706 -0500
++committer Ethan Meng <rapidcow@NucBox-G3.local> 1781074767 -0500
+ 
+ Move tricky t/mean.t tests down
+ 
+ This way we can also skip them in one go!
+ 49:  e02f45d !  49:  c1bbf66 Stop using constants in t/mean.t
+--- a/e02f45d03fb5bd624c48052f86b1b6aa02dbf4b7	2026-06-10 06:53:33.000000000 +0000
++++ b/c1bbf66a5bbb9bb118db72df59859adb4b404d4f	2026-06-10 06:53:33.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree de4c15dd269221fa76f6f33d565e677df35921a4
+ parent [50]
+-author Ethan Meng <ethan@rapidcow.org> 1781074413 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781074413 -0500
++author Ethan Meng <rapidcow@NucBox-G3.local> 1781074413 -0500
++committer Ethan Meng <rapidcow@NucBox-G3.local> 1781074413 -0500
+ 
+ Stop using constants in t/mean.t
+ 
+ They cause more trouble than not and messing with symbol
+ 50:  b01952c !  50:  ee713a5 Change "failed to load" => "can't load"
+--- a/b01952c2acb9ba11cd63fde482bf4c3bc1b7d4b8	2026-06-10 03:22:58.000000000 +0000
++++ b/ee713a591c1059c3a5cb389145ee1bf5d7398c7d	2026-06-10 03:22:58.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree ccc8f4d5e9110b0421c16ea7f4d5fcf5f12e860c
+ parent [51]
+-author Ethan Meng <ethan@rapidcow.org> 1781061778 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781061778 -0500
++author Ethan Meng <rapidcow@NucBox-G3.local> 1781061778 -0500
++committer Ethan Meng <rapidcow@NucBox-G3.local> 1781061778 -0500
+ 
+ Change "failed to load" => "can't load"
+ 
+ Why use more words when you can use less?!? :^)
+ 51:  93cd561 !  51:  eb546b8 Remove SKIP from plan skip_all from one other place
+--- a/93cd56140f7bf7ccf3b0f50eff90a78de4571047	2026-06-10 03:20:48.000000000 +0000
++++ b/eb546b8c18090672b6fa3cf46de81276d83a3f19	2026-06-10 03:20:48.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 5bdc16a8e7216ea66fe41519b21c9958593c93c2
+ parent [52]
+-author Ethan Meng <ethan@rapidcow.org> 1781061648 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781061648 -0500
++author Ethan Meng <rapidcow@NucBox-G3.local> 1781061648 -0500
++committer Ethan Meng <rapidcow@NucBox-G3.local> 1781061648 -0500
+ 
+ Remove SKIP from plan skip_all from one other place
+ 52:  2b31748 !  52:  0d720e8 xlib/tree-search.pl: update comments for BST_leap
+--- a/2b31748db1a1738079c11117aa913b44354861ba	2026-06-10 01:11:44.000000000 +0000
++++ b/0d720e8fbb7bc62d328b2ce864753e1d23b1de5d	2026-06-10 01:11:44.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree ba592ca04dc54a3dc1d4418574fbac5e4517c86b
+ parent [53]
+-author Ethan Meng <ethan@rapidcow.org> 1781053097 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781053904 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781053097 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781053904 -0500
+ 
+ xlib/tree-search.pl: update comments for BST_leap
+ 
+ as much as i like the sounds of blsrch1 (i don't; that
+ 53:  c05a30b !  53:  d7e4542 xlib/tree-search.pl: document the [TOK, REF] operand form
+--- a/c05a30b9e455e1e76f549af672acc626a2818288	2026-06-10 00:49:35.000000000 +0000
++++ b/d7e4542a4334192acc2fb22f766bf68e64892a65	2026-06-10 00:49:35.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree aa08a328121d84e5a561b417a86ee7c7298ef140
+ parent [54]
+ author Claude Fable 5 <claude@anthropic.com> 1781052490 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781052575 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781052575 -0500
+ 
+ xlib/tree-search.pl: document the [TOK, REF] operand form
+ 
+ Claude wanted to add something about this new wacky drop-in
+ 54:  6209044 !  54:  9468227 xt/tree-search.t: sparse tree test is no longer TODO
+--- a/6209044131d81c2425e1c8455eff4d2a909e6308	2026-06-10 00:44:17.000000000 +0000
++++ b/94682277eb9baea81bd2866959d3a4db43309eaf	2026-06-10 00:44:17.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree f59e2c08d32d7de05d92fe06d762edccfb125ee6
+ parent [55]
+ author Claude Fable 5 <claude@anthropic.com> 1781052005 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781052257 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781052257 -0500
+ 
+ xt/tree-search.t: sparse tree test is no longer TODO
+ 
+ [Message by Claude; I kept the commit since Claude also
+ 55:  220f6b4 !  55:  b88a619 Move TODO string out of the subtest scope
+--- a/220f6b4478e69762b1b5d52bae9529786c3fbece	2026-06-10 00:17:52.000000000 +0000
++++ b/b88a6193c755ba6a0e8c299bc3a986a03bca8da3	2026-06-10 00:17:52.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 1f2a961fe5a1019cc006154da6373b88f6dad5bd
+ parent [56]
+-author Ethan Meng <ethan@rapidcow.org> 1781050514 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781050672 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781050514 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781050672 -0500
+ 
+ Move TODO string out of the subtest scope
+ 
+ prove(1) doesn't seem to show completed TODOs
+ 56:  58e309c !  56:  e610ddd xlib/tree-search.pl: reduce @aref @bref to scalars
+--- a/58e309c9d758109757d2ac39f6eac7c355a61825	2026-06-10 00:04:07.000000000 +0000
++++ b/e610ddd57c7958b15e3c1f70a2d9a282b23220f6	2026-06-10 00:04:07.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree b2b01aa60c80c7c7eb9b27c8e31646be6e73ac7b
+ parent [57]
+-author Ethan Meng <ethan@rapidcow.org> 1781049272 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781049847 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781049272 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781049847 -0500
+ 
+ xlib/tree-search.pl: reduce @aref @bref to scalars
+ 
+ From Claude Fable 5:
+ 57:  890d40e !  57:  deb2b1c xlib/tree-search.pl: refrain from trusting first encounter
+--- a/890d40e7a2c2f5f34be2293115ff54880bde585b	2026-06-09 23:49:49.000000000 +0000
++++ b/deb2b1c8bcf6e3e9cb5c7e557eda9decb3da2bbf	2026-06-09 23:49:49.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 44c5b236689cd35b17ab290d144afbc17aef394d
+ parent [58]
+-author Ethan Meng <ethan@rapidcow.org> 1781048989 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781048989 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781048989 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781048989 -0500
+ 
+ xlib/tree-search.pl: refrain from trusting first encounter
+ 
+ This is literally the stupidest way to write
+ 58:  92b502b !  58:  292263e xlib/tree-search.pl: preliminary fix for sparse trees
+--- a/92b502b31787863a7770292769eed9de07429691	2026-06-09 23:22:48.000000000 +0000
++++ b/292263e3fa3fce29bc721bfb92a2525ce7cc6064	2026-06-09 23:22:48.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 57e28441ab688cd315253de89308362aad5d9814
+ parent [59]
+-author Ethan Meng <ethan@rapidcow.org> 1781046478 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781047368 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781046478 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781047368 -0500
+ 
+ xlib/tree-search.pl: preliminary fix for sparse trees
+ 
+ Truncate child nodes to one plus length of the child node.
+ 59:  6a7740b !  59:  adc3f22 Consistent-ize xt/tree-search* error messages
+--- a/6a7740b04af424984fda5a2fb688032168d03313	2026-06-09 23:20:46.000000000 +0000
++++ b/adc3f2290dc2aa722e6ae2f86acb810d07b35904	2026-06-09 23:20:46.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree eb031c177465557afdcb1ae8b090bd2cfe595edd
+ parent [60]
+-author Ethan Meng <ethan@rapidcow.org> 1781047246 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781047246 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781047246 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781047246 -0500
+ 
+ Consistent-ize xt/tree-search* error messages
+ 
+ this looked ugly
+ 60:  1ba2216 !  60:  01a4214 xt/tree-search.t: TODO regression test for sparse trees
+--- a/1ba2216b9671d1366a5c825859b77eba34f619dc	2026-06-09 21:45:50.000000000 +0000
++++ b/01a421433197c4c11bb20fc2440213815decdd72	2026-06-09 21:45:50.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 022a710624e796a08fc1c39ef69c54f494ef76d2
+ parent [61]
+ author Claude Fable 5 <claude@anthropic.com> 1781040904 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781041550 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781041550 -0500
+ 
+ xt/tree-search.t: TODO regression test for sparse trees
+ 
+ [Message by Claude (I'm not handing off here I swear;
+ 61:  481ed37 !  61:  d6c87ab xlib/tree-search.pl: doc nits
+--- a/481ed37be015e297e475621cb2909006d839c3ce	2026-06-09 21:31:33.000000000 +0000
++++ b/d6c87ab9fda98dc8acdf579b2ef9b31283d8ca0a	2026-06-09 21:31:33.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 9158834534eb16c3ca978614ed795b579928b267
+ parent [62]
+ author Claude Fable 5 <claude@anthropic.com> 1781040376 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781040693 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781040693 -0500
+ 
+ xlib/tree-search.pl: doc nits
+ 
+ [Message by Claude]
+ 62:  3e7588f !  62:  87a52b6 xlib/tree-search.pl: accept falsy strings as node names
+--- a/3e7588feb7a8e5b4d1c6ee927b10dab8a846f47c	2026-06-09 21:00:22.000000000 +0000
++++ b/87a52b67f8478a4487ec007b3225e32b51a03511	2026-06-09 21:00:22.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 61c49d45d2bc0c15d3486b86ddbf37583a4da3ff
+ parent [63]
+-author Ethan Meng <ethan@rapidcow.org> 1781038416 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781038822 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781038416 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781038822 -0500
+ 
+ xlib/tree-search.pl: accept falsy strings as node names
+ 
+ I actually have quite a handful of directories named
+ 63:  5b43936 !  63:  f7e3c79 Further fixes in main docs
+--- a/5b439369c74f7615127846caa3bc1c71a3fc6bfc	2026-06-09 20:41:42.000000000 +0000
++++ b/f7e3c79c63b34e56e6dcc485400d0b30815645da	2026-06-09 20:41:42.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 17c1242ac47204c4de9beaed481e228eee252a9f
+ parent [64]
+-author Ethan Meng <ethan@rapidcow.org> 1781036907 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781037702 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781036907 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781037702 -0500
+ 
+ Further fixes in main docs
+ 
+ Despite everything I still want to emphasize that the boundary
+ 64:  2b63c64 !  64:  dc8e48f Main pod typos
+--- a/2b63c6406f32b63b7845a359605ffa9ebcbce6c3	2026-06-09 20:26:18.000000000 +0000
++++ b/dc8e48f640b092a3021231b1e57db043986a62e6	2026-06-09 20:26:18.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 0dd32fdccb0545dfc14c13127ee8f6da062817be
+ parent [65]
+ author Claude Fable 5 <claude@anthropic.com> 1781035987 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781036778 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781036778 -0500
+ 
+ Main pod typos
+ 
+ Naturally I'd have Claude proofread the more important guy
+ 65:  19ca2cf !  65:  571d55a Add a pause to long sentence
+--- a/19ca2cfd51fad2950b4473e828c6f6aea94271c3	2026-06-09 19:58:49.000000000 +0000
++++ b/571d55aea76e420c80d03a0e8288226beb4e5eab	2026-06-09 19:58:49.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree c77cc655ac4baa766e6a4df9465807091b759877
+ parent [66]
+-author Ethan Meng <ethan@rapidcow.org> 1781035129 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781035129 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781035129 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781035129 -0500
+ 
+ Add a pause to long sentence
+ 66:  76e521a !  66:  632a78d Use <=> for binsearch_range \@num_array example
+--- a/76e521a1afd3cc7a6d123cd89e10c253b52ed80b	2026-06-09 19:57:51.000000000 +0000
++++ b/632a78d9aa3a609e1d4be09d8629181e627cc64a	2026-06-09 19:57:51.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree f1f0c5774e0e20079eebaafc4abd9b3e57e6d4ba
+ parent [67]
+-author Ethan Meng <ethan@rapidcow.org> 1781035004 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781035071 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781035004 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781035071 -0500
+ 
+ Use <=> for binsearch_range \@num_array example
+ 
+ Thanks again Claude Fable 5 for this...
+ 67:  8d9b2e9 !  67:  ee53f48 Cookbook typos
+--- a/8d9b2e93d18217c560e55f0d83a49d586a717ea6	2026-06-09 19:48:14.000000000 +0000
++++ b/ee53f482ec4ac26adb112124b6e299ba64c87ad1	2026-06-09 19:48:14.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 7a7800eebf35fdc7720efc9bba58faf344261dc9
+ parent [68]
+ author Claude Fable 5 <claude@anthropic.com> 1781034355 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781034494 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781034494 -0500
+ 
+ Cookbook typos
+ 
+ New model :o  I was only trying to have it look at Cookbook to
+ 68:  93934fd !  68:  03af146 That said I do want some space here
+--- a/93934fdb66511357c9320300d4fab3ebae687ef3	2026-06-09 19:34:09.000000000 +0000
++++ b/03af146ea4c59de5b2e23115c61e17687b0f92e7	2026-06-09 19:34:09.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 16c4c332eae2bb6d01f9b9df77823263680ff12d
+ parent [69]
+-author Ethan Meng <ethan@rapidcow.org> 1781033649 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781033649 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781033649 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781033649 -0500
+ 
+ That said I do want some space here
+ 
+ bourne shell yeah babeee!!! >:D
+ 69:  bdf022a !  69:  22caebe What is with all this extra space....
+--- a/bdf022a6f9ce9e1a0a57c5223650e9b3a17c2bf2	2026-06-09 19:33:42.000000000 +0000
++++ b/22caebe67135eb98866757be73509d03e129b861	2026-06-09 19:33:42.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree a8dfc53db0feb2a7488ad1809e542d66b1aa199a
+ parent [70]
+-author Ethan Meng <ethan@rapidcow.org> 1781033622 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781033622 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781033622 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781033622 -0500
+ 
+ What is with all this extra space....
+ 70:  2882742 !  70:  2626f1a Essay typo
+--- a/2882742bc1ab51a0cd26865697ac3912ee48d796	2026-06-09 19:32:55.000000000 +0000
++++ b/2626f1a28c94d70f0388bf85ab159bc96bea83c4	2026-06-09 19:32:55.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree f5bcc62853850b74b0f3c5ea8a779fdc87401471
+ parent [71]
+-author Ethan Meng <ethan@rapidcow.org> 1781033575 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781033575 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781033575 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781033575 -0500
+ 
+ Essay typo
+ 71:  57080cc !  71:  3da2207 xt/tree-search-cmd: kill ourselves the same way /bin/sh died
+--- a/57080ccb8c9a1c2c0f0ede8e4782504a23926641	2026-06-09 19:22:13.000000000 +0000
++++ b/3da2207b787acd1afe1c6425df37e2921f4b52ed	2026-06-09 19:22:13.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 107531836fa0aefe1cb1b095592539e28081d7a0
+ parent [72]
+-author Ethan Meng <ethan@rapidcow.org> 1781032198 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781032933 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781032198 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781032933 -0500
+ 
+ xt/tree-search-cmd: kill ourselves the same way /bin/sh died
+ 
+ $? is also technically the wait status, not the exit status.
+ 72:  543f75d !  72:  be16793 Use 4-space indent properly
+--- a/543f75d0016d6233a203261f4f4034ae44b7e226	2026-06-09 19:05:35.000000000 +0000
++++ b/be1679347d74ce8a002c87363056e6445ca6d143	2026-06-09 19:05:35.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 0581baf676beafc9492bb4a30424ad783279b074
+ parent [73]
+-author Ethan Meng <ethan@rapidcow.org> 1781031882 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781031935 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781031882 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781031935 -0500
+ 
+ Use 4-space indent properly
+ 
+ Just because typographically it is the soundest
+ 73:  39337c8 !  73:  1170d29 WAIT wait i've said this exact thing already?!?
+--- a/39337c836ed71a6a3f579427518b004f2975a237	2026-06-09 19:02:19.000000000 +0000
++++ b/1170d294877e0d906cb3f34d092bbe9a689ae06d	2026-06-09 19:02:19.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 49cbea4c00ab04dcb73c2bae0e68e2bdb44f5650
+ parent [74]
+-author Ethan Meng <ethan@rapidcow.org> 1781031739 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781031739 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781031739 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781031739 -0500
+ 
+ WAIT wait i've said this exact thing already?!?
+ 
+ word for word and i completely missed that... oh boy TvT
+ 74:  a224a56 !  74:  787ce85 Cut down on the second time we mention this
+--- a/a224a5635eb98103ab9dcfc518e3a8ba4ff5a219	2026-06-09 19:00:04.000000000 +0000
++++ b/787ce85e2df3e46af811c3ca46147b7aba387730	2026-06-09 19:00:04.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 7bac3000045634aba4b1900ea1f1e90291b2b49c
+ parent [75]
+-author Ethan Meng <ethan@rapidcow.org> 1781030646 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781031604 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781030646 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781031604 -0500
+ 
+ Cut down on the second time we mention this
+ 
+ This isn't the first time we mention that an ordering need not
+ 75:  51721e9 !  75:  d271a8d Reword IVUV arithmetic caveat note a little bit
+--- a/51721e9b18315b17e41ced391f671d70ba5fd11d	2026-06-09 18:30:10.000000000 +0000
++++ b/d271a8df61728d810e056aebc2f942a960197786	2026-06-09 18:30:10.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 0b50738b8a3dcfe1d1ffe00a0d30a19847bc0817
+ parent [76]
+-author Ethan Meng <ethan@rapidcow.org> 1781029748 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781029810 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781029748 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781029810 -0500
+ 
+ Reword IVUV arithmetic caveat note a little bit
+ 
+ "on x86" sounded more right to me
+ 76:  60be33d !  76:  9b34fd5 Now we can finally delete this old guy
+--- a/60be33ddf74373dadd94a4055f982cd5a43a2870	2026-06-09 18:31:05.000000000 +0000
++++ b/9b34fd550e486afa384e2807e2bf723d2eadd257	2026-06-09 18:31:05.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree ded59c2d2112fd3414f998f0f5862a1b1f79aa78
+ parent [77]
+-author Ethan Meng <ethan@rapidcow.org> 1781029509 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781029865 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781029509 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781029865 -0500
+ 
+ Now we can finally delete this old guy
+ 77:  d8ed600 !  77:  3987125 Explain left vs right variants
+--- a/d8ed6005ad4e39bb4c8162aa87eea75a9caa049b	2026-06-09 18:22:33.000000000 +0000
++++ b/3987125d8aaccca30aaf5039c0ae3e8a694f8a8e	2026-06-09 18:22:33.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 9158f079222088696353a105822d9c175d793b14
+ parent [78]
+-author Ethan Meng <ethan@rapidcow.org> 1781028454 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781029353 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781028454 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781029353 -0500
+ 
+ Explain left vs right variants
+ 
+ I'm afraid I haven't drilled home the idea that the ordering,
+ 78:  9274123 !  78:  1abcaab Terser expressions
+--- a/9274123d4ff64ba341d847f0375afdd547665c6f	2026-06-09 10:43:59.000000000 +0000
++++ b/1abcaaba6cbda4471e42b55a34dbdb5681653bbc	2026-06-09 10:43:59.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 29d82561f5dc412265955df6bad4d15231919477
+ parent [79]
+-author Ethan Meng <ethan@rapidcow.org> 1781001839 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781001839 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781001839 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781001839 -0500
+ 
+ Terser expressions
+ 79:  5670b33 !  79:  6d47acf Elaborate on search orientations
+--- a/5670b33431555d9ac1f82bbbf10a71546a6c78d5	2026-06-09 10:38:50.000000000 +0000
++++ b/6d47acfa6a22629b90f7c741522487149300f46e	2026-06-09 10:38:50.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree e279b0df8ab2e87d8e9341a2a664a2ead8584b88
+ parent [80]
+-author Ethan Meng <ethan@rapidcow.org> 1781001429 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1781001530 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1781001429 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1781001530 -0500
+ 
+ Elaborate on search orientations
+ 
+ I need to decide if the examples are good or bad...
+ 80:  d3032d1 !  80:  9ddc15d Use 2-space indentation consistently in main docs too
+--- a/d3032d1568d5daa26ad2cf28bba6d6847f7d1374	2026-06-09 09:53:14.000000000 +0000
++++ b/9ddc15d0dd002a928e759975ccc13023782dadf5	2026-06-09 09:53:14.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree abca522e475ba271656f36edec6a6cf102e4df61
+ parent [81]
+-author Ethan Meng <ethan@rapidcow.org> 1780998794 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780998794 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780998794 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780998794 -0500
+ 
+ Use 2-space indentation consistently in main docs too
+ 81:  f5fe334 !  81:  2da8d07 Binary operations anti-commute, not anti-symmetry
+--- a/f5fe33407252fe4b00bcf80a817f63d2cbcdaedd	2026-06-09 09:46:17.000000000 +0000
++++ b/2da8d0735697dad5bd488ec66308e3cb3a9c1720	2026-06-09 09:46:17.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 2f0af5cbb40787ec0209eb6a6beda2e7f7d6a4ff
+ parent [82]
+-author Ethan Meng <ethan@rapidcow.org> 1780998037 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780998377 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780998037 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780998377 -0500
+ 
+ Binary operations anti-commute, not anti-symmetry
+ 
+ Agh I was trying so hard to find the word they use to describe how
+ 82:  e279f8f !  82:  6a142a0 Remove spurious period before parenthetical
+--- a/e279f8f8994563150118945771512496e9112b8b	2026-06-09 09:35:04.000000000 +0000
++++ b/6a142a098b24ad3d45cf5ef11e710420c8d93ad1	2026-06-09 09:35:04.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree aea94d161b07e6687cf5581505d4f65cf898c535
+ parent [83]
+-author Ethan Meng <ethan@rapidcow.org> 1780997704 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780997704 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780997704 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780997704 -0500
+ 
+ Remove spurious period before parenthetical
+ 
+ Should it be Plan9 or "Plan 9"?  I tend to write BIND9
+ 83:  4989ec0 !  83:  1dc3e03 "xlib" should still probably be part of the NAME
+--- a/4989ec0a5400d93ff8b91f2a887ea2ab808208c4	2026-06-09 09:32:54.000000000 +0000
++++ b/1dc3e033bb69b3616332fdc0aa058f1f123f8906	2026-06-09 09:32:54.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 7007ce94775c99c0f21dab504583a72b39606be3
+ parent [84]
+-author Ethan Meng <ethan@rapidcow.org> 1780997523 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780997574 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780997523 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780997574 -0500
+ 
+ "xlib" should still probably be part of the NAME
+ 
+ Wildly inconsistent guys....
+ 84:  68f35af !  84:  b03c002 Use itemize in SUBROUTINES section too for uniformity
+--- a/68f35af1a8ee2d739b407da0f061daea196648e7	2026-06-09 09:29:12.000000000 +0000
++++ b/b03c002c8861e2f408d540fd0ad0624bef92b0df	2026-06-09 09:29:12.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 510f44162c601232872a507bbc66fa6b44769f76
+ parent [85]
+-author Ethan Meng <ethan@rapidcow.org> 1780997287 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780997352 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780997287 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780997352 -0500
+ 
+ Use itemize in SUBROUTINES section too for uniformity
+ 
+ The cross-references don't work anyway.
+ 85:  1e15b89 !  85:  8af1dfc Prepend leading slash for Plan9 source path
+--- a/1e15b897ceb6a512cf3b71687e86763bbd244105	2026-06-09 09:23:45.000000000 +0000
++++ b/8af1dfc3c45ccb41f7b82b1ed1050cb03eec60ed	2026-06-09 09:23:45.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree b194b3ed78a7c5fcb0d613318edb70921a7d4c34
+ parent [86]
+-author Ethan Meng <ethan@rapidcow.org> 1780996942 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780997025 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780996942 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780997025 -0500
+ 
+ Prepend leading slash for Plan9 source path
+ 
+ Typographically it should be in monospace font too.
+ 86:  865c7c6 !  86:  4d7380e Indent literal blocks with 2-space consistently
+--- a/865c7c6fc66a60b2ac7ba1a30a90c3d021d43f8b	2026-06-09 09:18:38.000000000 +0000
++++ b/4d7380e94a21587695e561216e8c6c87c4285496	2026-06-09 09:18:38.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 41e0c778edd104cac54d06f79cc51cb40fec229c
+ parent [87]
+-author Ethan Meng <ethan@rapidcow.org> 1780996718 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780996718 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780996718 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780996718 -0500
+ 
+ Indent literal blocks with 2-space consistently
+ 87:  6898ce7 !  87:  7a15197 Document tree-search.pl command-line interface
+--- a/6898ce7187521b76e42e52e059dbe0fa3ce5c31c	2026-06-09 09:15:03.000000000 +0000
++++ b/7a151979649293c6a570450dee8911ac16035092	2026-06-09 09:15:03.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 517f0e14317020dcf959c6578d2ab31058a366b8
+ parent [88]
+-author Ethan Meng <ethan@rapidcow.org> 1780996356 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780996503 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780996356 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780996503 -0500
+ 
+ Document tree-search.pl command-line interface
+ 
+ I legit forgot how to write a normal section-1 manpage lol
+ 88:  8243a30 !  88:  dcb5efa PROOF READ
+--- a/8243a305c429994dffff7e67bf62d52f36456a0f	2026-06-09 08:54:43.000000000 +0000
++++ b/dcb5efade7fb6d42630625287e9255230e2c7d40	2026-06-09 08:54:43.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 3e337766cfba5656cc5d465de40e8a29ae8d85e5
+ parent [89]
+-author Ethan Meng <ethan@rapidcow.org> 1780994955 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780995283 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780994955 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780995283 -0500
+ 
+ PROOF READ
+ 
+ I was dozing off writing this after putting this off to talk to
+ 89:  366f077 !  89:  0a1fb15 Document tree-search.pl Perl interface simply
+--- a/366f07788fd33ce73ac551d8bb124c12f1c2e4af	2026-06-09 08:35:13.000000000 +0000
++++ b/0a1fb159b0e84f2e896f3855af09a44aaaa6a091	2026-06-09 08:35:13.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree b1bae510d5abe75b86b33180a7666016990e46a3
+ parent [90]
+-author Ethan Meng <ethan@rapidcow.org> 1780994113 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780994113 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780994113 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780994113 -0500
+ 
+ Document tree-search.pl Perl interface simply
+ 
+ I might want to write something about the command-line
+ 90:  0165536 !  90:  efa7d2e Tear down vanity package namespace
+--- a/016553640fd73f770ebb9781349202e9b4a536c7	2026-06-09 04:06:12.000000000 +0000
++++ b/efa7d2e07e1d4596b3162596275317dc8a0b6636	2026-06-09 04:06:12.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree fc2354a5059b09106363aad7de03a1cd89dfdf54
+ parent [91]
+-author Ethan Meng <ethan@rapidcow.org> 1780977392 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780977972 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780977392 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780977972 -0500
+ 
+ Tear down vanity package namespace
+ 
+ Namespace for what, just so we have to import them
+ 91:  b412a1a !  91:  51fdebc $[ is 0, damn it!
+--- a/b412a1af0f5375d391392d1d4b5c05ba52779148	2026-06-09 03:49:10.000000000 +0000
++++ b/51fdebcae6aae3e794525057de3a3601114b9608	2026-06-09 03:49:10.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 9d7c2f3c71f8cfeeee9c20c40dca96c56a7fe319
+ parent [92]
+-author Ethan Meng <ethan@rapidcow.org> 1780976915 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780976950 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780976915 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780976950 -0500
+ 
+ $[ is 0, damn it!
+ 
+ sorry not sorry, awk programmers.... :x
+ 92:  4836f29 !  92:  57e51d5 Purge more useless references to $[
+--- a/4836f290eede6eb6f30e0a66cb00222587dd3013	2026-06-09 03:44:09.000000000 +0000
++++ b/57e51d5a807c67993e517ab0bf18f0be31958666	2026-06-09 03:44:09.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 45285b94e0736ba70f1340a4c53511c9cc8b6bce
+ parent [93]
+-author Ethan Meng <ethan@rapidcow.org> 1780976649 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780976649 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780976649 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780976649 -0500
+ 
+ Purge more useless references to $[
+ 
+ Once again, $[ isn't powerful enough to affect anything
+ 93:  070b937 !  93:  a72024f Note numeric warning that comes with this example
+--- a/070b9374867a5158cd450c617835a6a32d720b52	2026-06-09 03:29:40.000000000 +0000
++++ b/a72024fa1f2108caa0909ac9fd227726cb2434ab	2026-06-09 03:29:40.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree be47fee15cc2cfd5d79f142007ac09719e9aacb1
+ parent [94]
+-author Ethan Meng <ethan@rapidcow.org> 1780975780 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780975780 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780975780 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780975780 -0500
+ 
+ Note numeric warning that comes with this example
+ 
+ Dealing with the underscore "developer releases"
+ 94:  80a3e33 !  94:  2fe0863 Remove period from head -1 .mailmap
+--- a/80a3e3349cad8178548c9d043e8c067fc5b8303a	2026-05-28 20:37:41.000000000 +0000
++++ b/2fe08636e387a2ecffb8eb2243e146eda6544096	2026-05-28 20:37:41.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 53e62c6fb9e00aee6e13c7a251f57ab226c394e3
+ parent [95]
+-author Ethan Meng <ethan@rapidcow.org> 1780000607 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780000661 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780000607 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780000661 -0500
+ 
+ Remove period from head -1 .mailmap
+ 
+ We don't add period to the NAME section EVER! >:(
+ 95:  636fc7a !  95:  4c5f3e3 Exclude .mailmap from MANIFEST and source tarballs
+--- a/636fc7a0621d9b0adf262a16c9b4b75099f7d4f9	2026-05-28 20:33:32.000000000 +0000
++++ b/4c5f3e3d1623929602f0bd4c0a0322cdd96b7749	2026-05-28 20:33:32.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 47bb8ac40927ad59e1d15b0302645b73cb1323d9
+ parent [96]
+-author Ethan Meng <ethan@rapidcow.org> 1780000412 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1780000412 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1780000412 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1780000412 -0500
+ 
+ Exclude .mailmap from MANIFEST and source tarballs
+ 96:  2759595 !  96:  7111f32 Hide my CS mail from git-log(1) and friends
+--- a/275959559a53626d8edab503e5afe8310886d027	2026-05-28 20:30:10.000000000 +0000
++++ b/7111f329a540b8df05f28b8fa21034d3e0047ca4	2026-05-28 20:30:10.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 68ee877c4b388937f6f7aebd13d15df5b7eadcb2
+ parent [97]
+-author Ethan Meng <emeng@cs.wisc.edu> 1780000109 -0500
+-committer Ethan Meng <emeng@cs.wisc.edu> 1780000210 -0500
++author Ethan Meng <emeng@vm-instunix-08.cs.wisc.edu> 1780000109 -0500
++committer Ethan Meng <emeng@vm-instunix-08.cs.wisc.edu> 1780000210 -0500
+ 
+ Hide my CS mail from git-log(1) and friends
+ 
+ Don't worry, gitwebs like Forgejo and GitHub still
+ 97:  3426788 !  97:  b3c7b2f Hold xt tests up to the same standards
+--- a/34267885f3cb3d819a6ebaa76cdcf88c3c99d4a8	2026-05-28 20:26:07.000000000 +0000
++++ b/b3c7b2f7af428d866c9b9c50e903801a509d1d64	2026-05-28 20:26:07.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 4e60479891ed0747aef69ffff373d6b019432929
+ parent [98]
+-author Ethan Meng <emeng@cs.wisc.edu> 1779999967 -0500
+-committer Ethan Meng <emeng@cs.wisc.edu> 1779999967 -0500
++author Ethan Meng <emeng@vm-instunix-08.cs.wisc.edu> 1779999967 -0500
++committer Ethan Meng <emeng@vm-instunix-08.cs.wisc.edu> 1779999967 -0500
+ 
+ Hold xt tests up to the same standards
+ 98:  78a1c52 !  98:  6742967 Separate import preamble consistently
+--- a/78a1c52944c3302005844579333c58ba62516327	2026-05-28 20:23:16.000000000 +0000
++++ b/67429671009b4aafa36d47f25eaac2a23bb92c63	2026-05-28 20:23:16.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree fcb441bc693601516c2a0eeaff4b5f4ce9ac319d
+ parent [99]
+-author Ethan Meng <emeng@cs.wisc.edu> 1779999796 -0500
+-committer Ethan Meng <emeng@cs.wisc.edu> 1779999796 -0500
++author Ethan Meng <emeng@vm-instunix-08.cs.wisc.edu> 1779999796 -0500
++committer Ethan Meng <emeng@vm-instunix-08.cs.wisc.edu> 1779999796 -0500
+ 
+ Separate import preamble consistently
+ 
+ Essential libs before our custom libs; carries
+ 99:  b0b4862 !  99:  0c04268 Add recent tests to MANIFEST
+--- a/b0b4862a99702a330f11b58cedff2cf2f08025a9	2026-05-28 20:22:08.000000000 +0000
++++ b/0c0426868a65b375cb91183a84d4258eda21ddbd	2026-05-28 20:22:08.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 4c892c49695b9d3975311c2f7938fdb5497dd681
+ parent [100]
+-author Ethan Meng <emeng@cs.wisc.edu> 1779999636 -0500
+-committer Ethan Meng <emeng@cs.wisc.edu> 1779999728 -0500
++author Ethan Meng <emeng@vm-instunix-08.cs.wisc.edu> 1779999636 -0500
++committer Ethan Meng <emeng@vm-instunix-08.cs.wisc.edu> 1779999728 -0500
+ 
+ Add recent tests to MANIFEST
+ 
+ Been ignoring because I just assumed my tree was dirty,
+100:  bf819c9 ! 100:  fbcc30a xt/*.t: address quirks for older perls
+--- a/bf819c9540429dd89ec0f8174feededec47a1c24	2026-05-28 20:19:21.000000000 +0000
++++ b/fbcc30a71bea5d0ca690d5c575df3b6283199920	2026-05-28 20:19:21.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree ccc1f0bba05f34d7d32acd74aed3f01c8b7aeae6
+ parent [101]
+-author Ethan Meng <emeng@cs.wisc.edu> 1779999076 -0500
+-committer Ethan Meng <emeng@cs.wisc.edu> 1779999561 -0500
++author Ethan Meng <emeng@vm-instunix-08.cs.wisc.edu> 1779999076 -0500
++committer Ethan Meng <emeng@vm-instunix-08.cs.wisc.edu> 1779999561 -0500
+ 
+ xt/*.t: address quirks for older perls
+ 
+ Test-Simple (Test::More) 0.94 appears to not like it
+101:  8ad4e05 ! 101:  d4c1c92 xt/tree-search-cmd: Finish regression test
+--- a/8ad4e057b8677069f25486703e6a1f3f46213556	2026-05-28 19:28:58.000000000 +0000
++++ b/d4c1c92d1c3d9fbfd661749d9d4fc5c5ea6c4a71	2026-05-28 19:28:58.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 8187c78f739bc7be93e2a7ddffa624962773eedd
+ parent [102]
+ author Claude Sonnet 4.6 <claude@anthropic.com> 1779996130 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779996538 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779996538 -0500
+ 
+ xt/tree-search-cmd: Finish regression test
+ 
+ [Message by Claude]
+102:  0af5c03 ! 102:  fb1305d xt/tree-search-cmd: basic load test
+--- a/0af5c03bfa2d9ec741b2f63255413dac07a3e650	2026-05-28 19:12:25.000000000 +0000
++++ b/fb1305d38ade7cff0864aad321d6e5fca1d1fa22	2026-05-28 19:12:25.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 67c20700eac208c599a1a659e0f02eb7aeff3557
+ parent [103]
+-author Ethan Meng <ethan@rapidcow.org> 1779995409 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779995545 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779995409 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779995545 -0500
+ 
+ xt/tree-search-cmd: basic load test
+103:  7567e74 ! 103:  247965e Initialize tree-search-cmd boilerplate
+--- a/7567e745e512cdc1eca7638275a6aa88f43f1471	2026-05-28 19:09:37.000000000 +0000
++++ b/247965ecbbc98743fea00ae188e5c93761801c8c	2026-05-28 19:09:37.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 0a5ed3dee43cb2179955659e200c27dd075db602
+ parent [104]
+-author Ethan Meng <ethan@rapidcow.org> 1779994918 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779995377 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779994918 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779995377 -0500
+ 
+ Initialize tree-search-cmd boilerplate
+ 
+ Downgraded from 5.010 there to 5.006 here...
+104:  18dfb4f ! 104:  1119e2d Copy "t/lib/test-functions.sh" from HashTree test
+--- a/18dfb4f4a6c70c919ce7413c7add670b72500637	2026-05-28 19:00:08.000000000 +0000
++++ b/1119e2d5c1a98d4b0094ff0aaa3ee80c52b1c8a9	2026-05-28 19:00:08.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 853adee197cdf0efaca0c8a12d8a5f176d633bad
+ parent [105]
+-author Ethan Meng <ethan@rapidcow.org> 1779994577 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779994808 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779994577 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779994808 -0500
+ 
+ Copy "t/lib/test-functions.sh" from HashTree test
+ 
+ I am a tad bit unsatisfied by Perl tests... let's
+105:  4e80d88 ! 105:  466778d tree-search: sanity check on self
+--- a/4e80d8854f4840eabfa3ef160452f7f3ab83ff76	2026-05-28 18:38:45.000000000 +0000
++++ b/466778d4431b5fe2111dc0f4ff727445c3f7ecc8	2026-05-28 18:38:45.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 4a62dc331b3936d06132b547ab57e43dc1178819
+ parent [106]
+-author Ethan Meng <ethan@rapidcow.org> 1779993441 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779993525 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779993441 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779993525 -0500
+ 
+ tree-search: sanity check on self
+ 
+ Previously I thought delv/leap wasn't working
+106:  7a9ae69 ! 106:  703c72c tree-search find: roll our own lexicograpical sort
+--- a/7a9ae69cbcc42841a45cfcb8a5bd8809d46788f9	2026-05-28 17:24:15.000000000 +0000
++++ b/703c72ce98fd9fcbd45bcf11698e5397d7f49566	2026-05-28 17:24:15.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 03bb07789375a797c4c440804689929a4899dabc
+ parent [107]
+ author Claude Sonnet 4.6 <claude@anthropic.com> 1779987090 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779989055 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779989055 -0500
+ 
+ tree-search find: roll our own lexicograpical sort
+ 
+ So that this would actually work:
+107:  35d90cb ! 107:  88c13b3 xlib/tree-search: Fix a few other spots
+--- a/35d90cbcce6577b3a0704881c1a9a41e7f95f29c	2026-05-26 16:18:50.000000000 +0000
++++ b/88c13b335456ca233334cdafde59b9c7336857b7	2026-05-26 16:18:50.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree ba98901a0d5e1d85ae9a0445d7c3eb934b4febb4
+ parent [108]
+-author Ethan Meng <ethan@rapidcow.org> 1779812330 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779812330 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779812330 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779812330 -0500
+ 
+ xlib/tree-search: Fix a few other spots
+ 
+ i should probably mention that BST_leap/BST_delv were
+108:  d82d131 ! 108:  b7f51e2 Just import all the names please
+--- a/d82d1316ab547075138d2043b46f88133c8ac768	2026-05-26 15:08:57.000000000 +0000
++++ b/b7f51e2f465558ff7e833ce849eb126707db155e	2026-05-26 15:08:57.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 92bd51335956190b4f3e01e9d3fbf2290e079bf0
+ parent [109]
+-author Ethan Meng <ethan@rapidcow.org> 1779808137 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779808137 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779808137 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779808137 -0500
+ 
+ Just import all the names please
+109:  739ccca ! 109:  f5f7f01 Expose as BST_{leap,delv} as subcommands
+--- a/739cccaed9ddf4211d94b681a12783baf0fd3095	2026-05-26 15:03:40.000000000 +0000
++++ b/f5f7f01288a9303aae34ad1a3a05aa30e04d77b8	2026-05-26 15:03:40.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree a514a40187860ce676a34c6dddc3849174c4a90c
+ parent [110]
+-author Ethan Meng <ethan@rapidcow.org> 1779807734 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779807820 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779807734 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779807820 -0500
+ 
+ Expose as BST_{leap,delv} as subcommands
+ 
+ this went suspiciously smoothly.... something's wrong i swear XP
+110:  476eda8 ! 110:  b5ed160 tree-search tests fixup
+--- a/476eda8e98a2169878719fc864580b7ee63dcb21	2026-05-26 14:44:33.000000000 +0000
++++ b/b5ed1606202e4df530c287162bf93c324543c3c9	2026-05-26 14:44:33.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree a27796089eaca902f4f05f01f9c18add68aa4699
+ parent [111]
+-author Ethan Meng <ethan@rapidcow.org> 1779806532 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779806673 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779806532 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779806673 -0500
+ 
+ tree-search tests fixup
+ 
+ still, still... let's keep it unicode-less please :(
+111:  1e7c8bc = 111:  8344fef xlib/tree-search: fix four bugs; xt/tree-search: add tests
+112:  e6c3bb1 ! 112:  ec4d81e BST_leap and BST_delv proof of concept
+--- a/e6c3bb15478f0e08316915f347d891ba6c53d1c4	2026-05-28 18:00:51.000000000 +0000
++++ b/ec4d81ed7cf82965ff52d35abf5db15cf54c8103	2026-05-28 18:00:51.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 70f3d2e6a07edf9f62f35fdab9a40fea62de72a5
+ parent [113]
+ author Claude Sonnet 4.6 <claude@anthropic.com> 1779802330 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779991251 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779991251 -0500
+ 
+ BST_leap and BST_delv proof of concept
+ 
+ These are some initial PoC (proof of concept)
+113:  1fb49ae ! 113:  f213dcb Begin another experiment
+--- a/1fb49aed1cfe2bb4cc406d128e2a0e5d013a2101	2026-05-26 14:26:40.000000000 +0000
++++ b/f213dcb68415ee319f387b6ff58835e6e0b5c36b	2026-05-26 14:26:40.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 026aade2b8581ccea8ea94d8da70e20d4773b048
+ parent [114]
+-author Ethan Meng <ethan@rapidcow.org> 1779805530 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779805600 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779805530 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779805600 -0500
+ 
+ Begin another experiment
+ 
+ this one is very pertinent to the next bit of my essay (and kind of
+114:  b986c70 ! 114:  da22e48 Grammar again
+--- a/b986c70fcdb54f1682a89869492775305ccdb1e5	2026-05-26 12:36:47.000000000 +0000
++++ b/da22e482f42f36f1e32dbe88e0a7a083232d94e6	2026-05-26 12:36:47.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 97c0d7b938c006d28310d751b39fb17af38ae0a5
+ parent [115]
+-author Ethan Meng <ethan@rapidcow.org> 1779799007 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779799007 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779799007 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779799007 -0500
+ 
+ Grammar again
+115:  358f519 ! 115:  ef37a9e 01ARRAY: continued for right search
+--- a/358f5196539fa0a82581197c40b875c4fac5c351	2026-05-26 12:31:11.000000000 +0000
++++ b/ef37a9eba00c42183f256e2a2c0f35feef0dde78	2026-05-26 12:31:11.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree bd9ebdaaee9dff99854dc28a57f7fc6b343dd88d
+ parent [116]
+-author Ethan Meng <ethan@rapidcow.org> 1779798629 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779798671 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779798629 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779798671 -0500
+ 
+ 01ARRAY: continued for right search
+116:  d2b319d ! 116:  0d38d3a file => document
+--- a/d2b319dfde49c26d6845fbf9ca3e0493fc614f55	2026-05-26 11:14:46.000000000 +0000
++++ b/0d38d3aaa0b6e9b44b5a2611f8d2243b101487da	2026-05-26 11:14:46.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 7a266caa7d16426f3cbfdf8124286e2a84b63f19
+ parent [117]
+-author Ethan Meng <ethan@rapidcow.org> 1779794019 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779794086 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779794019 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779794086 -0500
+ 
+ file => document
+ 
+ We're not leaning into that today... i'm not *that*
+117:  b2c898f ! 117:  5ca319e Add dummy files for srcdocs
+--- a/b2c898fb9a4bb35761d6a8f9e185edae37217811	2026-05-26 11:10:59.000000000 +0000
++++ b/5ca319e23f48aeb789fb0defb0ac3b31155c5bdf	2026-05-26 11:10:59.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 20c608fe118f0da88a39a357fb165ebd240a2a49
+ parent [118]
+-author Ethan Meng <ethan@rapidcow.org> 1779793859 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779793859 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779793859 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779793859 -0500
+ 
+ Add dummy files for srcdocs
+ 
+ Seeing them there empty motivates me to add something
+118:  50b3d26 ! 118:  07fedaf semicolons please
+--- a/50b3d26734bad60a882486053dc4cadeba4ebdf4	2026-05-26 10:48:23.000000000 +0000
++++ b/07fedafc520963cd6951928dfa87afa042221d35	2026-05-26 10:48:23.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree f17afd8692ccfafa773d96a40523ea14d078dcc3
+ parent [119]
+-author Ethan Meng <ethan@rapidcow.org> 1779792503 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779792503 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779792503 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779792503 -0500
+ 
+ semicolons please
+ 
+ odd guy >:(
+119:  85bb9f5 ! 119:  bc623f6 Get rid of useless +n -n tests
+--- a/85bb9f52d40371cf821f8c080c568b906d27af81	2026-05-26 10:46:12.000000000 +0000
++++ b/bc623f6857819a77b02a51f557db193ad7c3416f	2026-05-26 10:46:12.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 6424127335724989833f75cbbaf2f3afad2bac77
+ parent [120]
+-author Ethan Meng <ethan@rapidcow.org> 1779792234 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779792372 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779792234 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779792372 -0500
+ 
+ Get rid of useless +n -n tests
+ 
+ integers that fall between the strides of one ULP
+120:  a8448d4 ! 120:  56c1424 parenthesize this SKIP for consistency
+--- a/a8448d4121832866f81916261d9584461693e3ba	2026-05-26 10:29:46.000000000 +0000
++++ b/56c142472e3e68a92ae41383a804e513b1e54014	2026-05-26 10:29:46.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 0b336e990f4af380dd331347fa00bca638ae0178
+ parent [121]
+-author Ethan Meng <ethan@rapidcow.org> 1779791360 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779791386 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779791360 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779791386 -0500
+ 
+ parenthesize this SKIP for consistency
+ 
+ also this is an unlikely case.... so don't defer the condition :(
+121:  0fe077e ! 121:  695e923 t/mean.t: skip boundary tests when no PERL_PRESERVE_IVUV
+--- a/0fe077eb2fa366134f9c5e519e5b3a4ca7b9b6a5	2026-05-26 10:56:41.000000000 +0000
++++ b/695e9235595937dc5cf64610977f4790801d539d	2026-05-26 10:56:41.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 63b01ab94fc017a7bdd18340dc01967149feddec
+ parent [122]
+-author Ethan Meng <ethan@rapidcow.org> 1779786271 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779793001 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779786271 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779793001 -0500
+ 
+ t/mean.t: skip boundary tests when no PERL_PRESERVE_IVUV
+ 
+ one, and exactly one test fails:
+122:  d58420c ! 122:  1fb04e4 Require Test-Simple 0.94
+--- a/d58420cb0728424461152065ed91e006dbe34d1e	2026-05-26 06:47:58.000000000 +0000
++++ b/1fb04e4737defc0e82b5f187d48f288548062efa	2026-05-26 06:47:58.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree d0f0d710b8dde602f138a2591cbc92d716cd0da9
+ parent [123]
+-author Ethan Meng <ethan@rapidcow.org> 1779777465 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779778078 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779777465 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779778078 -0500
+ 
+ Require Test-Simple 0.94
+ 
+ note() >= 0.82, and subtest() >= 0.94.
+123:  a5bae1c ! 123:  ec882b4 Explicitly return in tied array getters
+--- a/a5bae1c3303faa49985a9366c844d6145c294dfe	2026-05-26 06:30:39.000000000 +0000
++++ b/ec882b47c89dfe346cf6a3f5aa8c24f242aa26b5	2026-05-26 06:30:39.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 6aa5bcdcc8f2d697b667140759cf8b4daa70f1a5
+ parent [124]
+-author Ethan Meng <ethan@rapidcow.org> 1779776750 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779777039 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779776750 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779777039 -0500
+ 
+ Explicitly return in tied array getters
+ 
+ It's mentioned somewhere in perltie that the
+124:  7a33418 ! 124:  057d60b Chained inequality is new to perl v5.32.0
+--- a/7a33418d9b6ad1852de33c5ec8b1df197f306610	2026-05-26 06:13:47.000000000 +0000
++++ b/057d60babf06451928522c086ff9b67d063bc3a6	2026-05-26 06:13:47.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 71c533564329c679a6c7d585b60ae26087a05c9b
+ parent [125]
+-author Ethan Meng <ethan@rapidcow.org> 1779775988 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779776027 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779775988 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779776027 -0500
+ 
+ Chained inequality is new to perl v5.32.0
+ 
+ aw :( i thought python 3 has it so perl must've had it too....
+125:  e9a0165 ! 125:  f81f21a Test ARRAY form
+--- a/e9a016519ace06287d9ba6bbbafbfa971e19230a	2026-05-26 06:03:12.000000000 +0000
++++ b/f81f21a884719def9d441c43376e8af3a9c27990	2026-05-26 06:03:12.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree d5de32cb9c318b8de620f68793a45d79a9e6ec9a
+ parent [126]
+-author Ethan Meng <ethan@rapidcow.org> 1779775126 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779775392 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779775126 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779775392 -0500
+ 
+ Test ARRAY form
+ 
+ maybe i should really split this into multiple tests so
+126:  7e5b1a8 ! 126:  743c06c I think mean.t should actually be 20
+--- a/7e5b1a8bbfc3782e269025d25a5f06ab9e9e915b	2026-05-25 04:44:01.000000000 +0000
++++ b/743c06c010c557e0856fb710954c43b6a051e4d0	2026-05-25 04:44:01.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 9ac8030a4843b2525a3705fd7d182a976b9b0688
+ parent [127]
+-author Ethan Meng <ethan@rapidcow.org> 1779684241 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779684241 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779684241 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779684241 -0500
+ 
+ I think mean.t should actually be 20
+ 
+ How are you supposed to ensure that the outputs
+127:  657ce6b ! 127:  1ddc1d2 t/mean.t: load Math::BigInt optionally
+--- a/657ce6b5728017e72086ee11439a9df589ad06e4	2026-05-24 20:12:34.000000000 +0000
++++ b/1ddc1d2f6ad4bf57345e9fd257b8aa30260983b9	2026-05-24 20:12:34.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 0c07c3bcfc8693017b4d84f00d02fe09f5fee26c
+ parent [128]
+-author Ethan Meng <ethan@rapidcow.org> 1779653085 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779653554 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779653085 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779653554 -0500
+ 
+ t/mean.t: load Math::BigInt optionally
+ 
+ Stick to the explicit package dependency, like before...
+128:  f9df78c ! 128:  e4d2635 Prefix t/mean.t with "10"
+--- a/f9df78c0854a44ba7b1c447d65bd8b497c34dc78	2026-05-24 19:47:30.000000000 +0000
++++ b/e4d2635bc72952f7f42b77ef855a3899434b641a	2026-05-24 19:47:30.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree bfa43028977d751dc604a8006a70232e8e9a294b
+ parent [129]
+-author Ethan Meng <ethan@rapidcow.org> 1779652050 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779652050 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779652050 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779652050 -0500
+ 
+ Prefix t/mean.t with "10"
+ 
+ I think this is important/fundamental enough of an
+129:  fd99e58 ! 129:  b40f640 Author tests get the load test too
+--- a/fd99e5852e0a72db6b550f2533c0c55a353539cc	2026-05-24 19:40:50.000000000 +0000
++++ b/b40f640af48ef63c55d0232575a11306e866fc6c	2026-05-24 19:40:50.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 64320894c7dd979ea6a500f8e035871b993d6e69
+ parent [130]
+-author Ethan Meng <ethan@rapidcow.org> 1779651554 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779651650 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779651554 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779651650 -0500
+ 
+ Author tests get the load test too
+ 
+ Last I tried running prove xt/* where S::S
+130:  6ab48fe ! 130:  9597c2b t/mean.t: make syntax work
+--- a/6ab48fe4d4dbf3dbd555af861c64054bc1cf625f	2026-05-24 19:24:32.000000000 +0000
++++ b/9597c2b17c6c5d06c130a9748f0e1d294a4ee2fd	2026-05-24 19:24:32.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree f5008afa05f966e15d7c4a50759c26cd92434958
+ parent [131]
+-author Ethan Meng <ethan@rapidcow.org> 1779650397 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779650672 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779650397 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779650672 -0500
+ 
+ t/mean.t: make syntax work
+ 
+ the bare "ref" kills perl v5.16.3:
+131:  fec80a6 ! 131:  85531c6 mean test with bigint!
+--- a/fec80a66d01733f6d89485d092d302d99f874f97	2026-05-24 18:58:41.000000000 +0000
++++ b/85531c6bcb16c8d2efc64785343184870aaab32f	2026-05-24 18:58:41.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 77748c3701509d477935d335dbb88dbae15c7320
+ parent [132]
+-author Ethan Meng <ethan@rapidcow.org> 1779649094 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779649121 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779649094 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779649121 -0500
+ 
+ mean test with bigint!
+132:  c18361a ! 132:  4260456 Mean test
+--- a/c18361acf11b0a0c037c8111747bbe08bda760fb	2026-05-24 18:32:59.000000000 +0000
++++ b/42604565171a31e79dc848932f1a9ad3a4e06995	2026-05-24 18:32:59.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree cffc4c617ab770af1419ae5f70882377bb2f7022
+ parent [133]
+-author Ethan Meng <ethan@rapidcow.org> 1779647579 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779647579 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779647579 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779647579 -0500
+ 
+ Mean test
+133:  9db1ec0 ! 133:  9ea2495 Append most recent runs to the files
+--- a/9db1ec0ceb7c1a7d04750e3be59dcb8ad46e58cc	2026-05-24 17:40:37.000000000 +0000
++++ b/9ea24956da887e29fe3986f2f005a3905dc188f5	2026-05-24 17:40:37.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 87f3a64b2bed52f3673679e52f977400bba7b6c8
+ parent [134]
+-author Ethan Meng <ethan@rapidcow.org> 1779628495 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779644437 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779628495 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779644437 -0500
+ 
+ Append most recent runs to the files
+ 
+ All of this was done mostly in imitation of
+134:  70fb80b ! 134:  1994889 Benchmark one last time
+--- a/70fb80b64debe716ba93fb02a489d3dac0d505db	2026-05-24 12:07:28.000000000 +0000
++++ b/1994889d6e64cfd04e4243709b0b880caae1dcff	2026-05-24 12:07:28.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 1ddbfb8a3ce4ae8ea93d2a4680bc167e68d4dfc7
+ parent [135]
+-author Ethan Meng <ethan@rapidcow.org> 1779624448 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779624448 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779624448 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779624448 -0500
+ 
+ Benchmark one last time
+135:  2ba5b61 ! 135:  645e917 I think string comparison is a bit expensive for $ref
+--- a/2ba5b61fea1c35ad865936ff77e972f0df3d5eac	2026-05-24 10:29:52.000000000 +0000
++++ b/645e917d859ac07c0b7aec78d80f48c7db0ef319	2026-05-24 10:29:52.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 6129a5ef8c5aff69aa65c02e6dbc90943ad0df93
+ parent [136]
+-author Ethan Meng <ethan@rapidcow.org> 1779618592 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779618592 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779618592 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779618592 -0500
+ 
+ I think string comparison is a bit expensive for $ref
+ 
+ Previously I thought repeated string comparisons would
+136:  f6154f6 ! 136:  fe7ad5f Benchmark results (again)
+--- a/f6154f613c532ae71631dacc2993b15a1e8b94c8	2026-05-24 10:21:08.000000000 +0000
++++ b/fe7ad5ff9023c7c2dc14b29b6d3def3a64c148f4	2026-05-24 10:21:08.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree effee36ac55345a08320f9a01e987b471362d68a
+ parent [137]
+-author Ethan Meng <ethan@rapidcow.org> 1779616200 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779618068 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779616200 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779618068 -0500
+ 
+ Benchmark results (again)
+137:  7325145 ! 137:  113466f peel off ARRAY wrapper
+--- a/73251457246718ea90146709d157764ce521c3cd	2026-05-24 09:34:51.000000000 +0000
++++ b/113466f3f320c059f091bfe49e0239fda31d345e	2026-05-24 09:34:51.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 74f2ddafaa16888aecd8ef5c8c1a825f98126b98
+ parent [138]
+-author Ethan Meng <ethan@rapidcow.org> 1779614753 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779615291 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779614753 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779615291 -0500
+ 
+ peel off ARRAY wrapper
+ 
+ I still think I'd like to keep the CODE form around
+138:  e87bfd5 ! 138:  93cae78 Report benchmark results
+--- a/e87bfd5eafa3749f10d22442ba47c995f26e8fdd	2026-05-24 08:03:01.000000000 +0000
++++ b/93cae7830dee0d93b57d30b39c701946dfb556da	2026-05-24 08:03:01.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree abafc37414081d0a0e5da43ac6c871358aae6a25
+ parent [139]
+-author Ethan Meng <ethan@rapidcow.org> 1779609638 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779609781 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779609638 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779609781 -0500
+ 
+ Report benchmark results
+ 
+ even if this is all done for nothing
+139:  d57fa99 ! 139:  f486dc3 ... and please S::S[2] don't be slower
+--- a/d57fa99f8e3fb14e864ed3a8fdc23e82cbb3541c	2026-05-23 22:23:18.000000000 +0000
++++ b/f486dc3c84dc1388655feb04eb49740e251ed7d8	2026-05-23 22:23:18.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree e9572d45e12c606a356a16433e1c7dce839484b0
+ parent [140]
+-author Ethan Meng <ethan@rapidcow.org> 1779574998 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779574998 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779574998 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779574998 -0500
+ 
+ ... and please S::S[2] don't be slower
+140:  55d1bd9 ! 140:  14d49a3 Add lzero.pl test results
+--- a/55d1bd95152e5c603f8f962bb9328b76d032cb43	2026-05-23 22:18:40.000000000 +0000
++++ b/14d49a3ec78c1ff6fea0aa63efaea4c68cb15bd0	2026-05-23 22:18:40.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree e493f330c79294bea2b5a3a02b0f4d3907318ad9
+ parent [141]
+-author Ethan Meng <ethan@rapidcow.org> 1779574602 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779574720 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779574602 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779574720 -0500
+ 
+ Add lzero.pl test results
+ 
+ I don't think it had to be exactly be justified
+141:  28a172a ! 141:  10a5a36 Maybe we should factor out anon subs
+--- a/28a172a558af148ab457a11e154e6ddbe286a0f4	2026-05-23 21:48:26.000000000 +0000
++++ b/10a5a3688acd6e42b2d16d52ef2f55cc3c5a956e	2026-05-23 21:48:26.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 73c459cb766e3f8159a92a7a73626a25e1a1b135
+ parent [142]
+-author Ethan Meng <ethan@rapidcow.org> 1779572616 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779572906 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779572616 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779572906 -0500
+ 
+ Maybe we should factor out anon subs
+ 
+ One reason I think List::Search is fast is that
+142:  e0105ca ! 142:  b5db3ca Test match for one bound only
+--- a/e0105caf21ec885f573ca3ba9ed268e4fb226ed3	2026-05-23 21:33:23.000000000 +0000
++++ b/b5db3ca8a2fe322aa216691053eab539fdb07a0d	2026-05-23 21:33:23.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 8003b5ba6505182a262559765a6f2e05dafa4bd6
+ parent [143]
+-author Ethan Meng <ethan@rapidcow.org> 1779571976 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779572003 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779571976 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779572003 -0500
+ 
+ Test match for one bound only
+143:  0a9588b ! 143:  486a0f3 Check $INC{$filename} is defined, not just existing
+--- a/0a9588be360cd7c91acc57d4a12f981fccd83cfb	2026-05-23 20:55:35.000000000 +0000
++++ b/486a0f30fc5fadf0839582798a5d70ef7b2162a7	2026-05-23 20:55:35.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 6dc1b1db63563b172f61aa73103c9a2176522eb4
+ parent [144]
+-author Ethan Meng <ethan@rapidcow.org> 1779569646 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779569735 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779569646 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779569735 -0500
+ 
+ Check $INC{$filename} is defined, not just existing
+ 
+ $INC{$filename} is undef when import fail :(
+144:  66a4290 ! 144:  588c658 Re-run results against LINEAR baseline
+--- a/66a4290852678ac67c3d7065078690aa3a1d14e7	2026-05-23 20:25:12.000000000 +0000
++++ b/588c658037b430c4dd3895616378b15b34891539	2026-05-23 20:25:12.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree e1e95975ec0ec661703c93bcf4bcc8ecafabcc3b
+ parent [145]
+-author Ethan Meng <ethan@rapidcow.org> 1779567717 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779567912 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779567717 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779567912 -0500
+ 
+ Re-run results against LINEAR baseline
+ 
+ This is not helpful lol.... it's only that because
+145:  abb291b ! 145:  1701b73 Align arguments in the b*srch2 variants
+--- a/abb291b74c72d3cd34b598ae46efb6f9a4df02f9	2026-05-23 20:10:09.000000000 +0000
++++ b/1701b734e8ff69b5e7aaa192495598b19ef9e56d	2026-05-23 20:10:09.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree ae6082d9b48b0e289a863c935b6d5354ea5a01d6
+ parent [146]
+-author Ethan Meng <ethan@rapidcow.org> 1779566987 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779567009 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779566987 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779567009 -0500
+ 
+ Align arguments in the b*srch2 variants
+ 
+ even more bytes haha... but at least I found a typo!
+146:  c5bc3ce ! 146:  1f8f9ec Add LINEAR baseline to make myself feel better
+--- a/c5bc3cea6b1c03f763e0207d2a9d90bef4ed2b96	2026-05-23 20:03:48.000000000 +0000
++++ b/1f8f9ecaab362aeac719ecebd70e7dd2e37ac69b	2026-05-23 20:03:48.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree f48f86fddc998026f750b21582c695b045ab8236
+ parent [147]
+-author Ethan Meng <ethan@rapidcow.org> 1779566628 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779566628 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779566628 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779566628 -0500
+ 
+ Add LINEAR baseline to make myself feel better
+ 
+ To be fair, I didn't want it to be THIS slow...
+147:  be6c4c9 ! 147:  37d6334 Exclude bench/ from MANIFEST (but not git export)
+--- a/be6c4c936b5ba222c95eeaf158dd9bae7b043660	2026-05-23 19:51:21.000000000 +0000
++++ b/37d63340becb68fa1cc4d846115bcab5f50ec1ed	2026-05-23 19:51:21.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 89a1b9be37f99e1c14d12bf4a9262f18da161533
+ parent [148]
+-author Ethan Meng <ethan@rapidcow.org> 1779565598 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779565881 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779565598 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779565881 -0500
+ 
+ Exclude bench/ from MANIFEST (but not git export)
+ 
+ Eghh, I don't know if benchmark should be in
+148:  59c8adc ! 148:  7dada8d Re-run benchmark with List::MoreUtils::XS
+--- a/59c8adc9886887555ee39e97b1e3ee05396e3811	2026-05-23 19:44:19.000000000 +0000
++++ b/7dada8defe7ac233991fb6c113e4b357836f7a43	2026-05-23 19:44:19.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 20b63c0fa1a2feab0c87777896b7f1a1af506256
+ parent [149]
+-author Ethan Meng <ethan@rapidcow.org> 1779565459 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779565459 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779565459 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779565459 -0500
+ 
+ Re-run benchmark with List::MoreUtils::XS
+149:  3194024 ! 149:  83d4093 We can actually replace "if (!" with "unless ("?
+--- a/31940247e46fa08008c3a7b5c5e9f1cbec5f2197	2026-05-23 19:35:58.000000000 +0000
++++ b/83d409317291ba605ca9cdbe160e43a6f2363f77	2026-05-23 19:35:58.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree e998b59135998def62c55d4fce8836100407afc3
+ parent [150]
+-author Ethan Meng <ethan@rapidcow.org> 1779564653 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779564958 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779564653 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779564958 -0500
+ 
+ We can actually replace "if (!" with "unless ("?
+ 
+ Sorry for three extra bytes... I find the Deparse code
+150:  db2a69d ! 150:  cabe8d9 Move explicit index form check up
+--- a/db2a69d856cf9e4dbf1d43cddbc2231a0bdd9139	2026-05-23 19:13:27.000000000 +0000
++++ b/cabe8d9fcd1b6053332ed8f1fb3ac4a7bd02c485	2026-05-23 19:13:27.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 5149e9897a569f5913ad402ff42c894bf5dbdbad
+ parent [151]
+-author Ethan Meng <ethan@rapidcow.org> 1779563082 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779563607 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779563082 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779563607 -0500
+ 
+ Move explicit index form check up
+ 
+ Non-optimization again, but aegh... at least
+151:  8cb7ab5 ! 151:  ef0e48d Purge the same filler version from Changes
+--- a/8cb7ab55b8cdd1410fc5b2dd0dd5806f9d771c60	2026-05-23 18:32:48.000000000 +0000
++++ b/ef0e48d8e33a7e3de1dbcd36147c93939a648100	2026-05-23 18:32:48.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 966657045b4180afceda7ae31bd3c48a6413502d
+ parent [152]
+-author Ethan Meng <ethan@rapidcow.org> 1779560740 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779561168 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779560740 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779561168 -0500
+ 
+ Purge the same filler version from Changes
+ 
+ whatever, just... don't beat 0.01, augh! >:(
+152:  ab15e0d ! 152:  ebdbf07 Step down from version 0.01_x to 0.00_x
+--- a/ab15e0df6b9e2b6253be446e1f24841ec32d294f	2026-05-23 18:29:51.000000000 +0000
++++ b/ebdbf07cc46062a3f6802d998559af321a3b2c21	2026-05-23 18:29:51.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 59b61e9cc78c501476c08370527c058ec4da753b
+ parent [153]
+-author Ethan Meng <ethan@rapidcow.org> 1779560637 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779560991 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779560637 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779560991 -0500
+ 
+ Step down from version 0.01_x to 0.00_x
+ 
+ I'd leave that for the real release....
+153:  55910b6 ! 153:  6753fec use for-loop for localized $_ alias
+--- a/55910b635ba4407bf391864dbec7049d732fb071	2026-05-23 18:21:20.000000000 +0000
++++ b/6753fec8d8df7ff62f4f21339a7b81ce9caf2807	2026-05-23 18:21:20.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 60deaef3b3d3cb13968b2b4a6a07c6ccb7f2e452
+ parent [154]
+-author Ethan Meng <ethan@rapidcow.org> 1779559216 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779560480 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779559216 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779560480 -0500
+ 
+ use for-loop for localized $_ alias
+ 
+ (Suggested by Claude)
+154:  ba420ab ! 154:  a523086 There is an XS version of equal_range...
+--- a/ba420ab1149119a0eb400efd3751fcec0b45abfb	2026-05-23 17:30:06.000000000 +0000
++++ b/a52308623471303a0a9ab19945023a0fca12f7d9	2026-05-23 17:30:06.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree a119fabacd025e79f509f1c24dc79f0fd6839d44
+ parent [155]
+-author Ethan Meng <ethan@rapidcow.org> 1779557406 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779557406 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779557406 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779557406 -0500
+ 
+ There is an XS version of equal_range...
+ 
+ of course there is, why did i think there would NOT be... DX
+155:  52b5cd1 ! 155:  69f125b Results???
+--- a/52b5cd18d5595e3bb6f80891e6a70bc03542953b	2026-05-23 17:14:28.000000000 +0000
++++ b/69f125b197c851fe2055d229369b3e51dfcb9a6e	2026-05-23 17:14:28.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 8e83332201099252392899effeadb18d132eeb37
+ parent [156]
+-author Ethan Meng <ethan@rapidcow.org> 1779556234 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779556468 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779556234 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779556468 -0500
+ 
+ Results???
+ 
+ Haven't been able to get List::BinarySearch::XS
+156:  dc47fac ! 156:  efd2075 Separate pure-perl and XS List::BinarySearch
+--- a/dc47fac244b2631b6b821c04f6cd518098995077	2026-05-23 16:46:29.000000000 +0000
++++ b/efd207526ee9a29cb651371eceab86836fa48acd	2026-05-23 16:46:29.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 0bb8cae6089300955bc33b8c023440ea453f3d90
+ parent [157]
+-author Ethan Meng <ethan@rapidcow.org> 1779554789 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779554789 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779554789 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779554789 -0500
+ 
+ Separate pure-perl and XS List::BinarySearch
+157:  41c2c68 ! 157:  684a47d Eliminate spaces in test name
+--- a/41c2c68b6f249b798ec33d961805e8a476fe6351	2026-05-23 15:54:19.000000000 +0000
++++ b/684a47dbc3e0490ed8a72603588df269f45c5f60	2026-05-23 15:54:19.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 0f3a7ebaabc0ccb10d22f04f12c7c6e88708e3ab
+ parent [158]
+-author Ethan Meng <ethan@rapidcow.org> 1779551659 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779551659 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779551659 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779551659 -0500
+ 
+ Eliminate spaces in test name
+158:  7a4ce2e ! 158:  3a68d85 Let's remove RTL from the scope of this benchmark
+--- a/7a4ce2e8197787a00daa8e93c7134ce121645567	2026-05-23 16:41:29.000000000 +0000
++++ b/3a68d850d17d7369d98894d3ccc621d9952fd5fd	2026-05-23 16:41:29.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 06e50f6f0983198b6058358cff511d9893d0ff70
+ parent [159]
+-author Ethan Meng <ethan@rapidcow.org> 1779550804 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779554489 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779550804 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779554489 -0500
+ 
+ Let's remove RTL from the scope of this benchmark
+ 
+ RTL is going to be slower due to doing more
+159:  b5f49b7 ! 159:  34f4d09 Normalize output separately
+--- a/b5f49b75d789cc1b669905f72969da13b65e08c9	2026-05-23 15:27:25.000000000 +0000
++++ b/34f4d090e9bd140db1b1ad117a65a9ca9a35fe75	2026-05-23 15:27:25.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 82065b76ddde60152d4a8b5153ef35f918824b19
+ parent [160]
+-author Ethan Meng <ethan@rapidcow.org> 1779550045 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779550045 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779550045 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779550045 -0500
+ 
+ Normalize output separately
+ 
+ "S::S RTL 0+1" was losing to "S::S LTR 0+1"
+160:  d15969a ! 160:  9fc5252 Equal range benchmark
+--- a/d15969ad7216cffb88741f337100727fb4a550fe	2026-05-23 15:00:02.000000000 +0000
++++ b/9fc525257f1aa430a8f5924218ccdb491141dd0b	2026-05-23 15:00:02.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 3bf1bee6a3801cebc09db62c92fee6275e75adec
+ parent [161]
+-author Ethan Meng <ethan@rapidcow.org> 1779547585 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779548402 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779547585 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779548402 -0500
+ 
+ Equal range benchmark
+ 
+ It's silly, I know; a bit unfair even, provided
+161:  ffa2203 ! 161:  453d0a1 GRAMMAR
+--- a/ffa22031c817d79478cc15c1ae56cd21d37968ac	2026-05-20 19:59:28.000000000 +0000
++++ b/453d0a159926529e6dabe768668a5854324fb242	2026-05-20 19:59:28.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 698ef76536afa5eb61dfc64184721abef5cafa37
+ parent [162]
+-author Ethan Meng <ethan@rapidcow.org> 1779307168 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779307168 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779307168 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779307168 -0500
+ 
+ GRAMMAR
+162:  beb34e0 ! 162:  3045608 Just say we made the bounds symmetric ugh
+--- a/beb34e0976d017839066821b94a0e7073ce4e3af	2026-05-20 19:55:35.000000000 +0000
++++ b/3045608d1de46289776ca3fc630a7c72b3722bff	2026-05-20 19:55:35.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 85e187497129603e430db5de0ac23ad865d37970
+ parent [163]
+-author Ethan Meng <ethan@rapidcow.org> 1779306707 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779306935 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779306707 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779306935 -0500
+ 
+ Just say we made the bounds symmetric ugh
+ 
+ Also, I dislike how the ternary operator
+163:  126e046 ! 163:  c16e845 Punctuation
+--- a/126e046c2461605ac2393e9d9dc5b063b773599b	2026-05-20 19:47:21.000000000 +0000
++++ b/c16e845166e32e3f6775e3493347dfa6f9f82793	2026-05-20 19:47:21.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 09060403fa999b00c32b5bbe50e110a481a90ea2
+ parent [164]
+-author Ethan Meng <ethan@rapidcow.org> 1779306441 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779306441 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779306441 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779306441 -0500
+ 
+ Punctuation
+ 
+ Both ; and : seem loosely functional here...
+164:  b1c08fd ! 164:  48da375 Allow "undef" for explicit index form
+--- a/b1c08fdaed6075b5a6907948884071747608670a	2026-05-20 17:49:46.000000000 +0000
++++ b/48da375d6becde0d9be5af6c79b9f7aaf4e98830	2026-05-20 17:49:46.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 5655d430ea12f2e4a08457128012a44b250bfda8
+ parent [165]
+-author Ethan Meng <ethan@rapidcow.org> 1779298805 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779299386 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779298805 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779299386 -0500
+ 
+ Allow "undef" for explicit index form
+ 
+ This dispatch mechanism isn't smart enough to
+165:  f34a872 ! 165:  4d5632b Generalize
+--- a/f34a872b0c7c3b0d16da83e58125103d0d79040b	2026-05-20 16:37:19.000000000 +0000
++++ b/4d5632b0bbf173d2fc994f0ce50a630870ad1278	2026-05-20 16:37:19.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree adbf1ec0fb6060a0ce01829791e99d8903cf895e
+ parent [166]
+-author Ethan Meng <ethan@rapidcow.org> 1779294614 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779295039 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779294614 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779295039 -0500
+ 
+ Generalize
+ 
+ The case of boundaries collapsing is not
+166:  6c4a6a8 ! 166:  b4a525b Fix bsrchpx on boundary case with positive matches
+--- a/6c4a6a8dbff8441ecb23420f4b6dc4915bb22591	2026-05-20 16:24:23.000000000 +0000
++++ b/b4a525b50078568827f1ded9d3815773464e7698	2026-05-20 16:24:23.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 56584d94824817ef25a99371dd99fe08fd0ef56c
+ parent [167]
+-author Ethan Meng <ethan@rapidcow.org> 1779293817 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779294263 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779293817 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779294263 -0500
+ 
+ Fix bsrchpx on boundary case with positive matches
+ 
+ I genuinely thought the "dig ietf.org." mock-up covered
+167:  1643835 ! 167:  36e7501 Please separate declaration from assignment
+--- a/164383553a595c931af32c68a6382b8e72632269	2026-05-20 14:37:43.000000000 +0000
++++ b/36e7501eb12aef591db720e9b1a7a4619ec56b33	2026-05-20 14:37:43.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 943c21cb3f413c221fa6027b4edc3da5e75abd5f
+ parent [168]
+-author Ethan Meng <ethan@rapidcow.org> 1779287863 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779287863 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779287863 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779287863 -0500
+ 
+ Please separate declaration from assignment
+ 
+ This isn't saving any typing when the
+168:  1c877e5 ! 168:  ca30fb5 Argh, we live in xlib? not xt???
+--- a/1c877e54f20f8d883ffed592329705627ea37c32	2026-05-20 14:36:19.000000000 +0000
++++ b/ca30fb51ef59a06351fb3c80716960340c9d09d3	2026-05-20 14:36:19.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree a7f1bf1d40a2550ce6eea3f0ec09a2c4bbcb6474
+ parent [169]
+-author Ethan Meng <ethan@rapidcow.org> 1779287779 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779287779 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779287779 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779287779 -0500
+ 
+ Argh, we live in xlib? not xt???
+169:  befc586 ! 169:  0b8696f wording in NSEC test cases
+--- a/befc586f5b4c3f8598a5c22972b684f6a8bae807	2026-05-20 14:33:01.000000000 +0000
++++ b/0b8696f718740c50ec4ff35c35f824d503dd607a	2026-05-20 14:33:01.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 27b0eaa0381fabee4457bb779d9eb0abd274673a
+ parent [170]
+-author Ethan Meng <ethan@rapidcow.org> 1779287534 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779287581 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779287534 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779287581 -0500
+ 
+ wording in NSEC test cases
+ 
+ "in a zone file (that) IT manages" damn it XP
+170:  88644f2 ! 170:  ee77e0c MANIFEST.SKIP uses regular expression
+--- a/88644f2bd70451f7507edc4bed6cc7efb89a05f4	2026-05-19 15:46:01.000000000 +0000
++++ b/ee77e0c55dc3ad0b2a0455e2e1c2694c70266a3b	2026-05-19 15:46:01.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree defb7f06be9ce495c467f108f1208d121f57109b
+ parent [171]
+-author Ethan Meng <ethan@rapidcow.org> 1779204814 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779205561 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779204814 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779205561 -0500
+ 
+ MANIFEST.SKIP uses regular expression
+ 
+ is it just me or does day feel so long...
+171:  5015604 ! 171:  5083350 Consistent-ize spacing in existing real-tests
+--- a/50156045e9d23bac2c3e5de72284b86f0a9bcdf1	2026-05-19 15:29:35.000000000 +0000
++++ b/5083350579d3b999f4cc3787f52bd1e71168d664	2026-05-19 15:29:35.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 0e6868711764223fa4b7f41663b38502ab5f4ae0
+ parent [172]
+-author Ethan Meng <ethan@rapidcow.org> 1779204575 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779204575 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779204575 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779204575 -0500
+ 
+ Consistent-ize spacing in existing real-tests
+ 
+ bad code sucks but inconsistent sucks MORE >:(
+172:  f050bff ! 172:  2aac272 Make introductory pod not suck
+--- a/f050bffb8c440495adf0f01a0bf01ea466f4939c	2026-05-19 15:21:05.000000000 +0000
++++ b/2aac27231b96064413c16c8981ddb3085de74f3f	2026-05-19 15:21:05.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 4fcff400c64b4da5b60f729a9ae05b9beb983662
+ parent [173]
+-author Ethan Meng <ethan@rapidcow.org> 1779203182 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1779204065 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1779203182 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1779204065 -0500
+ 
+ Make introductory pod not suck
+ 
+ it's bad.  it's so bad.  how is ANYONE
+173:  e345238 ! 173:  b582456 this is a typo
+--- a/e3452384f306f6584b1ff91afa2952f9850e7ee4	2026-05-06 23:46:40.000000000 +0000
++++ b/b5824567bdcd041c2adfd3eeb4daa189bec13af8	2026-05-06 23:46:40.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 72d70f47d2897bcf0b7e23e3a58f62dab4b52ba2
+ parent [174]
+-author Ethan Meng <ethan@rapidcow.org> 1778111167 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1778111200 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1778111167 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1778111200 -0500
+ 
+ this is a typo
+ 
+ It's either "in reverse" or "reversed"; this is neither X)
+174:  35e2a8c ! 174:  2ab09d7 Remove .github from manifest excludes
+--- a/35e2a8cfd3b5bce07dbd586165ad3bcf22b81e4a	2026-05-06 23:40:50.000000000 +0000
++++ b/2ab09d7b20af29f487a688b2b7b3c4c1290d4f28	2026-05-06 23:40:50.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree aa8708c33f3523f2b47d3781cf912d624b892380
+ parent [175]
+-author Ethan Meng <ethan@rapidcow.org> 1778110850 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1778110850 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1778110850 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1778110850 -0500
+ 
+ Remove .github from manifest excludes
+175:  9ef9bb3 ! 175:  a45e375 Add security policy to manifest
+--- a/9ef9bb3874b56d85f5328925249efef48aed3a1f	2026-05-06 23:40:34.000000000 +0000
++++ b/a45e375a73bc151c0f361c82f567f3317ce1083e	2026-05-06 23:40:34.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 79c8931f33044184f61e62c25965b9746a4b0370
+ parent [176]
+-author Ethan Meng <ethan@rapidcow.org> 1778110834 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1778110834 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1778110834 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1778110834 -0500
+ 
+ Add security policy to manifest
+176:  3563ad8 ! 176:  c6524d2 Call bisectl/bisectr "bisection methods" consistently
+--- a/3563ad8057704ba8868f50f94e98fc7487ad4d05	2026-05-06 23:36:27.000000000 +0000
++++ b/c6524d2df2efe09ae84fa4873b4863c9f74ff7d0	2026-05-06 23:36:27.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 6b452a8c2752b510bdf78e71bc95014ef67eb432
+ parent [177]
+-author Ethan Meng <ethan@rapidcow.org> 1778110519 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1778110587 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1778110519 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1778110587 -0500
+ 
+ Call bisectl/bisectr "bisection methods" consistently
+ 
+ 00INTRO.txt still calls them "bisection algorithms"
+177:  5867890 ! 177:  6c332de rm -rf .github
+--- a/5867890e9b2f822306de8e922e637a0d4974a423	2026-05-06 23:07:47.000000000 +0000
++++ b/6c332de16849887a1690b34837503c4bde61cc05	2026-05-06 23:07:47.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 752be1d52cf6d7bbd9837876f71d5ee1e7e2de1a
+ parent [178]
+-author Ethan Meng <ethan@rapidcow.org> 1778108867 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1778108867 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1778108867 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1778108867 -0500
+ 
+ rm -rf .github
+178:  2f81817 ! 178:  ce13ecc actually i don't get it
+--- a/2f8181797a289efd21a365e3fd627e1d40b18757	2026-05-06 23:07:19.000000000 +0000
++++ b/ce13ecc3d8b80898746693af6194fc6a8d0cfc1a	2026-05-06 23:07:19.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 66e9d316e64565f73a58cbdc960995890d1e19ed
+ parent [179]
+-author Ethan Meng <ethan@rapidcow.org> 1778108000 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1778108839 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1778108000 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1778108839 -0500
+ 
+ actually i don't get it
+ 
+ Shouldn't the release tarball itself include metadata
+179:  da78c69 ! 179:  41fb829 Add modification date to security policy
+--- a/da78c6971311cd18d439f0cd8c49f2a03a652158	2026-05-06 22:50:13.000000000 +0000
++++ b/41fb829c683aa39b102992cb6f19b154aff5b6ff	2026-05-06 22:50:13.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 3c52e1011a7ed956403ae2a14da2efd9adc39eda
+ parent [180]
+-author Ethan Meng <ethan@rapidcow.org> 1778107813 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1778107813 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1778107813 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1778107813 -0500
+ 
+ Add modification date to security policy
+ 
+ According to CPANSec this "stamps" the policy with a
+180:  8592308 ! 180:  f03cba5 Re-create security policy at the root directory
+--- a/85923083ce0d42606b50f620d758440923483c62	2026-05-06 22:46:06.000000000 +0000
++++ b/f03cba52af86f070dace1556aae0d83703203e87	2026-05-06 22:46:06.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 66e9d316e64565f73a58cbdc960995890d1e19ed
+ parent [181]
+-author Ethan Meng <ethan@rapidcow.org> 1778107534 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1778107566 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1778107534 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1778107566 -0500
+ 
+ Re-create security policy at the root directory
+181:  b18842d ! 181:  1aaf5ad s/github.com/codeberg.org/ README and elsewhere
+--- a/b18842d0837b9bb35f3ddf9b38e60678e375b38a	2026-05-06 22:33:49.000000000 +0000
++++ b/1aaf5ad03e3ba458c60eb8b0bd38f889ea6a924c	2026-05-06 22:33:49.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 0034c7f71adc5fcdc1dbf90673cdaeb9c8b2a935
+ parent [182]
+-author Ethan Meng <ethan@rapidcow.org> 1778106829 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1778106829 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1778106829 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1778106829 -0500
+ 
+ s/github.com/codeberg.org/ README and elsewhere
+ 
+ there's more?  you're telling me there is more????
+182:  89e7338 ! 182:  469d03e s/github.com/codeberg.org/ Makefile.PL repo links
+--- a/89e733803db66fef90a4ffac5fff9b6d1ed6ace7	2026-05-06 22:18:15.000000000 +0000
++++ b/469d03ef9747200a8b62f528d1ff3fdd54b8cf44	2026-05-06 22:18:15.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 5030a953eb3b9f047fccbb6fab92768df8c68c53
+ parent [183]
+-author Ethan Meng <ethan@rapidcow.org> 1778105650 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1778105895 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1778105650 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1778105895 -0500
+ 
+ s/github.com/codeberg.org/ Makefile.PL repo links
+ 
+ forgot to change these links too, oops....
+183:  5ac8eee ! 183:  d86e42c Rename pub to foss
+--- a/5ac8eee3d35d1cb67d1c246c09218b0f4e52d5b3	2026-05-03 05:37:08.000000000 +0000
++++ b/d86e42c0f50043f16d8c6cc070a9c68a726eb866	2026-05-03 05:37:08.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree e194c59c1ea31ef90f8581bf9573e7fd4dbe4124
+ parent [184]
+-author Ethan Meng <ethan@rapidcow.org> 1777786561 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1777786628 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1777786561 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1777786628 -0500
+ 
+ Rename pub to foss
+ 
+ Just doing something I thought I could still easily
+184:  dbaaf11 ! 184:  e0e2765 Define source-specific files to not export
+--- a/dbaaf110d913d1b2c3b7e117454395aca5e4f67a	2026-03-31 14:28:50.000000000 +0000
++++ b/e0e2765aa3135f6f045ae27de8399dc1c83dec0b	2026-03-31 14:28:50.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree eb147be56421d2e51d3191a14e5e3203bc2c0dbf
+ parent [185]
+-author Ethan Meng <ethan@rapidcow.org> 1774967156 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1774967330 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1774967156 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1774967330 -0500
+ 
+ Define source-specific files to not export
+ 
+ Should have done this but this is most notably
+185:  7bf41b4 ! 185:  fd64feb Remove "support" for non-zero array bases
+--- a/7bf41b437416805e3283253d2eae7e57faf1ee35	2026-03-16 01:52:25.000000000 +0000
++++ b/fd64feb010c4fa5b86f9cf2e61df67cb42084d80	2026-03-16 01:52:25.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree a7be74b24b0a3bfd0497f27eb8b006d5adf5f084
+ parent [186]
+-author Ethan Meng <ethan@rapidcow.org> 1773621217 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773625945 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773621217 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773625945 -0500
+ 
+ Remove "support" for non-zero array bases
+ 
+ Got my hands on Perl 5.20.3, and as it turns out,
+186:  adcf7b7 ! 186:  bb88e7e Address overflow.t compiler warnings
+--- a/adcf7b796c462498632feabfaad3bf08a4f46a85	2026-03-15 22:36:20.000000000 +0000
++++ b/bb88e7ed4d65e1e830e7b423bb2b452038089c41	2026-03-15 22:36:20.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 257bdf790b44939c5d734d7d5cd39a0b92325a00
+ parent [187]
+-author Ethan Meng <ethan@rapidcow.org> 1773614180 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773614180 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773614180 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773614180 -0500
+ 
+ Address overflow.t compiler warnings
+ 
+ On Perl 5.20.3 there is this warning:
+187:  eed1676 ! 187:  e2534bf Use "range" consistently over "span"
+--- a/eed1676c374eab6f28de65dae33580eeb241092d	2026-03-15 19:34:56.000000000 +0000
++++ b/e2534bf6e46e933e5ad0aa7c9ac6f0b8da90687f	2026-03-15 19:34:56.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 8b2ff2eca73b1a8e668ed1ba537ceebc00ff352e
+ parent [188]
+-author Ethan Meng <ethan@rapidcow.org> 1773602975 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773603296 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773602975 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773603296 -0500
+ 
+ Use "range" consistently over "span"
+ 
+ I guess "span" is a bit.... ambiguous?
+188:  3a7ca9d ! 188:  f9f3fba "Terminology" sounds like a better heading
+--- a/3a7ca9d8d9d6ec8bf11e1f24564ea43ebe6bdecb	2026-03-15 19:26:23.000000000 +0000
++++ b/f9f3fba76a8f86cb8a497f6d3241bbd7181291a4	2026-03-15 19:26:23.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 4668abed0228a50c25f80841480ceea28b7605f2
+ parent [189]
+-author Ethan Meng <ethan@rapidcow.org> 1773602758 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773602783 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773602758 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773602783 -0500
+ 
+ "Terminology" sounds like a better heading
+ 
+ also makes for better cross-referencing...
+189:  037f9f5 ! 189:  f901126 I forgot to explain what 0,1,2 are!
+--- a/037f9f5612be6052262b9e405482dc2c89ab5ae3	2026-03-15 19:38:31.000000000 +0000
++++ b/f901126ef6eefa1edc3e2d04f601c0e7fe3bbd05	2026-03-15 19:38:31.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 6cf53e9f1f656e16a9b01ed9c6fdabf42751bcf0
+ parent [190]
+-author Ethan Meng <ethan@rapidcow.org> 1773598872 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773603511 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773598872 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773603511 -0500
+ 
+ I forgot to explain what 0,1,2 are!
+ 
+ Just when I thought "search range" was the only
+190:  fc8d399 ! 190:  20de409 Fix inconsistent labels in podtest.t
+--- a/fc8d399ea91c77784a9d91914cdd030b0522f9a4	2026-03-15 18:13:01.000000000 +0000
++++ b/20de409951d3dddce9c608d2e64bb54964115539	2026-03-15 18:13:01.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 0e0ec9463e1a357cc92733d5227ff4b6a782db61
+ parent [191]
+-author Ethan Meng <ethan@rapidcow.org> 1773598381 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773598381 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773598381 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773598381 -0500
+ 
+ Fix inconsistent labels in podtest.t
+ 
+ arghhhhh!  what the heck!? >:{
+191:  28de920 ! 191:  d07d3bf Move trace output to STDOUT
+--- a/28de920addb786f150d4cc8f97965e9eaf6bd10e	2026-03-15 15:00:38.000000000 +0000
++++ b/d07d3bf9cbb05dec50fe86f3adf72f06e7ef96f8	2026-03-15 15:00:38.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 662190823e1c5dd1216db99da6de9b469d69b564
+ parent [192]
+-author Ethan Meng <ethan@rapidcow.org> 1773586838 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773586838 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773586838 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773586838 -0500
+ 
+ Move trace output to STDOUT
+ 
+ That way I could still see it with prove -v,
+192:  57bf782 ! 192:  c4c5e83 Make-up sanity assertions for the test-tests
+--- a/57bf7829115a0998d668cb22fa575b8cfc1eb277	2026-03-15 14:55:52.000000000 +0000
++++ b/c4c5e83e4a8107e5650e41014a947a55b7e0a932	2026-03-15 14:55:52.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree c2f1cadd8df94d64d5aa0879eeb89df92af7de18
+ parent [193]
+-author Ethan Meng <ethan@rapidcow.org> 1773586552 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773586552 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773586552 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773586552 -0500
+ 
+ Make-up sanity assertions for the test-tests
+ 
+ It's all blsrch2! D:  That'll have to change for
+193:  0ff93fa ! 193:  104ccf7 Prefer "<DIR> binary search" to "binary <DIR> search"
+--- a/0ff93fa5429e2f92bafa6e3f6e6d217c041bab12	2026-03-15 14:49:32.000000000 +0000
++++ b/104ccf75b9b18fee5271c4cb160e85f9bc270078	2026-03-15 14:49:32.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 2fa8bf00b62e5f65c613aab7a72935a432d63105
+ parent [194]
+-author Ethan Meng <ethan@rapidcow.org> 1773586172 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773586172 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773586172 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773586172 -0500
+ 
+ Prefer "<DIR> binary search" to "binary <DIR> search"
+ 
+ even though it is named "blsrch*" and "brsrch*"
+194:  899670d ! 194:  308a0ff Seems like an appropriate time to move this guy up
+--- a/899670d2d3163cd000b062fc13e49d8d7939522a	2026-03-15 14:49:10.000000000 +0000
++++ b/308a0ffe177ab71cfe30f3353dfaed811412cbea	2026-03-15 14:49:10.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 80c6017fc774e5e6d7e6647dec96389ce5b35da4
+ parent [195]
+-author Ethan Meng <ethan@rapidcow.org> 1773586150 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773586150 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773586150 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773586150 -0500
+ 
+ Seems like an appropriate time to move this guy up
+195:  4d29458 ! 195:  577f7a3 Replace $lower/$lb $upper/$ub $lower_x/$lx $upper_x/$ux
+--- a/4d29458a05ffabab8ec3a494bca75efdf6434a54	2026-03-15 14:42:15.000000000 +0000
++++ b/577f7a3b25825cc02dcf7c485969787b02708bb7	2026-03-15 14:42:15.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 2db9d6b5f40339141b090d5b936c010c59e89ef8
+ parent [196]
+-author Ethan Meng <ethan@rapidcow.org> 1773585642 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773585735 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773585642 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773585735 -0500
+ 
+ Replace $lower/$lb $upper/$ub $lower_x/$lx $upper_x/$ux
+ 
+ Following the writeup in 01ARRAY.txt -- it's just nicer!
+196:  0bcd2a8 ! 196:  a7c7c30 Small tweaks
+--- a/0bcd2a835c42aebed4e83648b89d694ce29928d1	2026-03-15 14:33:50.000000000 +0000
++++ b/a7c7c301a94541e6a8fc66f178133c612f05f912	2026-03-15 14:33:50.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 9d922f3f4c282b96ab9be49204972f3ea02520c9
+ parent [197]
+-author Ethan Meng <ethan@rapidcow.org> 1773585230 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773585230 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773585230 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773585230 -0500
+ 
+ Small tweaks
+ 
+ One sentence is not worthy of a separate paragraph
+197:  2c031dd ! 197:  f1a74a0 Reword
+--- a/2c031ddd9ec2c029c48c7ccefd9fcd256aa26725	2026-03-15 14:28:36.000000000 +0000
++++ b/f1a74a029373e21c62938d283204bd27773e64ba	2026-03-15 14:28:36.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 537e9d8239e4322648f2e74cc55c4d1692ab1472
+ parent [198]
+-author Ethan Meng <ethan@rapidcow.org> 1773584916 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773584916 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773584916 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773584916 -0500
+ 
+ Reword
+ 
+ This is like saying "the boundaries collapse when
+198:  cdb06d5 ! 198:  c711d4c Continue draft
+--- a/cdb06d561b75bc4c21d09c03188d46118f5ccd3e	2026-03-15 06:01:39.000000000 +0000
++++ b/c711d4c63990702d5aae66ae3126152a35afb92c	2026-03-15 06:01:39.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 52cde430940c4ed11bb91588496fb4c5e861c3f9
+ parent [199]
+-author Ethan Meng <ethan@rapidcow.org> 1773554432 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773554499 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773554432 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773554499 -0500
+ 
+ Continue draft
+ 
+ need to get to prefixes asap ahhhhhhh i want to show
+199:  0fb269c ! 199:  2a738df Add tests for the text-file thingy
+--- a/0fb269cae178753f87c1183ea190e520ec28123d	2026-03-15 04:50:01.000000000 +0000
++++ b/2a738df5bb2982514f6f834da96b0e6a0cded436	2026-03-15 04:50:01.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 7d58168696c572d0ec42a22f2f11c25fd9962816
+ parent [200]
+-author Ethan Meng <ethan@rapidcow.org> 1773549983 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773550201 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773549983 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773550201 -0500
+ 
+ Add tests for the text-file thingy
+ 
+ finally did this!
+200:  66fb943 ! 200:  5d0670e Test two more weird edge cases
+--- a/66fb943d79271185b632f69da707a03ea8c72dbd	2026-03-15 04:29:12.000000000 +0000
++++ b/5d0670ee361987737c7fb17f197ad6f0ff7a28a2	2026-03-15 04:29:12.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree b81a3b8b517a74b902d5f54e78dba3d467beb34e
+ parent [201]
+-author Ethan Meng <ethan@rapidcow.org> 1773548902 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773548952 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773548902 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773548952 -0500
+ 
+ Test two more weird edge cases
+ 
+ I was going to say that there was an exception
+201:  2fa053f ! 201:  c2c81a0 Test out implication of the five-element form
+--- a/2fa053fd3d81992d34640eef1024f3b8f62bcbc1	2026-03-15 04:22:48.000000000 +0000
++++ b/c2c81a06f568775a11d409ae8d724cedd11e3733	2026-03-15 04:22:48.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree fd63be552fbbf5c0c24958df9ef587a0322594b1
+ parent [202]
+-author Ethan Meng <ethan@rapidcow.org> 1773547278 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773548568 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773547278 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773548568 -0500
+ 
+ Test out implication of the five-element form
+ 
+ ... of a possible method to compute NSEC records
+202:  bae5c1b ! 202:  e7bae0c Use && for boolean AND... consistently
+--- a/bae5c1b41ffe12ee99a7a901a0628f20e075d4cb	2026-03-14 22:41:07.000000000 +0000
++++ b/e7bae0c4ecaf84bd394ccbf3e0ebbaba59b1e621	2026-03-14 22:41:07.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 0d5f95df7e6dfdfe76d09f02b2e47ea4a1eeb7a3
+ parent [203]
+-author Ethan Meng <ethan@rapidcow.org> 1773528067 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773528067 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773528067 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773528067 -0500
+ 
+ Use && for boolean AND... consistently
+ 
+ I finally gave way -- no more english perl :(
+203:  cfba1fb ! 203:  ef5fdd8 Comment to explain the magic
+--- a/cfba1fbe792c9860e7d5633a832004a6d62bfba3	2026-03-14 22:40:21.000000000 +0000
++++ b/ef5fdd8c50204ea3b7a5dc942ad2eb74f9f8f0bc	2026-03-14 22:40:21.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree cf9dd70ec0de58c3fac3faec0cd52581a09ef5fa
+ parent [204]
+-author Ethan Meng <ethan@rapidcow.org> 1773528021 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773528021 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773528021 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773528021 -0500
+ 
+ Comment to explain the magic
+204:  76e287f ! 204:  ada7bd4 Expand to Five-element form?!??
+--- a/76e287fe77101c862e90a55e4a0305f92fa5ba3c	2026-03-14 22:14:52.000000000 +0000
++++ b/ada7bd4b5aa98b227d3c164c976eb96f33bab5ca	2026-03-14 22:14:52.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree ace32797ad7891fc25d16d371e25e9b5539945dd
+ parent [205]
+-author Ethan Meng <ethan@rapidcow.org> 1773526492 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773526492 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773526492 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773526492 -0500
+ 
+ Expand to Five-element form?!??
+ 
+ oh my god how did it work
+205:  1437332 ! 205:  8047f22 change: return just the SCALAR ref for element?
+--- a/14373321f4dbc1275d159924ae0d60cbedf661f8	2026-03-14 21:57:13.000000000 +0000
++++ b/8047f22dd2832ce18cdaa25b4f50f40ffb3f8846	2026-03-14 21:57:13.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree e77ed4ad0f5c23f7aa1a7a0d01537ef3c4e4ec49
+ parent [206]
+-author Ethan Meng <ethan@rapidcow.org> 1773524651 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773525433 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773524651 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773525433 -0500
+ 
+ change: return just the SCALAR ref for element?
+ 
+ This is to prepare for a potentially five-element
+206:  f639ebc ! 206:  9076a45 Fix diagram and proof for two-index search
+--- a/f639ebc147b1df8d76a571f26ef5f9d4ca6f3ca5	2026-03-14 21:55:52.000000000 +0000
++++ b/9076a45974c8139485b6f8097bd2a307b8bf752f	2026-03-14 21:55:52.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree a75558bf8fd74023d6211884e3acc73a0e29c979
+ parent [207]
+-author Ethan Meng <ethan@rapidcow.org> 1773524962 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773525352 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773524962 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773525352 -0500
+ 
+ Fix diagram and proof for two-index search
+ 
+ $lo itself is excluded through $mid+1 as usual,
+207:  801c6ff ! 207:  afbcbc6 Remove vestigial reference to bisectl_map
+--- a/801c6ff8962e23b38455def89cd8b0ccdf683a29	2026-03-14 19:12:24.000000000 +0000
++++ b/afbcbc600122818bbf44fcb6a3931854ac89e5e3	2026-03-14 19:12:24.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 4a2bd57b64484dbf4eae34ce27cf6fcf73a59036
+ parent [208]
+-author Ethan Meng <ethan@rapidcow.org> 1773515544 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773515544 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773515544 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773515544 -0500
+ 
+ Remove vestigial reference to bisectl_map
+208:  4067395 ! 208:  a74c800 do we need explicit returns?
+--- a/4067395e2e04733ae6fb581eb8a2ee40ebc7f06f	2026-03-14 19:10:21.000000000 +0000
++++ b/a74c80014b6f494772f46dd780fc8d5fb4e3709c	2026-03-14 19:10:21.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree d1a5fa9583dd716ec03fec54ca56703b3d61fc98
+ parent [209]
+-author Ethan Meng <ethan@rapidcow.org> 1773515394 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773515421 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773515394 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773515421 -0500
+ 
+ do we need explicit returns?
+ 
+ All or none i'd say....
+209:  1be77a3 ! 209:  247eb76 brsrch* should use $lo for consistency
+--- a/1be77a341895fb0d1bf31b9b12daeb49dee035f8	2026-03-14 17:52:21.000000000 +0000
++++ b/247eb76392e9b4a183f672e8282ca8dfaa5db63c	2026-03-14 17:52:21.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 632c4746764fd9e7bfc20933f0017e2faaa71eaa
+ parent [210]
+-author Ethan Meng <ethan@rapidcow.org> 1773510741 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773510741 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773510741 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773510741 -0500
+ 
+ brsrch* should use $lo for consistency
+210:  813c711 ! 210:  286db41 Replace 21 with 18 in "Exact match" example
+--- a/813c7116f1315358c6b08da298f06c9742e80c54	2026-03-14 17:35:50.000000000 +0000
++++ b/286db41d76b346e4df3d55af3d3574a743a280d0	2026-03-14 17:35:50.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 65c7c89a6305192064c27e9261c672b28d91741d
+ parent [211]
+-author Ethan Meng <ethan@rapidcow.org> 1773509577 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773509750 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773509577 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773509750 -0500
+ 
+ Replace 21 with 18 in "Exact match" example
+ 
+ I realized blsrch0 / brsrch0 could actually be
+211:  70c96c5 ! 211:  edbe2dc Clean up wording
+--- a/70c96c5419fb183c1135f6a0a4aefa47333d84fb	2026-03-14 17:03:53.000000000 +0000
++++ b/edbe2dc1619c5da2632a51ea02c50efd6418c35a	2026-03-14 17:03:53.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 20e9420d751e65161fc477ccd4ecf131296b68e8
+ parent [212]
+-author Ethan Meng <ethan@rapidcow.org> 1773507833 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773507833 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773507833 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773507833 -0500
+ 
+ Clean up wording
+212:  6a60b32 ! 212:  4948c80 Remove the "concrete" example amid the main POD
+--- a/6a60b3297b573ec6b8cfb338c9bb0ce015371bd7	2026-03-14 16:11:58.000000000 +0000
++++ b/4948c80835dbbb88775dab5e2480d7c22b84d392	2026-03-14 16:11:58.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 1b8d9cb5a0a9326ccbdc0f02d866b89d6b6cf7e5
+ parent [213]
+-author Ethan Meng <ethan@rapidcow.org> 1773504596 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773504718 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773504596 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773504718 -0500
+ 
+ Remove the "concrete" example amid the main POD
+ 
+ The documentation of b*srch[0x12] doesn't fit on
+213:  dcd8b9a ! 213:  79e27b5 Have Claude review my draft as well
+--- a/dcd8b9a24d9885fed72b1caba3c8b4d9511c8546	2026-03-10 17:05:00.000000000 +0000
++++ b/79e27b51cb6dd72e15d0cfcb1641c03bf8ce92eb	2026-03-10 17:05:00.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 907f611a3beefb2c00fcb92487b78f6bf0335d6e
+ parent [214]
+-author Ethan Meng <ethan@rapidcow.org> 1773161632 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773162300 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773161632 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773162300 -0500
+ 
+ Have Claude review my draft as well
+ 
+ And it finds yet more typos for me to fix!
+214:  a25d250 ! 214:  947621c Fix a bunch of POD typos
+--- a/a25d2507b0abfbb16d26af4159b57067e1b66c64	2026-03-10 16:37:54.000000000 +0000
++++ b/947621c24ece154bd4018354e92c01a311ea667b	2026-03-10 16:37:54.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 3690ac2e227760febef1540df8c85c3454610f30
+ parent [215]
+-author Ethan Meng <ethan@rapidcow.org> 1773159932 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773160674 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773159932 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773160674 -0500
+ 
+ Fix a bunch of POD typos
+ 
+ I was trying out Claude Code just now....
+215:  794cfb8 ! 215:  ee398d4 Close out the subtest code block for consistency
+--- a/794cfb8cbac27c9ad56a3a4f8e86b8df199dedac	2026-03-09 08:14:05.000000000 +0000
++++ b/ee398d4007fe75bba18b6e9354bae61efaf8201f	2026-03-09 08:14:05.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree e7292802c6730724c055805ca4db312c458ecce8
+ parent [216]
+-author Ethan Meng <ethan@rapidcow.org> 1773044045 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773044045 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773044045 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773044045 -0500
+ 
+ Close out the subtest code block for consistency
+ 
+ there's a lot i am not doing right as far as consistency
+216:  7cae5a2 ! 216:  200527b Test conversion guide for List::MoreUtils
+--- a/7cae5a2c2a8e394b2bfabaea3a707d3e3d1802ae	2026-03-09 08:00:17.000000000 +0000
++++ b/200527b9934b170836fa9d6870a9c501b22f1a8a	2026-03-09 08:00:17.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 6ed54a986502d5837dc9abede0ad121ae7f76476
+ parent [217]
+-author Ethan Meng <ethan@rapidcow.org> 1773043217 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773043217 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773043217 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773043217 -0500
+ 
+ Test conversion guide for List::MoreUtils
+217:  dd5d2b3 ! 217:  80fc120 probably drop the parens around "plan"
+--- a/dd5d2b32d53cf376b027de4615b45e2589a98ad0	2026-03-09 07:56:42.000000000 +0000
++++ b/80fc120fb5c0a9e092fa3e3550066297c3ed5e5e	2026-03-09 07:56:42.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 4b9265bc19b7ea131e2d0ecd39ca755e1b6d3329
+ parent [218]
+-author Ethan Meng <ethan@rapidcow.org> 1773043002 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773043002 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773043002 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773043002 -0500
+ 
+ probably drop the parens around "plan"
+ 
+ I kind of see why they made it that way...
+218:  0f46748 ! 218:  7bf3024 Add conversion guide for List::Search
+--- a/0f46748967540e80600c941b4551797d02f61fc0	2026-03-09 07:51:34.000000000 +0000
++++ b/7bf30240d9550f7a7f3d2a356205a4c75f79eef8	2026-03-09 07:51:34.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree ee231954cfb9052bb144a78a83c8442a7315158d
+ parent [219]
+-author Ethan Meng <ethan@rapidcow.org> 1773042437 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773042694 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773042437 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773042694 -0500
+ 
+ Add conversion guide for List::Search
+ 
+ awwww but that just means there's more that needs fixing! >m<
+219:  bfc7330 ! 219:  a8f0b68 Pin the total of List::BinarySearch subtests
+--- a/bfc733015c752c7be1017af835a8d3f0a43bd237	2026-03-09 07:29:20.000000000 +0000
++++ b/a8f0b685a7e66238757b520055b1989b85621300	2026-03-09 07:29:20.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 041526c431c775201f171cbbf122c219d5027b9d
+ parent [220]
+-author Ethan Meng <ethan@rapidcow.org> 1773041360 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773041360 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773041360 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773041360 -0500
+ 
+ Pin the total of List::BinarySearch subtests
+220:  930dc77 ! 220:  23d8aa9 Re-write and test List::BinarySearch conversion
+--- a/930dc77a0c5bd060cbdc1cb36fa1703958c8d979	2026-03-09 07:24:34.000000000 +0000
++++ b/23d8aa95af4e9f944db8ac11f00fc35fa408dbdd	2026-03-09 07:24:34.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 5554845ffcbe09d3baa4cb2cffb856968b781be7
+ parent [221]
+-author Ethan Meng <ethan@rapidcow.org> 1773038780 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773041074 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773038780 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773041074 -0500
+ 
+ Re-write and test List::BinarySearch conversion
+ 
+ came up with this instead of the awkward "do this
+221:  fe345a4 ! 221:  cd0ac76 Finish exact match tests
+--- a/fe345a42555e2866b7e80229d4d86ba884e2b712	2026-03-09 06:22:11.000000000 +0000
++++ b/cd0ac760084990bdbda30750e5a494e44a424c24	2026-03-09 06:22:11.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 045529ca56217f0590f821c7553dbb847d3200cf
+ parent [222]
+-author Ethan Meng <ethan@rapidcow.org> 1773037331 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773037331 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773037331 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773037331 -0500
+ 
+ Finish exact match tests
+222:  c53519b ! 222:  595baf6 Bug-catching POD examples with tests
+--- a/c53519b00bc78e6585d31ceb4fdb68a38750321a	2026-03-09 06:12:59.000000000 +0000
++++ b/595baf6b65d9ae8007002922e3ce83317fa7454c	2026-03-09 06:12:59.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 9945164c3b54ad87bc36378806ee645f0a0a5c41
+ parent [223]
+-author Ethan Meng <ethan@rapidcow.org> 1773036488 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773036779 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773036488 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773036779 -0500
+ 
+ Bug-catching POD examples with tests
+ 
+ the first proper "test" in forever???
+223:  9a7d4e9 ! 223:  120b181 Just call these guys "terms"
+--- a/9a7d4e9dc7502ad817f22c150eb5b678cadd75a5	2026-03-09 05:51:38.000000000 +0000
++++ b/120b181294d17e3dcf995d824fa4e39d4959287c	2026-03-09 05:51:38.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 943c6dbaa2a69e87870b9b6816bac798f8456c25
+ parent [224]
+-author Ethan Meng <ethan@rapidcow.org> 1773035442 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773035498 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773035442 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773035498 -0500
+ 
+ Just call these guys "terms"
+ 
+ "search range" is NOT a function!!!!
+224:  3480b25 ! 224:  8ef571a doctest.t also belongs in the old test suite
+--- a/3480b25b29267a9d10a815247f8659c3835c5abe	2026-03-09 05:32:27.000000000 +0000
++++ b/8ef571ae7424bd3d2547a50ebe0c88a761b755a9	2026-03-09 05:32:27.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 817892c83fb258eb24f8cd48430e2aa35b3a2e8a
+ parent [225]
+-author Ethan Meng <ethan@rapidcow.org> 1773034347 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773034347 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773034347 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773034347 -0500
+ 
+ doctest.t also belongs in the old test suite
+ 
+ Yeah i was getting a little confused why i was
+225:  3e3f90f ! 225:  355e786 typography: use B<...> for important words
+--- a/3e3f90f16e886b9701b810b6475cbd5d5e7c95c1	2026-03-09 05:15:48.000000000 +0000
++++ b/355e786fe6b487cbb653f2ccd19774f7073e5ab0	2026-03-09 05:15:48.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 617a8edae295fae394b22c2fde9d41eb86c9c8a7
+ parent [226]
+-author Ethan Meng <ethan@rapidcow.org> 1773032895 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773033348 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773032895 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773033348 -0500
+ 
+ typography: use B<...> for important words
+ 
+ It's mostly a visual thing to me... i'd get lost
+226:  34fe25f ! 226:  2998a0a Update renames in the comments
+--- a/34fe25ff2a9cd9665b671f96b30bc57b6cbdd915	2026-03-09 04:34:31.000000000 +0000
++++ b/2998a0a792241c1a736810ac89b1255bea2330c9	2026-03-09 04:34:31.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 8e9d8606c696f7f91c23fc561596fec26e1cde8b
+ parent [227]
+-author Ethan Meng <ethan@rapidcow.org> 1773030716 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1773030871 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1773030716 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1773030871 -0500
+ 
+ Update renames in the comments
+ 
+ with the constants immediately followed by the function it
+227:  1f4ea92 ! 227:  ff1076b Be more precise with what the "array" is here
+--- a/1f4ea92cbdfb319d42ab25bb5881e082fe2f0f90	2026-03-08 18:03:31.000000000 +0000
++++ b/ff1076bf6be246f72a31ca28bf48e789fd125c52	2026-03-08 18:03:31.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 3ec85f0cc57cf6ee43052bcc0b47f6b3163f1e93
+ parent [228]
+-author Ethan Meng <ethan@rapidcow.org> 1772993011 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772993011 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772993011 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772993011 -0500
+ 
+ Be more precise with what the "array" is here
+228:  fa6fc7a ! 228:  2a73154 DRAFT: section of the "paper" about the real search
+--- a/fa6fc7a39a84093002717d29b55ddcd6ff0c4422	2026-03-08 17:48:39.000000000 +0000
++++ b/2a731547158b5e87dd4a34e40473c330e9862da3	2026-03-08 17:48:39.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree e31c508a6d39490f3eeff076a387e9be6e14e01e
+ parent [229]
+-author Ethan Meng <ethan@rapidcow.org> 1772992119 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772992119 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772992119 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772992119 -0500
+ 
+ DRAFT: section of the "paper" about the real search
+ 
+ phew... wow that was a lot.  i really hate how hard it is
+229:  2ce903e ! 229:  f1df1e4 Stylistic tweaks
+--- a/2ce903eb17a7b65b53b30e55a521d6eec30e962a	2026-03-08 15:46:22.000000000 +0000
++++ b/f1df1e4d10891ef7a826516a445652b2f02dd401	2026-03-08 15:46:22.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 2956169a8c32b3ff352598cf872666b12840c8c0
+ parent [230]
+-author Ethan Meng <ethan@rapidcow.org> 1772984782 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772984782 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772984782 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772984782 -0500
+ 
+ Stylistic tweaks
+ 
+ "Previewing" the HTML version on GitHub...
+230:  09cf02d ! 230:  8be821a Conversion guide for some modules
+--- a/09cf02d392bf3277a63e557876d2395fb805cc7f	2026-03-08 15:38:12.000000000 +0000
++++ b/8be821ab59c92040b32b3e283e837cfb903d3a99	2026-03-08 15:38:12.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 18f00519b550b764efcd0def3924c44feb329d71
+ parent [231]
+-author Ethan Meng <ethan@rapidcow.org> 1772984125 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772984292 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772984125 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772984292 -0500
+ 
+ Conversion guide for some modules
+ 
+ one of the first things i've wanted to write! (but
+231:  60ec712 ! 231:  f4e2536 Improve "exact match" examples
+--- a/60ec712ef089c53c2c026538642578f71c7f1f18	2026-03-08 15:34:52.000000000 +0000
++++ b/f4e25363e18b2b7a72adf1e2a656c865db78226f	2026-03-08 15:34:52.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 141322e4ec0b391723c14d7de2d96a477965b90b
+ parent [232]
+-author Ethan Meng <ethan@rapidcow.org> 1772981976 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772984092 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772981976 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772984092 -0500
+ 
+ Improve "exact match" examples
+ 
+ the "Search for ..." is redundant (it says so in the
+232:  9775b10 ! 232:  3261c88 Add copyright to sources
+--- a/9775b10d56d77c5523ea82ddcea3a69c6ef0882b	2026-03-08 12:54:10.000000000 +0000
++++ b/3261c88f9757cd36a6b1ce4861d3ac7dc57e0ddd	2026-03-08 12:54:10.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 27c8d413243184c6876346b79c47be754ea8fe13
+ parent [233]
+-author Ethan Meng <ethan@rapidcow.org> 1772974313 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772974450 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772974313 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772974450 -0500
+ 
+ Add copyright to sources
+ 
+ Now that I've written substantial amount of new
+233:  5b5ed2d ! 233:  12d0644 Test with a larger equal range for fun ;P
+--- a/5b5ed2dfed63a4f4dea033803abd2095886291e0	2026-03-08 12:50:01.000000000 +0000
++++ b/12d06446632c74b6071c960444c3fea0a98ee3d2	2026-03-08 12:50:01.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 57535b3e4ddd7f5dd483e087abca3597ac149379
+ parent [234]
+-author Ethan Meng <ethan@rapidcow.org> 1772974116 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772974201 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772974116 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772974201 -0500
+ 
+ Test with a larger equal range for fun ;P
+234:  cfd2206 ! 234:  99a74b5 Comment the 2-index searches
+--- a/cfd220624bc7b26530ebc3c813d9f32ed6748fc8	2026-03-08 12:35:28.000000000 +0000
++++ b/99a74b53625f26fe187cab1df7615a89d66feb1e	2026-03-08 12:35:28.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 8a12139d92b8036ac9818b2e60261e4f983ddc1f
+ parent [235]
+-author Ethan Meng <ethan@rapidcow.org> 1772973328 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772973328 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772973328 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772973328 -0500
+ 
+ Comment the 2-index searches
+ 
+ i just realized that i never explained that the lower/upper
+235:  fa35cd2 ! 235:  4c4ac83 Re-implement brsrch2
+--- a/fa35cd2c970242118dae860bbf1976c0c95fe5e3	2026-03-08 12:06:53.000000000 +0000
++++ b/4c4ac83aef87c251c148edd518123f073206019c	2026-03-08 12:06:53.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree be69fdc39e12463ab2940030255ac59eb33cc4ba
+ parent [236]
+-author Ethan Meng <ethan@rapidcow.org> 1772971145 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772971613 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772971145 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772971613 -0500
+ 
+ Re-implement brsrch2
+ 
+ Okay turns out (1) i had been using _bisectl when it should
+236:  bcaa2f7 ! 236:  0203aaf Re-implement blsrch2
+--- a/bcaa2f7591c96527a81e5cd4a88fd9f8a41ec8b3	2026-03-08 11:41:17.000000000 +0000
++++ b/0203aaf43ccba905cc9b244355c2f1d0e0fd8070	2026-03-08 11:41:17.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 14b6b75f893ecb245fa36c26a5bef6fd03da6929
+ parent [237]
+-author Ethan Meng <ethan@rapidcow.org> 1772970077 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772970077 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772970077 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772970077 -0500
+ 
+ Re-implement blsrch2
+ 
+ I can't get brsrch2 to work gaaaaahh
+237:  fa7dba0 ! 237:  10b941b Move attribution out of the "paper"
+--- a/fa7dba06694b30b1a592e8830875f421c8ced4c7	2026-03-08 10:17:44.000000000 +0000
++++ b/10b941b4a9ec4ed8b6c139742d95a40c0f6a4aca	2026-03-08 10:17:44.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 7ebe4c4f963b8e8083203dec5c4eea50f907cc68
+ parent [238]
+-author Ethan Meng <ethan@rapidcow.org> 1772964033 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772965064 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772964033 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772965064 -0500
+ 
+ Move attribution out of the "paper"
+ 
+ The last time I saw it, it was very misleading as
+238:  9bd1e88 ! 238:  80064ed Hide copyright from GitHub readme
+--- a/9bd1e884ba34d947551f3dcdd2ad7112a2fa7857	2026-03-08 09:31:35.000000000 +0000
++++ b/80064edaa54b22a3bd7f90928d0961278173a422	2026-03-08 09:31:35.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree eb2ed43bde2642507631012a154f7d11fe4dfcb9
+ parent [239]
+-author Ethan Meng <ethan@rapidcow.org> 1772962295 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772962295 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772962295 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772962295 -0500
+ 
+ Hide copyright from GitHub readme
+ 
+ Ehhhhh...???  it's a bit awkward.  Considering that
+239:  7288916 ! 239:  8bd3b56 More range tests on absurd sets of numbers
+--- a/7288916fc7081443a8d5ca1ba027b190f7f2084a	2026-03-08 09:20:42.000000000 +0000
++++ b/8bd3b562b55c4ab3c0b81b5de1780fcb84e4147e	2026-03-08 09:20:42.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 11607ff84497aaa4036cda319e150c7b23424c6d
+ parent [240]
+-author Ethan Meng <ethan@rapidcow.org> 1772961642 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772961642 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772961642 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772961642 -0500
+ 
+ More range tests on absurd sets of numbers
+ 
+ these didn't feel very exemplary to me.... but
+240:  04685b3 ! 240:  aff77e8 Refactor
+--- a/04685b3076221042c45c1de063d910132d85a4d4	2026-03-08 09:18:16.000000000 +0000
++++ b/aff77e824d312d2db7ba6e1635071c9b26ec8b0e	2026-03-08 09:18:16.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 23b5d460888e3d8af98f3e35816b0c5664683baf
+ parent [241]
+-author Ethan Meng <ethan@rapidcow.org> 1772960192 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1772961496 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772960192 -0500
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772961496 -0500
+ 
+ Refactor
+ 
+ The *_map suffix really adds nothing new and
+241:  944c535 ! 241:  70573bc Fix placeholder variable typo
+--- a/944c5355ee5e24a989b2f7d45107ee37f7c3af49	2026-03-08 08:49:34.000000000 +0000
++++ b/70573bcfbae29d432e4730a8e20143a93c213d95	2026-03-08 08:49:34.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree d335fe6d2fbad30b3e019b34577fa755f0ece0d3
+ parent [242]
+-author Ethan Meng <ethan@rapidcow.org> 1772952202 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1772959774 -0500
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772952202 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772959774 -0500
+ 
+ Fix placeholder variable typo
+ 
+ The upper bound is exclusive
+242:  158eada ! 242:  e17a937 Trace callbacks of 2-index binary search
+--- a/158eada2ae1cc184d16b5f999a4ef2c9f23a2f0f	2026-03-08 05:35:41.000000000 +0000
++++ b/e17a937b8c74f54b46e2e156580043b5bf4eec24	2026-03-08 05:35:41.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree c2d4f4855a18183a028658afcb595f16b118f204
+ parent [243]
+-author Ethan Meng <ethan@rapidcow.org> 1772946322 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1772948141 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772946322 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772948141 -0600
+ 
+ Trace callbacks of 2-index binary search
+ 
+ named "sib" since (even if not in this case) this
+243:  edf5738 ! 243:  a00de3f Correct boundary behaviors for RTL-search
+--- a/edf573886e572957994f1ea9e41f627b1a8586d2	2026-03-08 02:48:43.000000000 +0000
++++ b/a00de3f39e4175a7e931f0cb3823663048ad274c	2026-03-08 02:48:43.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 1f688c9e8b20aec9e19ba4225be93d3b638116db
+ parent [244]
+-author Ethan Meng <ethan@rapidcow.org> 1772938123 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1772938123 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772938123 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772938123 -0600
+ 
+ Correct boundary behaviors for RTL-search
+ 
+ i wrote this last night, sorry... i didn't
+244:  799c637 ! 244:  45a47b7 Make the functions more symmetrical
+--- a/799c637b09560f4a878c52d460048b8919a243ad	2026-03-08 02:46:42.000000000 +0000
++++ b/45a47b71156c6ca32daced3b22ae7c2e29476c70	2026-03-08 02:46:42.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 9f82ac2aee6128a6132fba37d3164053bbd8ab4b
+ parent [245]
+-author Ethan Meng <ethan@rapidcow.org> 1772938002 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1772938002 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772938002 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772938002 -0600
+ 
+ Make the functions more symmetrical
+ 
+ i can't help making everything aligned; sorry... :P
+245:  0e1b359 ! 245:  4b6a7d2 Add example for a conventional binary search
+--- a/0e1b3598b746b6ef0c85ccbde2b48201e481a03b	2026-03-08 02:43:00.000000000 +0000
++++ b/4b6a7d2e3e4e36c006329663116317444f58121d	2026-03-08 02:43:00.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree b114d0a4257744084ad23ae3dc867afc63baf878
+ parent [246]
+-author Ethan Meng <ethan@rapidcow.org> 1772871461 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1772937780 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772871461 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772937780 -0600
+ 
+ Add example for a conventional binary search
+ 
+ directly taken from my FastLook.pm (though i am
+246:  8205ed8 ! 246:  abc9c0b Use a more terse expression
+--- a/8205ed862a86a885f0abfe3b5e669d64a073ee7d	2026-03-07 03:02:37.000000000 +0000
++++ b/abc9c0b2d774ad68cffc58b73367edaa8f820aad	2026-03-07 03:02:37.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree a29565469f41f236f4709837ec3ea53f23296863
+ parent [247]
+-author Ethan Meng <ethan@rapidcow.org> 1772852389 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1772852557 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772852389 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772852557 -0600
+ 
+ Use a more terse expression
+ 
+ "document" appears twice! >m<  we can do better...
+247:  59020cb ! 247:  c9d7d54 Oops! missed the GitHub README for that
+--- a/59020cbb58b37dd8ab0ffdbdb43b412d218420a8	2026-03-06 14:18:40.000000000 +0000
++++ b/c9d7d54c7572ffa7a46ce39087f963a7fe32ac24	2026-03-06 14:18:40.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 558114b879a7c2c70eae3078739d366d96f3ef65
+ parent [248]
+-author Ethan Meng <ethan@rapidcow.org> 1772806720 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1772806720 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772806720 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772806720 -0600
+ 
+ Oops! missed the GitHub README for that
+ 
+ ripgrep how dare you betray me >:,c
+248:  1ebeeb9 ! 248:  3a4f363 Project homepage moved
+--- a/1ebeeb9bae78cdd4b40fd9c2dd691de79b679b07	2026-03-06 14:11:43.000000000 +0000
++++ b/3a4f3633808d72d617740f6c35aa2f2391713ac7	2026-03-06 14:11:43.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 9ea9a27fa3dc7141c5ef877c108a42f9b3283a0a
+ parent [249]
+-author Ethan Meng <ethan@rapidcow.org> 1772806253 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1772806303 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1772806253 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1772806303 -0600
+ 
+ Project homepage moved
+ 
+ homepage or home page?  ... dunno 6_6
+249:  2393859 ! 249:  0d4627f Makefile.PL is not in the manifest
+--- a/239385901284662b79ab8f6cfd56946db33b66f0	2026-02-16 10:24:54.000000000 +0000
++++ b/0d4627f2027474bd7bfec78683981f5c9e3d746b	2026-02-16 10:24:54.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 0ec42d34f6432417655c18e56008b31da2b426f8
+ parent [250]
+-author Ethan Meng <ethan@rapidcow.org> 1771237466 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771237494 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771237466 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771237494 -0600
+ 
+ Makefile.PL is not in the manifest
+ 
+ How in the world did THAT happen?!? ToT
+250:  94d4343 ! 250:  9d17512 Do soft-dependency import correctly
+--- a/94d43430e0fbabf8ac0cd3565fb9d05c7174eadc	2026-02-16 10:01:51.000000000 +0000
++++ b/9d1751250deb0249bc15668263a37628658a9678	2026-02-16 10:01:51.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree c5b442fffb76153d9c32bf32f34c3182a0d97b0e
+ parent [251]
+-author Ethan Meng <ethan@rapidcow.org> 1771236111 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771236111 -0600
++author Ethan Meng <rapidcow@RCs-MacBook-Pro.local> 1771236111 -0600
++committer Ethan Meng <rapidcow@RCs-MacBook-Pro.local> 1771236111 -0600
+ 
+ Do soft-dependency import correctly
+251:  a9b2cb3 ! 251:  aacb815 Overflow guard for mixed IV/UV bounds
+--- a/a9b2cb30189fb1d01055ac9f16c948ceb645f1d8	2026-02-16 09:12:51.000000000 +0000
++++ b/aacb815c276f3bc7d4e6f713949b3440d6062b3f	2026-02-16 09:12:51.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 957d4e8d5dd06a5f3902791ee1e4c922c251f7bf
+ parent [252]
+-author Ethan Meng <ethan@rapidcow.org> 1771231816 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771233171 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771231816 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771233171 -0600
+ 
+ Overflow guard for mixed IV/UV bounds
+ 
+ So I actually tested that -1 + uvmax works...
+252:  041c86f ! 252:  32f0bf6 Tell Makefile.PL where we moved the SYNOPSIS to
+--- a/041c86f41cf782aa651226b4048480d1fca1519c	2026-02-16 04:37:53.000000000 +0000
++++ b/32f0bf6eefad6a9093a7ece1a3237c521084bffe	2026-02-16 04:37:53.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree f0cfac9c0595c7efdef3cd7bdfceb7ae2a0f0b03
+ parent [253]
+-author Ethan Meng <ethan@rapidcow.org> 1771216673 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771216673 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771216673 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771216673 -0600
+ 
+ Tell Makefile.PL where we moved the SYNOPSIS to
+253:  089833e ! 253:  d3d0293 Tabify for consistency
+--- a/089833e860f2160335bda36798b3d5e34276b25c	2026-02-16 04:32:57.000000000 +0000
++++ b/d3d02930266cb8f4a15f95c71851f196ac68eb23	2026-02-16 04:32:57.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree c99ec0baabead68ec7aea9c60b5b17b5c8fb97fd
+ parent [254]
+-author Ethan Meng <ethan@rapidcow.org> 1771216046 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771216377 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771216046 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771216377 -0600
+ 
+ Tabify for consistency
+254:  32455d9 ! 254:  0745e38 b[lr]srch2: refinements
+--- a/32455d9ae69413e2cc4571dd9998a19569a86b3d	2026-02-16 03:47:59.000000000 +0000
++++ b/0745e384b3e9080c69bf723d98ec58d9a60ee5f4	2026-02-16 03:47:59.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 7bc99a150668a8e85f755e364c771647b1fb29d0
+ parent [255]
+-author Ethan Meng <ethan@rapidcow.org> 1771213617 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771213679 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771213617 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771213679 -0600
+ 
+ b[lr]srch2: refinements
+ 
+ I've been wondering why they looking so different...
+255:  b565bf8 ! 255:  c81655a Denest unnecessarily indirect sub definition
+--- a/b565bf8085262499cfb026dba96bde5358fc584c	2026-02-16 04:29:16.000000000 +0000
++++ b/c81655adb0584905b3668b8a30dd400e903aec23	2026-02-16 04:29:16.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 62dbef74fca1da0f29e1372a686c3cc14354cfb6
+ parent [256]
+-author Ethan Meng <ethan@rapidcow.org> 1771213181 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771216156 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771213181 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771216156 -0600
+ 
+ Denest unnecessarily indirect sub definition
+ 
+ I don't feel comfortable without the semicolons!!! omo
+256:  25005e5 ! 256:  6a7c0c1 Add List::BisectSearch tests, I guess...?
+--- a/25005e518a60958f4588cceca56e9a245eae3171	2026-02-16 04:35:41.000000000 +0000
++++ b/6a7c0c12d63591735ed98093ddd577a653184118	2026-02-16 04:35:41.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 6ad015161d66a6385dbf4b4473c389f19fafe3ba
+ parent [257]
+-author Ethan Meng <ethan@rapidcow.org> 1764489390 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771216541 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764489390 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771216541 -0600
+ 
+ Add List::BisectSearch tests, I guess...?
+ 
+ Looks like they act as a pretty good sanity check
+257:  062b7ab ! 257:  3530709 Overflow test?
+--- a/062b7ab561e8aabfa918ac45955af4b2bf22c496	2026-02-16 03:17:13.000000000 +0000
++++ b/3530709b78aca1427514f151cfeb4ea6fdf26278	2026-02-16 03:17:13.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 72c401ff4835e4e3f635f8c8e2c6145c4f275498
+ parent [258]
+-author Ethan Meng <ethan@rapidcow.org> 1771206942 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771211833 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771206942 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771211833 -0600
+ 
+ Overflow test?
+ 
+ (Was testing the b*srch2 functions but found something
+258:  836d5d3 ! 258:  6856c78 Bold-ify NOTE
+--- a/836d5d3ff8f320e8c4ec0c41ad03eb546b74acc3	2026-02-15 22:24:57.000000000 +0000
++++ b/6856c788cd351f6f257fa847b57d604ff5138746	2026-02-15 22:24:57.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree dd04c6e7e6471694880024622dcc5de31583a040
+ parent [259]
+-author Ethan Meng <ethan@rapidcow.org> 1771194223 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771194297 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771194223 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771194297 -0600
+ 
+ Bold-ify NOTE
+ 
+ I wonder why there isn't a word for "making XXX bold"
+259:  99c6788 ! 259:  da9092c Change display text to just "$[", without "in perlvar"
+--- a/99c67880b78b106a062a94f187ad6d4ce7e57db3	2026-02-15 22:22:46.000000000 +0000
++++ b/da9092c0d347a7a744acb74bc2de4253a3ad5a7e	2026-02-15 22:22:46.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree 7e88bf5b57ccd36f079aaccdc9b635ac26a1106f
+ parent [260]
+-author Ethan Meng <ethan@rapidcow.org> 1771194166 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771194166 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771194166 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771194166 -0600
+ 
+ Change display text to just "$[", without "in perlvar"
+260:  15d3963 ! 260:  dc70a5f Preface with preliminary knowledge of $lo and $hi
+--- a/15d396339ac25d3fb96ae525278497b569dc2cae	2026-02-15 22:32:24.000000000 +0000
++++ b/dc70a5fb4c10e0e72cb87da8b67db1822592a6ec	2026-02-15 22:32:24.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree fc7dfa7eaecd5bb4383d751443ec8eed6f0d30ce
+ parent [261]
+-author Ethan Meng <ethan@rapidcow.org> 1771193588 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771194744 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771193588 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771194744 -0600
+ 
+ Preface with preliminary knowledge of $lo and $hi
+ 
+ something i meant to do yesterday, until I realized...
+261:  99d5db7 ! 261:  fcdfb23 Fix remnant in changing the right-search example
+--- a/99d5db7dc74d690edd2e4fed9d60e64e54a164aa	2026-02-15 21:47:16.000000000 +0000
++++ b/fcdfb23d49378e3d242f3469ef7b76e2906ffab4	2026-02-15 21:47:16.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree ef092b34aacc0b3ad6f1fc063398e8f7ae45a964
+ parent [262]
+-author Ethan Meng <ethan@rapidcow.org> 1771191555 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771192036 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771191555 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771192036 -0600
+ 
+ Fix remnant in changing the right-search example
+ 
+ At one point this example was:
+262:  2e1d2c2 ! 262:  efbeeee s/program/module/
+--- a/2e1d2c211907d64b359f9ca69b60b6ba449239ae	2026-02-15 20:58:24.000000000 +0000
++++ b/efbeeeef1902c6f3550764b02dad8b468609b786	2026-02-15 20:58:24.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 78524a95d3633f90d2724c45d808eb28649e97c5
+ parent [263]
+-author Ethan Meng <ethan@rapidcow.org> 1771189020 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771189104 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771189020 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771189104 -0600
+ 
+ s/program/module/
+ 
+ I already did this in e3247b2 (Use "module" consistently);
+263:  acdba0f ! 263:  dedb53c Move the hyperlinks further down
+--- a/acdba0f9609dd77c2cc99d6f019510b0a7270c3e	2026-02-15 03:20:25.000000000 +0000
++++ b/dedb53cdc64947ff17b7b4209f2334f1c3e107d7	2026-02-15 03:20:25.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree bf0bedc8eb7113b7c48e00a97e758c62a093a197
+ parent [264]
+-author Ethan Meng <ethan@rapidcow.org> 1771125363 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771125625 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771125363 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771125625 -0600
+ 
+ Move the hyperlinks further down
+ 
+ Placement-wise in imitation of GNU coreutils and the
+264:  3f82925 ! 264:  f1009e0 Transplant AUTHORship and LICENSE to source file
+--- a/3f82925e2b3e2632d644822a0e1a28d0dbb35123	2026-02-15 03:21:32.000000000 +0000
++++ b/f1009e0bb33b66998bd84de4cf04ef3006210b95	2026-02-15 03:21:32.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree aea18cf241481b2a340f1aa15b26417f13a18113
+ parent [265]
+-author Ethan Meng <ethan@rapidcow.org> 1771124598 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771125692 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771124598 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771125692 -0600
+ 
+ Transplant AUTHORship and LICENSE to source file
+ 
+ By the time I upload this on CPAN i'll add a link to
+265:  96ae8b5 ! 265:  fe19c9a Wait you can like, separate .pod from .pm
+--- a/96ae8b5c4492813311b990baadb44a4373e10b39	2026-02-15 02:28:39.000000000 +0000
++++ b/fe19c9a867544d131de0ec1889366ea1448ca036	2026-02-15 02:28:39.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 2ce2a0d3e5f56151c64fdba01124cb2f43f0e3fe
+ parent [266]
+-author Ethan Meng <ethan@rapidcow.org> 1771122324 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771122519 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771122324 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771122519 -0600
+ 
+ Wait you can like, separate .pod from .pm
+ 
+ https://www.perlmonks.org/?node_id=1164243
+266:  d113ca1 ! 266:  7b9855c Add Cookbook.pod for practical examples
+--- a/d113ca1587012818279b3816c8b56de22dfda839	2026-02-15 03:01:56.000000000 +0000
++++ b/7b9855c2dc77de92929b04acacae6de8ed1c1a32	2026-02-15 03:01:56.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree a8ae4a96d951c9dd140f7f740003c76eb3de36eb
+ parent [267]
+-author Ethan Meng <ethan@rapidcow.org> 1771121742 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771124516 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771121742 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771124516 -0600
+ 
+ Add Cookbook.pod for practical examples
+ 
+ A MetaCPAN search for "Cookbook" shows that some use .pm
+267:  f2e5e67 ! 267:  40c8519 Move POD down
+--- a/f2e5e67518e6ff4e303f7e8e30a12fd68edd6071	2026-02-15 01:52:49.000000000 +0000
++++ b/40c8519da8e7674c12ebc88abdb618afc1e34bd3	2026-02-15 01:52:49.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree be12475ec7c06ec80034776fa41a763bb3fb4551
+ parent [268]
+-author Ethan Meng <ethan@rapidcow.org> 1771119920 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771120369 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771119920 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771120369 -0600
+ 
+ Move POD down
+ 
+ i also don't think including the version in the
+268:  edcfdbb ! 268:  8d6403a Bump copyright here too
+--- a/edcfdbbb571970632714a18e86b6f3688b16333d	2026-02-15 01:43:44.000000000 +0000
++++ b/8d6403a597c0abbc0e81a300cccf98c9d44c62b2	2026-02-15 01:43:44.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 015cff7cab4bc72d7bc7ceaf79ae285d4569e6aa
+ parent [269]
+-author Ethan Meng <ethan@rapidcow.org> 1771119710 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1771119824 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1771119710 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1771119824 -0600
+ 
+ Bump copyright here too
+ 
+ There is a Markdown README??
+269:  05e6291 ! 269:  7d5f29a argh screw it, no emails in the README
+--- a/05e6291bf15f48f02b1dbfdd47cd7c1b29a5a345	2026-02-11 02:37:09.000000000 +0000
++++ b/7d5f29a520d01fd03b5606339e6fd11279ef3507	2026-02-11 02:37:09.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree f01b6896d4ec274204aa0db2f80d9b420ae13d00
+ parent [270]
+-author Ethan Meng <ethan@rapidcow.org> 1770777429 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1770777429 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1770777429 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1770777429 -0600
+ 
+ argh screw it, no emails in the README
+ 
+ just don't spam me.....
+270:  028dd3a ! 270:  e144c4c Bump copyright year?
+--- a/028dd3a339a57054d47a34d23d9aa0a09ddbc929	2026-02-11 02:38:49.000000000 +0000
++++ b/e144c4c9ba34b43934ed1df4950246d3cb2316ee	2026-02-11 02:38:49.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree e558972b34027695922eeebd69144595df648dc4
+ parent [271]
+-author Ethan Meng <ethan@rapidcow.org> 1770777116 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1770777529 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1770777116 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1770777529 -0600
+ 
+ Bump copyright year?
+ 
+ i totally meant to do this, well...
+271:  78dc6f6 ! 271:  6059994 first/last is probably a bad description
+--- a/78dc6f6615a31c18118fbb939d4b32d623c91c01	2026-02-11 02:08:22.000000000 +0000
++++ b/60599948faea779871e85dac15ed791dfdb4d655	2026-02-11 02:08:22.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 5d62c3b2c7896ccac545ec6b4cbb1804c7903ed9
+ parent [272]
+-author Ethan Meng <ethan@rapidcow.org> 1770775115 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1770775702 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1770775115 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1770775702 -0600
+ 
+ first/last is probably a bad description
+ 
+ it assumes that first=left last=right, which is
+272:  a48279b ! 272:  e57c0e6 fill in the docs
+--- a/a48279b36295101fce233a817051803957fe80b3	2026-02-11 01:54:55.000000000 +0000
++++ b/e57c0e6c8b7703a18ed56fae8e3ebde5b2b7a97d	2026-02-11 01:54:55.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 4213a9a311b5a00e80981ca1018cc8286c95214b
+ parent [273]
+-author Ethan Meng <ethan@rapidcow.org> 1770774530 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1770774895 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1770774530 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1770774895 -0600
+ 
+ fill in the docs
+ 
+ thought i'd do something to combat the inaction,
+273:  a3310ae ! 273:  e3e8547 The (x) => (1 - x) was likely not a very good map
+--- a/a3310aefa46cfc62848df99c8128fcfc4eee9af2	2025-12-11 13:57:57.000000000 +0000
++++ b/e3e8547b099dc3e3560fdac3949710f5af004742	2025-12-11 13:57:57.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 3d1ff5310e7e37efb8536f9a0eca0634ae588cc8
+ parent [274]
+-author Ethan Meng <ethan@rapidcow.org> 1765461477 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1765461477 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1765461477 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1765461477 -0600
+ 
+ The (x) => (1 - x) was likely not a very good map
+ 
+ I was trying to avoid going into negative numbers, thinking it
+274:  05d4c5b ! 274:  088db1c CPANSec was done a while ago, so cross it off
+--- a/05d4c5beaa3457d237968556c4b474328df98d54	2025-12-05 09:50:23.000000000 +0000
++++ b/088db1c2dd398e69226ef10669ba942b040c82f6	2025-12-05 09:50:23.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree ed588ca27828f7119d9f52bc555034ecfdf6a33d
+ parent [275]
+-author Ethan Meng <ethan@rapidcow.org> 1764928223 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764928223 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764928223 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764928223 -0600
+ 
+ CPANSec was done a while ago, so cross it off
+275:  7262722 ! 275:  4fc580e Similarly fix the inconsistent error messages...
+--- a/7262722b53dc4ffc87db00e686ddb252449c6438	2025-12-05 09:43:58.000000000 +0000
++++ b/4fc580ee21f71aa22e9c827eef9d5d22dec9e81f	2025-12-05 09:43:58.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 72982848874ad002a723529e7d9ef1d6055ec31f
+ parent [276]
+-author Ethan Meng <ethan@rapidcow.org> 1764927756 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764927838 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764927756 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764927838 -0600
+ 
+ Similarly fix the inconsistent error messages...
+ 
+ what is this obscene typo ToT i *need* to test this i swear
+276:  7cdca6c ! 276:  f8986a7 brsrch[01x] were calling the wrong implementation
+--- a/7cdca6cfb406186aa028bceb46cb4ef48cef00b9	2025-12-05 08:30:30.000000000 +0000
++++ b/f8986a7c653298a3d43fec531d4c90b7080eb68a	2025-12-05 08:30:30.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 1254e2acd95a7472392cbe514cd439fa70ed6fdb
+ parent [277]
+-author Ethan Meng <ethan@rapidcow.org> 1764923125 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764923430 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764923125 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764923430 -0600
+ 
+ brsrch[01x] were calling the wrong implementation
+ 
+ Just tried this out for finding an insertion point
+277:  ad54cbc ! 277:  0703989 Clean imports
+--- a/ad54cbcf9dfa182fc089cb277859228235352fb9	2025-12-03 12:52:22.000000000 +0000
++++ b/070398904d7f97502aacd3318f9766f3af1af893	2025-12-03 12:52:22.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 5808b01c4335be6e0869c5334cde36b7733d375f
+ parent [278]
+-author Ethan Meng <ethan@rapidcow.org> 1764766342 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764766342 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764766342 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764766342 -0600
+ 
+ Clean imports
+ 
+ Scalar::Util is actually unused; also, given how
+278:  cf79245 ! 278:  8a2a4c4 POD::Coverage is a bit too strict
+--- a/cf79245013e798131cc9cd2394080aad0641db91	2025-11-30 08:17:49.000000000 +0000
++++ b/8a2a4c4035a01ca5a40e5fef49752eaec5c9321c	2025-11-30 08:17:49.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree d44ab5c0a03bf5aacbc8c79faf1831e96aeb5211
+ parent [279]
+-author Ethan Meng <ethan@rapidcow.org> 1764490669 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764490669 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764490669 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764490669 -0600
+ 
+ POD::Coverage is a bit too strict
+ 
+ Right, because i don't really like privatizing functions
+279:  370fcb7 ! 279:  55b68e6 Add author test with Test::CPAN::Changes
+--- a/370fcb7babcc687d49626082261441b2493a5b1f	2025-11-30 08:05:07.000000000 +0000
++++ b/55b68e64176287faa70c0cf1554f7fab75bf4a94	2025-11-30 08:05:07.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree cda8b73396da8f4c79c588044a779da41779b359
+ parent [280]
+-author Ethan Meng <ethan@rapidcow.org> 1764489907 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764489907 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764489907 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764489907 -0600
+ 
+ Add author test with Test::CPAN::Changes
+ 
+ Didn't know there was a format spec for
+280:  7e178d2 ! 280:  6473214 use vars is replaceable by "our" since Perl 5.6.0
+--- a/7e178d286c609af49a002f3347947cec23cae54a	2025-11-30 07:37:43.000000000 +0000
++++ b/647321455bf42056de34eb9ce894823ce392b91a	2025-11-30 07:37:43.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 355386fa6a2cac18778312c9c0a2f6b1b6b9c076
+ parent [281]
+-author Ethan Meng <ethan@rapidcow.org> 1764486579 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764488263 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764486579 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764488263 -0600
+ 
+ use vars is replaceable by "our" since Perl 5.6.0
+ 
+ From perldoc vars:
+281:  e950c15 ! 281:  39a1d94 Improve grammar
+--- a/e950c15f80371704af80dda160ef397fa169461e	2025-11-30 02:04:58.000000000 +0000
++++ b/39a1d940ce15a0d9e9fbaa72b76b4d693ebea703	2025-11-30 02:04:58.000000000 +0000
+@@ -1,6 +1,6 @@
+ tree b83c249d80680fe49327868da7d81738e77a2d69
+ parent [282]
+-author Ethan Meng <ethan@rapidcow.org> 1764468269 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764468298 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764468269 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764468298 -0600
+ 
+ Improve grammar
+282:  c5577f3 ! 282:  3acc3a0 Update SECURITY.md per CPANSec 1.4.2
+--- a/c5577f3026627c7d25315e75bfd3af4182218f02	2025-11-30 01:26:33.000000000 +0000
++++ b/3acc3a06306c3f3cb89234a837ff87ae0e20d570	2025-11-30 01:26:33.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 9ce7967f09240315a378c0937e58df13b785017e
+ parent [283]
+-author Ethan Meng <ethan@rapidcow.org> 1764465993 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764465993 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764465993 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764465993 -0600
+ 
+ Update SECURITY.md per CPANSec 1.4.2
+ 
+ There are semantic versions to this document?
+283:  57a2321 ! 283:  ef25d7a Create SECURITY.md
+--- a/57a2321b94265b1cddda1c56b9f7c04be44de37d	2025-11-30 01:07:47.000000000 +0000
++++ b/ef25d7a259c5f284192ae3593c0ab3abb92a27ec	2025-11-30 01:07:47.000000000 +0000
+@@ -1,7 +1,7 @@
+ tree 764173be9d55f6875102f8a9856a593f35d6f668
+ parent [284]
+-author Ethan Meng <ethan@rapidcow.org> 1764464867 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764464867 -0600
+ committer GitHub <noreply@github.com> 1764464867 -0600
+ 
+ Create SECURITY.md
+ 
+284:  8693aba ! 284:  32c5584 Re-format the READMEs everywhere
+--- a/8693aba3747e5badd9ffaf21ff08c05dddc817a9	2025-11-30 01:04:54.000000000 +0000
++++ b/32c55842d321fd41186d34c05984de93fa0668ae	2025-11-30 01:04:54.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 030df61baa8946bc9982c9cfd17ea6c56c1d624a
+ parent [285]
+-author Ethan Meng <ethan@rapidcow.org> 1764463452 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764464694 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764463452 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764464694 -0600
+ 
+ Re-format the READMEs everywhere
+ 
+ it's 2025 and GFM still doesn't support <dl>??? O_o
+285:  e3247b2 ! 285:  2f62ec1 Use "module" consistently
+--- a/e3247b235409e243fc115cb1d60f45e8f67a80e7	2025-11-30 00:42:04.000000000 +0000
++++ b/2f62ec119c2b84a15710b3800f174ae81d2139e0	2025-11-30 00:42:04.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 35cfa9127d3d8dee4c1733814ba8779eff62292c
+ parent [286]
+-author Ethan Meng <ethan@rapidcow.org> 1764458495 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764463324 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764458495 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764463324 -0600
+ 
+ Use "module" consistently
+ 
+ Artifact of module-starter...
+286:  2948086 ! 286:  233d7fe Add CPANSec to my makeshift TODO list
+--- a/294808697c8b035080e255ef02e4e3aeb071b3fb	2025-11-29 11:58:34.000000000 +0000
++++ b/233d7fe3e8e7bbcaba9ae55840910510a478a3b4	2025-11-29 11:58:34.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 9bd9a6f2d4617ba30ad38fe9596cb30058df1f67
+ parent [287]
+-author Ethan Meng <ethan@rapidcow.org> 1764417406 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764417514 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764417406 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764417514 -0600
+ 
+ Add CPANSec to my makeshift TODO list
+ 
+ I'll add it when i figure out how GitHub works..... eh
+287:  eea2ef1 ! 287:  abe9741 Good-enough starting point
+--- a/eea2ef1d9904bceaca3eca7188f71605f853083e	2025-11-29 11:42:20.000000000 +0000
++++ b/abe97415cd3a1a832aedb7e2a1f08cb6d14fd5dc	2025-11-29 11:42:20.000000000 +0000
+@@ -1,7 +1,7 @@
+ tree afc24562bbaa1de1ad742645bcb30d0d8e94bfc4
+-author Ethan Meng <ethan@rapidcow.org> 1764415765 -0600
+-committer Ethan Meng <ethan@rapidcow.org> 1764416540 -0600
++author Ethan Meng <rapidcow@RCs-T480s.local> 1764415765 -0600
++committer Ethan Meng <rapidcow@RCs-T480s.local> 1764416540 -0600
+ 
+ Good-enough starting point
+ 
+ I removed all the existing perldoc from FastLook.pm :x
+288:  559dacf = 288:  559dacf typos in FastLook.pm
+289:  10ef8bb = 289:  10ef8bb fix obvious typos here too
+290:  cd4bcb9 = 290:  cd4bcb9 update FastLook.pm to the looks of Sort/Search.pm
+291:  6d98ebc = 291:  6d98ebc trippy very....
+292:  6b34796 = 292:  6b34796 use ==
+293:  14c7763 = 293:  14c7763 well this was trippy....
+294:  d864998 = 294:  d864998 half
+295:  dc15d65 = 295:  dc15d65 tidy bisect2 guys
+296:  9acde32 = 296:  9acde32 make things work for the old test
+297:  6b15b70 = 297:  6b15b70 expand tabs in places that should have tabs expanded
+298:  9cc556d = 298:  9cc556d it might have been fixed
+299:  fa2a640 = 299:  fa2a640 oh wait
+300:  e8e866f = 300:  e8e866f fix some bug bug
+301:  7ab5dfd = 301:  7ab5dfd oops, wrong name
+302:  6dd9ab2 = 302:  6dd9ab2 everything is implemented.... ish
+303:  277f3a8 = 303:  277f3a8 now that the 01's are rewritten....
+304:  fa56568 = 304:  fa56568 actually let's move things around
+305:  6d7c06b = 305:  6d7c06b simplify
+306:  3fd81d4 = 306:  3fd81d4 maybe just a little more challenge for bisectr
+307:  a3eea7e = 307:  a3eea7e binary right search is OK-ish
+308:  0226b93 = 308:  0226b93 surely this has to be wrong
+309:  423d073 = 309:  423d073 oh!
+310:  a2c5bc4 = 310:  a2c5bc4 test test time
+311:  12a56d2 = 311:  12a56d2 fix (basic) syntax errors
+312:  a82624a = 312:  a82624a hold on, FastLook.html get lost
+313:  89cc8d5 = 313:  89cc8d5 fix MANIFEST accordingly
+314:  0b3887f = 314:  0b3887f ok....
+315:  c612d77 = 315:  c612d77 finally explained input form
+316:  fb5aa68 = 316:  fb5aa68 maybe this is clearer
+317:  ac62675 = 317:  ac62675 legend in the corner
+318:  ffdebdb = 318:  ffdebdb finally something nice
+319:  ec97092 = 319:  ec97092 strip them nasty spaces
+320:  05dad7e = 320:  05dad7e oh my goodness this is taking 3+ days to get started
