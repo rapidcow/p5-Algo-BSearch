@@ -4,7 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 
-use FastLook qw(bisectr);
+use RdKw::Algo::BSearch qw(bisectr);
 use Test::More tests => 5;
 
 {

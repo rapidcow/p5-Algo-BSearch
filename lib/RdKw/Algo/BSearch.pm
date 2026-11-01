@@ -1,17 +1,13 @@
-package FastLook;
+package RdKw::Algo::BSearch;
 
-our $VERSION = '0.01_00';
+our $VERSION = '0.00_00';
 $VERSION = eval $VERSION;
 
 =pod
 
 =head1 NAME
 
-FastLook - binary search on contiguous monotonic ranges
-
-=head1 VERSION
-
-Version 0.01 (untested)
+Algo::BSearch - binary search on contiguous monotonic ranges
 
 =cut
 

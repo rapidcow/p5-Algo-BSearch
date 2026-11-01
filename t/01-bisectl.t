@@ -4,7 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 
-use FastLook qw(bisectl);
+use RdKw::Algo::BSearch qw(bisectl);
 use Test::More tests => 7;
 
 is ((bisectl { -$_ < 1 } 0, 8), 0, "case of all T");

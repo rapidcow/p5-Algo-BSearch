@@ -4,7 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 
-use FastLook qw(blsrch0);
+use RdKw::Algo::BSearch qw(blsrch0);
 use Test::More tests => 3;
 
 sub search {

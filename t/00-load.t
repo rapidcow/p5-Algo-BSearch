@@ -5,6 +5,6 @@ use warnings;
 use Test::More tests => 1;
 
 BEGIN {
-	use_ok( 'FastLook' ) or BAIL_OUT;
+	use_ok( 'RdKw::Algo::BSearch' ) or BAIL_OUT;
 }
-diag( "Testing FastLook $FastLook::VERSION, Perl $], $^X" );
+diag( "Testing RdKw::Algo::BSearch $RdKw::Algo::BSearch::VERSION, Perl $], $^X" );

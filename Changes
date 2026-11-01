@@ -1,0 +1,17 @@
+Revision history of Algo-BSearch
+
+
+0.00_00  2026-11-01  RC
+    Initial import as FastLook.pm from tree.git
+
+    (This version number has been retroactively reduced
+     so that it would fall below Sort-Search's versions.)
+
+    Filter command:
+
+    git branch fl-import e0e0f699cb9aadf3e9aa2cd16af06b42bd5a3f41 &&
+    git filter-repo --force --refs fl-import \
+           --path src/lib/FastLook.pm --path src/lib/FastLook.html \
+           --path src/t/bs/00-load.t --path src/t/bs/01-bisectl.t \
+           --path src/t/bs/01-bisectr.t --path src/t/bs/doctest.t \
+           --path-rename src/lib/:lib/ --path-rename src/t/bs/:t/
