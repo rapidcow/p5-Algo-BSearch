@@ -65,6 +65,17 @@ foreach my $this (`git rev-list --all`) {
 my %refs = map { chomp; split } split /^/, <<MAP;
 fb9d918012b08b9eddd4068f952b552729b60c82 refs/heads/master
 MAP
+# Abbreviated mentions slip past the full-hash substitution below, so
+# these were found by hand: mentioning commit => { abbreviation as it
+# appears in the message => full hash of the commit it means }.  The
+# abbreviations are stale (pre-rewrite); the walk writes in whatever
+# the meant commit has become by then, at the same length.
+my %ABBREV = (
+	'537fd4a600a15061d246de63b5410889bb0a2eb2' => { '003b40f' => '003b40fd0b7313c873aa1c64c9b35cca91e75fc9' },
+	'2b63c6406f32b63b7845a359605ffa9ebcbce6c3' => { '8d9b2e9' => '8d9b2e93d18217c560e55f0d83a49d586a717ea6' },
+	'8ad4e057b8677069f25486703e6a1f3f46213556' => { '7a9ae69' => '7a9ae69cbcc42841a45cfcb8a5bd8809d46788f9' },
+	'2e1d2c211907d64b359f9ca69b60b6ba449239ae' => { 'e3247b2' => 'e3247b235409e243fc115cb1d60f45e8f67a80e7' },
+);
 # A commit that mentions another commit by its full hash has to be
 # rewritten after it, or the mention would keep the old hash (this
 # can happen across branches, where neither is the other's ancestor).
@@ -88,6 +99,7 @@ my %deps = map { $_ => [ @{$parents{$_}} ] } keys %parents;
 		}
 	}
 }
+push @{$deps{$_}}, values %{$ABBREV{$_}} foreach keys %ABBREV;
 # Reverse topological sort
 my @walk = reachable(\%deps, keys %refs);
 
@@ -208,6 +220,12 @@ my $i = 1; foreach (@walk) {
 	# Most contents remain untouched, so probably
 	# do the check first to avoid pipe overhead...
 	my $newbody = $content;
+	foreach my $abbr (sort keys %{$ABBREV{$this} // {}}) {
+		my $full = $ABBREV{$this}{$abbr};
+		my $now = substr($REPLACE{$full} // $full, 0, length $abbr);
+		$newbody =~ s/\b\Q$abbr\E\b/$now/g
+			or die "$this: no $abbr in message to replace\n";
+	}
 	# %REPLACE at the current instant should be just
 	# right.  (If a commit was ever able to mention a
 	# "future" commit, well.... let's just say, it
