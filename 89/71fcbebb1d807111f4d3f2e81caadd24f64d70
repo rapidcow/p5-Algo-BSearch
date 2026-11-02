@@ -1,0 +1,67 @@
+Originally identified by:
+
+commit 89e733803db66fef90a4ffac5fff9b6d1ed6ace7
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Wed May 6 17:14:10 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Wed May 6 17:18:15 2026 -0500
+
+    s/github.com/codeberg.org/ Makefile.PL repo links
+
+    forgot to change these links too, oops....
+
+This commit was first seen in:
+
+commit 6060883df67e11eed7638c629f08e9abfdcb0e56
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 6 17:17:25 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 6 17:17:25 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master cfd2206..5d193eb (+52)
+       18 files changed, 1473 insertions(+), 310 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:55252 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
+
+then in:
+
+commit 4112c24dad58e8f2fbd9623346f769723bdad178
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 6 17:18:26 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 6 17:18:26 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master 5d193eb..89e7338 (-1+1)
+       (identical trees)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:40846 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
+
+with the following changes:
+
+$ ~/tree/utils/diff-range 5d193eb 1 89e7338
+ORIG = 5d193eb2ddf0e229401fb65be8f5ed15c26524f3
+HEAD = 89e733803db66fef90a4ffac5fff9b6d1ed6ace7
+ 0:  5d193eb !  0:  89e7338 s/github.com/codeberg.org/ in Makefile.PL repo links
+--- a/5d193eb2ddf0e229401fb65be8f5ed15c26524f3	2026-05-06 22:14:10.000000000 +0000
++++ b/89e733803db66fef90a4ffac5fff9b6d1ed6ace7	2026-05-06 22:18:15.000000000 +0000
+@@ -1,8 +1,8 @@
+ tree 5030a953eb3b9f047fccbb6fab92768df8c68c53
+ parent 5ac8eee3d35d1cb67d1c246c09218b0f4e52d5b3
+ author Ethan Meng <ethan@rapidcow.org> 1778105650 -0500
+-committer Ethan Meng <ethan@rapidcow.org> 1778105650 -0500
++committer Ethan Meng <ethan@rapidcow.org> 1778105895 -0500
+
+-s/github.com/codeberg.org/ in Makefile.PL repo links
++s/github.com/codeberg.org/ Makefile.PL repo links
+
+ forgot to change these links too, oops....
