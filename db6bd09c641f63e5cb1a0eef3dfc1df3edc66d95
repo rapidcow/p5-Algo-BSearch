@@ -1,0 +1,33 @@
+Originally identified by:
+
+commit 28de920addb786f150d4cc8f97965e9eaf6bd10e
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Sun Mar 15 10:00:38 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Sun Mar 15 10:00:38 2026 -0500
+
+    Move trace output to STDOUT
+
+    That way I could still see it with prove -v,
+    and eh I think that's what long-standing libs
+    like OpenSSL and public-inbox do anyways?
+    I also don't want to "standardize" a flag just
+    for this, so ehhhh just remove that...
+
+This commit was first seen in:
+
+commit 6060883df67e11eed7638c629f08e9abfdcb0e56
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 6 17:17:25 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 6 17:17:25 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master cfd2206..5d193eb (+52)
+       18 files changed, 1473 insertions(+), 310 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:55252 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
