@@ -1,0 +1,37 @@
+Originally identified by:
+
+commit 14373321f4dbc1275d159924ae0d60cbedf661f8
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Sat Mar 14 16:44:11 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Sat Mar 14 16:57:13 2026 -0500
+
+    change: return just the SCALAR ref for element?
+
+    This is to prepare for a potentially five-element
+    return value in case someone would like to re-use
+    bounds from the x variants?  (I don't know, I'm not
+    thinking straight in my head today.)
+
+    (this also makes it somewhat more consistent with
+    the libc bsearch(3) function returning a pointer,
+    although i understand that argument isn't one that
+    can be justifiably made...)
+
+This commit was first seen in:
+
+commit 6060883df67e11eed7638c629f08e9abfdcb0e56
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 6 17:17:25 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 6 17:17:25 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master cfd2206..5d193eb (+52)
+       18 files changed, 1473 insertions(+), 310 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:55252 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
