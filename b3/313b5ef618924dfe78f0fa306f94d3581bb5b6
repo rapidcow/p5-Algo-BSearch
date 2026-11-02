@@ -1,0 +1,29 @@
+Originally identified by:
+
+commit b18842d0837b9bb35f3ddf9b38e60678e375b38a
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Wed May 6 17:33:49 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Wed May 6 17:33:49 2026 -0500
+
+    s/github.com/codeberg.org/ README and elsewhere
+
+    there's more?  you're telling me there is more????
+
+This commit was first seen in:
+
+commit 46f543e2b5dd0dd5038d25102973c294ff08afec
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 6 18:09:12 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 6 18:09:12 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master 89e7338..1b7571c (+5)
+       5 files changed, 8 insertions(+), 123 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:46468 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
