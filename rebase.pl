@@ -217,8 +217,6 @@ my $i = 1; foreach (@walk) {
 	}
 
 	my $content = get_all_content($tempfh);
-	# Most contents remain untouched, so probably
-	# do the check first to avoid pipe overhead...
 	my $newbody = $content;
 	foreach my $abbr (sort keys %{$ABBREV{$this} // {}}) {
 		my $full = $ABBREV{$this}{$abbr};
@@ -233,6 +231,8 @@ my $i = 1; foreach (@walk) {
 	while (my ($SK, $SV) = each %REPLACE) {
 		$newbody =~ s/\Q$SK\E/$SV/ig;
 	}
+	# Most contents remain untouched, so probably
+	# do the check first to avoid pipe overhead...
 	unless ($newbody eq $content) {
 		replace_content($tempfh, \$mem, $newbody);
 	}
