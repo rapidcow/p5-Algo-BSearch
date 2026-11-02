@@ -75,6 +75,9 @@ my %ABBREV = (
 	'2b63c6406f32b63b7845a359605ffa9ebcbce6c3' => { '8d9b2e9' => '8d9b2e93d18217c560e55f0d83a49d586a717ea6' },
 	'8ad4e057b8677069f25486703e6a1f3f46213556' => { '7a9ae69' => '7a9ae69cbcc42841a45cfcb8a5bd8809d46788f9' },
 	'2e1d2c211907d64b359f9ca69b60b6ba449239ae' => { 'e3247b2' => 'e3247b235409e243fc115cb1d60f45e8f67a80e7' },
+	# e26fa13 itself was purged off mainline by the 126-commit metadata
+	# fixup (refs/info/*: 69c42ad3); point at what it became instead.
+	'003b40fd0b7313c873aa1c64c9b35cca91e75fc9' => { 'e26fa13' => '0fe077eb2fa366134f9c5e519e5b3a4ca7b9b6a5' },
 );
 # A commit that mentions another commit by its full hash has to be
 # rewritten after it, or the mention would keep the old hash (this
