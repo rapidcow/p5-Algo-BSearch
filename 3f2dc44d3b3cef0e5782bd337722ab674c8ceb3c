@@ -1,0 +1,27 @@
+Originally identified by:
+
+commit 1c877e54f20f8d883ffed592329705627ea37c32
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Wed May 20 09:36:19 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Wed May 20 09:36:19 2026 -0500
+
+    Argh, we live in xlib? not xt???
+
+This commit was first seen in:
+
+commit 8e8d65a7a25e414801eee6cb66ef3ae22ebb0299
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed May 20 12:50:24 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed May 20 12:50:25 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master 88644f2..1856a79 (+6)
+       3 files changed, 143 insertions(+), 56 deletions(-)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::d701:56a0]:40466 (RCs-T480s.tails.endfind.me)
+    Host: [fd7a:115c:a1e0::c601:f526]:22 (RPi-4B.tails.endfind.me)
