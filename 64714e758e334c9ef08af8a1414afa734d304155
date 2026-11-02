@@ -1,0 +1,258 @@
+Originally identified by:
+
+commit 2882742bc1ab51a0cd26865697ac3912ee48d796
+Author:     Ethan Meng <ethan@rapidcow.org>
+AuthorDate: Tue Jun 9 14:32:55 2026 -0500
+Commit:     Ethan Meng <ethan@rapidcow.org>
+CommitDate: Tue Jun 9 14:32:55 2026 -0500
+
+    Essay typo
+
+This commit was first seen in:
+
+commit 5941a962c758da21ac34024e505449e8c4afa3f0
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Tue Jun 9 14:38:49 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Tue Jun 9 14:38:50 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master fd71928..a73745b (+18)
+       7 files changed, 205 insertions(+), 162 deletions(-)
+      refs/notes/commits a28d42d..b3fdc5e (+2)
+       1 file changed, 8 insertions(+)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::ea32:d402]:41100 (RCs-T480s.local.mhfamily.rapidcow.net)
+    Host: [fd7a:115c:a1e0::6e32:6f59]:22 (RPi-4B.river.mhfamily.rapidcow.net)
+
+then in:
+
+commit 69c42ad3c3603bb8ffe22d6940414b3c88798b6f
+Author:     Ethan Meng <rapidcow@RCs-T480s.local>
+AuthorDate: Wed Jun 10 18:32:11 2026 -0500
+Commit:     Git Daemon <git@RPi-4B.local>
+CommitDate: Wed Jun 10 18:32:11 2026 -0500
+
+    Receive pack via ssh transport
+
+    updated:
+      refs/heads/master 5c74f11..b98bc3a (-126+126)
+       (identical trees)
+      refs/notes/amends 0f64492..8324d85 (+8)
+       5 files changed, 195 insertions(+)
+      refs/notes/commits 4894b6b..f46c694 (+2)
+       4 files changed, 24 insertions(+)
+
+    Submitted-by: Ethan Meng <rapidcow@RCs-T480s.local>
+    From: [fd7a:115c:a1e0::ea32:d402]:51266 (RCs-T480s.local.mhfamily.rapidcow.net)
+    Host: [fd7a:115c:a1e0::6e32:6f59]:22 (RPi-4B.river.mhfamily.rapidcow.net)
+
+with the following changes:
+
+$ ~/tree/utils/diff-range 5c74f11 126 b98bc3a
+ORIG = 5c74f119ea56720fc8c58cf661948a2412f32e28
+HEAD = b98bc3a0b29d64eef584d95a13fcb50b0f503f47
+  0:  5c74f11 =   0:  b98bc3a Remove comment on the exact integer type
+  1:  f0a6223 =   1:  8f6810a align the semicolons and parentheses....
+  2:  07227a8 =   2:  fc33f12 give credit to forum answer for computation of int limits
+  3:  ebe3b57 =   3:  83b4dfc t/mean.t: Defer definitions of IV/UV limits
+  4:  6cc79c1 =   4:  25abb55 t/mean.t: Compute ivmin with decrement
+  5:  1fbd5b1 =   5:  003b40f t/mean.t: Describe the necessity of the IVUV guard
+  6:  c52e8d1 =   6:  c4b4e5c t/mean.t: Start with expected condition in test skips
+  7:  ca8b7c7 =   7:  a6798b3 Move tricky t/mean.t tests down
+  8:  cc04c20 =   8:  e02f45d Stop using constants in t/mean.t
+  9:  8d1b1a0 =   9:  b01952c Change "failed to load" => "can't load"
+ 10:  a33dc07 =  10:  93cd561 Remove SKIP from plan skip_all from one other place
+ 11:  ae72d98 =  11:  2b31748 xlib/tree-search.pl: update comments for BST_leap
+ 12:  0c08ea7 =  12:  c05a30b xlib/tree-search.pl: document the [TOK, REF] operand form
+ 13:  b39327e =  13:  6209044 xt/tree-search.t: sparse tree test is no longer TODO
+ 14:  4af80ef =  14:  220f6b4 Move TODO string out of the subtest scope
+ 15:  358c737 !  15:  58e309c xlib/tree-search.pl: reduce @aref @bref to scalars
+--- a/358c737a012cae66df531ca6162015410ae2583b	2026-06-10 00:04:07.000000000 +0000
++++ b/58e309c9d758109757d2ac39f6eac7c355a61825	2026-06-10 00:04:07.000000000 +0000
+@@ -4,9 +4,9 @@
+ committer Ethan Meng <ethan@rapidcow.org> 1781049847 -0500
+
+ xlib/tree-search.pl: reduce @aref @bref to scalars
+
+-By Claude Fable 5:
++From Claude Fable 5:
+
+ > @aref/@bref are only ever used for their counts,
+ > so scalars would read clearer.
+
+ 16:  b666330 =  16:  890d40e xlib/tree-search.pl: refrain from trusting first encounter
+ 17:  15c24a3 =  17:  92b502b xlib/tree-search.pl: preliminary fix for sparse trees
+ 18:  6e8cc9f =  18:  6a7740b Consistent-ize xt/tree-search* error messages
+ 19:  0fe2c9b =  19:  1ba2216 xt/tree-search.t: TODO regression test for sparse trees
+ 20:  53a4a91 =  20:  481ed37 xlib/tree-search.pl: doc nits
+ 21:  345f743 =  21:  3e7588f xlib/tree-search.pl: accept falsy strings as node names
+ 22:  4bd5c3e =  22:  5b43936 Further fixes in main docs
+ 23:  72bc756 !  23:  2b63c64 Main pod typos
+--- a/72bc756738ef03f430724bc1d9e9fbd56923d194	2026-06-09 20:26:18.000000000 +0000
++++ b/2b63c6406f32b63b7845a359605ffa9ebcbce6c3	2026-06-09 20:26:18.000000000 +0000
+@@ -7,10 +7,10 @@
+
+ Naturally I'd have Claude proofread the more important guy
+ I've been staring at all night too. :)
+
+-Different from 5f0d5d0, I have commentaries in [[ brackets ]]
+-this time!
++Message by Claude again.  Different from 8d9b2e9 (Cookbook typos)
++though, I have commentaries in [[ brackets ]] this time!
+ ---
+
+ Fixed:
+ 1. Content error (Terminology, the case-insensitive example): the
+ 24:  cccc7b6 =  24:  19ca2cf Add a pause to long sentence
+ 25:  ffed980 =  25:  76e521a Use <=> for binsearch_range \@num_array example
+ 26:  5f0d5d0 !  26:  8d9b2e9 Cookbook typos
+--- a/5f0d5d031875d76e3ac504deab389e35736a58c8	2026-06-09 19:48:14.000000000 +0000
++++ b/8d9b2e93d18217c560e55f0d83a49d586a717ea6	2026-06-09 19:48:14.000000000 +0000
+@@ -8,9 +8,9 @@
+ New model :o  I was only trying to have it look at Cookbook to
+ see if it can understand my writing.... did NOT expect this to
+ happen though. XP  (And now I kind of have to commit, sorry...)
+
+-Here's quote from Claude anyways...
++Here's message from Claude anyways...
+ ---
+
+ Fixed four things in lib/Sort/Search/Cookbook.pod:
+
+ 27:  a73745b =  27:  93934fd That said I do want some space here
+ 28:  b7b1366 =  28:  bdf022a What is with all this extra space....
+ 29:  9ac5d57 =  29:  2882742 Essay typo
+ 30:  060bda3 =  30:  57080cc xt/tree-search-cmd: kill ourselves the same way /bin/sh died
+ 31:  002e6a8 =  31:  543f75d Use 4-space indent properly
+ 32:  994cef2 =  32:  39337c8 WAIT wait i've said this exact thing already?!?
+ 33:  330437c =  33:  a224a56 Cut down on the second time we mention this
+ 34:  278b030 =  34:  51721e9 Reword IVUV arithmetic caveat note a little bit
+ 35:  e4788be =  35:  60be33d Now we can finally delete this old guy
+ 36:  d242b02 =  36:  d8ed600 Explain left vs right variants
+ 37:  7b2f73c =  37:  9274123 Terser expressions
+ 38:  d70f74f =  38:  5670b33 Elaborate on search orientations
+ 39:  4ecc6f0 =  39:  d3032d1 Use 2-space indentation consistently in main docs too
+ 40:  2edd700 =  40:  f5fe334 Binary operations anti-commute, not anti-symmetry
+ 41:  9f83091 =  41:  e279f8f Remove spurious period before parenthetical
+ 42:  c5f057a =  42:  4989ec0 "xlib" should still probably be part of the NAME
+ 43:  782f57f =  43:  68f35af Use itemize in SUBROUTINES section too for uniformity
+ 44:  9404345 =  44:  1e15b89 Prepend leading slash for Plan9 source path
+ 45:  fd71928 =  45:  865c7c6 Indent literal blocks with 2-space consistently
+ 46:  3d20fdb =  46:  6898ce7 Document tree-search.pl command-line interface
+ 47:  1646be4 =  47:  8243a30 PROOF READ
+ 48:  7c2186d !  48:  366f077 Document tree-search.pl Perl interface simply
+--- a/7c2186d01b9d97d4aca094439394c69ba8e3817e	2026-06-09 08:35:13.000000000 +0000
++++ b/366f07788fd33ce73ac551d8bb124c12f1c2e4af	2026-06-09 08:35:13.000000000 +0000
+@@ -6,4 +6,7 @@
+ Document tree-search.pl Perl interface simply
+
+ I might want to write something about the command-line
+ interface... but nah; this will do for now.
++
++Also $_[0] $_[1] were already loaded into $atok $btok,
++so we can just use those.
+ 49:  44c20a6 =  49:  0165536 Tear down vanity package namespace
+ 50:  5241159 =  50:  b412a1a $[ is 0, damn it!
+ 51:  1dcd720 =  51:  4836f29 Purge more useless references to $[
+ 52:  d8019ad =  52:  070b937 Note numeric warning that comes with this example
+ 53:  bf84132 =  53:  80a3e33 Remove period from head -1 .mailmap
+ 54:  385f1b3 =  54:  636fc7a Exclude .mailmap from MANIFEST and source tarballs
+ 55:  3396372 =  55:  2759595 Hide my CS mail from git-log(1) and friends
+ 56:  5a257cd =  56:  3426788 Hold xt tests up to the same standards
+ 57:  668a004 =  57:  78a1c52 Separate import preamble consistently
+ 58:  a03a774 =  58:  b0b4862 Add recent tests to MANIFEST
+ 59:  dfa15b3 =  59:  bf819c9 xt/*.t: address quirks for older perls
+ 60:  0d8d810 !  60:  8ad4e05 xt/tree-search-cmd: Finish regression test
+--- a/0d8d81003e71fbf44ba6c80f8e2c3f34ad740ab0	2026-05-28 19:28:58.000000000 +0000
++++ b/8ad4e057b8677069f25486703e6a1f3f46213556	2026-05-28 19:28:58.000000000 +0000
+@@ -4,9 +4,11 @@
+ committer Ethan Meng <ethan@rapidcow.org> 1779996538 -0500
+
+ xt/tree-search-cmd: Finish regression test
+
+-Regression test for commit 87e5c21, where we replaced
++[Message by Claude]
++
++Regression test for commit 7a9ae69, where we replaced
+ File::Find with true lexicographic find.  Root tree is
+ borrowed from the neighboring xt/tree-search.t.
+
+ (I had totally forgotten about "conclude", so props to
+ 61:  50619d8 =  61:  0af5c03 xt/tree-search-cmd: basic load test
+ 62:  fb4613e =  62:  7567e74 Initialize tree-search-cmd boilerplate
+ 63:  1231bef =  63:  18dfb4f Copy "t/lib/test-functions.sh" from HashTree test
+ 64:  9824040 =  64:  4e80d88 tree-search: sanity check on self
+ 65:  87e5c21 =  65:  7a9ae69 tree-search find: roll our own lexicograpical sort
+ 66:  477409e =  66:  35d90cb xlib/tree-search: Fix a few other spots
+ 67:  17e5196 =  67:  d82d131 Just import all the names please
+ 68:  fce804a =  68:  739ccca Expose as BST_{leap,delv} as subcommands
+ 69:  94da660 =  69:  476eda8 tree-search tests fixup
+ 70:  c752079 =  70:  1e7c8bc xlib/tree-search: fix four bugs; xt/tree-search: add tests
+ 71:  2a76a85 =  71:  e6c3bb1 BST_leap and BST_delv proof of concept
+ 72:  010e040 =  72:  1fb49ae Begin another experiment
+ 73:  b8cad6f =  73:  b986c70 Grammar again
+ 74:  e032900 =  74:  358f519 01ARRAY: continued for right search
+ 75:  e2dcbd1 =  75:  d2b319d file => document
+ 76:  7a928dd =  76:  b2c898f Add dummy files for srcdocs
+ 77:  0a310c8 =  77:  50b3d26 semicolons please
+ 78:  97bda1b =  78:  85bb9f5 Get rid of useless +n -n tests
+ 79:  2743324 =  79:  a8448d4 parenthesize this SKIP for consistency
+ 80:  e26fa13 =  80:  0fe077e t/mean.t: skip boundary tests when no PERL_PRESERVE_IVUV
+ 81:  db4fed4 =  81:  d58420c Require Test-Simple 0.94
+ 82:  d3ff2d4 =  82:  a5bae1c Explicitly return in tied array getters
+ 83:  1c1fef6 =  83:  7a33418 Chained inequality is new to perl v5.32.0
+ 84:  0227ca4 =  84:  e9a0165 Test ARRAY form
+ 85:  71991c7 =  85:  7e5b1a8 I think mean.t should actually be 20
+ 86:  0bd20fb =  86:  657ce6b t/mean.t: load Math::BigInt optionally
+ 87:  8590c05 =  87:  f9df78c Prefix t/mean.t with "10"
+ 88:  0bb6b4f =  88:  fd99e58 Author tests get the load test too
+ 89:  d4479a3 =  89:  6ab48fe t/mean.t: make syntax work
+ 90:  0a7cb7f =  90:  fec80a6 mean test with bigint!
+ 91:  fab7690 =  91:  c18361a Mean test
+ 92:  ba157bc =  92:  9db1ec0 Append most recent runs to the files
+ 93:  5296c1a =  93:  70fb80b Benchmark one last time
+ 94:  f2d0cbb =  94:  2ba5b61 I think string comparison is a bit expensive for $ref
+ 95:  e67bc71 =  95:  f6154f6 Benchmark results (again)
+ 96:  542c1bb =  96:  7325145 peel off ARRAY wrapper
+ 97:  c203d9a =  97:  e87bfd5 Report benchmark results
+ 98:  35a356d =  98:  d57fa99 ... and please S::S[2] don't be slower
+ 99:  5a10339 =  99:  55d1bd9 Add lzero.pl test results
+100:  46f335e = 100:  28a172a Maybe we should factor out anon subs
+101:  ef10f68 = 101:  e0105ca Test match for one bound only
+102:  ef15e6d = 102:  0a9588b Check $INC{$filename} is defined, not just existing
+103:  1f9d326 = 103:  66a4290 Re-run results against LINEAR baseline
+104:  9aa60c6 = 104:  abb291b Align arguments in the b*srch2 variants
+105:  e3602d1 = 105:  c5bc3ce Add LINEAR baseline to make myself feel better
+106:  7cdc0d9 = 106:  be6c4c9 Exclude bench/ from MANIFEST (but not git export)
+107:  3a200a3 = 107:  59c8adc Re-run benchmark with List::MoreUtils::XS
+108:  c209d42 = 108:  3194024 We can actually replace "if (!" with "unless ("?
+109:  35d7a00 = 109:  db2a69d Move explicit index form check up
+110:  7230b61 = 110:  8cb7ab5 Purge the same filler version from Changes
+111:  a2a0a49 = 111:  ab15e0d Step down from version 0.01_x to 0.00_x
+112:  5e2d1ce = 112:  55910b6 use for-loop for localized $_ alias
+113:  f352436 = 113:  ba420ab There is an XS version of equal_range...
+114:  b2a818f = 114:  52b5cd1 Results???
+115:  fac2b8d = 115:  dc47fac Separate pure-perl and XS List::BinarySearch
+116:  785d0ce = 116:  41c2c68 Eliminate spaces in test name
+117:  1de6a02 = 117:  7a4ce2e Let's remove RTL from the scope of this benchmark
+118:  a59fbd3 = 118:  b5f49b7 Normalize output separately
+119:  5b7fdf2 = 119:  d15969a Equal range benchmark
+120:  3360ee5 = 120:  ffa2203 GRAMMAR
+121:  8b7bdc4 = 121:  beb34e0 Just say we made the bounds symmetric ugh
+122:  254e94d = 122:  126e046 Punctuation
+123:  011d2e1 = 123:  b1c08fd Allow "undef" for explicit index form
+124:  60e799b = 124:  f34a872 Generalize
+125:  8a381bd ! 125:  6c4a6a8 Fix bsrchpx on boundary case with positive matches
+--- a/8a381bd5339dae91ce677212a865ff443053ef4a	2026-05-20 16:24:23.000000000 +0000
++++ b/6c4a6a8dbff8441ecb23420f4b6dc4915bb22591	2026-05-20 16:24:23.000000000 +0000
+@@ -43,5 +43,5 @@
+
+ i was thinking of just the case where there are exactly
+ two matches, and one of them equals mid exactly.  but i
+ didn't realize [lo, mid) (mid, hi] could miss mid as it
+-lands on a boundary in general....)
++lands on a boundary in general....))
